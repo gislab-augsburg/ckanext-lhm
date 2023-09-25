@@ -1,0 +1,32 @@
+jquery:
+  filter: rjsmin
+  output: ckanext-lhm/%(version)s_jquery.js
+  contents:
+    - vendor/3.7.0/jquery.min.js
+  extra:
+    preload:
+      - base/main
+
+vendor:
+  filter: rjsmin
+  output: ckanext-lhm/%(version)s_vendor.js
+  contents:
+    - vendor/1.12.1/jquery-ui.min.js
+  extra:
+    preload:
+      - lhm/jquery
+
+datapicker:
+  output: ckanext-lhm/%(version)s_datapicker.js
+  contents:
+    - js/datapicker.js
+  extra:
+    preload:
+    - lhm/vendor
+
+lhm_stylesheet:
+  filter: cssrewrite
+  output: ckanext-lhm/%(version)s-stylesheet.css
+  contents:
+    - css/1.12.1/jquery-ui.css
+    - style.css

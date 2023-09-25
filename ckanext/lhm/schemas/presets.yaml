@@ -1,0 +1,37 @@
+
+scheming_presets_version: 1
+
+about: scheming presets for ckanext-lhm schemas
+about_url: http://....
+
+detail_include_fields:
+- credit_name
+
+detail_show_fields:
+- credit
+
+presets:
+
+- preset_name: editor
+  values:
+    form_snippet: editor.html
+    #display_snippet: date.html
+    #validators: scheming_required scheming_choices
+
+- preset_name: composite_lhm
+  values:
+    form_snippet: composite_lhm.html
+    display_snippet: composite.html
+    validators: composite_group2json
+
+## an empty template for the required presets
+# - preset_name: 
+#   values:
+#     create_validators: canada_validate_generate_uuid
+#       unicode name_validator package_id_does_not_exist
+#     display_snippet: null
+#     field_name: 
+#     form_snippet: 
+
+# - preset_name: 
+#   values:

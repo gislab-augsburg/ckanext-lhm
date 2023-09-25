@@ -1,0 +1,120 @@
+{% import 'macros/form.html' as form %}
+
+{#
+  Data Dictionary fields may be added this snippet. New fields following
+  the 'info__' ~ position ~ '__namegoeshere' convention will be saved
+  as part of the "info" object on the column.
+#}
+
+{% set options=[
+  {'text': '', 'value': ''},
+  {'text': 'Text', 'value': 'text'},
+  {'text': 'Integer', 'value': 'int4'},
+  {'text': 'Decimal', 'value': 'numeric'},
+  {'text': 'Float', 'value': 'float8'},
+  {'text': 'Date', 'value': 'date'},
+  {'text': 'Time', 'value': 'time'},
+  {'text': 'Timestamp', 'value': 'timestamp'},
+  {'text': 'Byte array', 'value': 'bytea'},
+  {'text': 'Array[Integer]', 'value': '_int4'},
+  {'text': 'Array[Text]', 'value': '_text'},
+  ] %}
+
+{#% set options=[
+  {'text': '', 'value': ''}, 
+  {'text': 'OBJECT-ID/Number', 'value': 'number'},
+  {'text': 'GEOMETRY/SDO_GEOMETRY', 'value': 'sdo_geometry'},
+  {'text': 'TEXT/NVARCHAR2', 'value': 'nvarchar2'},
+  {'text': 'Float', 'value': 'float'},
+  {'text': 'Date/Datum', 'value': 'date'},
+  {'text': 'Timestamp(6)', 'value': 'timestamp'},
+  {'text': 'BLOB', 'value': 'blob'},
+  {'text': 'SHORT', 'value': 'number'},
+  ] %#} 
+
+
+  
+<div class="dictionary-field-{{ position }}">
+  {% if field and total_records %}
+
+    <h3>{{ _( "Field: ") }} {{ field.id }} ({{ field.type }})</h3>
+
+    <input id="field__{{ position }}__id" type="text" name="field__{{ position }}__id" value="{{ field.get('id') | empty_and_escape }}" hidden />
+
+    <input id="info__{{ position }}__type" type="text" name="info__{{ position }}__type" value="{{ field.get('type') | empty_and_escape }}" hidden />
+
+    {{ form.select('info__' ~ position ~ '__type_override',
+      label=_('Data Type Override'), options=options,
+      selected=field.get('info', {}).get('type_override', '')) }}
+
+    {{ form.input('info__' ~ position ~ '__condition',
+      label=_('Conditions'), id='field-f' ~ position ~ 'label',
+      value=field.get('info', {}).get('label', ''), classes=['control-full']) }}
+
+    {{ form.markdown('info__' ~ position ~ '__notes',
+      label=_('Description'), id='field-d' ~ position ~ 'notes',
+      value=field.get('info', {}).get('notes', '')) }}
+
+    {{ form.input('info__' ~ position ~ '__label',
+      label=_('Remarks'), id='field-f' ~ position ~ 'label',
+      value=field.get('info', {}).get('label', ''), classes=['control-full']) }}
+
+  {% elif field and not total_records %}
+
+    {{ form.input('field__' ~ position ~ '__id',
+      label=_('Attribute Name'), id='field-f' ~ position ~ 'id',
+      value=field.get('id'), classes=['control-full']) }}
+
+    {{ form.select('info__' ~ position ~ '__type',
+      label=_('Data Type'), options=options,
+      selected=field.get('type')) }}      
+
+    {{ form.select('info__' ~ position ~ '__type_override',
+      label=_('Data Type Override'), options=options,
+      selected=field.get('info', {}).get('type_override', '')) }}
+
+    {{ form.input('info__' ~ position ~ '__condition',
+      label=_('Conditions'), id='field-f' ~ position ~ 'label',
+      value=field.get('info', {}).get('label', ''), classes=['control-full']) }}
+
+    {{ form.markdown('info__' ~ position ~ '__notes',
+      label=_('Description'), id='field-d' ~ position ~ 'notes',
+      value=field.get('info', {}).get('notes', '')) }}
+
+    {{ form.input('info__' ~ position ~ '__label',
+      label=_('Remarks'), id='field-f' ~ position ~ 'label',
+      value=field.get('info', {}).get('label', ''), classes=['control-full']) }}
+
+    {% snippet "dictionary/snippets/delete_field_button.html" %}
+
+  {% else %}
+
+    {{ form.input('field__' ~ position ~ '__id',
+      label=_('Attribute Name'), id='field-f' ~ position ~ 'id',
+      value='', classes=['control-full']) }}
+
+    {{ form.select('info__' ~ position ~ '__type',
+      label=_('Data Type'), options=options) }}
+
+    {{ form.select('info__' ~ position ~ '__type_override',
+      label=_('Data Type Override'), options=options,
+      classes=['control-full'], attrs={'disabled': 'true'}) }}
+
+    {{ form.input('info__' ~ position ~ '__condition',
+      label=_('Conditions'), id='field-f' ~ position ~ 'label',
+      value='', classes=['control-full']) }}
+
+    {{ form.markdown('info__' ~ position ~ '__notes',
+      label=_('Description'), id='field-d' ~ position ~ 'notes',
+      value='') }}
+
+    {{ form.input('info__' ~ position ~ '__label',
+      label=_('Remarks'), id='field-f' ~ position ~ 'label',
+      value='') }}
+
+    {% snippet "dictionary/snippets/delete_field_button.html" %}
+
+  {% endif %}
+
+  <hr>
+</div>

@@ -1,0 +1,182 @@
+# German translations for ckanext-lhm.
+# Copyright (C) 2023 ORGANIZATION
+# This file is distributed under the same license as the ckanext-lhm
+# project.
+# FIRST AUTHOR <mandana.moshrefzadeh@muenchen.de>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ckanext-lhm 0.0.1\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-09-22 09:46+0200\n"
+"PO-Revision-Date: 2023-09-22 09:46+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: de\n"
+"Language-Team: de <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.12.1\n"
+
+#: ckanext/lhm/logic/validators.py:6
+msgid "Required"
+msgstr "Pflicht"
+
+#: ckanext/lhm/templates/dictionary/snippets/dictionary_field.html:40
+msgid "Field: "
+msgstr "Feld: "
+
+#: ckanext/lhm/templates/dictionary/snippets/dictionary_field.html:47
+#: ckanext/lhm/templates/dictionary/snippets/dictionary_field.html:73
+#: ckanext/lhm/templates/dictionary/snippets/dictionary_field.html:100
+msgid "Data Type Override"
+msgstr "Datentyp Überschreibung"
+
+#: ckanext/lhm/templates/dictionary/snippets/dictionary_field.html:51
+#: ckanext/lhm/templates/dictionary/snippets/dictionary_field.html:77
+#: ckanext/lhm/templates/dictionary/snippets/dictionary_field.html:104
+#: ckanext/lhm/templates/package/resource_read.html:8
+msgid "Conditions"
+msgstr "Bedingung"
+
+#: ckanext/lhm/templates/dictionary/snippets/dictionary_field.html:55
+#: ckanext/lhm/templates/dictionary/snippets/dictionary_field.html:81
+#: ckanext/lhm/templates/dictionary/snippets/dictionary_field.html:108
+#: ckanext/lhm/templates/package/resource_read.html:9
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ckanext/lhm/templates/dictionary/snippets/dictionary_field.html:59
+#: ckanext/lhm/templates/dictionary/snippets/dictionary_field.html:85
+#: ckanext/lhm/templates/dictionary/snippets/dictionary_field.html:112
+#: ckanext/lhm/templates/package/resource_read.html:10
+msgid "Remarks"
+msgstr "Bemerkung"
+
+#: ckanext/lhm/templates/dictionary/snippets/dictionary_field.html:65
+#: ckanext/lhm/templates/dictionary/snippets/dictionary_field.html:93
+msgid "Attribute Name"
+msgstr "Attribut"
+
+#: ckanext/lhm/templates/dictionary/snippets/dictionary_field.html:69
+#: ckanext/lhm/templates/dictionary/snippets/dictionary_field.html:97
+#: ckanext/lhm/templates/package/resource_read.html:7
+msgid "Data Type"
+msgstr "Datentyp"
+
+#: ckanext/lhm/templates/package/resource_read.html:6
+msgid "Attribute"
+msgstr "Attribut"
+
+#: ckanext/lhm/templates/scheming/form_snippets/repeating_subfields_lhm.html:14
+#: ckanext/lhm/templates/scheming/macros/form.html:243
+msgid "Remove"
+msgstr "Löschen"
+
+#: ckanext/lhm/templates/scheming/form_snippets/repeating_subfields_lhm.html:38
+msgid "These fields have been removed, click update below to save your changes."
+msgstr "Diese Felder wurden entfernt. Klicken Sie unten auf Aktualisieren, um Ihre Änderungen zu speichern."
+
+#: ckanext/lhm/templates/scheming/form_snippets/repeating_subfields_lhm.html:40
+msgid "These fields have been removed."
+msgstr "Diese Felder wurden entfernt."
+
+#: ckanext/lhm/templates/scheming/form_snippets/repeating_subfields_lhm.html:82
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: ckanext/lhm/templates/scheming/macros/form.html:128
+#, python-format
+msgid ""
+"You can use <a href=\"#markdown\" title=\"Markdown quick reference\" "
+"data-target=\"popover\" data-content=\"%(markdown_tooltip)s\" data-"
+"html=\"true\">Markdown formatting</a> here"
+msgstr "Sie können die <a href=\"#markdown\" title=\"Markdown quick reference\" "
+"data-target=\"popover\" data-content=\"%(markdown_tooltip)s\" data-"
+"html=\"true\">Markdown-Formatierung</a> verwenden"
+
+#: ckanext/lhm/templates/scheming/macros/form.html:279
+msgid "This field is required"
+msgstr "Dieses Feld ist erforderlich"
+
+#: ckanext/lhm/templates/scheming/macros/form.html:279
+msgid "Custom"
+msgstr "Benutzerdefiniert"
+
+#: ckanext/lhm/templates/scheming/macros/form.html:307
+msgid "The form contains invalid entries:"
+msgstr "Das Formular enthält ungültige Eingaben:"
+
+#: ckanext/lhm/templates/scheming/macros/form.html:412
+msgid "Required field"
+msgstr "Pflichtfeld"
+
+#: ckanext/lhm/templates/scheming/macros/form.html:428
+msgid "Image URL"
+msgstr "Bild URL"
+
+#: ckanext/lhm/templates/scheming/macros/form.html:429
+msgid "Image"
+msgstr "Bild"
+
+#: ckanext/lhm/templates/scheming/macros/form.html:443
+msgid "Clear Upload"
+msgstr "Upload löschen"
+
+#: ckanext/lhm/schemas/lhm_dataset.yaml
+msgid "Additional hints regarding the resource/data useage"
+msgstr "weitere Hinweise zur Nutzung"
+
+msgid "Accuracy"
+msgstr "Genauigkeit "
+
+msgid "Positional accuracy"
+msgstr "Lagengenauigkeit"
+
+msgid "Remark"
+msgstr "Bemerkung"
+
+msgid "Archivability"
+msgstr "Archivwürdigkeit"
+
+msgid "Justification"
+msgstr "Begründung"
+
+
+# Resource table Attribute
+msgid "Dictionary fields"
+msgstr "Datenattribute"
+
+msgid "Dictionary labels"
+msgstr "Attribut-Anmerkungen"
+
+msgid "Dictionary notes"
+msgstr "Attribut-Beschreibungen"
+
+msgid "Datastore active"
+msgstr "Datastore-Aktiv"
+
+msgid "Datastore contains all records of source file"
+msgstr "Datastore enthält alle Datensätze der Quelldatei"
+
+msgid "Has views"
+msgstr "Datenvorschau"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""

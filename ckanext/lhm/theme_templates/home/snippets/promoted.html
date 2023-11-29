@@ -1,16 +1,16 @@
 {% set intro = g.site_intro_text %}
+{% set intro_paragraph = g.site_description %}
 
-<div class="module-promotion card box">
-  <div class="promotion-text">
+<div class="module-content box">
+  <header>
     {% if intro %}
-      {{ h.render_markdown(intro) }}
+      <h1 class="page-heading">{{ h.render_markdown(intro) }}</h1>
     {% else %}
-      <h1 class="page-heading">{{ _("Welcome to CKAN") }}</h1>
-      <p>
-        {% trans %}This is a nice introductory paragraph about CKAN or the site
-        in general. We don't have any copy to go here yet but soon we will
-        {% endtrans %}
-      </p>
+      <h1 class="page-heading">{{ _("Willkommen auf der Katalogplattform") }}</h1>
     {% endif %}
-  </div>
+  </header>
+  <p>
+    {% trans %} {{ intro_paragraph }}
+    {% endtrans %}
+  </p>
 </div>

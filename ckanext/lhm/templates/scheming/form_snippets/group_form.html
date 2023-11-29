@@ -1,0 +1,159 @@
+<script>
+
+    function show_checkboxes(a, show_checkboxes_after_checking=true){
+    
+        // get the currently selected group-name from the activated dropdown
+        var selected_value = a.parentNode.childNodes[1].childNodes[0].childNodes[1].innerText;
+        
+        // get all checkboxes on the page
+        var checkboxes = document.querySelectorAll("[type=checkbox]");
+        
+        // iterate over all checkboxes
+        for(var i = 0; i < checkboxes.length; i++){
+        
+            // only do stuff with checkboxes that are related to the groups, not other checkboses from other scheming parts
+            if(checkboxes[i].id.includes("field-group-")){
+    
+                // uncheck the main-category checkboxes so only one main category is checked
+                if(!show_checkboxes_after_checking && parseInt(checkboxes[i].id.split("group-")[1]) < 100){
+                    checkboxes[i].checked = false;
+                }
+                
+                // check the checkbox that has the matching name
+                if(checkboxes[i].parentNode.innerText.includes(selected_value)){
+                    checkboxes[i].checked = true;
+                    
+                    // make that checkbox visible (dont make it visible for main-categories)
+                    if(show_checkboxes_after_checking){
+                        checkboxes[i].parentNode.style.display = "block";
+                    }
+                }
+            }
+        }
+    }
+</script>
+
+{% import 'macros/form.html' as form %}
+
+{% set main_categories = h.group_tree_section(id_='main-categories', type_='group', include_siblings=True) %}
+{% set mc_grp_children = main_categories.children %}
+
+{% set topics = h.group_tree_section(id_='topics', type_='group', include_siblings=True) %}
+{% set t_grp_children = topics.children %}
+
+<label class="control-label" for="field-group"><span title="This field is required" class="control-required">*</span>{{_('Groups')}}</label>
+<br><br><ol>
+
+    {% if data.groups %}
+
+	{# Jinja is kind of a weird language that does not allow modifying variables in for / if loops, so this workaround using the group ids and array searches is used. Also Jinja does not allow the 'append' function inside {% ... %}, so I put it inside a html tag that is not visible. #}
+	{% set main_groups_ids = [] %}
+	{% for group in mc_grp_children %}
+		<label class="control-label" for="field-group" style="display:none"><span title="abc" class="control-required"></span>{{ main_groups_ids.append(group.name) }}</label>
+	{%endfor %}
+    
+    {% set data_groups_ids = [] %}
+    {% for group in data.groups %}
+        <label class="control-label" for="field-group" style="display:none"><span title="abc" class="control-required"></span>{{ data_groups_ids.append(group.name) }}</label>
+    {%endfor %}
+
+    <label class="control-label" for="field-group"><span title="This field is required" class="control-required">* </span>{{_('Main Categories')}}</label>
+    {% for group in mc_grp_children %}
+       {% if group.name in data_groups_ids %}
+           <label class="checkbox" for="field-group-{{ loop.index0 + 20 }}" style="display:none">
+               <input id="field-group-{{ loop.index0 + 20 }}" type="checkbox" name="groups__{{ loop.index0 + 20 }}__id" value="{{ group.id }}" checked=true/>{{ group.title }}
+           </label>
+       {% else %}
+           <label class="checkbox" for="field-group-{{ loop.index0 + 20 }}" style="display:none">
+               <input id="field-group-{{ loop.index0 + 20 }}" type="checkbox" name="groups__{{ loop.index0 + 20 }}__id" value="{{ group.id }}"/>{{ group.title }}
+           </label>
+       {% endif %}
+   {% endfor %}
+
+       
+   {# This would produce multiple drop-down bars, but since there can only be one main category, we are fine. Still really bad coding, but I don't know how to do it better in Jinja. #}
+   {% for group in data.groups %}
+       {% if group.name in main_groups_ids %}
+           <div class="controls">
+               <select id="field-group_1" name="groups__0__id" data-module="autocomplete" onclick="show_checkboxes(this, false)">
+                   <option value="{{ group.id }}" >{{ group.title }}</option>
+                   {% for group_iter in mc_grp_children %}
+                       {% if group_iter.name != group.name %}
+                           <option value="{{ group_iter.id }}" >{{ group_iter.title }}</option>
+                       {% endif %}
+                   {% endfor %}
+               </select>
+           </div>
+           <br>
+       {% endif %}
+   {% endfor %}
+
+   <label class="control-label" for="field-group"><span title="This field is required" class="control-required"></span>{{_('Topics')}}</label><br>
+
+   {# checking if group is included in data.groups does for some reason not work in Jinja, hence the id check, again with an invisible label #}
+
+   {% for group in t_grp_children %}
+       {% if group.name in data_groups_ids %}
+           <label class="checkbox" for="field-group-{{ loop.index0 + 100 }}">
+               <input id="field-group-{{ loop.index0 + 100 }}" type="checkbox" name="groups__{{ loop.index0 + 100 }}__id" value="{{ group.id}}" checked=true/>{{ group.title }}
+           </label><br>
+       {% else %}
+           <label class="checkbox" for="field-group-{{ loop.index0 + 100 }}" style="display:none">
+               <input id="field-group-{{ loop.index0 + 100 }}" type="checkbox" name="groups__{{ loop.index0 + 100 }}__id" value="{{ group.id }}"/>{{ group.title }}
+           </label>	
+       {% endif %}
+   {%endfor%}
+   <div class="controls">
+       <select id="field-group_2" name="groups__2__id" data-module="autocomplete" onclick="show_checkboxes(this)">
+           <option value=""selected="selected">{{_('Please choose a topic')}}</option>
+               {% for group in t_grp_children %}
+                   {% set existing_group_id = group.name %}
+                   {% if group.name not in data_group_ids %}
+                       <option value="{{ group.id }}">{{ group.title }}</option>
+                   {% endif %}
+               {% endfor %}
+       </select>
+   </div>
+   <br>
+
+   <span class="info-block info-block-small">
+       <i class="fa fa-info-circle"></i>{% trans %}The Main Category is a mandatory field. To get a better overview of all groups, take a look at this <a href="/group/">page</a>.{% endtrans %}
+   </span>     
+{% endif %}
+
+{% if not data.groups or data.groups == []  %}
+    <label class="control-label" for="field-group"><span title="This field is required" class="control-required">* </span>{{_('Main Categories')}}</label>
+    <div class="controls">
+        <select id="field-group" name="groups__0__id" data-module="autocomplete"> 
+            {% for group in mc_grp_children  %}
+                {% set existing_group_id = group.name %}
+                    <option value="{{ group.id }}">{{ group.title }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <br>
+    <label class="control-label" for="field-group"><span title="This field is required" class="control-required"></span>{{_('Topics')}}</label>
+    {% for group in t_grp_children %}
+        <label class="checkbox" for="field-group-{{ loop.index0 + 100 }}" style="display:none">
+            <input id="field-group-{{ loop.index0 + 100 }}" type="checkbox" name="groups__{{ loop.index0 + 100 }}__id" value="{{ group.id }}"/>{{ group.title }}
+        </label>
+    {% endfor %}
+    <div class="controls">
+        <select id="field-group" name="groups__2__id" data-module="autocomplete" onclick="show_checkboxes(this)">
+            <option value=""selected="selected">{{_('Please choose a topic')}}</option>
+            {% for group in t_grp_children  %}
+                {% set existing_group_id = group.name %}
+                <option value="{{ group.id }}">{{ group.title }}</option>
+            {% endfor %}
+            <option value="">Keine</option>
+        </select>
+    </div>
+    <br></ol>
+    <div class="form-group">
+    <div class="info-block">
+        <i class="fa fa-info-circle"></i>
+        {% trans %}Each catalogue entry is assigned to exactly one Main Category. Assignment to the group, Topics, is optional; several groups can also be selected here. To get a better overview of all groups, take a look at this <a href="/group/">page</a>.{% endtrans %}
+    </div>
+    </div>
+{% endif %}
+<hr/></ol>

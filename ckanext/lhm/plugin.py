@@ -2,7 +2,7 @@ import ckan.plugins as p
 import ckan.plugins.toolkit as toolkit
 from ckan.plugins.interfaces import IConfigurer, IDatasetForm
 from ckan.lib.plugins import DefaultTranslation
-
+import ckanext.lhm.cli as cli
 
 # import ckanext.lhm.cli as cli
 import ckanext.lhm.helpers as helpers
@@ -19,7 +19,7 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
     # p.implements(p.IAuthFunctions)
     # p.implements(p.IActions)
     # p.implements(p.IBlueprint)
-    # p.implements(p.IClick)
+    p.implements(p.IClick)
     p.implements(p.ITranslation, inherit=True)
     p.implements(p.ITemplateHelpers, inherit=True)
     p.implements(p.IPackageController, inherit=True)
@@ -46,9 +46,9 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
                 "ckanext.lhm:schemas/validation_placeholder_presets.yaml"
         )
 
-        config['scheming.dataset_schemas'] = """
-        ckanext.lhm:schemas/lhm_dataset.yaml
-        """
+        # config['scheming.dataset_schemas'] = """
+        # ckanext.lhm:schemas/lhm_dataset.yaml
+        # """
 
     # ITemplateHelpers
 
@@ -90,16 +90,15 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
     def get_blueprint(self):
         return views.get_blueprints()
 
+    # IClick
+
+    def get_commands(self):
+        return cli.get_commands()
+
     # IAuthFunctions
 
     # def get_auth_functions(self):
     #     return auth.get_auth_functions()
-
-    # IClick
-
-    # def get_commands(self):
-    #     return cli.get_commands()
-
 
     # IValidators
 
@@ -115,3 +114,27 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
     #         'my_schema': {'some_field': ['ckanext.scheming:field_text']}
     #     })
     #     return schema
+
+
+class LHMThemePlugin(p.SingletonPlugin, DefaultTranslation):
+    '''Theme plugin for LHM UDP Catalog.'''
+
+    # Declare the iterfaces this class implements
+    #p.implements(p.IBlueprint)
+    p.implements(p.IConfigurer)
+    p.implements(p.IFacets, inherit=True)
+    #p.implements(p.ITemplateHelpers)
+
+    # IConfigurer
+    def update_config(self, config):
+        p.toolkit.add_template_directory(config, 'theme_templates')
+        p.toolkit.add_public_directory(config, 'public')
+        p.toolkit.add_resource('assets_theme', 'lhm_theme')
+
+    # ITemplateHelpers
+    def get_helpers(self):
+        return {'get_info_group': helpers.get_info_group
+                }
+
+        
+

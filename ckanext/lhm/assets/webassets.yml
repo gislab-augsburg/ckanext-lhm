@@ -1,3 +1,9 @@
+script:
+  filter: rjsmin
+  output: ckanext-lhm/%(version)s_script.js
+  contents:
+    - script.js
+  
 jquery:
   filter: rjsmin
   output: ckanext-lhm/%(version)s_jquery.js

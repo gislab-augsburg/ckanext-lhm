@@ -124,6 +124,10 @@ msgstr "Bild"
 msgid "Clear Upload"
 msgstr "Upload löschen"
 
+#: ckanext/lhm/templates/scheming/macros/form.html:443
+msgid "Add Field"
+msgstr "Weitere Attribute hinzufügen"
+
 #: ckanext/lhm/schemas/lhm_dataset.yaml
 msgid "Additional hints regarding the resource/data useage"
 msgstr "weitere Hinweise zur Nutzung"
@@ -163,20 +167,45 @@ msgstr "Datastore enthält alle Datensätze der Quelldatei"
 msgid "Has views"
 msgstr "Datenvorschau"
 
-msgid ""
-msgstr ""
+#: ckanext/lhm/templates/footer.html:14, 36
+msgid " Log in"
+msgstr " Einloggen"
 
-msgid ""
-msgstr ""
+msgid "Developed together with"
+msgstr "Zusammenentwicklung mit"
 
-msgid ""
-msgstr ""
+#: ckanext/lhm/templates/home/snippets/lower_group.html:14, 36
+msgid "Main Categories"
+msgstr "Hauptkategorien"
 
-msgid ""
-msgstr ""
+#: ckanext/lhm/templates/group/snippets/helper.html:
+msgid "All entries in this catalogue can be grouped in various ways. "
+"Each catalogue entry must be assigned to exactly one main category and optionally to any number of subject fields. "
+"The main category provides information about the type of information resource and thus determines which metadata is required. "
+"The subject affiliation indicates the fields of application for which a catalogue entry is relevant. "
+"The breakdown of the individual groups is as follows:"
+msgstr "Alle Einträge in diesem Katalog können auf verschiedene Weise gruppiert werden. "
+"Dabei muss jeder Katalogeintrag genau einer Hauptkategorie und optional beliebig vielen Themenfeldern zugeordnet werden. "
+"Die Hauptkategorie gibt Auskunft über die Art der Informationsressource und bestimmt damit, welche Metadaten benötigt werden. "
+"Die Themenzugehörigkeit gibt an, für welche Anwendungsfelder ein Katalogeintrag relevant ist. "
+"Die Aufteilung der einzelnen Gruppen ist wie folgt:"
 
-msgid ""
-msgstr ""
+#: ckanext/lhm/templates/Organization/snippets/helper.html:
+msgid "Organizations are used to create, manage and publish collections of datasets. "
+"Users can have different roles within an Organization, depending on their level of authorisation to create, edit and publish."
+msgstr "Mit Organisationen können Gruppen von Datensätzen erstellt, bearbeitet und veröffentlicht werden. "
+"Benutzer haben verschiedene Berechtigungen innerhalb von Organisationen, die von ihrer Berechtigungsstufe abhängen: "
+"erstellen, bearbeiten, veröffentlichen."
 
-msgid ""
-msgstr ""
+#: ckanext/lhm/templates/scheming/form_snippets/group_form.html
+msgid "Topics"
+msgstr "Themen"
+
+msgid "Please choose a topic"
+msgstr "Bitte wählen Sie"
+
+msgid "The Main Category is a mandatory field. To get a better overview of all groups, take a look at this <a href=\"/group/\">page</a>."
+msgstr "Die Hauptkategorie ist ein Pflichtfeld. Um einen besseren Überblick über die gesamten Gruppen zu haben, sehen Sie sich diese <a href=\"/group/\">Seite</a> an."
+
+msgid "Each catalogue entry is assigned to exactly one Main Category. Assignment to the group, Topics, is optional; several groups can also be selected here. To get a better overview of all groups, take a look at this <a href=\"/group/\">page</a>."
+msgstr "Jeder Katalogeintrag ist genau einer Hauptkategorie zugeordnet. Die Zuordnung zu den Gruppen Themen ist optional, hier können auch mehr als eine Gruppe ausgewählt werden. Um einen besseren Überblick über die gesamten Gruppen zu haben, sehen Sie sich diese <a href=\"/group/\">Seite</a> an."

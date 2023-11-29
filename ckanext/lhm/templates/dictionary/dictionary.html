@@ -2,8 +2,9 @@
 
 {{ super() }}
 
-    {% block dictionary_form %}
-      {% for field in fields %}
-          {% snippet "dictionary/snippets/dictionary_field.html", field=field, position=loop.index, total_records=total_records %}
-      {% endfor %}
-    {% endblock %}
+
+  {% block dictionary_form %}
+    {% for field in fields %}
+        {% snippet "ajax_snippets/dictionary_field.html", field=field, position=loop.index, total_records=total_records %}
+    {% endfor %}
+  {% endblock %}

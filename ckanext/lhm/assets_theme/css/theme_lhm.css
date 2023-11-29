@@ -276,3 +276,13 @@ border: 1px solid #ccc;
 .btn-primary {
     background-color: #1a3a60;
 }
+
+.contact {
+    margin-top: 30px;
+    font-style: italic;
+}
+
+.vision {
+    width: 80%;
+    padding: 10px;
+}

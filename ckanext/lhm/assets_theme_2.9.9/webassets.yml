@@ -1,0 +1,6 @@
+lhm_theme_css:
+  filter: cssrewrite
+  output: ckanext-lhm/%(version)s-theme.css
+  contents:
+    - css/theme_lhm.css
+    - css/marker.css

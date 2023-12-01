@@ -2,10 +2,11 @@ body {
     background-color: #1a3a60;
 }
 
-[role=main],
-.main {
-  background-color: #fff;
+.homepage
+[role=main]{
+    padding: 0%;
 }
+
 
 .attribution,
 .fa-envelope,
@@ -260,7 +261,7 @@ border: 1px solid #ccc;
 
 .media-grid {
     display: flex;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
 }
 
 .media-item {

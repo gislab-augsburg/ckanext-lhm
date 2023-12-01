@@ -1,0 +1,11 @@
+{% ckan_extends %}
+
+{{ super() }}
+
+
+{% block package_description %}
+    {% block package_markers %}
+        {% snippet 'package/snippets/marker.html', pkg = g.pkg_dict %}
+    {% endblock %}
+{{ super()}}
+{% endblock %}

@@ -93,7 +93,7 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
     # IClick
 
     def get_commands(self):
-        return cli.get_commands()
+        return cli.get_commands() 
 
     # IAuthFunctions
 
@@ -127,9 +127,9 @@ class LHMThemePlugin(p.SingletonPlugin, DefaultTranslation):
 
     # IConfigurer
     def update_config(self, config):
-        p.toolkit.add_template_directory(config, 'theme_templates')
+        p.toolkit.add_template_directory(config, 'theme_templates_2.9.9')
         p.toolkit.add_public_directory(config, 'public')
-        p.toolkit.add_resource('assets_theme', 'lhm_theme')
+        p.toolkit.add_resource('assets_theme_2.9.9', 'lhm_theme')
 
     # ITemplateHelpers
     def get_helpers(self):

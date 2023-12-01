@@ -32,9 +32,11 @@ def create_org_or_group(group, is_org=False):
             "user": user['name'],
             "return_id_only": True
         }
-
+    data_dict = {
+        "id": group['name']
+    }
     list_grp_or_org = 'organization_list' if is_org else 'group_list'
-    group_exist = toolkit.get_action(list_grp_or_org)(context)
+    group_exist = toolkit.get_action(list_grp_or_org)(context, data_dict)
 
     if group['name'] in group_exist:
         delete_grp_or_org = 'organization_purge' if is_org else 'group_purge'

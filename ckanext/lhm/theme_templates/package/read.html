@@ -2,10 +2,17 @@
 
 {{ super() }}
 
+{%- set schema = h.scheming_get_dataset_schema(dataset_type) -%}
 
 {% block package_description %}
     {% block package_markers %}
         {% snippet 'package/snippets/marker.html', pkg = g.pkg_dict %}
     {% endblock %}
 {{ super()}}
+{% endblock %}
+
+
+{% block package_additional_info %}
+  {% snippet "/package/snippets/additional_info.html",
+    pkg_dict=pkg, dataset_type=dataset_type, schema=schema %}
 {% endblock %}

@@ -7,15 +7,17 @@ body {
     padding: 0%;
 }
 
-
-.attribution,
-.fa-envelope,
+.fa-arrow-right-to-bracket,
+.fa-person,
 .fa-file-contract,
+.fa-envelope,
 .fa-github,
 .fa-codepen,
 .fa-sign-out,
-.fa-arrow-right-to-bracket,
-.fa-person,
+.fa-sign-in,
+.attribution,
+.fa-address-card-o,
+.fa-suitcase,
 .fa-info-circle{
     color: #CCDEE3;
 }
@@ -275,8 +277,27 @@ border: 1px solid #ccc;
     float: right;
 }
 
-.btn-primary {
+.btn-primary{
     background-color: #1a3a60;
+}
+.btn-primary:hover {
+    background-color: #2d5c96;
+}
+
+.pagination .active a {
+    z-index: 3;
+    color: #fff;
+    cursor: default;
+    background-color: #1a3a60;
+    border-color: #1a3a60;
+}
+
+.pagination .active a:hover {
+    z-index: 3;
+    color: #fff;
+    cursor: default;
+    background-color: #2d5c96;
+    border-color: #2d5c96;
 }
 
 .contact {
@@ -288,3 +309,32 @@ border: 1px solid #ccc;
     width: 80%;
     padding: 10px;
 }
+
+.additional-info table .heading {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.table1{
+    background-color: #eef3f9;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+.table2{
+    background-color: #e6f0fc;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+.table3{
+    background-color: #c2daf7;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+@media screen and (max-width: 600px) {
+    table {
+        width: 100%;
+        overflow-x: auto; /* Enables horizontal scroll on smaller screens */
+    }

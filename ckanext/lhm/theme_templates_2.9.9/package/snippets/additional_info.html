@@ -1,0 +1,142 @@
+<section class="additional-info module-content table1">
+  <table class="table package-metadata" id="myTable">
+    <tr>
+      <td>
+        <p class="heading">{{ _("Contact person") }}</p>
+          <p class="metadata">{{ pkg_dict.author }}</p>
+      </td>
+      <td>
+          <p class="heading">{{ _("Contact person EMail") }}</p>
+          {% if pkg_dict.author_email %}
+            <p class="metadata">{{ h.mail_to(email_address=h.lhm_validate_email(pkg_dict.author_email), name=pkg_dict.author_email) }}</p>
+          {% else %}
+            <p class="metadata">{{ _("Not vailable") }}</p>
+          {% endif %}
+      </td>
+      <td>
+        <p class="heading">{{ _("External Ownership") }}</p>
+        {% if pkg_dict.ext_org%}     
+          <p class="metadata">{{ pkg_dict.ext_org }}</p>
+        {% else %}
+          <p class="metadata">{{ _("No") }}</p>
+        {% endif %}
+      </td>
+    </tr>
+    <tr>
+      <td>      
+        <p class="heading">{{ _("Schema") }}</p>
+        {% if pkg_dict.schema %}
+          <p class="metadata">{%- snippet 'package/snippets/label.html', item='schema', pkg_dict=pkg_dict, schema=schema -%}</p>
+        {% else %}
+          <p class="metadata">{{ _("Not vailable") }}</p>
+        {% endif %}
+      </td>
+      <td>
+        <p class="heading">{{ _("Geometry Type") }}</p>
+        {% if pkg_dict.geometry_type %}  
+          <p class="metadata">{%- snippet 'package/snippets/label.html',
+            item='geometry_type', pkg_dict=pkg_dict, schema=schema -%}</p>
+        {% else %}
+          <p class="metadata">{{ _("Not vailable") }}</p>
+        {% endif %}
+      </td>
+      <td>
+        <p class="heading">{{ _("Timeliness") }}</p>
+        {% if pkg_dict.timeliness %} 
+          <p class="metadata">{%- snippet 'package/snippets/label.html',
+            item='timeliness', pkg_dict=pkg_dict, schema=schema -%}</p>
+        {% else %}
+          <p class="metadata">{{ _("Not vailable") }}</p>
+        {% endif %}
+      </td>
+    </tr>
+    <tr>
+      {% if pkg_dict.archive %}
+      <td colspan="3"><p class="heading">{{ _("City Archive")}}</p>
+        <p class="metadata">{%- snippet 'package/snippets/label.html',
+          item='archive', pkg_dict=pkg_dict, schema=schema -%}</p>
+      </td>
+      {% endif %}
+    </tr>
+    <tr>
+      {% if pkg_dict.accuracy %}
+      <td colspan="3"><p class="heading">{{ _("Accuracy")}}</p>
+        <p class="metadata">{%- snippet 'package/snippets/label.html',
+          item='accuracy', pkg_dict=pkg_dict, schema=schema -%}</p>
+      </td>
+      {% endif %}
+    </tr>
+  </table>
+</section>
+
+<section class="additional-info module-content table2">
+  <table class="table package-metadata">
+    <tr>
+      {% if pkg_dict.intranet %}
+      <td colspan="3"><p class="heading">{{ _("LHM-Intranet")}}</p>
+        <p class="metadata">{%- snippet 'package/snippets/label.html',
+          item='intranet', pkg_dict=pkg_dict, schema=schema -%}</p>
+      </td>
+      {% endif %}
+    </tr>
+    <tr>
+      <td colspan="2">      
+        <p class="heading">{{ _("Internet: Publication / Presentation in the LHM Task area") }}</p>
+        {% if pkg_dict.internet_publish %}
+          <p class="metadata">{%- snippet 'package/snippets/label.html', item='internet_publish', pkg_dict=pkg_dict, schema=schema -%}</p>
+        {% else %}
+          <p class="metadata">{{ _("Not vailable") }}</p>
+        {% endif %}
+      </td>
+      <td>
+        <p class="heading">{{ _("Open Data") }}</p>
+        {% if pkg_dict.open_data %}  
+          <p class="metadata">{%- snippet 'package/snippets/label.html',
+            item='open_data', pkg_dict=pkg_dict, schema=schema -%}</p>
+        {% else %}
+          <p class="metadata">{{ _("Not vailable") }}</p>
+        {% endif %}
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">      
+        <p class="heading">{{ _("Disclosure of data or services to third parties acting on behalf of the City") }}</p>
+        {% if pkg_dict.datenabgabe_extern_mit_auftrag %}
+          <p class="metadata">{%- snippet 'package/snippets/label.html', item='datenabgabe_extern_mit_auftrag', pkg_dict=pkg_dict, schema=schema -%}</p>
+        {% else %}
+          <p class="metadata">{{ _("Not vailable") }}</p>
+        {% endif %}
+      </td>
+      <td>
+        <p class="heading">{{ _("Internet: Data handover to external non-contractors") }}</p>
+        {% if pkg_dict.datenabgabe_extern %}  
+          <p class="metadata">{%- snippet 'package/snippets/label.html',
+            item='datenabgabe_extern', pkg_dict=pkg_dict, schema=schema -%}</p>
+        {% else %}
+          <p class="metadata">{{ _("Not vailable") }}</p>
+        {% endif %}
+      </td>
+    </tr>
+    <tr>
+      {% if pkg_dict.additional_usage_notes %}
+      <td colspan="3"><p class="heading">{{ _("Additional hints regarding the resource/data useage")}}</p>
+        <p class="metadata">{%- snippet 'package/snippets/label.html',
+          item='additional_usage_notes', pkg_dict=pkg_dict, schema=schema -%}</p>
+      </td>
+      {% endif %}
+    </tr>
+  </table>
+</section>
+
+<section class="additional-info module-content table3">
+  <table class="table package-metadata">
+    <tr>
+      {% if pkg_dict.change_history %}
+      <td colspan="3"><p class="heading">{{ _("Change History")}}</p>
+        <p class="metadata">{%- snippet 'package/snippets/label.html',
+          item='change_history', pkg_dict=pkg_dict, schema=schema -%}</p>
+      </td>
+      {% endif %}
+    </tr>
+  </table>
+</section>

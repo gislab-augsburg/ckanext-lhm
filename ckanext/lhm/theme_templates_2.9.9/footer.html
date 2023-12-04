@@ -11,7 +11,7 @@
                   {% if not c.userobj.sysadmin %}
                     <nav class="account not-authed" aria-label="{{ _('Account') }}">
                         {% block footer_account_notlogged %}
-                        <li><i class="fa-arrow-right-to-bracket"></i>{% link_for _(' Log in'), named_route='user.login' %}</li>
+                        <li><i class="fa fa-sign-in"></i>{% link_for _(' Log in'), named_route='user.login' %}</li>
                         {% endblock %}
                     </nav>
                   {% endif %}
@@ -22,8 +22,8 @@
 
           <ul class="list-unstyled">
             {% block footer_links %}
-              <li><i class="fa-person"></i><a href="/about"> Über uns</a></li>
-              <li><i class="fa fa-file-contract"></i><a href="https://wilma.muenchen.de/workspaces/geodatenpool-gdp-geodateninfrastruktur-gdi/apps/wiki/nutzungsrechte/list/view/b2a14ab4-ba8e-42af-8d29-45cdc995cb03"> Nutzungsbedingungen</a></li>
+              <li><i class="fa fa-address-card-o"></i><a href="/about"> Über uns</a></li>
+              <li><i class="fa fa-suitcase"></i><a href="https://wilma.muenchen.de/workspaces/geodatenpool-gdp-geodateninfrastruktur-gdi/apps/wiki/nutzungsrechte/list/view/b2a14ab4-ba8e-42af-8d29-45cdc995cb03"> Nutzungsbedingungen</a></li>
               <li><i class="fa fa-envelope"></i><a href="mailto:digitaler.zwilling@muenchen.de"> Kontakt</a></li>
               <li><i class="fa fa-github"></i><a href="https://github.com/it-at-m" target="_blank"> Quellcode auf GitHub</a></li>
               <li><i class="fa fa-codepen"></i><a href="http://docs.ckan.org/en/latest/api/index.html" target="_blank"> Katalog API</a></li>

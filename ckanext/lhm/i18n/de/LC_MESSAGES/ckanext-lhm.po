@@ -209,3 +209,61 @@ msgstr "Die Hauptkategorie ist ein Pflichtfeld. Um einen besseren Überblick üb
 
 msgid "Each catalogue entry is assigned to exactly one Main Category. Assignment to the group, Topics, is optional; several groups can also be selected here. To get a better overview of all groups, take a look at this <a href=\"/group/\">page</a>."
 msgstr "Jeder Katalogeintrag ist genau einer Hauptkategorie zugeordnet. Die Zuordnung zu den Gruppen Themen ist optional, hier können auch mehr als eine Gruppe ausgewählt werden. Um einen besseren Überblick über die gesamten Gruppen zu haben, sehen Sie sich diese <a href=\"/group/\">Seite</a> an."
+
+#: ckanext/lhm/templates/package/snippets/Additional_info.html
+msgid "Contact person"
+msgstr "Ansprechpartner"
+
+msgid "Contact person EMail"
+msgstr "Ansprechpartner E-Mail"
+
+msgid "Not Available"
+msgstr "Kein Wert vorhanden"
+
+msgid "Geometry Type"
+msgstr "Geometrietyp"
+
+msgid "Timeliness"
+msgstr "Update-Zyklus"
+
+msgid "Accuracy"
+msgstr "Genauigkeit"
+
+msgid "Positional Accuracy"
+msgstr "Lagengenauigkeit"
+
+msgid "Remark"
+msgstr "Bemerkung"
+
+msgid "City Archive"
+msgstr "Stadtarchiv "
+
+msgid "Archivability"
+msgstr "Archivwürdigkeit"
+
+msgid "Justification"
+msgstr "Begründung"
+
+msgid "External Ownership"
+msgstr "Externe Datenurheber"
+
+msgid "Basic Information"
+msgstr "Grundinformationen"
+
+msgid "Internet: Publication / Presentation in the LHM Task area"
+msgstr "Internet: Veröffentlichungen / Präsentationen im Aufgabenbereich der LHM"
+
+msgid "Disclosure of data or services to third parties acting on behalf of the City"
+msgstr "Weitergabe von Daten oder Diensten an Dritte, die im Auftrag der Stadt tätig werden"
+
+msgid "Internet: Data handover to external non-contractors"
+msgstr "Internet: Datenabgabe an externe, die nicht Auftragnehmer sind"
+
+msgid "Additional hints regarding the resource/data useage"
+msgstr "weitere Hinweise zur Nutzung"
+
+msgid ""
+msgstr ""
+
+msgid "Change History"
+msgstr "Änderungshistorie"

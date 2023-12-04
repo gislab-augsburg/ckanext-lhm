@@ -125,11 +125,19 @@ class LHMThemePlugin(p.SingletonPlugin, DefaultTranslation):
     p.implements(p.IFacets, inherit=True)
     #p.implements(p.ITemplateHelpers)
 
-    # IConfigurer
-    def update_config(self, config):
-        p.toolkit.add_template_directory(config, 'theme_templates_2.9.9')
-        p.toolkit.add_public_directory(config, 'public')
-        p.toolkit.add_resource('assets_theme_2.9.9', 'lhm_theme')
+    if toolkit.check_ckan_version("2.9"):
+        # IConfigurer
+        def update_config(self, config):
+            p.toolkit.add_template_directory(config, 'theme_templates_2.9.9')
+            p.toolkit.add_public_directory(config, 'public')
+            p.toolkit.add_resource('assets_theme_2.9.9', 'lhm_theme')
+    elif toolkit.check_ckan_version("2.10"):
+        # IConfigurer
+        def update_config(self, config):
+            p.toolkit.add_template_directory(config, 'theme_templates')
+            p.toolkit.add_public_directory(config, 'public')
+            p.toolkit.add_resource('assets_theme', 'lhm_theme')
+
 
     # ITemplateHelpers
     def get_helpers(self):

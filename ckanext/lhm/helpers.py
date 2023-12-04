@@ -5,6 +5,8 @@ from datetime import date
 import ckan.logic as logic
 from ckan.plugins import toolkit
 
+from validate_email import validate_email
+
 HERE = os.path.dirname(__file__)
 
 all_helpers = {}
@@ -15,6 +17,13 @@ def helper(fn):
     """
     all_helpers[fn.__name__] = fn
     return fn
+
+@helper
+def lhm_validate_email(email):
+    if validate_email(email):
+        return email
+    else:
+        return ""
 
 @helper
 def user_info():

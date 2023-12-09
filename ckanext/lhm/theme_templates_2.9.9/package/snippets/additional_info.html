@@ -128,15 +128,17 @@
   </table>
 </section>
 
-<section class="additional-info module-content table3">
-  <table class="table package-metadata">
-    <tr>
-      {% if pkg_dict.change_history %}
-      <td colspan="3"><p class="heading">{{ _("Change History")}}</p>
-        <p class="metadata">{%- snippet 'package/snippets/label.html',
-          item='change_history', pkg_dict=pkg_dict, schema=schema -%}</p>
-      </td>
-      {% endif %}
-    </tr>
-  </table>
-</section>
+{% for chg_his in pkg_dict.change_history %}
+{% if chg_his.change %}
+  <section class="additional-info module-content table3">
+    <table class="table package-metadata">
+      <tr>
+        <td colspan="3"><p class="heading">{{ _("Change History")}}</p>
+          <p class="metadata">{%- snippet 'package/snippets/label.html',
+            item='change_history', pkg_dict=pkg_dict, schema=schema -%}</p>
+        </td>
+      </tr>
+    </table>
+  </section>
+{% endif %}
+{% endfor %}      

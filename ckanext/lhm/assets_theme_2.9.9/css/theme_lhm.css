@@ -338,3 +338,8 @@ border: 1px solid #ccc;
         width: 100%;
         overflow-x: auto; /* Enables horizontal scroll on smaller screens */
     }
+}
+
+.row[role='main']{
+    background: #fff;
+}

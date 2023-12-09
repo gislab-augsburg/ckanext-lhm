@@ -194,7 +194,7 @@ dataset_fields:
       # en: Positional accuracy
       # de: Lagengenauigkeit
     preset: select
-    required: true
+    #required: true
     choices:
     - value: ""
       label: 
@@ -218,7 +218,6 @@ dataset_fields:
       label: Auf Basis Stadtbezirke (-teil -viertel)(10m)
     - value: stadtplan
       label: Auf Basis Stadtplan (10m)
-      validators: not_empty
   - field_name: remark
     label: Bemerkung
     #  en: Remark
@@ -462,8 +461,8 @@ dataset_fields:
   label: weitere Hinweise zur Nutzung
     # en: Additional hints regarding the resource/data useage
     # de: weitere Hinweise zur Nutzung
-  preset: composite
-  subfields:
+  repeating_label: Hinweis
+  repeating_subfields:
   - field_name: usage_keywords
     label: Stichwort
       # en: Keywords
@@ -491,20 +490,17 @@ dataset_fields:
     form_placeholder: 
       en: What has been changed since last update?
       de: Was hat sich seit der letzten Aktualisierung geändert?
-    #required: true
   - field_name: editor
     label: 
       en: Editor
       de: Geändert von
     form_snippet: editor.html
-    #required: true
     form_placeholder: Erika Mustermann, erika.musstermann@muenchen.de
   - field_name: changed_date
     label: 
       en: Changed date
       de: Geändert am
     form_snippet: date_lhm.html
-    #required: ture
     validators: scheming_required isodate convert_to_json_if_date
 
 

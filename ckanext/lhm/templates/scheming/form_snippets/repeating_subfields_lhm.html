@@ -7,10 +7,10 @@
   <div class="scheming-subfield-group" data-field="{{ field.field_name }}" data-group-index="{{ index }}">
     <div class="panel panel-default">
       {% block repeating_panel_header %}
-        <header class="panel-heading scheming-subfield-group-panel-heading">
+        <header class="panel-heading">
           <span>{{ h.scheming_language_text(field.repeating_label or field.label) }} {{ index1 }}</span>
           {% block field_removal_button %}
-            <a class="btn btn-danger" name="repeating-remove" href="javascript:;">
+            <a class="btn btn-danger btn-repeating-remove" name="repeating-remove" href="javascript:;">
               {% block delete_button_text %}{{ _('Remove') }}{% endblock %}
             </a>
           {% endblock %}
@@ -77,7 +77,7 @@
 	</div>
 	<div class="control-medium">
     {% block add_button %}
-      <a href="javascript:;" name="repeating-add" class="btn btn-success">
+      <a href="javascript:;" name="repeating-add" class="btn btn-link">
     {% block add_button_text %}
       <i class="fa fa-plus" aria-hidden="true"></i> {{ _('Add') }}
     {% endblock %}

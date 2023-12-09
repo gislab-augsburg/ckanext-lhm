@@ -23,11 +23,19 @@
           <ul class="list-unstyled">
             {% block footer_links %}
               <li><i class="fa fa-address-card-o"></i><a href="/about"> Über uns</a></li>
-              <li><i class="fa fa-suitcase"></i><a href="https://wilma.muenchen.de/workspaces/geodatenpool-gdp-geodateninfrastruktur-gdi/apps/wiki/nutzungsrechte/list/view/b2a14ab4-ba8e-42af-8d29-45cdc995cb03"> Nutzungsbedingungen</a></li>
-              <li><i class="fa fa-envelope"></i><a href="mailto:digitaler.zwilling@muenchen.de"> Kontakt</a></li>
-              <li><i class="fa fa-github"></i><a href="https://github.com/it-at-m" target="_blank"> Quellcode auf GitHub</a></li>
-              <li><i class="fa fa-codepen"></i><a href="http://docs.ckan.org/en/latest/api/index.html" target="_blank"> Katalog API</a></li>
-              <li><i class="fa fa-info-circle"></i><i style="color: #fff"> Der Landeshauptstadt München, Version 1.0.0, Dezember 2023, basierend auf CKAN Version 2.9.9</i>
+              {% if h.usage_info() %}
+                <li><i class="fa fa-suitcase"></i><a href="{{ h.usage_info() }}"> Nutzungsbedingungen</a></li>
+              {% endif %}
+              {% if h.contact_email() %}
+                <li><i class="fa fa-envelope"></i><a href="{{ h.contact_email() }}"> Kontakt</a></li>
+              {% endif %}
+              {% if h.github() %}
+                <li><i class="fa fa-github"></i><a href="{{ h.github() }}" target="_blank"> Quellcode auf GitHub</a></li>
+              {% endif %}
+                <li><i class="fa fa-codepen"></i><a href="http://docs.ckan.org/en/latest/api/index.html" target="_blank"> Katalog API</a></li>
+              {% if h.version_info() %}
+                <li><i class="fa fa-info-circle"></i><i style="color: #fff"> {{ h.version_info() }} </i>
+              {% endif %}
             {% endblock %}
           </ul>
         {% endblock %}

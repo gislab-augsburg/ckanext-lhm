@@ -45,21 +45,20 @@
 <br><br><ol>
 
     {% if data.groups %}
-
 	{# Jinja is kind of a weird language that does not allow modifying variables in for / if loops, so this workaround using the group ids and array searches is used. Also Jinja does not allow the 'append' function inside {% ... %}, so I put it inside a html tag that is not visible. #}
 	{% set main_groups_ids = [] %}
 	{% for group in mc_grp_children %}
-		<label class="control-label" for="field-group" style="display:none"><span title="abc" class="control-required"></span>{{ main_groups_ids.append(group.name) }}</label>
+		<label class="control-label" for="field-group" style="display:none"><span title="abc" class="control-required"></span>{{ main_groups_ids.append(group.id)}}</label>
 	{%endfor %}
     
     {% set data_groups_ids = [] %}
     {% for group in data.groups %}
-        <label class="control-label" for="field-group" style="display:none"><span title="abc" class="control-required"></span>{{ data_groups_ids.append(group.name) }}</label>
+        <label class="control-label" for="field-group" style="display:none"><span title="abc" class="control-required"></span>{{ data_groups_ids.append(group.id) }}</label>
     {%endfor %}
 
     <label class="control-label" for="field-group"><span title="This field is required" class="control-required">* </span>{{_('Main Categories')}}</label>
     {% for group in mc_grp_children %}
-       {% if group.name in data_groups_ids %}
+       {% if group.id in data_groups_ids %}
            <label class="checkbox" for="field-group-{{ loop.index0 + 20 }}" style="display:none">
                <input id="field-group-{{ loop.index0 + 20 }}" type="checkbox" name="groups__{{ loop.index0 + 20 }}__id" value="{{ group.id }}" checked=true/>{{ group.title }}
            </label>
@@ -73,12 +72,13 @@
        
    {# This would produce multiple drop-down bars, but since there can only be one main category, we are fine. Still really bad coding, but I don't know how to do it better in Jinja. #}
    {% for group in data.groups %}
-       {% if group.name in main_groups_ids %}
+       {% if group.id in main_groups_ids %}
            <div class="controls">
+            {% set gr = h.get_info_group(group.id) %}
                <select id="field-group_1" name="groups__0__id" data-module="autocomplete" onclick="show_checkboxes(this, false)">
-                   <option value="{{ group.id }}" >{{ group.title }}</option>
+                   <option value="{{ gr.id }}" >{{ gr.title }}</option>
                    {% for group_iter in mc_grp_children %}
-                       {% if group_iter.name != group.name %}
+                       {% if group_iter.id != group.id %}
                            <option value="{{ group_iter.id }}" >{{ group_iter.title }}</option>
                        {% endif %}
                    {% endfor %}
@@ -93,7 +93,7 @@
    {# checking if group is included in data.groups does for some reason not work in Jinja, hence the id check, again with an invisible label #}
 
    {% for group in t_grp_children %}
-       {% if group.name in data_groups_ids %}
+       {% if group.id in data_groups_ids %}
            <label class="checkbox" for="field-group-{{ loop.index0 + 100 }}">
                <input id="field-group-{{ loop.index0 + 100 }}" type="checkbox" name="groups__{{ loop.index0 + 100 }}__id" value="{{ group.id}}" checked=true/>{{ group.title }}
            </label><br>
@@ -107,8 +107,8 @@
        <select id="field-group_2" name="groups__2__id" data-module="autocomplete" onclick="show_checkboxes(this)">
            <option value=""selected="selected">{{_('Please choose a topic')}}</option>
                {% for group in t_grp_children %}
-                   {% set existing_group_id = group.name %}
-                   {% if group.name not in data_group_ids %}
+                   {% set existing_group_id = group.id %}
+                   {% if group.id not in data_group_ids %}
                        <option value="{{ group.id }}">{{ group.title }}</option>
                    {% endif %}
                {% endfor %}
@@ -126,7 +126,7 @@
     <div class="controls">
         <select id="field-group" name="groups__0__id" data-module="autocomplete"> 
             {% for group in mc_grp_children  %}
-                {% set existing_group_id = group.name %}
+                {% set existing_group_id = group.id %}
                     <option value="{{ group.id }}">{{ group.title }}</option>
             {% endfor %}
         </select>
@@ -142,7 +142,7 @@
         <select id="field-group" name="groups__2__id" data-module="autocomplete" onclick="show_checkboxes(this)">
             <option value=""selected="selected">{{_('Please choose a topic')}}</option>
             {% for group in t_grp_children  %}
-                {% set existing_group_id = group.name %}
+                {% set existing_group_id = group.id %}
                 <option value="{{ group.id }}">{{ group.title }}</option>
             {% endfor %}
             <option value="">Keine</option>

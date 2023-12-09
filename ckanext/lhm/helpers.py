@@ -4,6 +4,7 @@ import json
 from datetime import date
 import ckan.logic as logic
 from ckan.plugins import toolkit
+from ckan.common import config
 
 from validate_email import validate_email
 
@@ -78,3 +79,47 @@ def get_init_data():
 
     return data
 
+@helper
+def usage_info():
+    '''Return the value of the terms of use config setting.
+
+    To enable showing the usage_info, add this line to the
+    [app:main] section of your CKAN config file::
+      lhm.usage_info = www.useage.com
+    '''
+    value = config.get('lhm.usage_info', None)
+    return value
+
+
+@helper
+def contact_email():
+    '''Return the value of the contact Email config setting.
+
+    To enable showing the contact Email, add this line to the
+    [app:main] section of your CKAN config file::
+      lhm.contact_email = email_adress@something.com
+    '''
+    value = config.get('lhm.contact_email', None)
+    return value
+
+@helper
+def github():
+    '''Return the value of the github repo setting.
+
+    To enable showing the github repo, add this line to the
+    [app:main] section of your CKAN config file::
+      lhm.github = https://github.com/ckan
+    '''
+    value = config.get('lhm.github', None)
+    return value
+
+@helper
+def version_info():
+    '''Return the value of the CKAN version config setting.
+
+    To enable showing the contact Email, add this line to the
+    [app:main] section of your CKAN config file::
+      lhm.version_info = CKAN Lastest
+    '''
+    value = config.get('lhm.version_info', None)
+    return value    

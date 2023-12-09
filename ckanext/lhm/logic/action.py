@@ -1,4 +1,5 @@
 import ckan.plugins.toolkit as tk
+import ckan.logic as logic
 import ckanext.lhm.logic.schema as schema
 
 
@@ -17,6 +18,37 @@ def lhm_get_sum(context, data_dict):
         "right": data["right"],
         "sum": data["left"] + data["right"]
     }
+
+def user_create(context, data_dict):
+    group_list = tk.get_action("group_list")({}, {})
+    site_user = tk.get_action("get_site_user")({"ignore_auth": True}, {})
+    user = logic.action.create.user_create(context, data_dict)
+
+    role = tk.config.get("ckan.lhm.group_role", "member")
+    print('what is the role', role)
+    context["user"] = site_user.get("name")
+
+    for group in group_list:
+        try:
+            tk.get_action("group_show")(
+                context,
+                {
+                    "id": group,
+                },
+            )
+        except logic.NotFound:
+            return user
+
+        tk.get_action("group_member_create")(
+            context,
+            {
+                "id": group,
+                "username": user["name"],
+                "role": role,
+            },
+        )
+
+    return user
 
 
 def get_actions():

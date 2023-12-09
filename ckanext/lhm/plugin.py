@@ -7,11 +7,9 @@ import ckanext.lhm.cli as cli
 # import ckanext.lhm.cli as cli
 import ckanext.lhm.helpers as helpers
 # import ckanext.lhm.views as views
-# from ckanext.lhm.logic import (
-#     action, auth, validators
+from ckanext.lhm.logic import action
+#     (action, auth, validators
 # )
-
-
 
 class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
     p.implements(p.IConfigurer, inherit=True)
@@ -62,6 +60,21 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         return self.before_index(data_dict)
 
     def before_index(self, data_dict):
+
+        usage_keywords = []
+        usage_remarks = []
+        #changed_date = []
+        for sub in data_dict.get('additional_usage_notes', []):
+            usage_keywords.append(sub['usage_keywords'])
+            usage_remarks.append(sub['usage_remarks'])
+            #changed_date.append(sub['changed_date'])
+
+        # replace list of dicts with plain texts to prevent Solr errors
+        data_dict['additional_usage_notes'] = '\n'.join(usage_keywords)
+        data_dict['additional_usage_notes'] = '\n'.join(usage_remarks)
+        #data_dict['change_history'] = '\n'.join(changed_date)
+
+        ###### For Attribute Change Documentation
         change = []
         editor = []
         #changed_date = []
@@ -123,6 +136,7 @@ class LHMThemePlugin(p.SingletonPlugin, DefaultTranslation):
     #p.implements(p.IBlueprint)
     p.implements(p.IConfigurer)
     p.implements(p.IFacets, inherit=True)
+    p.implements(p.IActions)
     #p.implements(p.ITemplateHelpers)
 
     if toolkit.check_ckan_version("2.9"):
@@ -131,6 +145,7 @@ class LHMThemePlugin(p.SingletonPlugin, DefaultTranslation):
             p.toolkit.add_template_directory(config, 'theme_templates_2.9.9')
             p.toolkit.add_public_directory(config, 'public')
             p.toolkit.add_resource('assets_theme_2.9.9', 'lhm_theme')
+
     elif toolkit.check_ckan_version("2.10"):
         # IConfigurer
         def update_config(self, config):
@@ -139,10 +154,8 @@ class LHMThemePlugin(p.SingletonPlugin, DefaultTranslation):
             p.toolkit.add_resource('assets_theme', 'lhm_theme')
 
 
-    # ITemplateHelpers
-    def get_helpers(self):
-        return {'get_info_group': helpers.get_info_group
-                }
-
-        
-
+    # IActions
+    def get_actions(self):
+        return {
+            'user_create': action.user_create,
+        }

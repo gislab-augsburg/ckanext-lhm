@@ -2,7 +2,7 @@
 
 import pytest
 
-import ckanext.lhm.validators as validators
+import ckanext.lhm.logic.validators as validators
 
 
 import ckan.plugins.toolkit as tk

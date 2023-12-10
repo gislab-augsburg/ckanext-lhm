@@ -2,7 +2,7 @@ import ckan.plugins.toolkit as tk
 import ckan.logic as logic
 import ckanext.lhm.logic.schema as schema
 
-
+""" ****Automatice generated Example*****
 @tk.side_effect_free
 def lhm_get_sum(context, data_dict):
     tk.check_access(
@@ -18,6 +18,12 @@ def lhm_get_sum(context, data_dict):
         "right": data["right"],
         "sum": data["left"] + data["right"]
     }
+
+def get_actions():
+    return {
+        'lhm_get_sum': lhm_get_sum,
+    }
+"""
 
 def user_create(context, data_dict):
     group_list = tk.get_action("group_list")({}, {})
@@ -51,7 +57,3 @@ def user_create(context, data_dict):
     return user
 
 
-def get_actions():
-    return {
-        'lhm_get_sum': lhm_get_sum,
-    }

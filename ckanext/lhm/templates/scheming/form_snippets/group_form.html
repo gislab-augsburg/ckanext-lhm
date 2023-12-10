@@ -124,7 +124,7 @@
 {% if not data.groups or data.groups == []  %}
     <label class="control-label" for="field-group"><span title="This field is required" class="control-required">* </span>{{_('Main Categories')}}</label>
     <div class="controls">
-        <select id="field-group" name="groups__0__id" data-module="autocomplete"> 
+        <select id="field-group_1" name="groups__0__id" data-module="autocomplete"> 
             {% for group in mc_grp_children  %}
                 {% set existing_group_id = group.id %}
                     <option value="{{ group.id }}">{{ group.title }}</option>
@@ -139,7 +139,7 @@
         </label>
     {% endfor %}
     <div class="controls">
-        <select id="field-group" name="groups__2__id" data-module="autocomplete" onclick="show_checkboxes(this)">
+        <select id="field-group_2" name="groups__2__id" data-module="autocomplete" onclick="show_checkboxes(this)">
             <option value=""selected="selected">{{_('Please choose a topic')}}</option>
             {% for group in t_grp_children  %}
                 {% set existing_group_id = group.id %}

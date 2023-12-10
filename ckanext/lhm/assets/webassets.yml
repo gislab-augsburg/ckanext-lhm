@@ -20,7 +20,7 @@ vendor:
     - vendor/1.12.1/jquery-ui.min.js
   extra:
     preload:
-      - lhm/jquery
+      - ckanext-lhm/jquery
 
 datapicker:
   output: ckanext-lhm/%(version)s_datapicker.js
@@ -28,7 +28,7 @@ datapicker:
     - js/datapicker.js
   extra:
     preload:
-    - lhm/vendor
+      - ckanext-lhm/vendor
 
 lhm_stylesheet:
   filter: cssrewrite

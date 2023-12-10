@@ -31,7 +31,6 @@ def user_create(context, data_dict):
     user = logic.action.create.user_create(context, data_dict)
 
     role = tk.config.get("ckan.lhm.group_role", "member")
-    print('what is the role', role)
     context["user"] = site_user.get("name")
 
     for group in group_list:

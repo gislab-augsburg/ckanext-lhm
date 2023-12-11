@@ -7,7 +7,7 @@ import ckanext.lhm.cli as cli
 # import ckanext.lhm.cli as cli
 import ckanext.lhm.helpers as helpers
 # import ckanext.lhm.views as views
-from ckanext.lhm.logic import action
+import ckanext.lhm.logic.action as action
 #     (action, auth, validators
 # )
 

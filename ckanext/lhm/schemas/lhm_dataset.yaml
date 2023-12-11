@@ -173,6 +173,8 @@ dataset_fields:
     label: 
       en: Polygon
       de: Fläche
+  - value: multipatch
+    label: Multipatch
   - value: raster
     label: Raster (ArcGIS-Raster)
   - value: factual_data

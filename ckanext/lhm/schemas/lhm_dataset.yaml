@@ -467,7 +467,6 @@ dataset_fields:
     label: Stichwort
       # en: Keywords
       # de: Stichwort
-    preset: tag_string_autocomplete
     form_placeholder: z.b. Wirtschaft, geistige Gesundheit, Regierung
   - field_name: usage_remarks
     label: Hinweise

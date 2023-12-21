@@ -216,7 +216,7 @@ dataset_fields:
       label: Auf Basis Baublöcke (30 cm)
     - value: luftbild
       label: Auf Basis Luftbild (30 cm)
-    - value: stadtbezrik
+    - value: stadtbezirk
       label: Auf Basis Stadtbezirke (-teil -viertel)(10m)
     - value: stadtplan
       label: Auf Basis Stadtplan (10m)

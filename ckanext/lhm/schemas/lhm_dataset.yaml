@@ -216,7 +216,7 @@ dataset_fields:
       label: Auf Basis Baublöcke (30 cm)
     - value: luftbild
       label: Auf Basis Luftbild (30 cm)
-    - value: stadtbezrike
+    - value: stadtbezrik
       label: Auf Basis Stadtbezirke (-teil -viertel)(10m)
     - value: stadtplan
       label: Auf Basis Stadtplan (10m)
@@ -282,7 +282,7 @@ dataset_fields:
     required: true
     form_include_blank_choice: false
     choices:
-    - value: alle_mit_geinfoweb
+    - value: alle_mit_geoinfoweb
       label: 
         en: All access users (incl. GeoInfoWeb)
         de: alle Zugriffsuser (inkl. GeoInfoWeb)

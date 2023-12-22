@@ -128,8 +128,8 @@
   </table>
 </section>
 
-{% for chg_his in pkg_dict.change_history %}
-{% if chg_his.change %}
+{% set chg_his = pkg_dict.change_history %}
+{% if chg_his %}
   <section class="additional-info module-content table3">
     <table class="table package-metadata">
       <tr>
@@ -141,4 +141,3 @@
     </table>
   </section>
 {% endif %}
-{% endfor %}      

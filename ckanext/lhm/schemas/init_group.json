@@ -1,11 +1,11 @@
 {"groups": [
     {"title": "Hauptkategorien", "name": "main-categories"},
     {"title": "Datensatz und Dokumente", "name": "dataset", "image_url": "/base/images/group_icons/dataset.jpg", "groups":[{"capacity": "public", "name": "main-categories"}]},
-    {"title": "Online-Dienst", "name": "online-service", "image_url": "/base/images/group_icons/online_service.png", "groups": [{"capacity": "public", "name": "main-categories"}]},
-    {"title": "Software", "name": "software", "image_url": "/base/images/group_icons/software.png", "groups": [{"capacity": "public", "name": "main-categories"}]},
-    {"title": "Online-Anwendung", "name": "online-application", "image_url": "/base/images/group_icons/method.png", "groups": [{"capacity": "public", "name": "main-categories"}]},
-    {"title": "Portale", "name": "portal", "image_url": "/base/images/group_icons/online_application.svg", "groups": [{"capacity": "public", "name": "main-categories"}]},
-    {"title": "Gerät / Ding", "name": "device", "image_url": "/base/images/group_icons/device.svg", "groups": [{"capacity": "public", "name": "main-categories"}]},
+    {"title": "Online-Dienst", "name": "online-service", "image_url": "/base/images/group_icons/online_service.jpg", "groups": [{"capacity": "public", "name": "main-categories"}]},
+    {"title": "Software", "name": "software", "image_url": "/base/images/group_icons/software.jpg", "groups": [{"capacity": "public", "name": "main-categories"}]},
+    {"title": "Online-Anwendung", "name": "online-application", "image_url": "/base/images/group_icons/method.jpg", "groups": [{"capacity": "public", "name": "main-categories"}]},
+    {"title": "Portale", "name": "portal", "image_url": "/base/images/group_icons/online_application.jpg", "groups": [{"capacity": "public", "name": "main-categories"}]},
+    {"title": "Gerät / Ding", "name": "device", "image_url": "/base/images/group_icons/device.jpg", "groups": [{"capacity": "public", "name": "main-categories"}]},
 
     {"title": "Themen", "name": "topics"},
     {"title": "Verwaltung", "name": "administration", "image_url": "/base/images/group_icons/administration.svg", "groups": [{"capacity": "public", "name": "topics"}]},

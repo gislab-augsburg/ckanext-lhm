@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Ebene_2" data-name="Ebene 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 246.27 280.88">
+  <g id="Ebene_2-2" data-name="Ebene 2">
+    <g>
+      <g>
+        <polygon points="2.5 208.89 2.5 72.69 123.14 2.89 243.77 72.92 243.77 209.2 123.14 278 2.5 208.89" style="fill: #fff;"/>
+        <path d="m123.13,5.78l118.14,68.58v133.39l-118.13,67.37L5,207.44V74.13L123.13,5.78m0-5.78L0,71.24v139.1l123.14,70.53,123.14-70.23V71.48L123.14,0h0Z" style="fill: #1d1d1b;"/>
+      </g>
+      <g>
+        <path d="m67.88,82.97l88.62,60.68-81.62,16.75-61.89-32.34,54.88-45.08m-.22-5L5.79,128.8l68.5,35.8,92.25-18.93-98.88-67.7h0Z" style="fill: #1d1d1b;"/>
+        <g>
+          <polygon points="81.24 167.98 169.53 150.24 175.63 154.33 85.28 171.62 81.24 167.98" style="fill: #1d1d1b;"/>
+          <path d="m169.11,152.37l1.36.91-84.59,16.19-.34-.31,83.57-16.79m.84-4.25l-93.01,18.69,7.73,6.96,96.1-18.39-10.83-7.26h0Z" style="fill: #1d1d1b;"/>
+        </g>
+        <path d="m125.08,57.11l38.66,75.9-70.96-48.15,32.31-27.75m1.25-6.35l-40.13,34.47,88.16,59.81-48.03-94.29h0Z" style="fill: #1d1d1b;"/>
+        <path d="m161.77,56.11l8.53,67.15-26.27-54.45,17.74-12.7m3.12-7.16l-25.93,18.56,38.4,79.59-12.47-98.15h0Z" style="fill: #1d1d1b;"/>
+        <path d="m213.95,76.48l-.57,1.24.41-1.19.17-.06m7.58-6.9l-10.9,3.83-26.81,78.08,37.71-81.91h0Z" style="fill: #1d1d1b;"/>
+        <path d="m202.8,69.43l-20.18,61.24-6-53.83,26.18-7.41m6.15-5.9l-36.68,10.39,8.41,75.44,28.27-85.82h0Z" style="fill: #1d1d1b;"/>
+      </g>
+      <text transform="translate(33.55 215.25)" style="fill: #1d1d1b; font-family: UniversLTStd, &apos;Univers LT Std&apos;; font-size: 40px;"><tspan x="0" y="0">K</tspan><tspan x="26.68" y="0" style="letter-spacing: -.07em;">AT</tspan><tspan x="74" y="0">A</tspan><tspan x="102.88" y="0" style="letter-spacing: -.05em;">L</tspan><tspan x="123.12" y="0" style="letter-spacing: 0em;">OG</tspan></text>
+    </g>
+  </g>
+</svg>

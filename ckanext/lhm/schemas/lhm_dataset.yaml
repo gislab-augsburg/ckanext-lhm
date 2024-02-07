@@ -290,6 +290,10 @@ dataset_fields:
       label: 
         en: Specific access users
         de: bestimmte Zugriffsuser
+    - value: keine
+      label: 
+        en: 'None'
+        de: keine
   - field_name: geoinfoweb
     label: GeoInfoWeb
     preset: select
@@ -377,7 +381,7 @@ dataset_fields:
   #     de: d.h. nur Daten – Ausprägung, Inhalt und Analyse durch Nutzer
 
 - field_name: datenabgabe_extern
-  label: 'Internet: Datenabgabe an externe, die nicht Auftragnehmer sind'
+  label: 'Internet: Datenabgabe an Externe, die nicht Auftragnehmer sind'
     # en: 'Internet: Data handover to external non-contractors'
     # de: 'Internet: Datenabgabe an externe, die nicht Auftragnehmer sind'
   required: true
@@ -387,7 +391,7 @@ dataset_fields:
   choices:
   - value: 'no'
     label: 
-      en: 'No'
+      en: 'None'
       de: Keine
   - value: in_term_of_use 
     label:
@@ -459,6 +463,9 @@ dataset_fields:
       en: All attributes and contents usable
       de: alle Attribute und Inhalte nutzbar
 
+- field_name: open_data_attribute
+  label: Open Data - bestimmte Attribute
+
 - field_name: additional_usage_notes
   label: weitere Hinweise zur Nutzung
     # en: Additional hints regarding the resource/data useage
@@ -477,32 +484,33 @@ dataset_fields:
     preset: markdown
     form_placeholder: Erläutern Sie die zusätzlichen Verwendungsbedingungen, die nicht unter die obigen Punkte fallen.
 
-- field_name: change_history
-  label: 
-    en: Change history
-    de: Änderungshistorie
-  form_snippet: repeating_subfields_lhm.html
-  repeating_subfields:
-  - field_name: change
-    label: 
-      en: Changed Items
-      de: Änderung
-    preset: markdown
-    form_placeholder: 
-      en: What has been changed since last update?
-      de: Was hat sich seit der letzten Aktualisierung geändert?
-  - field_name: editor
-    label: 
-      en: Editor
-      de: Geändert von
-    form_snippet: editor.html
-    form_placeholder: Erika Mustermann, erika.musstermann@muenchen.de
-  - field_name: changed_date
-    label: 
-      en: Changed date
-      de: Geändert am
-    form_snippet: date_lhm.html
-    validators: scheming_required isodate convert_to_json_if_date
+##Aus Gründen des Datenschutzes und der Unvollständigkeit wurde dieses Attribut aus dem Katalog entfernt.
+ #- field_name: change_history
+  # label: 
+  #   en: Change history
+  #   de: Änderungshistorie
+  # form_snippet: repeating_subfields_lhm.html
+  # repeating_subfields:
+  # - field_name: change
+  #   label: 
+  #     en: Changed Items
+  #     de: Änderung
+  #   preset: markdown
+  #   form_placeholder: 
+  #     en: What has been changed since last update?
+  #     de: Was hat sich seit der letzten Aktualisierung geändert?
+  # - field_name: editor
+  #   label: 
+  #     en: Editor
+  #     de: Geändert von
+  #   form_snippet: editor.html
+  #   form_placeholder: Erika Mustermann, erika.musstermann@muenchen.de
+  # - field_name: changed_date
+  #   label: 
+  #     en: Changed date
+  #     de: Geändert am
+  #   form_snippet: date_lhm.html
+  #   validators: scheming_required isodate convert_to_json_if_date
 
 
 resource_fields:

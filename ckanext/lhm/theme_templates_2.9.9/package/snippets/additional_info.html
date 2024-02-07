@@ -73,7 +73,7 @@
   <table class="table package-metadata">
     <tr>
       {% if pkg_dict.intranet %}
-      <td colspan="3"><p class="heading">{{ _("LHM-Intranet")}}</p>
+      <td colspan="4"><p class="heading">{{ _("LHM-Intranet")}}</p>
         <p class="metadata">{%- snippet 'package/snippets/label.html',
           item='intranet', pkg_dict=pkg_dict, schema=schema -%}</p>
       </td>
@@ -88,7 +88,7 @@
           <p class="metadata">{{ _("Not vailable") }}</p>
         {% endif %}
       </td>
-      <td>
+      <td colspan="2">
         <p class="heading">{{ _("Open Data") }}</p>
         {% if pkg_dict.open_data %}  
           <p class="metadata">{%- snippet 'package/snippets/label.html',
@@ -96,6 +96,10 @@
         {% else %}
           <p class="metadata">{{ _("Not vailable") }}</p>
         {% endif %}
+        {% if pkg_dict.open_data_attribute %}  
+        <p class="metadata">{%- snippet 'package/snippets/label.html',
+          item='open_data_attribute', pkg_dict=pkg_dict, schema=schema -%}</p>
+      {% endif %}
       </td>
     </tr>
     <tr>
@@ -107,7 +111,7 @@
           <p class="metadata">{{ _("Not vailable") }}</p>
         {% endif %}
       </td>
-      <td>
+      <td colspan="2">
         <p class="heading">{{ _("Internet: Data handover to external non-contractors") }}</p>
         {% if pkg_dict.datenabgabe_extern %}  
           <p class="metadata">{%- snippet 'package/snippets/label.html',
@@ -117,20 +121,25 @@
         {% endif %}
       </td>
     </tr>
+  </table>
+</section>
+{% if pkg_dict.additional_usage_notes %}
+<section class="additional-info module-content table3">
+  <table class="table package-metadata">
     <tr>
-      {% if pkg_dict.additional_usage_notes %}
-      <td colspan="3"><p class="heading">{{ _("Additional hints regarding the resource/data useage")}}</p>
+      <td colspan="4"><p class="heading">{{ _("Additional hints regarding the resource/data useage")}}</p>
         <p class="metadata">{%- snippet 'package/snippets/label.html',
           item='additional_usage_notes', pkg_dict=pkg_dict, schema=schema -%}</p>
       </td>
-      {% endif %}
     </tr>
   </table>
 </section>
+{% endif %}
 
+<!--
 {% set chg_his = pkg_dict.change_history %}
 {% if chg_his %}
-  <section class="additional-info module-content table3">
+  <section class="additional-info module-content table4">
     <table class="table package-metadata">
       <tr>
         <td colspan="3"><p class="heading">{{ _("Change History")}}</p>
@@ -140,4 +149,4 @@
       </tr>
     </table>
   </section>
-{% endif %}
+{% endif %}-->

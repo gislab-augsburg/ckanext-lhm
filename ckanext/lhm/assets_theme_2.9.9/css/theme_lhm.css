@@ -1,5 +1,5 @@
 body {
-    background-color: #1a3a60;
+    background-color: #00AB9F;
 }
 
 .homepage
@@ -23,7 +23,7 @@ body {
 }
 
 a:hover, a:active {
-    color: #1a3a60;
+    color: #00AB9F;
 }
 
 html,
@@ -31,7 +31,7 @@ html,
 .masthead .navigation .nav-pills li.active a,
 .homepage .module-search .tags,
 .hero .tags {
-    background-color: #1a3a60;
+    background-color: #00AB9F;
     color: #FFF;
 }
 
@@ -40,7 +40,7 @@ html,
     width: 100%;
     height: auto;
     background-image: url("../../../base/images/Hintergrundbild_1.jpg");
-    background-color: #c1d5ee;
+    background-color: #48CCBF;
     background-size: contain; /* This ensures that the image covers the entire element */
     background-repeat: no-repeat; /* This prevents the image from repeating */
     background-position-x: 20%;
@@ -50,14 +50,14 @@ html,
 
 .masthead .main-navbar ul li:hover a, .masthead .main-navbar ul li:focus a, .masthead .main-navbar ul li.active a {
     border-radius: 0.3rem;
-    background-color: #1a3a60;
+    background-color: #00AB9F;
 }
 
 
 
 .account-masthead .navigation .nav-pills li a:hover,
 .account-masthead .navigation .nav-pills li a:active {
-    background-color: #1a3a60;
+    background-color: #00AB9F;
 }
 
 .account-masthead .logo_lhm img {
@@ -69,7 +69,7 @@ html,
 
 .account-masthead {
     min-height: 20px;
-    background-color: #1a3a60;
+    background-color: #00AB9F;
 }
 
 .account-masthead .nav-tabs:after,
@@ -80,7 +80,7 @@ html,
 .hero .module-dark .module-content,
 .homepage .module-search .module-content,
 .lhm-footer {
-    background-color: #1a3a60;
+    background-color: #00AB9F;
 }
 
 .lhm-footer {
@@ -133,7 +133,7 @@ html,
 }
 
 .homepage .hero-lhm {
-    background: url("../../../base/images/Hintergrundbild_3.jpg");
+    background: url("../../../base/images/Hintergrund_Stadt_3D.jpg");
     background-size: cover; This ensures that the image covers the entire element */
     background-repeat: no-repeat; /* This prevents the image from repeating */
     background-position: center;
@@ -178,7 +178,7 @@ border: 1px solid #ccc;
 }
 
 .module-promotion .promotion-text {
-    background: #1a3a60;
+    background: #00AB9F;
     }
 
 .promotion-text p {
@@ -196,7 +196,7 @@ border: 1px solid #ccc;
 a.tag:hover {
     text-decoration: none;
     color: #fff;
-    background-color: #1a3a60;
+    background-color: #00AB9F;
     border: 1px solid #c2e5e2;
     box-shadow: inset 0 1px 0 #c2e5e2;
   }
@@ -217,12 +217,12 @@ border: 1px solid #ccc;
 }
 
 .category-box {
-    background-color: #1a3a60;
+    background-color: #00AB9F;
     opacity: 0.9;
 }
 
 .category-box:hover {
-    background-color: #1a3a60;
+    background-color: #00AB9F;
     opacity: 1.0;
 }
 
@@ -242,12 +242,12 @@ border: 1px solid #ccc;
 .page-item.active .page-link {
     z-index: 3;
     color: #fff;
-    background-color: #1a3a60 ;
-    border-color: #1a3a60;
+    background-color: #00AB9F ;
+    border-color: #00AB9F;
 }
 
 .group-box {
-    background-color: #1a3a60;
+    background-color: #00AB9F;
 }
 
 .group-box h2 {
@@ -278,26 +278,41 @@ border: 1px solid #ccc;
 }
 
 .btn-primary{
-    background-color: #1a3a60;
+    background-color: #00AB9F;
+    border-color: #00AB9F;
 }
 .btn-primary:hover {
-    background-color: #2d5c96;
+    background-color: #66d3cc;
+}
+
+.dropdown-toggle.btn-primary:focus {
+    background-color: #03756e;
+    border-color: #03756e;
+}
+
+.btn-success {
+    color: #fff;
+    background-color: #00AB9F;
+    border-color: #00AB9F;
+}
+.btn-success:hover {
+    background-color: #66d3cc;
 }
 
 .pagination .active a {
     z-index: 3;
     color: #fff;
     cursor: default;
-    background-color: #1a3a60;
-    border-color: #1a3a60;
+    background-color: #00AB9F;
+    border-color: #00AB9F;
 }
 
 .pagination .active a:hover {
     z-index: 3;
     color: #fff;
     cursor: default;
-    background-color: #2d5c96;
-    border-color: #2d5c96;
+    background-color: #66d3cc;
+    border-color: #66d3cc;
 }
 
 .contact {
@@ -316,19 +331,19 @@ border: 1px solid #ccc;
 }
 
 .table1{
-    background-color: #eef3f9;
+    background-color: #effcfa;
     margin-top: 10px;
     border-collapse: collapse;
 }
 
 .table2{
-    background-color: #e6f0fc;
+    background-color: #e1faf8;
     margin-top: 10px;
     border-collapse: collapse;
 }
 
 .table3{
-    background-color: #c2daf7;
+    background-color: #aff2ee;
     margin-top: 10px;
     border-collapse: collapse;
 }
@@ -342,4 +357,11 @@ border: 1px solid #ccc;
 
 .row[role='main']{
     background: #fff;
+}
+
+.group-icon {
+    width: 10%; 
+    height: auto; 
+    float: right; 
+    margin: 10px;
 }

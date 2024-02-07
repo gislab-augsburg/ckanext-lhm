@@ -3,30 +3,39 @@
 {% set count = main_categories.children %}
 
 
-<ul class="dataset-markers">
     {% for grp in pkg.groups %}
         {% if grp.name == count[0].name %}
-            <li class="marker zero">
-            <a href="{{ g.site_url }}/group/{{ grp.name }}">{{ grp.title }}</a></li>
+            <a href="{{ g.site_url }}/group/{{ grp.name }}" title="{{ grp.title }}">
+            <img src="{{ grp.image_display_url }}" alt="{{ grp.title }}" title="{{ grp.title }}" class="group-icon" >
+            </a>
         {% elif grp.name == count[1].name %}
-            <li class="marker one">
-            <a href="{{ g.site_url }}/group/{{ grp.name }}">{{ grp.title }}</a></li>
+            <a href="{{ g.site_url }}/group/{{ grp.name }}" title="{{ grp.title }}">
+            <img src="{{ grp.image_display_url }}" alt="{{ grp.title }}" title="{{ grp.title }}" class="group-icon" >
+            </a>
         {% elif grp.name == count[2].name %}
-            <li class="marker two">
-            <a href="{{ g.site_url }}/group/{{ grp.name }}">{{ grp.title }}</a></li>
+            <a href="{{ g.site_url }}/group/{{ grp.name }}" title="{{ grp.title }}">
+            <img src="{{ grp.image_display_url }}" alt="{{ grp.title }}" title="{{ grp.title }}" class="group-icon" >
+            </a>
         {% elif grp.name == count[3].name %}
-            <li class="marker three">
-            <a href="{{ g.site_url }}/group/{{ grp.name }}">{{ grp.title }}</a></li>
+            <a href="{{ g.site_url }}/group/{{ grp.name }}" title="{{ grp.title }}">
+            <img src="{{ grp.image_display_url }}" alt="{{ grp.title }}" title="{{ grp.title }}" class="group-icon" >
+            </a>
         {% elif grp.name == count[4].name %}
-            <li class="marker four">
-            <a href="{{ g.site_url }}/group/{{ grp.name }}">{{ grp.title }}</a></li>
+            <a href="{{ g.site_url }}/group/{{ grp.name }}" title="{{ grp.title }}">
+            <img src="{{ grp.image_display_url }}" alt="{{ grp.title }}" title="{{ grp.title }}" class="group-icon" >
+            </a>
         {% elif grp.name == count[5].name %}
-            <li class="marker five">
-            <a href="{{ g.site_url }}/group/{{ grp.name }}">{{ grp.title }}</a></li>
+            <a href="{{ g.site_url }}/group/{{ grp.name }}" title="{{ grp.title }}">
+            <img src="{{ grp.image_display_url }}" alt="{{ grp.title }}" title="{{ grp.title }}" class="group-icon" >
+            </a>
+        {% elif grp.name == count[5].name %}
+            <a href="{{ g.site_url }}/group/{{ grp.name }}" title="{{ grp.title }}">
+            <img src="{{ grp.image_display_url }}" alt="{{ grp.title }}" title="{{ grp.title }}" class="group-icon" >
+            </a>
         {% else %}
           <!-- Do notthing-->
         {% endif %}
 
     {% endfor %}
-</ul>
+
 

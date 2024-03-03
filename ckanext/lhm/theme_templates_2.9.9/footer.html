@@ -21,7 +21,7 @@
           </div>
           <ul class="list-unstyled">
             {% block footer_links %}
-              <li><i class="fa fa-address-card-o"></i><a href="/about"> Über uns</a></li>
+              <li><i class="fa fa-address-card-o"></i><a href="{{ h.about_us() }}"> Über uns</a></li>
               {% if h.usage_info() %}
                 <li><i class="fa fa-suitcase"></i><a href="{{ h.usage_info() }}"> Nutzungsbedingungen</a></li>
               {% endif %}

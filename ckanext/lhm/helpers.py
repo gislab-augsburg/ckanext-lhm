@@ -122,4 +122,16 @@ def version_info():
       lhm.version_info = CKAN Lastest
     '''
     value = config.get('lhm.version_info', None)
-    return value    
+    return value
+
+
+@helper
+def about_us():
+    '''Return the value of the CKAN About Us config setting.
+
+    To enable showing the about us info, add this line to the
+    [app:main] section of your CKAN config file::
+      lhm.about_us = lhm_about.html
+    '''
+    value = config.get('lhm.about_us', '/about')
+    return value

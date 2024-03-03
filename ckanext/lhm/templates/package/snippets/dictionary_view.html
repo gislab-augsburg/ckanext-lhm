@@ -1,7 +1,24 @@
+{% set options=[
+  {'text': '', 'value': ''},
+  {'text': 'OBJECT-ID/Number', 'value': 'number_'},
+  {'text': 'GEOMETRY/SDO_GEOMETRY', 'value': 'sdo_geometry'},
+  {'text': 'TEXT/NVARCHAR2', 'value': 'nvarchar2'},
+  {'text': 'FLOAT', 'value': 'float8'},
+  {'text': 'DATE/DATUM', 'value': 'date'},
+  {'text': 'TIMESTAMP(6)', 'value': 'timestamp'},
+  {'text': 'BLOB', 'value': 'blob'},
+  ] %} 
+
 
 <tr>
     <td>{{ field.id }}</td>
-    <td>{{ field.type }}</td>
+    <td>
+    {% for option in options %}
+      {% if option.value == field.type %}
+          {{ option.text }}
+      {% endif %}
+    {% endfor %}
+    </td>
     <td>{{ h.get_translated(field.get('info', {}), 'condition') }}</td>
     <td>{{ h.render_markdown(
       h.get_translated(field.get('info', {}), 'notes')) }}</td>

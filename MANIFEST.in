@@ -5,3 +5,4 @@ recursive-include ckanext/lhm *.html *.json *.js *.less *.css *.mo *.yml *.yaml
 recursive-include ckanext/lhm/logic *.py
 recursive-include ckanext/lhm/migration *.ini *.py *.mako
 recursive-include ckanext/lhm/public *
+exclude ckanext/lhm/archive *

@@ -53,6 +53,21 @@ html,
     background-color: #00AB9F;
 }
 
+.btn-info {
+    color: #fff;
+    background-color: #00AB9F;
+    border-color: #00AB9F;
+}
+
+.btn-info:hover {
+    background-color: #66d3cc;
+    border-color: #2f948a;
+}
+
+.btn.btn-info:active {
+    background-color: #122826;
+    border-color: #2f948a;
+}
 
 
 .account-masthead .navigation .nav-pills li a:hover,
@@ -283,11 +298,11 @@ border: 1px solid #ccc;
 }
 .btn-primary:hover {
     background-color: #66d3cc;
+    border-color: #2f948a;
 }
 
 .dropdown-toggle.btn-primary:focus {
     background-color: #03756e;
-    border-color: #03756e;
 }
 
 .btn-success {
@@ -365,3 +380,4 @@ border: 1px solid #ccc;
     float: right; 
     margin: 10px;
 }
+

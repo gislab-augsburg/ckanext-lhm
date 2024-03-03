@@ -1,3 +1,4 @@
+import ckan.model as model
 import ckan.plugins as p
 import ckan.plugins.toolkit as toolkit
 from ckan.plugins.interfaces import IConfigurer, IDatasetForm
@@ -10,6 +11,62 @@ import ckanext.lhm.helpers as helpers
 from ckanext.lhm.logic import action
 #     (action, auth, validators
 # )
+
+#from ckanext.datastore.backend.postgres import _cache_types
+from sqlalchemy import create_engine
+
+# This function extends the data types in postgresql.
+# This is required for Data Dictionary and is an extension to the function _cache_types in Datastor.backend.postgres.py
+def _data_dict_type():
+    eng = toolkit.config['ckan.datastore.write_url']
+    _pg_types = {}
+    _type_names = set()
+    engine = create_engine(eng)
+    connection = engine.connect()
+    if not _pg_types:
+        results = connection.execute(
+            'SELECT oid, typname FROM pg_type;'
+        )
+        for result in results:
+            _pg_types[result[0]] = result[1]
+            _type_names.add(result[1])
+
+    if 'number_' not in _type_names:
+        with engine.begin() as write_connection:
+            write_connection.execute(
+                'CREATE TYPE "number_" AS (number text)')
+            # Add 'number' to _pg_types dictionary with a custom OID
+            _pg_types[9000] = 'number_'  # You can use any unique OID here
+            _type_names.add('number_')
+    if 'sdo_geometry' not in _type_names:
+        with engine.begin() as write_connection:
+            write_connection.execute(
+                'CREATE TYPE "sdo_geometry" AS (sdo_geometry text)')
+            # Add 'sdo_geometry' to _pg_types dictionary with a custom OID
+            _pg_types[6001] = 'sdo_geometry'  # You can use any unique OID here
+            _type_names.add('sdo_geometry')
+    if 'nvarchar2' not in _type_names:
+        with engine.begin() as write_connection:
+            write_connection.execute(
+                'CREATE TYPE "nvarchar2" AS (nvarchar2 text)')
+            # Add 'nvarchar2' to _pg_types dictionary with a custom OID
+            _pg_types[6002] = 'nvarchar2'  # You can use any unique OID here
+            _type_names.add('nvarchar2')
+    # if 'float' not in _type_names:
+    #     with engine.begin() as write_connection:
+    #         write_connection.execute(
+    #             'CREATE TYPE "float" AS (float text)')
+    #         # Add 'float' to _pg_types dictionary with a custom OID
+    #         _pg_types[6003] = 'float'  # You can use any unique OID here
+    #         _type_names.add('float')
+    if 'blob' not in _type_names:
+        with engine.begin() as write_connection:
+            write_connection.execute(
+                'CREATE TYPE "blob" AS (blob text)')
+            # Add 'blob' to _pg_types dictionary with a custom OID
+            _pg_types[6004] = 'blob'  # You can use any unique OID here
+            _type_names.add('blob')
+_data_dict_type()
 
 class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
     p.implements(p.IConfigurer, inherit=True)

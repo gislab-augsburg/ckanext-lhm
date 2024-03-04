@@ -290,7 +290,7 @@ msgid ""
 "the following role: %(role_name)s. To accept this invite, please reset your "
 "password at: %(reset_link)s Have a nice day. -- Message sent by "
 "%(site_title)s (%(site_url)s)"
-msgstr "Sehr geehrte(r) %(user_name)s, Sie sind zu %(site_title)s eingeladen worden. Ein Benutzerkonto wurde bereits für Sie erstellt mit dem Benutzernamen %(user_name)s. Sie können diesen später ändern. Sie wurden der Gruppe %(group_type)s %(group_title)s mit folgender Rolle hinzugefügt: %(role_name)s. Um diese Einladung anzunehmen, setzen Sie bitte Ihr Passwort unter folgendem Link zurück: %(reset_link)s Ich wünsche Ihnen einen schönen Tag. -- Nachricht gesendet von %(site_title)s (%(site_url)s)"
+msgstr "Sehr geehrte(r) %(user_name)s, Sie sind zum %(site_title)s eingeladen worden. Ein Benutzerkonto wurde bereits für Sie erstellt mit dem Benutzernamen %(user_name)s. Sie können diesen später ändern. Sie wurden der %(group_type)s %(group_title)s mit folgender Rolle hinzugefügt: %(role_name)s. Um diese Einladung anzunehmen, setzen Sie bitte Ihr Passwort unter folgendem Link zurück: %(reset_link)s Ich wünsche Ihnen einen schönen Tag. -- Nachricht gesendet von %(site_title)s (%(site_url)s)"
 
 #: ckan/templates/emails/invite_user_subject.txt:1
 #, python-format
@@ -304,9 +304,9 @@ msgid ""
 " reset. Please click the following link to confirm this request: "
 "%(reset_link)s Have a nice day. -- Message sent by %(site_title)s "
 "(%(site_url)s)"
-msgstr "Sehr geehrter {{ user_name }}, Sie haben ein neues Passwort für {{ site_title }} angefordert."
-" Bitte klicken Sie auf den folgenden Link, um diesen Antrag zu bestätigen: {{ reset_link }}"
-" Wir wünschen Ihnen einen schönen Tag. -- Nachricht gesendet von {{ site_title }} ({{site_url }})"
+msgstr "Sehr geehrte(r) %(user_name), Sie haben ein neues Passwort für %(site_title) angefordert."
+" Bitte klicken Sie auf den folgenden Link, um diesen Antrag zu bestätigen: %(reset_link)"
+" Wir wünschen Ihnen einen schönen Tag. -- Nachricht gesendet von %(site_title) (%(site_title))"
 
 #: ckan/templates/emails/reset_password_subject.txt:1
 #, python-format

@@ -457,7 +457,7 @@ dataset_fields:
   - value: limited_open
     label: 
       en: Only certain attributes and contents can be used
-      de: nur bestimmte Attribute und Inhalte nutzbar
+      de: nur folgende Attribute und Inhalte nutzbar
   - value: all_open
     label: 
       en: All attributes and contents usable

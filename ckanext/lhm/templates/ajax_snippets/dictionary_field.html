@@ -67,11 +67,11 @@
   {% elif field and not total_records %}
 
     {{ form.input('field__' ~ position ~ '__id',
-      label=_('Attribute Name'), id='field-f' ~ position ~ 'id',
+      label=_('Attribute Name*'), id='field-f' ~ position ~ 'id',
       value=field.get('id'), classes=['control-full']) }}
 
     {{ form.select('info__' ~ position ~ '__type',
-      label=_('Data Type'), options=options,
+      label=_('Data Type*'), options=options,
       selected=field.get('type')) }}      
 
     {{ form.input('info__' ~ position ~ '__condition',
@@ -95,11 +95,11 @@
   {% else %}
 
     {{ form.input('field__' ~ position ~ '__id',
-      label=_('Attribute Name'), id='field-f' ~ position ~ 'id',
+      label=_('Attribute Name*'), id='field-f' ~ position ~ 'id',
       value='', classes=['control-full']) }}
 
     {{ form.select('info__' ~ position ~ '__type',
-      label=_('Data Type'), options=options) }}
+      label=_('Data Type*'), options=options) }}
 
     {{ form.input('info__' ~ position ~ '__condition',
       label=_('Conditions'), id='field-f' ~ position ~ 'condition',

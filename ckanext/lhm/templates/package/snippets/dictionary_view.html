@@ -9,6 +9,11 @@
   {'text': 'BLOB', 'value': 'blob'},
   ] %} 
 
+{#%set od_options=[
+  {'value': 'ja', 'label': _('Yes')},
+  {'value': 'nein', 'label': _('No')}
+  ] %#}
+
 
 <tr>
     <td>{{ field.id }}</td>
@@ -23,4 +28,5 @@
     <td>{{ h.render_markdown(
       h.get_translated(field.get('info', {}), 'notes')) }}</td>
     <td>{{ h.get_translated(field.get('info', {}), 'label') }}</td>
+    <td>{{ h.get_translated(field.get('info', {}), 'opendata') }}</td>
   </tr>

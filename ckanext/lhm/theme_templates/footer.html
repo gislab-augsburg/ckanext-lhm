@@ -8,7 +8,7 @@
             {% block footer_account_container_content %}
               <ul class="list-unstyled">
                 {% block footer_account_logged %} 
-                  {% if not c.userobj.sysadmin %}
+                  {% if not c.userobj %}
                     <nav class="account not-authed" aria-label="{{ _('Account') }}">
                         {% block footer_account_notlogged %}
                         <li><i class="fa-solid fa-arrow-right-to-bracket"></i>{% link_for _(' Log in'), named_route='user.login' %}</li>

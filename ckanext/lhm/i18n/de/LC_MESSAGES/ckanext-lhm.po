@@ -312,3 +312,9 @@ msgstr "Sehr geehrte(r) %(user_name)s, Sie haben ein neues Passwort für %(site_
 #, python-format
 msgid "Reset your password - %(site_title)s"
 msgstr "Passwort zurücksetzen: %(site_title)s"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nein"

@@ -33,7 +33,11 @@
   {'text': 'BLOB', 'value': 'blob'},
   ] %} 
 
-  
+{% set od_options=[
+  {'value': 'ja', 'label': _('Yes')}, 
+  {'value': 'nein', 'label': _('No')}
+  ] %}
+
 <div class="dictionary-field-{{ position }}">
   {% if field and total_records %}
 
@@ -44,8 +48,8 @@
     <input id="info__{{ position }}__type" type="text" name="info__{{ position }}__type" value="{{ field.get('type') | empty_and_escape }}" hidden />
 
     {{ form.input('info__' ~ position ~ '__condition',
-      label=_('Conditions'), id='field-f' ~ position ~ 'label',
-      value=field.get('info', {}).get('label', ''), classes=['control-full']) }}
+      label=_('Conditions'), id='field-f' ~ position ~ 'condition',
+      value=field.get('info', {}).get('condition', ''), classes=['control-full']) }}
 
     {{ form.markdown('info__' ~ position ~ '__notes',
       label=_('Description'), id='field-d' ~ position ~ 'notes',
@@ -54,6 +58,11 @@
     {{ form.input('info__' ~ position ~ '__label',
       label=_('Remarks'), id='field-f' ~ position ~ 'label',
       value=field.get('info', {}).get('label', ''), classes=['control-full']) }}
+
+    {{ form.select('info__' ~ position ~ '__opendata',
+      label=_('Open Data'), options=od_options,
+      selected=field.get('info', {}).get('opendata', ''))}}  
+
 
   {% elif field and not total_records %}
 
@@ -66,8 +75,8 @@
       selected=field.get('type')) }}      
 
     {{ form.input('info__' ~ position ~ '__condition',
-      label=_('Conditions'), id='field-f' ~ position ~ 'label',
-      value=field.get('info', {}).get('label', ''), classes=['control-full']) }}
+      label=_('Conditions'), id='field-f' ~ position ~ 'condition',
+      value=field.get('info', {}).get('condition', ''), classes=['control-full']) }}
 
     {{ form.markdown('info__' ~ position ~ '__notes',
       label=_('Description'), id='field-d' ~ position ~ 'notes',
@@ -76,6 +85,10 @@
     {{ form.input('info__' ~ position ~ '__label',
       label=_('Remarks'), id='field-f' ~ position ~ 'label',
       value=field.get('info', {}).get('label', ''), classes=['control-full']) }}
+
+    {{ form.select('info__' ~ position ~ '__opendata',
+      label=_('Open Data'), options=od_options,
+      selected=field.get('info', {}).get('opendata', ''))}}   
 
     {% snippet "dictionary/snippets/delete_field_button.html" %}
 
@@ -89,7 +102,7 @@
       label=_('Data Type'), options=options) }}
 
     {{ form.input('info__' ~ position ~ '__condition',
-      label=_('Conditions'), id='field-f' ~ position ~ 'label',
+      label=_('Conditions'), id='field-f' ~ position ~ 'condition',
       value='', classes=['control-full']) }}
 
     {{ form.markdown('info__' ~ position ~ '__notes',
@@ -99,6 +112,9 @@
     {{ form.input('info__' ~ position ~ '__label',
       label=_('Remarks'), id='field-f' ~ position ~ 'label',
       value='') }}
+
+    {{ form.select('info__' ~ position ~ '__opendata',
+      label=_('Open Data'), options=od_options) }}   
 
     {% snippet "dictionary/snippets/delete_field_button.html" %}
 

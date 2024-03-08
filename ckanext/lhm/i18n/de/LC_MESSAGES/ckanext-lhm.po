@@ -318,3 +318,6 @@ msgstr "Ja"
 
 msgid "No"
 msgstr "Nein"
+
+msgid "Include Sub-%(group_type)ss"
+msgstr "Unter-%(group_type)sen einbeziehen"

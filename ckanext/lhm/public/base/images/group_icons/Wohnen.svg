@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Ebene_2" data-name="Ebene 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 370.17 179.11">
+  <g id="Ebene_3" data-name="Ebene 3">
+    <g id="Wohnen">
+      <polygon points="68.22 120.76 68.22 177.11 2 177.11 2 120.76 35.13 82 68.22 120.76" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
+      <polygon points="134.22 120.76 134.22 177.11 68 177.11 68 120.76 101.13 82 134.22 120.76" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
+      <polygon points="200.22 120.76 200.22 177.11 134 177.11 134 120.76 167.13 82 200.22 120.76" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
+      <rect x="210.55" y="2" width="84" height="175" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
+      <rect x="295.17" y="40" width="73" height="137" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
+      <rect x="15.13" y="117" width="13" height="13"/>
+      <rect x="39.13" y="142" width="17" height="35" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
+      <rect x="80.63" y="117.5" width="13" height="13"/>
+      <rect x="104.63" y="142.5" width="17" height="35" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
+      <rect x="146.63" y="117.5" width="13" height="13"/>
+      <rect x="170.63" y="142.5" width="17" height="35" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
+      <g>
+        <rect x="246.05" y="19.5" width="13" height="13"/>
+        <rect x="222.38" y="19.5" width="13" height="13"/>
+        <rect x="269.71" y="19.5" width="13" height="13"/>
+      </g>
+      <g>
+        <rect x="246.05" y="40.5" width="13" height="13"/>
+        <rect x="222.38" y="40.5" width="13" height="13"/>
+        <rect x="269.71" y="40.5" width="13" height="13"/>
+      </g>
+      <g>
+        <rect x="246.05" y="61.5" width="13" height="13"/>
+        <rect x="222.38" y="61.5" width="13" height="13"/>
+        <rect x="269.71" y="61.5" width="13" height="13"/>
+      </g>
+      <g>
+        <rect x="246.05" y="82.5" width="13" height="13"/>
+        <rect x="222.38" y="82.5" width="13" height="13"/>
+        <rect x="269.71" y="82.5" width="13" height="13"/>
+      </g>
+      <g>
+        <g>
+          <rect x="336" y="58.5" width="13" height="13"/>
+          <rect x="312.34" y="58.5" width="13" height="13"/>
+        </g>
+        <g>
+          <rect x="336" y="79.5" width="13" height="13"/>
+          <rect x="312.34" y="79.5" width="13" height="13"/>
+        </g>
+        <g>
+          <rect x="336" y="100.5" width="13" height="13"/>
+          <rect x="312.34" y="100.5" width="13" height="13"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

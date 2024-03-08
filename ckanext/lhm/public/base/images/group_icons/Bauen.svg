@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Ebene_2" data-name="Ebene 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 278.31 282.28">
+  <g id="Ebene_3" data-name="Ebene 3">
+    <g id="Bauen">
+      <rect x="2" y="51.78" width="263" height="33" rx="4.55" ry="4.55" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
+      <path d="m32.31,91.28c.11,0,.19.09.19.19v19.61c0,.11-.09.19-.19.19H6.69c-.11,0-.19-.09-.19-.19v-19.61c0-.11.09-.19.19-.19h25.61m0-4H6.69c-2.32,0-4.19,1.88-4.19,4.19v19.61c0,2.32,1.88,4.19,4.19,4.19h25.61c2.32,0,4.19-1.88,4.19-4.19v-19.61c0-2.32-1.88-4.19-4.19-4.19h0Z"/>
+      <rect x="50" y="84.78" width="33.5" height="167.5" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
+      <path d="m96.15,256.28c.2,0,.35.16.35.35v21.29c0,.2-.16.35-.35.35h-58.29c-.2,0-.35-.16-.35-.35v-21.29c0-.2.16-.35.35-.35h58.29m0-4h-58.29c-2.41,0-4.35,1.95-4.35,4.35v21.29c0,2.41,1.95,4.35,4.35,4.35h58.29c2.41,0,4.35-1.95,4.35-4.35v-21.29c0-2.41-1.95-4.35-4.35-4.35h0Z"/>
+      <rect x="157.5" y="220.28" width="86" height="60" rx="3.56" ry="3.56" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
+      <path d="m191.15,244.28h19.5c2.68,0,4.85,2.18,4.85,4.85v31.15h-30v-30.35c0-3.12,2.53-5.65,5.65-5.65Z" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
+      <line x1="200.5" y1="170.69" x2="200.5" y2="220.28" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
+      <line x1="165.5" y1="189.28" x2="165.5" y2="220.28" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
+      <line x1="232.84" y1="189.28" x2="232.84" y2="220.28" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
+      <line x1="148.5" y1="201.28" x2="251.81" y2="201.28" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
+      <path d="m207.46,125.32l-12.31,12.31c-.85.85-.69,2.26.33,2.9l68.17,42.86c.78.49,1.8.34,2.4-.36l11.8-13.59c.75-.87.55-2.21-.43-2.81l-67.66-41.58c-.73-.45-1.68-.34-2.29.27Z"/>
+      <line x1="243.5" y1="103.72" x2="243.5" y2="145.79" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 2px;"/>
+      <path d="m233,84.78h19v15.77c0,1.78-1.45,3.23-3.23,3.23h-11.56c-2.32,0-4.21-1.89-4.21-4.21v-14.79h0Z" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
+      <path d="m41.5,42.28h37.63c4.07,0,7.37,3.3,7.37,7.37v1.63h-45v-9h0Z" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
+      <polyline points="12.58 50.28 67 1.69 222.39 50.78" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
+      <polyline points="79.13 41.28 67 1.69 55.55 41.28" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 3px;"/>
+      <polyline points="24 53.78 24 71.2 24 84.78" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 2px;"/>
+      <polyline points="44.5 53.78 44.5 71.2 44.5 84.78" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 2px;"/>
+      <polyline points="90.5 53.78 90.5 71.2 90.5 84.78" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 2px;"/>
+      <polyline points="90.5 83.2 119.5 53.78 119.5 71.2 119.5 84.78 148.5 53.78 148.5 71.2 148.5 84.78 176.5 53.78 176.5 71.2 176.5 84.78 204.5 53.78 204.5 71.2 204.5 84.78" style="fill: none; stroke: #000; stroke-linejoin: round; stroke-width: 2px;"/>
+      <polyline points="204.5 82.43 233.5 53.78 233.5 71.2 233.5 84.78" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 2px;"/>
+      <line x1="233.5" y1="83.2" x2="262.65" y2="53.78" style="fill: none; stroke: #000; stroke-linejoin: round; stroke-width: 2px;"/>
+      <path d="m90.5,64.62h-24.31c-2.04,0-3.69-1.65-3.69-3.69v-9.15" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 2px;"/>
+      <polyline points="83.5 84.78 50 117.85 83.5 117.85 50 146.88 83.5 146.88 50 182.3 83.5 182.3 50 216.75 83.5 216.75 50 252.28" style="fill: none; stroke: #000; stroke-linejoin: round; stroke-width: 2px;"/>
+    </g>
+  </g>
+</svg>

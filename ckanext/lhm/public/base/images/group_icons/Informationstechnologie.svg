@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Ebene_2" data-name="Ebene 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 198 275">
+  <g id="Ebene_3" data-name="Ebene 3">
+    <g id="Informationstechnologie">
+      <path d="m174.36.5H23.65C10.86.5.5,10.86.5,23.65v227.7c0,12.79,10.36,23.15,23.15,23.15h150.71c12.78,0,23.14-10.36,23.14-23.15V23.65c0-12.79-10.36-23.15-23.14-23.15Zm-59.36,262.52c0,1.92-1.55,3.48-3.48,3.48h-25.03c-1.93,0-3.49-1.56-3.49-3.48v-2.04c0-1.92,1.56-3.48,3.49-3.48h25.03c1.93,0,3.48,1.56,3.48,3.48v2.04Zm68.52-38.67c0,12.79-10.36,23.15-23.15,23.15H37.63c-12.78,0-23.14-10.36-23.14-23.15V38.65c0-12.79,10.36-23.15,23.14-23.15h122.74c12.79,0,23.15,10.36,23.15,23.15v185.7Z" style="stroke: #000; stroke-miterlimit: 10;"/>
+      <path d="m33.88,88.81c36.42-30.24,98.7-28.52,130.24,2.36" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 7px;"/>
+      <path d="m52.03,108.24c28.61-20.7,69.54-18.39,93.93,5.2" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 7px;"/>
+      <path d="m69.59,128.5c18.85-10.76,41.47-9.67,58.82,2.62" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 7px;"/>
+      <circle cx="99" cy="161" r="15"/>
+      <path d="m181.51,38.65v185.7c0,12.79-10.36,23.15-23.15,23.15H35.62c-12.78,0-23.14-10.36-23.14-23.15V38.65c0-12.79,10.36-23.15,23.14-23.15h122.74c12.79,0,23.15,10.36,23.15,23.15Z" style="fill: none; stroke: #000; stroke-miterlimit: 10;"/>
+      <path d="m181.51,38.65v185.7c0,12.79-10.36,23.15-23.15,23.15H35.62c-12.78,0-23.14-10.36-23.14-23.15V38.65c0-12.79,10.36-23.15,23.14-23.15h122.74c12.79,0,23.15,10.36,23.15,23.15Z" style="fill: none; stroke: #000; stroke-miterlimit: 10;"/>
+    </g>
+  </g>
+</svg>

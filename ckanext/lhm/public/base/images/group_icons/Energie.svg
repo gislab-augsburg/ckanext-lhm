@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Ebene_2" data-name="Ebene 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 289 289">
+  <g id="Ebene_3" data-name="Ebene 3">
+    <g id="Energie">
+      <path d="m265.5,144.5c0,66.83-54.17,121-121,121-59.55,0-109.05-43.01-119.13-99.67-1.23-6.92-1.87-14.05-1.87-21.33,0-66.83,54.17-121,121-121s121,54.17,121,121Z" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
+      <path d="m287.5,144.5c0,78.98-64.02,143-143,143-70.38,0-128.87-50.83-140.79-117.79l21.66-3.88c10.08,56.66,59.58,99.67,119.13,99.67,66.83,0,121-54.17,121-121S211.33,23.5,144.5,23.5V1.5c78.98,0,143,64.02,143,143Z" style="stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
+      <path d="m265.5,144.5c0,66.83-54.17,121-121,121-59.55,0-109.05-43.01-119.13-99.67l-21.66,3.88c-1.45-8.18-2.21-16.61-2.21-25.21C1.5,65.52,65.52,1.5,144.5,1.5v22c66.83,0,121,54.17,121,121Z" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
+      <polygon points="181 64 139 64 120 124 138 124 123 233 186 124 160 124 181 64" style="stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
+    </g>
+  </g>
+</svg>

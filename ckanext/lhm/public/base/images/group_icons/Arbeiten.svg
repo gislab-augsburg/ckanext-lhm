@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Ebene_2" data-name="Ebene 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 242">
+  <g id="Ebene_3" data-name="Ebene 3">
+    <g id="Arbeiten">
+      <path d="m264,99.42v9.16c0,2.44-1.98,4.42-4.42,4.42h-9.08v124.58c0,2.44-1.98,4.42-4.42,4.42h-6.16c-2.44,0-4.42-1.98-4.42-4.42v-124.58H28.5v124.58c0,2.44-1.98,4.42-4.42,4.42h-6.16c-2.44,0-4.42-1.98-4.42-4.42v-124.58H4.42c-2.44,0-4.42-1.98-4.42-4.42v-9.16c0-2.44,1.98-4.42,4.42-4.42h255.16c2.44,0,4.42,1.98,4.42,4.42Z"/>
+      <rect x="169" y="105.5" width="67" height="114.5" rx="8.35" ry="8.35" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
+      <line x1="235.75" y1="184" x2="168.75" y2="184" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
+      <line x1="235.75" y1="148" x2="170.75" y2="148" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
+      <line x1="190" y1="127" x2="215" y2="127" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 5px;"/>
+      <line x1="190" y1="163.25" x2="215" y2="163.25" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 5px;"/>
+      <line x1="190" y1="199.5" x2="215" y2="199.5" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 5px;"/>
+      <g>
+        <rect x="60.38" y="2" width="115" height="68" rx="2.98" ry="2.98" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
+        <line x1="60.38" y1="58.81" x2="175.38" y2="58.81" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
+        <rect x="107.38" y="72" width="21" height="13" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
+        <rect x="88.88" y="85" width="58" height="13" rx="3.52" ry="3.52" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
+      </g>
+    </g>
+  </g>
+</svg>

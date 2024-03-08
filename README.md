@@ -65,7 +65,7 @@ This extension works together with a selection of other extensions. Without thos
 
 The order of pludings in this ckanext matters. Deponding on the collection of extensions used for a ckan this list may extended. Below is the list of extensions with which `lhm lhm_theme` are tested 
 ```ini
-ckan.plugins = ... scheming_datasets composite hierarchy_display hierarchy_form lhm lhm_theme hierarchy_group_form resourcedictionary datastore xloader 
+ckan.plugins = ... scheming_datasets composite hierarchy_form lhm lhm_theme hierarchy_group_form hierarchy_display resourcedictionary datastore xloader 
 ```
 ----------------------
 :heavy_check_mark:
@@ -132,6 +132,7 @@ lhm.usage_info = "TERSM OF USE"
 lhm.contact_email = mailto:"EMAIL ADRESS"
 lhm.github = "GITHUB REPO"
 lhm.version_info = "CKAN VERSION INFO"
+lhm.about_us = ../
 
 #   Although the extension provides translation but it is not fully implemented and therefore at the best the extension works when there is only one language as default
 # Internationalisation Settings

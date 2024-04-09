@@ -1,0 +1,17 @@
+{% ckan_extends %}
+
+{% if fields is not defined %}{% set fields = c.fields %}{% endif %}
+
+{% block search_input %}
+
+{% if include_children_option %}
+{% asset "ckanext-lhm/script" %}
+  <form id="organization-datasets-search-form" method="GET">
+    <!-- Hidden input element to pass the include_children value -->
+    <input type="hidden" name="include_children" value="True">
+    <!-- Submit button 
+    <button type="submit">{{_('Submit')}}</button> -->
+  </form>
+{% endif %}
+{% endblock %}
+

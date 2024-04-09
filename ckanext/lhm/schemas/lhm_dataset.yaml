@@ -1,5 +1,5 @@
 scheming_version: 2
-dataset_type: dataset
+dataset_type: geodatenpool
 about: The default Munich(LHM) catalog dataset schema with form split across multiple pages
 about_url: http://github.com/ckan/ckanext-scheming
 
@@ -533,3 +533,4 @@ resource_fields:
 - field_name: format
   label: Format
   preset: resource_format_autocomplete
+

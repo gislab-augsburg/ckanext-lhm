@@ -1,4 +1,6 @@
+import json
 import ckan.model as model
+from ckan.lib import search
 import ckan.plugins as p
 import ckan.plugins.toolkit as toolkit
 from ckan.plugins.interfaces import IConfigurer, IDatasetForm
@@ -8,10 +10,10 @@ import ckanext.lhm.cli as cli
 # import ckanext.lhm.cli as cli
 import ckanext.lhm.helpers as helpers
 # import ckanext.lhm.views as views
-from ckanext.lhm.logic import action
+from ckanext.lhm.logic import action, schema
 #     (action, auth, validators
 # )
-
+#from ckanext.lhm.listeners import copy_data_to_solr
 
 #from ckanext.datastore.backend.postgres import _cache_types
 from sqlalchemy import create_engine
@@ -81,7 +83,7 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
     p.implements(p.IPackageController, inherit=True)
     # p.implements(p.IValidators)
     
-    
+      
     def i18n_domain(self):
         return 'ckanext-lhm'
 
@@ -107,47 +109,43 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         # """
 
     # ITemplateHelpers
-
     def get_helpers(self):
         return dict(helpers.all_helpers)
         # retunr dict((h, getattr(helpers, h)) for h in [
         #     'user_info',#: helpers.user_info
         # ])
 
-
-    def before_dataset_index(self, data_dict):      
-        return self.before_index(data_dict)
-
     def before_index(self, data_dict):
+
+        data_dict_scheming = data_dict['validated_data_dict']
+        validated_data_dict = json.loads(data_dict_scheming)
+
+        # To index the datastore values into the solr
+        # Focus is only on the Table Katalogwerte from GDP metadata
+        attribut, wert, bedeutung = schema.copy_data_to_solr(validated_data_dict)
+        data_dict['text'] = attribut #'\n'.join(attribut)
+        data_dict['text'] += wert #'\n'.join(wert)
+        data_dict['text'] += bedeutung #'\n'.join(bedeutung)
 
         usage_keywords = []
         usage_remarks = []
-        #changed_date = []
         for sub in data_dict.get('additional_usage_notes', []):
             usage_keywords.append(sub['usage_keywords'])
             usage_remarks.append(sub['usage_remarks'])
-            #changed_date.append(sub['changed_date'])
 
         # replace list of dicts with plain texts to prevent Solr errors
         data_dict['additional_usage_notes'] = '\n'.join(usage_keywords)
-        data_dict['additional_usage_notes'] = '\n'.join(usage_remarks)
-        #data_dict['change_history'] = '\n'.join(changed_date)
+        data_dict['additional_usage_notes'] += '\n'.join(usage_remarks)
 
-        ###### For Attribute Change Documentation
-        change = []
-        editor = []
-        #changed_date = []
-        for sub in data_dict.get('change_history', []):
-            change.append(sub['change'])
-            editor.append(sub['editor'])
-            #changed_date.append(sub['changed_date'])
-
-        # replace list of dicts with plain texts to prevent Solr errors
-        data_dict['change_history'] = '\n'.join(change)
-        data_dict['change_history'] = '\n'.join(editor)
-        #data_dict['change_history'] = '\n'.join(changed_date)
 
         return data_dict
+
+    def before_map(self, map):
+        return map
+
+    def after_map(self, map):
+        return map
+
 
     def is_fallback(self):
         return False

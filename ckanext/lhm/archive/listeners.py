@@ -29,7 +29,7 @@ def copy_data_to_solr(data_dict):
                 records_ = records_str[start_index:end_index+1]
             else:
                 records_ = records_str
-
+            print(records_)
             records = json.loads(records_)
             if records:
                 for record in records:
@@ -43,15 +43,4 @@ def copy_data_to_solr(data_dict):
             pass
 
     return attribut, wert, bedeutung
-
-
-def lhm_get_sum():
-    not_empty = toolkit.get_validator("not_empty")
-    convert_int = toolkit.get_validator("convert_int")
-
-    return {
-        "left": [not_empty, convert_int],
-        "right": [not_empty, convert_int]
-    }
-
 

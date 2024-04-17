@@ -1,0 +1,17 @@
+{% import 'macros/form.html' as form %}
+
+
+{%- if field.help_text or field.help_url -%}
+    {% set text = h.scheming_language_text(field.help_text) %}
+    {% set url = field.help_url %}
+    <p>
+        <i class="fa fa-info" style="color: #808080;"></i> <!-- Font Awesome icon -->
+        {% if text %}
+        <span style = "color: #808080;"> {{text}} </span>
+        {% endif %}
+        {% if url %}
+        <!-- You can add a clickable URL by wrapping the text in an anchor tag -->
+        <a href="{{url}}" style = "color: #808080;">{{url}}</a>.
+        {% endif %}
+    </p>
+{%- endif -%}

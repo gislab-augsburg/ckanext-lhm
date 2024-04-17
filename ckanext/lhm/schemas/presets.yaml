@@ -24,6 +24,11 @@ presets:
     display_snippet: composite.html
     validators: composite_group2json
 
+- preset_name: select_lhm
+  values:
+      form_snippet: select_lhm.html,
+      display_snippet: select.html,
+      validators: scheming_required scheming_choices
 ## an empty template for the required presets
 # - preset_name: 
 #   values:

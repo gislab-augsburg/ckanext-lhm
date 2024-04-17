@@ -2,7 +2,8 @@
 
 {{ super() }}
 
-{%- set schema = h.scheming_get_dataset_schema(dataset_type) -%}
+{% set schema = h.scheming_get_dataset_schema(dataset_type) %}
+
 
 {% block package_description %}
     {% block package_markers %}

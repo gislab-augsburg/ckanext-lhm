@@ -33,15 +33,15 @@ def copy_data_to_solr(data_dict):
             records = json.loads(records_)
             if records:
                 for record in records:
-                    attribut.append(record['ATTRIBUT'])
-                    wert.append(record['WERT'])
-                    bedeutung.append(record['BEDEUTUNG'])
+                    attribut.append(record.get('ATTRIBUT', None))
+                    wert.append(record.get('WERT', None))
+                    bedeutung.append(record.get('BEDEUTUNG', None))
 
         except (toolkit.ObjectNotFound, toolkit.NotAuthorized):
         # Continue even if no datastore record is found for the
         # current resource
             pass
-
+    print(attribut, wert, bedeutung)
     return attribut, wert, bedeutung
 
 

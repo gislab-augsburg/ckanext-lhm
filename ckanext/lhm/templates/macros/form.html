@@ -117,13 +117,13 @@
       {{ form.markdown('desc', id='field-description', label=_('Description'), value=data.desc, error=errors.desc) }}
     
       #}
-      {% macro markdown(name, id='', label='', value='', placeholder='', error="", classes=[], attrs={'class': 'form-control'}, is_required=false) %}
+      {% macro markdown(name, id='', label='', value='', placeholder='', error="", classes=[], attrs={'class': 'form-control'}, is_required=false, is_info=false, info_text="") %}
       {% set classes = (classes|list) %}
       {% do classes.append('control-full') %}
       {% set markdown_tooltip = "<pre><p>__Bold text__ or _italic text_</p><p># title<br>## secondary title<br>### etc</p><p>* list<br>* of<br>* items</p><p>http://auto.link.ed/</p></pre><p><b><a href='http://daringfireball.net/projects/markdown/syntax' target='_blank'>Full markdown syntax</a></b></p><p class='text-muted'><b>Please note:</b> HTML tags are stripped out for security reasons.</p>" %}
     
       {%- set extra_html = caller() if caller -%}
-      {% call input_block(id or name, label or name, error, classes, control_classes=["editor"], extra_html=extra_html, is_required=is_required) %}
+      {% call input_block(id or name, label or name, error, classes, control_classes=["editor"], extra_html=extra_html, is_required=is_required, is_info=is_info, info_text=info_text) %}
       <textarea id="{{ id or name }}" name="{{ name }}" cols="20" rows="5" placeholder="{{ placeholder }}" {{ attributes(attrs) }}>{{ value | empty_and_escape }}</textarea>
       <span class="editor-info-block">{% trans %}You can use <a href="#markdown" title="Markdown quick reference" data-target="popover" data-content="{{ markdown_tooltip }}" data-html="true">Markdown formatting</a> here{% endtrans %}</span>
       {% endcall %}
@@ -278,7 +278,7 @@
       <div class="form-group{{ " error" if error }}{{ " " ~ classes | join(' ') }}">
       <label class="control-label" for="{{ for }}">{% if is_required %}<span title="{{ _("This field is required") }}" class="control-required">*</span> {% endif %}{{ label or _('Custom') }}</label>
       {% if is_info %}
-      <span class="fa fa-info-circle" data-toggle="tooltip" title="{{ _(info_text) }}"></span>
+      <span class="fa fa-info-circle" style="font-size: 15pt;" data-toggle="tooltip" title="{{ _(info_text) }}"></span>
       {% endif %}
       <div class="controls{{ " " ~ control_classes | join(' ') }}">
       {{ caller() }}
@@ -333,9 +333,9 @@
       {% macro info(text='', inline=false, classes=[]) %}
       {%- if text -%}
       <div class="info-block{{ ' info-inline' if inline }}{{ " " ~ classes | join(' ') }}">
-      <i class="fa fa-info-circle"></i>
-      {{ text | urlize }}
-      </div>
+      <span class="fa fa-info-circle" style="color: black; font-size: 15pt; " data-toggle="tooltip" title="{{ text | urlize }}"></span>
+
+      </div> 
       {%- endif -%}
       {% endmacro %}
     

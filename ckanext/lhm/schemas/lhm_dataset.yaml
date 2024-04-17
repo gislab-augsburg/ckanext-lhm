@@ -9,7 +9,10 @@ dataset_fields:
 - field_name: title
   label: Title
   preset: title
+  form_snippet: large_text_lhm.html
   form_placeholder: eg. A descriptive title
+  is_info: true
+  info_text: Thema | NAME_DER_TABELLE. Der Titel beteht aus dem Thema (ehemals Datenbestand) und dem Namen der Tabelle im Geodatenpool
 
 - field_name: name
   label: URL
@@ -18,9 +21,11 @@ dataset_fields:
 
 - field_name: notes
   label: Description
-  form_snippet: markdown.html
+  form_snippet: markdown_lhm.html
   form_placeholder: eg. Some useful notes about the data
-
+  is_info: true
+  info_text: Eindeutige und aussagekräftige inhaltliche Beschreibung des Datensatzes, damit auch Laien den Inhalt des Datensatzes einschätzen können. Relevante Informationen können neben dem konkreten Inhalt u.a. die räumliche Abdeckung, die Vollständigkeit, die Genauigkeit, die Urheberschaft oder die Aktualität sein.
+  
 - field_name: tag_string
   label: Tags
   preset: tag_string_autocomplete
@@ -35,6 +40,9 @@ dataset_fields:
 - field_name: schema
   label: Schema
   preset: select
+  form_snippet: select_lhm.html
+  is_info: true
+  info_text: Name des Datenbankschemas (z.B. BAUT, PLAN, RKU)
   required: true
   choices:
   - value: ""
@@ -89,6 +97,10 @@ dataset_fields:
     en: Responsible organization
     de: Fachl. Zuständigkeit
   preset: dataset_organization
+  form_snippet: organization_lhm.html
+  is_info: true
+  info_text_orga: Angabe des fachlich zuständigen Referats und der ersten, das Referat untergliedernden Organisationseinheit (z.B. Amt, Hauptabteilung, Geschäftsbereich)
+  info_text_pub: Einstellung zur Sichtbarkeit des eingetragenen Metadatensatzes. Öffentlich = Sichtbarkeit für alle Personen in der LHM [Standard]. Privat =  Sichtbarkeit nur für Mitglieder der zuständigen Organisation [nur für Qualitätssicherungszwecke].
 
 - field_name: author
   label: 
@@ -97,6 +109,7 @@ dataset_fields:
   required: true
   form_snippet: author.html
   form_placeholder: Erika Mustermann / KR-GSM-GEO-GIS
+  
 
 - field_name: author_email
   label: 
@@ -107,6 +120,11 @@ dataset_fields:
   form_snippet: author_email.html
   display_snippet: email.html
   validators: not_empty unicode_safe strip_value email_validator
+  #info_text: Thema | NAME_DER_TABELLE. Der Titel beteht aus dem Thema (ehemals Datenbestand) und dem Namen der Tabelle im Geodatenpool
+  #is_info: true
+  help_text: slamaulskhsdf
+  help_url: come.de
+
 
 - field_name: ext_org
   label: 
@@ -352,10 +370,12 @@ dataset_fields:
   #form_snippet: multiple_checkbox_lhm.html
   #display_snippet: multiple_choice.html
   preset: select
+  form_snippet: select_lhm.html
   required: true
   help_text: 
     en: 'Declaration of commitment of the third party necessary: http://geo.muenchen.de/metadaten/Nutzungsvereinbarung/Nutzungsvereinbarungen_GSM/03_Hinweise%20Datenabgabe%20an%20Dritte%20im%20Auftrag%20der%20Stadt.pdf'
-    de: 'Verpflichtungserklärung des Dritten notwendig: http://geo.muenchen.de/metadaten/Nutzungsvereinbarung/Nutzungsvereinbarungen_GSM/03_Hinweise%20Datenabgabe%20an%20Dritte%20im%20Auftrag%20der%20Stadt.pdf'
+    de: 'Verpflichtungserklärung des Dritten notwendig: '
+  help_url: http://geo.muenchen.de/metadaten/Nutzungsvereinbarung/Nutzungsvereinbarungen_GSM/03_Hinweise%20Datenabgabe%20an%20Dritte%20im%20Auftrag%20der%20Stadt.pdf
   choices:
   - value: 'yes'
     label:
@@ -388,6 +408,11 @@ dataset_fields:
   #preset: composite_lhm
   #subfields:
   preset: select
+  form_snippt: select_lhm.html
+  help_text: 
+    en: 'Disclosure of the terms of use for the third party is necessary: '
+    de: 'Bekanntgabe der Nutzungsbedingungen für den Dritten notwendig: '
+  help_url: http://geo.muenchen.de/metadaten/Nutzungsvereinbarung/Nutzungsvereinbarungen_GSM/01_Hinweise%20Weitergabe%20im%20Rahmen%20Nutzungsbedingung.pdf
   choices:
   - value: 'no'
     label: 
@@ -397,9 +422,6 @@ dataset_fields:
     label:
       en: Within the scope of the terms of use
       de: im Rahmen der Nutzungsbedingungen
-    help_text: 
-      en: 'Disclosure of the terms of use for the third party is necessary: http://geo.muenchen.de/metadaten/Nutzungsvereinbarung/Nutzungsvereinbarungen_GSM/01_Hinweise%20Weitergabe%20im%20Rahmen%20Nutzungsbedingung.pdf'
-      de: 'Bekanntgabe der Nutzungsbedingungen für den Dritten notwendig: http://geo.muenchen.de/metadaten/Nutzungsvereinbarung/Nutzungsvereinbarungen_GSM/01_Hinweise%20Weitergabe%20im%20Rahmen%20Nutzungsbedingung.pdf'
     # preset: multiple_checkbox
     # checked: false
     # choices:
@@ -421,10 +443,7 @@ dataset_fields:
     label:
       en: Beyond the scope of given terms of use
       de: über den Rahmen der Nutzungsbedingungen hinaus
-    help_text: 
-      en: 'Usage agreement with third parties necessary: http://geo.muenchen.de/metadaten/Nutzungsvereinbarung/Nutzungsvereinbarungen_GSM/02_Hinweise%20Weitergabe%20außerhalb%20des%20Rahmens%20Nutzungsbedingung.pdf'
-      de: 'Nutzungsvereinbarung mit Dritten notwendig: http://geo.muenchen.de/metadaten/Nutzungsvereinbarung/Nutzungsvereinbarungen_GSM/02_Hinweise%20Weitergabe%20außerhalb%20des%20Rahmens%20Nutzungsbedingung.pdf'
-    # preset: multiple_checkbox
+ # preset: multiple_checkbox
     # checked: false
     # choices:
     # - value: rasterdaten
@@ -445,9 +464,11 @@ dataset_fields:
 - field_name: open_data
   label: Open Data 
   preset: select
+  form_snippet: select_lhm.html
   help_text: 
-    en: 'Rights of use open data: https://www.opengov-muenchen.de/pages/nutzungsbedingungen'
-    de: 'Nutzungsrechte open data: https://www.opengov-muenchen.de/pages/nutzungsbedingungen'
+    en: 'Rights of use open data: '
+    de: 'Nutzungsrechte open data: '
+  help_url: https://www.opengov-muenchen.de/pages/nutzungsbedingungen
   required: true
   choices:
   - value: 'no'

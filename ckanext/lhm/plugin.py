@@ -119,13 +119,16 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
 
         data_dict_scheming = data_dict['validated_data_dict']
         validated_data_dict = json.loads(data_dict_scheming)
+        print(validated_data_dict)
 
-        # To index the datastore values into the solr
-        # Focus is only on the Table Katalogwerte from GDP metadata
-        attribut, wert, bedeutung = schema.copy_data_to_solr(validated_data_dict)
-        data_dict['text'] = attribut #'\n'.join(attribut)
-        data_dict['text'] += wert #'\n'.join(wert)
-        data_dict['text'] += bedeutung #'\n'.join(bedeutung)
+        if validated_data_dict:
+            print('hi')
+            # To index the datastore values into the solr
+            # Focus is only on the Table Katalogwerte from GDP metadata
+            attribut, wert, bedeutung = schema.copy_data_to_solr(validated_data_dict)
+            data_dict['text'] = attribut #'\n'.join(attribut)
+            data_dict['text'] += wert #'\n'.join(wert)
+            data_dict['text'] += bedeutung #'\n'.join(bedeutung)
 
         usage_keywords = []
         usage_remarks = []

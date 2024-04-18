@@ -83,12 +83,12 @@
         {{ form.select('year', label=_('Year'), options=[{'name':2010, 'value': 2010},{'name': 2011, 'value': 2011}], selected=2011, error=errors.year) }}
     
         #}
-        {% macro select(name, id='', label='', options='', selected='', error='', classes=[], attrs={'class': 'form-control'}, is_required=false) %}
+        {% macro select(name, id='', label='', options='', selected='', error='', classes=[], attrs={'class': 'form-control'}, is_required=false, is_info=false, info_text="") %}
         {% set classes = (classes|list) %}
         {% do classes.append('control-select') %}
     
         {%- set extra_html = caller() if caller -%}
-        {% call input_block(id or name, label or name, error, classes, extra_html=extra_html, is_required=is_required) %}
+        {% call input_block(id or name, label or name, error, classes, extra_html=extra_html, is_required=is_required, is_info=is_info, info_text=info_text) %}
         <select id="{{ id or name }}" name="{{ name }}" {{ attributes(attrs) }}>
           {% for option in options %}
       <option value="{{ option.value }}"{% if option.value == selected %} selected{% endif %}>{{ option.text or option.value }}</option>

@@ -38,6 +38,15 @@
   {'value': 'nein', 'label': _('No')}
   ] %}
 
+{% set is_info = 'true' %}
+{% set info_text_id = 'Name des Attributs mit Großbuchstaben und Unterstrich' %}
+{% set info_text_type = 'Angabe zum Datentyp des Attributs. Zulässig sind im Geodatenpool folgende Oracle Datentypen (ArcGIS-Datentypen): 
+number(Objekt-ID), sdo_geometry(Geometry), nvarchar2(Text), float(Float), number(short oder long), date(DATE) oder timestamp(6), blob(BLOB)' %}
+{% set info_text_condition = 'Angabe von Bedingungen, falls vorhanden. Dies sind z.B. "NOT NULL" oder "PRIMARY KEY"' %}
+{% set info_text_notes = 'Eine für Laien nachvollziehbare, kurze Beschreibung des Attributs (z.B. Anzahl der Vollgeschosse, Gemarkung des Flurstücks)' %}
+{% set info_text_hint = 'ggf. erforderliche ergänzende Bemerkungen' %}
+{% set info_text_opendata = 'Wenn für die Nutzung als OpenData angegeben ist, dass dies nur für bestimmte Attribute gilt, kann hier über Ja/Nein gewählt werden, ob das Attribut freigegeben ist.' %}
+
 <div class="dictionary-field-{{ position }}">
   {% if field and total_records %}
 
@@ -49,46 +58,46 @@
 
     {{ form.input('info__' ~ position ~ '__condition',
       label=_('Conditions'), id='field-f' ~ position ~ 'condition',
-      value=field.get('info', {}).get('condition', ''), classes=['control-full']) }}
+      value=field.get('info', {}).get('condition', ''), classes=['control-full'], is_info=is_info, info_text=info_text_condition)}}
 
     {{ form.markdown('info__' ~ position ~ '__notes',
       label=_('Description'), id='field-d' ~ position ~ 'notes',
-      value=field.get('info', {}).get('notes', '')) }}
+      value=field.get('info', {}).get('notes', ''), is_info=is_info, info_text=info_text_notes) }}
 
     {{ form.input('info__' ~ position ~ '__label',
       label=_('Remarks'), id='field-f' ~ position ~ 'label',
-      value=field.get('info', {}).get('label', ''), classes=['control-full']) }}
+      value=field.get('info', {}).get('label', ''), classes=['control-full'], is_info=is_info, info_text=info_text_hint) }}
 
     {{ form.select('info__' ~ position ~ '__opendata',
       label=_('Open Data'), options=od_options,
-      selected=field.get('info', {}).get('opendata', ''))}}  
+      selected=field.get('info', {}).get('opendata', ''), is_info=is_info, info_text=info_text_opendata)}}  
 
 
   {% elif field and not total_records %}
 
     {{ form.input('field__' ~ position ~ '__id',
       label=_('Attribute Name*'), id='field-f' ~ position ~ 'id',
-      value=field.get('id'), classes=['control-full']) }}
+      value=field.get('id'), classes=['control-full'], is_info=is_info, info_text=info_text_id) }}
 
     {{ form.select('info__' ~ position ~ '__type',
       label=_('Data Type*'), options=options,
-      selected=field.get('type')) }}      
+      selected=field.get('type'), is_info=is_info, info_text=info_text_type) }}      
 
     {{ form.input('info__' ~ position ~ '__condition',
       label=_('Conditions'), id='field-f' ~ position ~ 'condition',
-      value=field.get('info', {}).get('condition', ''), classes=['control-full']) }}
+      value=field.get('info', {}).get('condition', ''), classes=['control-full'], is_info=is_info, info_text=info_text_condition) }}
 
     {{ form.markdown('info__' ~ position ~ '__notes',
       label=_('Description'), id='field-d' ~ position ~ 'notes',
-      value=field.get('info', {}).get('notes', '')) }}
+      value=field.get('info', {}).get('notes', ''), is_info=is_info, info_text=info_text_notes) }}
 
     {{ form.input('info__' ~ position ~ '__label',
       label=_('Remarks'), id='field-f' ~ position ~ 'label',
-      value=field.get('info', {}).get('label', ''), classes=['control-full']) }}
+      value=field.get('info', {}).get('label', ''), classes=['control-full'], is_info=is_info, info_text=info_text_hint) }}
 
     {{ form.select('info__' ~ position ~ '__opendata',
       label=_('Open Data'), options=od_options,
-      selected=field.get('info', {}).get('opendata', ''))}}   
+      selected=field.get('info', {}).get('opendata', ''), is_info=is_info, info_text=info_text_opendata)}}   
 
     {% snippet "dictionary/snippets/delete_field_button.html" %}
 
@@ -96,25 +105,25 @@
 
     {{ form.input('field__' ~ position ~ '__id',
       label=_('Attribute Name*'), id='field-f' ~ position ~ 'id',
-      value='', classes=['control-full']) }}
+      value='', classes=['control-full'], is_info=is_info, info_text=info_text_id) }}
 
     {{ form.select('info__' ~ position ~ '__type',
-      label=_('Data Type*'), options=options) }}
+      label=_('Data Type*'), options=options, is_info=is_info, info_text=info_text_type) }}
 
     {{ form.input('info__' ~ position ~ '__condition',
       label=_('Conditions'), id='field-f' ~ position ~ 'condition',
-      value='', classes=['control-full']) }}
+      value='', classes=['control-full'], is_info=is_info, info_text=info_text_condition) }}
 
     {{ form.markdown('info__' ~ position ~ '__notes',
       label=_('Description'), id='field-d' ~ position ~ 'notes',
-      value='') }}
+      value='', is_info=is_info, info_text=info_text_notes) }}
 
     {{ form.input('info__' ~ position ~ '__label',
       label=_('Remarks'), id='field-f' ~ position ~ 'label',
-      value='') }}
+      value='', is_info=is_info, info_text=info_text_hint) }}
 
     {{ form.select('info__' ~ position ~ '__opendata',
-      label=_('Open Data'), options=od_options) }}   
+      label=_('Open Data'), options=od_options, is_info=is_info, info_text=info_text_opendata) }}   
 
     {% snippet "dictionary/snippets/delete_field_button.html" %}
 

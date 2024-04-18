@@ -24,9 +24,10 @@
           {% if subfield.get('preset', '') == "multiple_checkbox"%}
               {%- snippet 'scheming/form_snippets/multiple_checkbox_lhm_composite.html', subfield=subfield, subfield_index=0, subfields_repeating_label=subfields_repeating_label, subfields_repeating_label=subfields_repeating_label, name=name, value=value, errors=errors -%}
           {% elif subfield.get('preset', '') == "radio"%}
-              {%- snippet 'scheming/form_snippets/radio.html', data=data, field=subfield, subfield_index=0, subfields_repeating_label=subfields_repeating_label, subfields_repeating_label=subfields_repeating_label, name=name, value=value, errors=errors -%}
+              {%- snippet 'scheming/form_snippets/radio.html', data=data, subfield=subfield, subfield_index=0, subfields_repeating_label=subfields_repeating_label, subfields_repeating_label=subfields_repeating_label, name=name, value=value, errors=errors -%}
           {% else %}
-              {%- snippet 'scheming/form_snippets/subfield_snippets/composite_select.html', subfield=subfield, subfield_index=0, subfields_repeating_label=subfields_repeating_label, name=name, value=value, errors=errors -%}
+
+              {%- snippet 'scheming/form_snippets/composite_select_lhm.html', subfield=subfield, subfield_index=0, subfields_repeating_label=subfields_repeating_label, name=name, value=value, errors=errors -%}
           {% endif %}
       {% else %}
        {% set type = "text" %}
@@ -54,19 +55,21 @@
            classes=classes,
            control_classes=[],
            extra_html="",
-           is_required=h.scheming_field_required(subfield) 
+           is_required=h.scheming_field_required(subfield),
+           is_info = subfield.is_info,
+           info_text = subfield.info_text
            ) -%}
            <input id="{{ id or name }}" type="{{ type }}" name="{{ name }}"
             value="{{ value | empty_and_escape }}" placeholder="{{ placeholder }}"
             {{ form.attributes(attrs) }} class="{{ composite_classes }}"/>
 
-           {%- snippet 'scheming/form_snippets/subfield_snippets/composite_help_text.html', field=subfield -%}
+           {%- snippet 'scheming/form_snippets/help_text.html', field=subfield -%}
          {% endcall %}
        {% endif %}
      {% endif %}
     {% else %}
       {% if subfield_form_snippet != None %}
-        {%- snippet 'scheming/form_snippets/' + subfield_form_snippet, field=subfield -%}
+        {%- snippet 'scheming/form_snippets/' + subfield_form_snippet, field=subfield, value=value, errors=errors, data=field_dict -%}
       {% endif %}
    {% endif %}
 {% endfor %}

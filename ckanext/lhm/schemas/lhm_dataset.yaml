@@ -29,7 +29,9 @@ dataset_fields:
 - field_name: tag_string
   label: Tags
   preset: tag_string_autocomplete
-  form_placeholder: eg. economy, mental health, government
+  form_placeholder: z.B. Gesundheit; Umwelt;
+  is_info: true
+  info_text: Tags sind i.d.R. Substantive und sind Schlagworte zur inhaltlichen Beschreibung des Datensatzes. Es können mehrere Tags vergeben werden, 
 
 - field_name: group
   label: Group
@@ -39,8 +41,7 @@ dataset_fields:
 
 - field_name: schema
   label: Schema
-  preset: select
-  form_snippet: select_lhm.html
+  preset: select_lhm
   is_info: true
   info_text: Name des Datenbankschemas (z.B. BAUT, PLAN, RKU)
   required: true
@@ -109,8 +110,9 @@ dataset_fields:
   required: true
   form_snippet: author.html
   form_placeholder: Erika Mustermann / KR-GSM-GEO-GIS
+  is_info: true
+  info_text: Angabe der Organisationseinheit, die fachliche und organisatorische Kenntnis zum Datensatz hat. Meist Team-/Sachgebietsebene (z.B. KR-GSM-GEO-GDM-GDP/GDI). Bitte keine Personen eintragen.
   
-
 - field_name: author_email
   label: 
     en: Contact person Email
@@ -120,28 +122,29 @@ dataset_fields:
   form_snippet: author_email.html
   display_snippet: email.html
   validators: not_empty unicode_safe strip_value email_validator
-  #info_text: Thema | NAME_DER_TABELLE. Der Titel beteht aus dem Thema (ehemals Datenbestand) und dem Namen der Tabelle im Geodatenpool
-  #is_info: true
-  help_text: slamaulskhsdf
-  help_url: come.de
-
+  is_info: true
+  info_text: Angabe der Team-E-Mailadresse des Ansprechpartners. Bitte keine persönlichen E-Mailadressen verwenden.
 
 - field_name: ext_org
   label: 
     en: External Ownership
     de: Externe Datenurheber
-  #preset: markdown
+  form_snippet: text_lhm.html
   required: true
   form_placeholder: 
     en: No or Yes; If yes, please name the responsibile organisation, the contact person and an email or telephon number
     de: Nein oder Ja; Wenn ja. Verantwortlicher
+  is_info: true
+  info_text: Um externe Datenurheber handelt es sich, wenn die Daten nicht von der Landeshautpststadt München stammen (z.B. LDBV)
 
 - field_name: timeliness
   label: 
     en: Timeliness
     de: Update-Zyklus
-  preset: select
+  preset: select_lhm
   required: true
+  is_info: true
+  info_text: Mit dem Updatezyklus kann im Geodatenpool angegeben werden, ob Daten regelmäßig (monatlich), unregelmäßig (auf Anforderung) oder nicht (kein) aktualisiert werden. Eine Aktualisierung der Daten kann im Rahmen eines Updatelaufs und im Rahmen eine Fastlane erfolgen.
   choices:
   - value: auf_anforderung
     label: 
@@ -172,7 +175,9 @@ dataset_fields:
   label: 
     en: Geometry Type
     de: Geometrietyp
-  preset: select
+  preset: select_lhm
+  is_info: true
+  info_text: 'Welcher Geometrietyp ist in der Tabelle enthalten: Punkt, Linie, Fläche, Raster, Sachdaten oder Annotation'
   required: true
   choices:
   - value: ""
@@ -206,13 +211,15 @@ dataset_fields:
   label: Genauigkeit 
     # en: Accuracy
     # de: Genauigkeit
-  preset: composite
+  preset: composite_lhm
   #required: true
   subfields:
   - field_name: positional_accuracy
     label: Lagengenauigkeit
       # en: Positional accuracy
       # de: Lagengenauigkeit
+    is_info: true
+    info_text: Mit der Lagegenauigkeit wird angegeben, auf welcher Basis Daten erhoben bzw. erfasst wurden und welche räumliche Genauigkeit damit einhergeht.
     preset: select
     #required: true
     choices:
@@ -240,26 +247,26 @@ dataset_fields:
       label: Auf Basis Stadtplan (10m)
   - field_name: remark
     label: Bemerkung
+    is_info: true
+    info_text: Hier können ergänzende Informationen zur Lagegenauigkeit ergänzt werden, beispielsweise ein geeigneter Maßstab (z.B. 1:500), die größe eines Pixels (z.B. 20cm) oder die Spanne der Abweichung bei der Lage (z.B. +/- 10m)
     #  en: Remark
     #  de: Bemerkung
 
 - field_name: archive
   label: Stadtarchiv 
-    # en: City Archive
-    # de: Stadtarchiv
   help_text:
     en: Evaluation through City Archive
     de: Bewertung durch Stadtarchiv
-  help_inline: true  
-  preset: composite
+  preset: composite_lhm
+  required: true
   subfields:
   - field_name: archivability
     label: Archivwürdigkeit
-      # en: Archivability
-      # de: Archivwürdigkeit
     form_include_blank_choice: false
     required: true
     preset: select
+    is_info: true
+    info_text: Die Bewertung der Archivwürdigkeit wird durch das Stadtarchiv im Rahmen des Change-Prozesses vorgenommen.
     choices:
     - value: noch_offen
       label: 
@@ -273,10 +280,6 @@ dataset_fields:
       label: 
         en: Not archivable
         de: nicht archivwürdig
-#    - value: ""
-#      label: 
-#        en: Please choose an option
-#        de: Eine Option auswählen
   - field_name: justification
     label: Begründung
       # en: Justification
@@ -289,14 +292,16 @@ dataset_fields:
 
 - field_name: intranet
   label: LHM-Intranet
-  preset: composite
-  required: true
+  #required: true
+  preset: composite_lhm
   subfields:
   - field_name: fachverfahren
     label: Fachverfahren
       # en: Specialized Procedures
       # de: Fachverfahren
     preset: select
+    is_info:  true
+    info_text: Der Zugriff durch Fachverfahren meint den direkten (lesenden) Zugriff auf die Daten auf der Datenbank und/oder über Diensten. Standard ist der Zugriff für stadtweit alle Benutzer (d.h. Zugriffsuser inkl. GeoInfoWeb). Teilweise muss der Zugriff auf bestimmte Zugriffsuser eingeschränkt werden oder die Daten dürfen nicht für Fachverfahren genutzt werden.
     required: true
     form_include_blank_choice: false
     choices:
@@ -315,6 +320,8 @@ dataset_fields:
   - field_name: geoinfoweb
     label: GeoInfoWeb
     preset: select
+    is_info: true
+    info_text: Der Zugriff über GeoInfoWeb kann auf bestimmte Gruppen begrenzt werden. Dann sind die Daten nur für diese Nutzer bzw. Gruppen sichtbar. Standardeinstellung ist der stadtweite Zugriff (alle Nutzer). "ausgenommen Bezirksausschüsse" meint, dass stadtweit alle Nutzer Zugriff haben - ausgenommen den Bezirksausschüssen. 
     required: true
     form_include_blank_choice: false
     choices:
@@ -341,7 +348,9 @@ dataset_fields:
     de: 'Internet: Veröffentlichungen / Präsentationen im Aufgabenbereich der LHM'
 #  form_snippet: multiple_checkbox_lhm.html
 #  display_snippet: multiple_choice.html
-  preset: select
+  preset: select_lhm
+  is_info: true
+  info_text: Angabe, in welcher Form die Daten im Internet bereitgetsellt werden dürfen. "Als Backend-Daten (ohne Präsentation" meint die Nutzung z.B. für Online-Formulare. "Für Präsentationen (inkl. Backend)" erweitert die Freigabe z.B. für kartografische Darstellungen im Geoportal oder muenchen.de und schließt die Nutzung für Formulare o.ä. ein.
   required: true
   choices:
   - value: 'no'
@@ -369,8 +378,9 @@ dataset_fields:
     de: Weitergabe von Daten oder Diensten an Dritte, die im Auftrag der Stadt tätig werden 
   #form_snippet: multiple_checkbox_lhm.html
   #display_snippet: multiple_choice.html
-  preset: select
-  form_snippet: select_lhm.html
+  preset: select_lhm
+  is_info: true
+  info_text: Angabe, ob die Daten an Dritte weitergegeben werden dürfen, sofern diese im Auftrag der Stadt tätig sind. Überlicherweise ist hierbei eine Verpflichtungserklärung des Dritten notwendig, in der die Nutzung der Daten geregelt wird.
   required: true
   help_text: 
     en: 'Declaration of commitment of the third party necessary: http://geo.muenchen.de/metadaten/Nutzungsvereinbarung/Nutzungsvereinbarungen_GSM/03_Hinweise%20Datenabgabe%20an%20Dritte%20im%20Auftrag%20der%20Stadt.pdf'
@@ -405,10 +415,9 @@ dataset_fields:
     # en: 'Internet: Data handover to external non-contractors'
     # de: 'Internet: Datenabgabe an externe, die nicht Auftragnehmer sind'
   required: true
-  #preset: composite_lhm
-  #subfields:
-  preset: select
-  form_snippt: select_lhm.html
+  preset: select_lhm
+  is_info: true
+  info_text: 'Angabe, ob die Daten allgemein an Dritte weitergegeben werden dürfen. Überlicherweise ist hierbei eine Verpflichtungserklärung des Dritten notwendig, in der die Nutzung der Daten geregelt wird. Über die Nutzungsbedingungen kann speziell darauf hingewiesen werden, dass ggf. besondere Nutzungsbedingungen zu beachten sind.'
   help_text: 
     en: 'Disclosure of the terms of use for the third party is necessary: '
     de: 'Bekanntgabe der Nutzungsbedingungen für den Dritten notwendig: '
@@ -463,8 +472,9 @@ dataset_fields:
 
 - field_name: open_data
   label: Open Data 
-  preset: select
-  form_snippet: select_lhm.html
+  preset: select_lhm
+  is_info: true
+  info_text: 'Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Einzuhaltende Nutzungsbedingungen sind hier dokumentiert: https://www.opengov-muenchen.de/pages/nutzungsbedingungen'
   help_text: 
     en: 'Rights of use open data: '
     de: 'Nutzungsrechte open data: '
@@ -486,11 +496,16 @@ dataset_fields:
 
 - field_name: open_data_attribute
   label: Open Data - bestimmte Attribute
+  form_snippet: text_lhm.html
+  is_info: true
+  info_text: Sind nur ausgewählte Attribute zur Open-Data-Nutzung freigegeben, können die Attributnamen hier definiert werden, z.B. OBJECTID, HAUSNR, GEMEINDE
 
 - field_name: additional_usage_notes
   label: weitere Hinweise zur Nutzung
     # en: Additional hints regarding the resource/data useage
-    # de: weitere Hinweise zur Nutzung
+    # de: weitere Hinweise zur Nutzung 
+  is_info: ture
+  info_text: Weitere Hinweise zur Nutzung können mit einen Stichwort und unter "Hinweis" mit einem erläuternden Text beschrieben werden. Die Hinweise müssen auch für einen Laien nachvollziehbar sein. Denkbar sind etwa spezielle Hinweise zu vertraglichen Rahmenbedingungen, im Rahmen der Nutzung zu beachtende Besonderheiten im Datensatz o.ä.
   repeating_label: Hinweis
   repeating_subfields:
   - field_name: usage_keywords
@@ -542,16 +557,22 @@ resource_fields:
 
 - field_name: name
   label: Name
+  form_snippet: text_lhm.html
+  is_info: true
+  info_text: Tabellenname im Geodatenpool
   form_placeholder: 
     en: e.g. January 2011 Gold Prices
     de: z. B. 3D Stadtmodell
 
 - field_name: description
   label: Description
-  form_snippet: markdown.html
+  form_snippet: markdown_lhm.html
+  is_info: true
+  info_text: Optionale Beschreibung der Ressource, z.B. "Tabelle im stadtweit verfügbaren Geodatenpool."
   form_placeholder: Some useful notes about the data
 
 - field_name: format
   label: Format
   preset: resource_format_autocomplete
-
+  help_text: Bei Tabellen im Geodatenpool immer "oracle-db"
+  help_inline: true

@@ -13,8 +13,8 @@
     classes=['control-medium'],
     attrs=field.form_attrs if 'form_attrs' in field else {"class": "form-control"},
     is_required=h.scheming_field_required(field),
-    is_info = 'true',
-    info_text = 'The author of the resource itself (not necessarily the person filling in the metadata).'
+    is_info = field.is_info,
+    info_text = field.info_text
     )
 %}
 
@@ -32,8 +32,8 @@
     classes=['control-medium'],
     attrs=field.form_attrs if 'form_attrs' in field else {"class": "form-control"},
 is_required=h.scheming_field_required(field),
-    is_info = 'true',
-    info_text = 'The author of the resource itself (not necessarily the person filling in the metadata).'
+    is_info = field.is_info,
+    info_text = field.info_text
     )
 %}
 

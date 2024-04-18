@@ -2,10 +2,6 @@
 {# if used with other fields #}
 
 {% macro organization_option_tag(organization, selected_org) %}
-{% if field.is_info %}
-{{'hallo'}}
-<span class="fa fa-info-circle" style="font-size: 15pt;" data-toggle="tooltip" title="{{ field.info_text_orga }}"></span>
-{% endif %}
   {% block organization_option scoped %}
     <option value="{{ organization.id }}"{%
       if selected_org %} selected="selected"{% endif
@@ -14,14 +10,14 @@
 {% endmacro %}
 
   <div data-module="dataset-visibility">
-  {% snippet "scheming/form_snippets/_organization_select.html",
+  {% snippet "scheming/form_snippets/_organization_select_lhm.html",
     field=field,
     data=data,
     errors=errors,
     organizations_available=h.organizations_available('create_dataset'),
     org_required=not h.check_config_permission('create_unowned_dataset')
       or h.scheming_field_required(field),
-    organization_option_tag=organization_option_tag %}
+    organization_option_tag=organization_option_tag%}
 
   {% block package_metadata_fields_visibility %}
     <div class="control-group form-group control-medium">

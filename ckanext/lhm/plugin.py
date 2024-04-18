@@ -98,7 +98,7 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         config['scheming.presets'] = """
         ckanext.scheming:presets.json
         ckanext.composite:presets.json
-        ckanext.lhm:schemas/presets.yaml
+        ckanext.lhm:schemas/presets_lhm.yaml
         """ + (
                 "ckanext.validation:presets.json" if "validation" in config['ckan.plugins'] else
                 "ckanext.lhm:schemas/validation_placeholder_presets.yaml"
@@ -117,18 +117,22 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
 
     def before_index(self, data_dict):
 
+
         data_dict_scheming = data_dict['validated_data_dict']
         validated_data_dict = json.loads(data_dict_scheming)
-        print(validated_data_dict)
 
         if validated_data_dict:
-            print('hi')
             # To index the datastore values into the solr
             # Focus is only on the Table Katalogwerte from GDP metadata
             attribut, wert, bedeutung = schema.copy_data_to_solr(validated_data_dict)
-            data_dict['text'] = attribut #'\n'.join(attribut)
-            data_dict['text'] += wert #'\n'.join(wert)
-            data_dict['text'] += bedeutung #'\n'.join(bedeutung)
+        else:
+            attribut, wert, bedeutung = [], [], []
+
+        data_dict['text'] = attribut #'\n'.join(attribut)
+        data_dict['text'] += wert #'\n'.join(wert)
+        data_dict['text'] += bedeutung #'\n'.join(bedeutung)
+
+
 
         usage_keywords = []
         usage_remarks = []

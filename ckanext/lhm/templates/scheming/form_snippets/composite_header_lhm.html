@@ -6,11 +6,16 @@
     {% endif %}
     {{ field.label }}
     </label>
-    {% set help_text = h.scheming_language_text(field.help_text)%}
-    <div class="info-block {{ ' info-inline' if inline }}{{ " " ~ classes | join(' ') }} composite-header-info">
-    {% if help_text %}
-         <i class="fa fa-info-circle"></i>
-         <p>{{ help_text | urlize  }} </p>
-    {% endif %}
-    </div>
+    {%- if field.help_text or field.help_url -%}
+    {% set text = h.scheming_language_text(field.help_text) %}
+    {% set url = field.help_url %}
+        <i class="fa fa-info" style="color: #808080;"></i> <!-- Font Awesome icon -->
+        {% if text %}
+        <span style = "color: #808080;"> {{text}} </span>
+        {% endif %}
+        {% if url %}
+        <!-- You can add a clickable URL by wrapping the text in an anchor tag -->
+        <a href="{{url}}" style = "color: #808080;">{{url}}</a>.
+        {% endif %}
+    {%- endif -%}    
   </div>

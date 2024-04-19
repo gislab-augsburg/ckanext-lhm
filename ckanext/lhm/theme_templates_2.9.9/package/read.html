@@ -1,14 +1,21 @@
 {% ckan_extends %}
-
 {{ super() }}
 
 {% set schema = h.scheming_get_dataset_schema(dataset_type) %}
 
 
+
 {% block package_description %}
     {% block package_markers %}
         {% snippet 'package/snippets/marker.html', pkg = g.pkg_dict %}
+        {% if pkg.letzter_import%}
+        <div class="last-data-import">
+              <span class="update-title">Letzter Import: </span>
+              <span class="update-date">{{ pkg.letzter_import }}</span>
+        </div>
+        {% endif %}
     {% endblock %}
+
 {{ super()}}
 {% endblock %}
 

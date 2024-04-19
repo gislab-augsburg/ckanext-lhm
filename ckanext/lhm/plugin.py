@@ -136,13 +136,13 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
 
         usage_keywords = []
         usage_remarks = []
-        for sub in data_dict.get('additional_usage_notes', []):
-            usage_keywords.append(sub['usage_keywords'])
-            usage_remarks.append(sub['usage_remarks'])
+        for sub in data_dict.get('nutzungshinweise', []):
+            usage_keywords.append(sub['stichwort'])
+            usage_remarks.append(sub['hinweise'])
 
         # replace list of dicts with plain texts to prevent Solr errors
-        data_dict['additional_usage_notes'] = '\n'.join(usage_keywords)
-        data_dict['additional_usage_notes'] += '\n'.join(usage_remarks)
+        data_dict['nutzungshinweise'] = '\n'.join(usage_keywords)
+        data_dict['nutzungshinweise'] += '\n'.join(usage_remarks)
 
 
         return data_dict

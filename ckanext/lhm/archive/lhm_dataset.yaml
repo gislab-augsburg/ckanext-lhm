@@ -10,7 +10,7 @@ dataset_fields:
   label: Title
   preset: title
   form_snippet: large_text_lhm.html
-  form_placeholder: Thema | NAME_DER_TABELLE
+  form_placeholder: eg. A descriptive title
   is_info: true
   info_text: Thema | NAME_DER_TABELLE. Der Titel beteht aus dem Thema (ehemals Datenbestand) und dem Namen der Tabelle im Geodatenpool
 
@@ -37,6 +37,7 @@ dataset_fields:
   label: Group
   form_snippet: group_form.html
   display_snippet: null
+  #display_snippet: multiple_select.html
 
 - field_name: schema
   label: Schema
@@ -102,7 +103,7 @@ dataset_fields:
   info_text_orga: Angabe des fachlich zuständigen Referats und der ersten, das Referat untergliedernden Organisationseinheit (z.B. Amt, Hauptabteilung, Geschäftsbereich)
   info_text_pub: Einstellung zur Sichtbarkeit des eingetragenen Metadatensatzes. Öffentlich = Sichtbarkeit für alle Personen in der LHM [Standard]. Privat =  Sichtbarkeit nur für Mitglieder der zuständigen Organisation [nur für Qualitätssicherungszwecke].
 
-- field_name: autor
+- field_name: author
   label: 
     en: Contact person
     de: Ansprechpartner
@@ -112,7 +113,7 @@ dataset_fields:
   is_info: true
   info_text: Angabe der Organisationseinheit, die fachliche und organisatorische Kenntnis zum Datensatz hat. Meist Team-/Sachgebietsebene (z.B. KR-GSM-GEO-GDM-GDP/GDI). Bitte keine Personen eintragen.
   
-- field_name: autor_email
+- field_name: author_email
   label: 
     en: Contact person Email
     de: Ansprechpartner E-Mail
@@ -136,7 +137,7 @@ dataset_fields:
   is_info: true
   info_text: Um externe Datenurheber handelt es sich, wenn die Daten nicht von der Landeshautpststadt München stammen (z.B. LDBV)
 
-- field_name: update_zyklus
+- field_name: timeliness
   label: 
     en: Timeliness
     de: Update-Zyklus
@@ -165,8 +166,12 @@ dataset_fields:
     label: 
       en: No update
       de: Keine Aktualisierung
+#  - value: ""
+#    label: 
+#      en: Please choose the update cycle
+#      de: Update-Zyklus auswählen
 
-- field_name: geometrietyp
+- field_name: geometry_type
   label: 
     en: Geometry Type
     de: Geometrietyp
@@ -179,15 +184,15 @@ dataset_fields:
     label: 
       en: Please choose the geometry type
       de: Geometrietyp auswählen
-  - value: punkt
+  - value: point
     label: 
       en: Point
       de: Punkt
-  - value: linie
+  - value: line
     label: 
       en: Line
       de: Linie
-  - value: flaeche
+  - value: polygon
     label: 
       en: Polygon
       de: Fläche
@@ -195,22 +200,28 @@ dataset_fields:
     label: Multipatch
   - value: raster
     label: Raster (ArcGIS-Raster)
-  - value: sachdaten
+  - value: factual_data
     label: 
       en: Factual Data
       de: Sachdaten
   - value: anno
     label: ANNO
 
-- field_name: genauigkeit
+- field_name: accuracy
   label: Genauigkeit 
+    # en: Accuracy
+    # de: Genauigkeit
   preset: composite_lhm
+  #required: true
   subfields:
-  - field_name: lagengenauigkeit
+  - field_name: positional_accuracy
     label: Lagengenauigkeit
+      # en: Positional accuracy
+      # de: Lagengenauigkeit
     is_info: true
     info_text: Mit der Lagegenauigkeit wird angegeben, auf welcher Basis Daten erhoben bzw. erfasst wurden und welche räumliche Genauigkeit damit einhergeht.
     preset: select
+    #required: true
     choices:
     - value: ""
       label: 
@@ -234,12 +245,14 @@ dataset_fields:
       label: Auf Basis Stadtbezirke (-teil -viertel)(10m)
     - value: stadtplan
       label: Auf Basis Stadtplan (10m)
-  - field_name: bemerkung
+  - field_name: remark
     label: Bemerkung
     is_info: true
     info_text: Hier können ergänzende Informationen zur Lagegenauigkeit ergänzt werden, beispielsweise ein geeigneter Maßstab (z.B. 1:500), die größe eines Pixels (z.B. 20cm) oder die Spanne der Abweichung bei der Lage (z.B. +/- 10m)
+    #  en: Remark
+    #  de: Bemerkung
 
-- field_name: stadtarchiv
+- field_name: archive
   label: Stadtarchiv 
   help_text:
     en: Evaluation through City Archive
@@ -247,7 +260,7 @@ dataset_fields:
   preset: composite_lhm
   required: true
   subfields:
-  - field_name: archivwuerdigkeit
+  - field_name: archivability
     label: Archivwürdigkeit
     form_include_blank_choice: false
     required: true
@@ -267,9 +280,10 @@ dataset_fields:
       label: 
         en: Not archivable
         de: nicht archivwürdig
-  - field_name: begruendung
+  - field_name: justification
     label: Begründung
-
+      # en: Justification
+      # de: Begründung
 
   # field_name: license_id
   # label: License
@@ -278,10 +292,13 @@ dataset_fields:
 
 - field_name: intranet
   label: LHM-Intranet
+  #required: true
   preset: composite_lhm
   subfields:
   - field_name: fachverfahren
     label: Fachverfahren
+      # en: Specialized Procedures
+      # de: Fachverfahren
     preset: select
     is_info:  true
     info_text: Der Zugriff durch Fachverfahren meint den direkten (lesenden) Zugriff auf die Daten auf der Datenbank und/oder über Diensten. Standard ist der Zugriff für stadtweit alle Benutzer (d.h. Zugriffsuser inkl. GeoInfoWeb). Teilweise muss der Zugriff auf bestimmte Zugriffsuser eingeschränkt werden oder die Daten dürfen nicht für Fachverfahren genutzt werden.
@@ -325,20 +342,22 @@ dataset_fields:
         en: District committees
         de: ausgenommen Bezirksausschüsse
 
-- field_name: internet_praesentationen
+- field_name: internet_publish
   label: 
     en: 'Internet: Publication / Presentation in the LHM Task area'
     de: 'Internet: Veröffentlichungen / Präsentationen im Aufgabenbereich der LHM'
+#  form_snippet: multiple_checkbox_lhm.html
+#  display_snippet: multiple_choice.html
   preset: select_lhm
   is_info: true
   info_text: Angabe, in welcher Form die Daten im Internet bereitgetsellt werden dürfen. "Als Backend-Daten (ohne Präsentation" meint die Nutzung z.B. für Online-Formulare. "Für Präsentationen (inkl. Backend)" erweitert die Freigabe z.B. für kartografische Darstellungen im Geoportal oder muenchen.de und schließt die Nutzung für Formulare o.ä. ein.
   required: true
   choices:
-  - value: keine
+  - value: 'no'
     label: 
-      en: No
+      en: 'No'
       de: Keine
-  - value: praesentation
+  - value: presentation
     label: 
       en: For presentation purposes (incl. Backend)
       de: für Präsentationen (inkl. Backend)
@@ -357,6 +376,8 @@ dataset_fields:
   label:
     en: Disclosure of data or services to third parties acting on behalf of the City
     de: Weitergabe von Daten oder Diensten an Dritte, die im Auftrag der Stadt tätig werden 
+  #form_snippet: multiple_checkbox_lhm.html
+  #display_snippet: multiple_choice.html
   preset: select_lhm
   is_info: true
   info_text: Angabe, ob die Daten an Dritte weitergegeben werden dürfen, sofern diese im Auftrag der Stadt tätig sind. Überlicherweise ist hierbei eine Verpflichtungserklärung des Dritten notwendig, in der die Nutzung der Daten geregelt wird.
@@ -366,17 +387,33 @@ dataset_fields:
     de: 'Verpflichtungserklärung des Dritten notwendig: '
   help_url: http://geo.muenchen.de/metadaten/Nutzungsvereinbarung/Nutzungsvereinbarungen_GSM/03_Hinweise%20Datenabgabe%20an%20Dritte%20im%20Auftrag%20der%20Stadt.pdf
   choices:
-  - value: ja
+  - value: 'yes'
     label:
       en: 'Yes'
       de: Ja
-  - value: nein
+  - value: 'no'
     label:
       en: 'No'
       de: Nein
+  # - value: rasterdaten
+  #   label: 
+  #     en: Raster data (e.g. MWS, PDF, JPG)
+  #     de: Rasterdaten (z.B. WMS, PDF, JPG)
+  #   help_text: 
+  #     en: i.e. only image - expression and content cannot be changed by user
+  #     de: d.h. nur Bild – Ausprägung und Inhalt kann nicht durch Nutzer geändert werden
+  # - value: vektordaten
+  #   label: 
+  #     en: Vector data (e.g. WFS, SHP, DXF, CSV)
+  #     de: Vektordaten (z.B. WFS, SHP, DXF, CSV)
+  #   help_text: 
+  #     en: i.e. only data - expression, content and analysis by users
+  #     de: d.h. nur Daten – Ausprägung, Inhalt und Analyse durch Nutzer
 
 - field_name: datenabgabe_extern
   label: 'Internet: Datenabgabe an Externe, die nicht Auftragnehmer sind'
+    # en: 'Internet: Data handover to external non-contractors'
+    # de: 'Internet: Datenabgabe an externe, die nicht Auftragnehmer sind'
   required: true
   preset: select_lhm
   is_info: true
@@ -386,18 +423,52 @@ dataset_fields:
     de: 'Bekanntgabe der Nutzungsbedingungen für den Dritten notwendig: '
   help_url: http://geo.muenchen.de/metadaten/Nutzungsvereinbarung/Nutzungsvereinbarungen_GSM/01_Hinweise%20Weitergabe%20im%20Rahmen%20Nutzungsbedingung.pdf
   choices:
-  - value: keine
+  - value: 'no'
     label: 
       en: 'None'
       de: Keine
-  - value: im_rahmen_nutzungsbedingungen 
+  - value: in_term_of_use 
     label:
       en: Within the scope of the terms of use
       de: im Rahmen der Nutzungsbedingungen
-  - value: ueber_rahmen_nutzungsbedingungen
+    # preset: multiple_checkbox
+    # checked: false
+    # choices:
+    # - value: rasterdaten
+    #   label: 
+    #     en: Raster data (e.g. WMS, PDF, JPG)
+    #     de: Rasterdaten (z.B. WMS, PDF, JPG)
+    #   help_text: 
+    #     en: i.e. only image - expression and content cannot be changed by user
+    #     de: d.h. nur Bild – Ausprägung und Inhalt kann nicht durch Nutzer geändert werden
+    # - value: vektordaten
+    #   label: 
+    #     en: Vector data (e.g. WFS, SHP, DXF, CSV)
+    #     de: Vektordaten (z.B. WFS, SHP, DXF, CSV)
+    #   help_text: 
+    #     en: i.e. only data - expression, content and analysis by users
+    #     de: d.h. nur Daten – Ausprägung, Inhalt und Analyse durch Nutzer
+  - value: out_term_of_use 
     label:
       en: Beyond the scope of given terms of use
       de: über den Rahmen der Nutzungsbedingungen hinaus
+ # preset: multiple_checkbox
+    # checked: false
+    # choices:
+    # - value: rasterdaten
+    #   label: 
+    #     en: Raster data (e.g. WMS, PDF, JPG)
+    #     de: Rasterdaten (z.B. WMS, PDF, JPG)
+    #   help_text: 
+    #     en: i.e. only image - expression and content cannot be changed by user
+    #     de: d.h. nur Bild – Ausprägung und Inhalt kann nicht durch Nutzer geändert werden
+    # - value: vektordaten
+    #   label: 
+    #     en: Vector data (e.g. WFS, SHP, DXF, CSV)
+    #     de: Vektordaten (z.B. WFS, SHP, DXF, CSV)
+    #   help_text: 
+    #     en: i.e. only data - expression, content and analysis by users
+    #     de: d.h. nur Daten – Ausprägung, Inhalt und Analyse durch Nutzer
 
 - field_name: open_data
   label: Open Data 
@@ -410,15 +481,15 @@ dataset_fields:
   help_url: https://www.opengov-muenchen.de/pages/nutzungsbedingungen
   required: true
   choices:
-  - value: nein
+  - value: 'no'
     label: 
       en: 'No'
       de: Nein
-  - value: beschraenkt
+  - value: limited_open
     label: 
       en: Only following attributes and contents can be used
       de: nur folgende Attribute und Inhalte nutzbar
-  - value: offen
+  - value: all_open
     label: 
       en: All attributes and contents usable
       de: alle Attribute und Inhalte nutzbar
@@ -429,23 +500,58 @@ dataset_fields:
   is_info: true
   info_text: Sind nur ausgewählte Attribute zur Open-Data-Nutzung freigegeben, können die Attributnamen hier definiert werden, z.B. OBJECTID, HAUSNR, GEMEINDE
 
-- field_name: nutzungshinweise
+- field_name: additional_usage_notes
   label: weitere Hinweise zur Nutzung
+    # en: Additional hints regarding the resource/data useage
+    # de: weitere Hinweise zur Nutzung 
   is_info: ture
   info_text: Weitere Hinweise zur Nutzung können mit einen Stichwort und unter "Hinweis" mit einem erläuternden Text beschrieben werden. Die Hinweise müssen auch für einen Laien nachvollziehbar sein. Denkbar sind etwa spezielle Hinweise zu vertraglichen Rahmenbedingungen, im Rahmen der Nutzung zu beachtende Besonderheiten im Datensatz o.ä.
   repeating_label: Hinweis
   repeating_subfields:
-  - field_name: stichwort
+  - field_name: usage_keywords
     label: Stichwort
+      # en: Keywords
+      # de: Stichwort
     form_placeholder: z.b. Wirtschaft, geistige Gesundheit, Regierung
-  - field_name: hinweise
+  - field_name: usage_remarks
     label: Hinweise
+      # en: Remarks
+      # de: Hinweise
     preset: markdown
     form_placeholder: Erläutern Sie die zusätzlichen Verwendungsbedingungen, die nicht unter die obigen Punkte fallen.
 
 - field_name: letzter_import
   label: Letzter Import
-  form_placeholder: DD-MM-YYYY
+
+
+##Aus Gründen des Datenschutzes und der Unvollständigkeit wurde dieses Attribut aus dem Katalog entfernt.
+ #- field_name: change_history
+  # label: 
+  #   en: Change history
+  #   de: Änderungshistorie
+  # form_snippet: repeating_subfields_lhm.html
+  # repeating_subfields:
+  # - field_name: change
+  #   label: 
+  #     en: Changed Items
+  #     de: Änderung
+  #   preset: markdown
+  #   form_placeholder: 
+  #     en: What has been changed since last update?
+  #     de: Was hat sich seit der letzten Aktualisierung geändert?
+  # - field_name: editor
+  #   label: 
+  #     en: Editor
+  #     de: Geändert von
+  #   form_snippet: editor.html
+  #   form_placeholder: Erika Mustermann, erika.musstermann@muenchen.de
+  # - field_name: changed_date
+  #   label: 
+  #     en: Changed date
+  #     de: Geändert am
+  #   form_snippet: date_lhm.html
+  #   validators: scheming_required isodate convert_to_json_if_date
+
 
 resource_fields:
 

@@ -6,19 +6,43 @@
 
 
 {% block package_description %}
-    {% block package_markers %}
-        {% snippet 'package/snippets/marker.html', pkg = g.pkg_dict %}
-        {% if pkg.letzter_import%}
-        <div class="last-data-import">
-              <span class="update-title">Letzter Import: </span>
-              <span class="update-date">{{ pkg.letzter_import }}</span>
-        </div>
+{% if pkg.private %}
+<span class="dataset-private badge badge-inverse">
+  <i class="fa fa-lock"></i>
+  {{ _('Private') }}
+</span>
+{% endif %}
+<div class="row">
+  <div class="column_date">
+    {% if pkg.letzter_import%}
+      <div class="last-data-import">
+            <span class="update-title">Letzter Import: </span>
+            <span class="update-date">{{ pkg.letzter_import }}</span>
+      </div>
+    {% endif %}
+  </div>
+  <div class="column_note">
+    <h1>
+      {% block page_heading %}
+        {{ h.dataset_display_name(pkg) }}
+        {% if pkg.state.startswith('draft') %}
+          [{{ _('Draft') }}]
         {% endif %}
+        {% if pkg.state == 'deleted' %}
+          [{{ _('Deleted') }}]
+        {% endif %}
+      {% endblock %}
+    </h1>
+    {% block package_notes %}
+      {% if pkg.notes %}
+        <div class="notes embedded-content">
+          {{ h.render_markdown(h.get_translated(pkg, 'notes')) }}
+        </div>
+      {% endif %}
     {% endblock %}
-
-{{ super()}}
+  </div>
+</div>
 {% endblock %}
-
 
 {% block package_resources %}
 <hr>

@@ -4,14 +4,14 @@
       <tr>
         <td>
           <p class="heading">{{ _("Contact person") }}</p>
-            <p class="metadata">{{ pkg_dict.autor }}</p>
+            <p class="metadata">{{ pkg_dict.datenverantwortlicher }}</p>
         </td>
         <td>
             <p class="heading">{{ _("Contact person EMail") }}</p>
-            {% if pkg_dict.autor_email %}
-              <p class="metadata">{{ h.mail_to(email_address=h.lhm_validate_email(pkg_dict.autor_email), name=pkg_dict.autor_email) }}</p>
+            {% if pkg_dict.datenverantwortlicher_email %}
+              <p class="metadata">{{ h.mail_to(email_address=h.lhm_validate_email(pkg_dict.datenverantwortlicher_email), name=pkg_dict.datenverantwortlicher_email) }}</p>
             {% else %}
-              <p class="metadata">{{ _("Not vailable") }}</p>
+              <p class="metadata">{{ _("Not available") }}</p>
             {% endif %}
         </td>
         <td>
@@ -29,7 +29,7 @@
           {% if pkg_dict.schema %}
             <p class="metadata">{%- snippet 'package/snippets/label.html', item='schema', pkg_dict=pkg_dict, schema=schema -%}</p>
           {% else %}
-            <p class="metadata">{{ _("Not vailable") }}</p>
+            <p class="metadata">{{ _("Not available") }}</p>
           {% endif %}
         </td>
         <td>
@@ -38,7 +38,7 @@
             <p class="metadata">{%- snippet 'package/snippets/label.html',
               item='geometrietyp', pkg_dict=pkg_dict, schema=schema -%}</p>
           {% else %}
-            <p class="metadata">{{ _("Not vailable") }}</p>
+            <p class="metadata">{{ _("Not available") }}</p>
           {% endif %}
         </td>
         <td>
@@ -47,7 +47,7 @@
             <p class="metadata">{%- snippet 'package/snippets/label.html',
               item='update_zyklus', pkg_dict=pkg_dict, schema=schema -%}</p>
           {% else %}
-            <p class="metadata">{{ _("Not vailable") }}</p>
+            <p class="metadata">{{ _("Not available") }}</p>
           {% endif %}
         </td>
       </tr>
@@ -86,7 +86,7 @@
           {% if pkg_dict.internet_praesentationen %}
             <p class="metadata">{%- snippet 'package/snippets/label.html', item='internet_praesentationen', pkg_dict=pkg_dict, schema=schema -%}</p>
           {% else %}
-            <p class="metadata">{{ _("Not vailable") }}</p>
+            <p class="metadata">{{ _("Not available") }}</p>
           {% endif %}
         </td>
         <td colspan="2">
@@ -95,7 +95,7 @@
             <p class="metadata">{%- snippet 'package/snippets/label.html',
               item='open_data', pkg_dict=pkg_dict, schema=schema -%}</p>
           {% else %}
-            <p class="metadata">{{ _("Not vailable") }}</p>
+            <p class="metadata">{{ _("Not available") }}</p>
           {% endif %}
           {% if pkg_dict.open_data_attribute %}  
           <p class="metadata">{%- snippet 'package/snippets/label.html',
@@ -109,7 +109,7 @@
           {% if pkg_dict.datenabgabe_extern_mit_auftrag %}
             <p class="metadata">{%- snippet 'package/snippets/label.html', item='datenabgabe_extern_mit_auftrag', pkg_dict=pkg_dict, schema=schema -%}</p>
           {% else %}
-            <p class="metadata">{{ _("Not vailable") }}</p>
+            <p class="metadata">{{ _("Not available") }}</p>
           {% endif %}
         </td>
         <td colspan="2">
@@ -118,7 +118,7 @@
             <p class="metadata">{%- snippet 'package/snippets/label.html',
               item='datenabgabe_extern', pkg_dict=pkg_dict, schema=schema -%}</p>
           {% else %}
-            <p class="metadata">{{ _("Not vailable") }}</p>
+            <p class="metadata">{{ _("Not available") }}</p>
           {% endif %}
         </td>
       </tr>

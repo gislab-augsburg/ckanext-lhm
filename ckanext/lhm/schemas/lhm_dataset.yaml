@@ -102,27 +102,27 @@ dataset_fields:
   info_text_orga: Angabe des fachlich zuständigen Referats und der ersten, das Referat untergliedernden Organisationseinheit (z.B. Amt, Hauptabteilung, Geschäftsbereich)
   info_text_pub: Einstellung zur Sichtbarkeit des eingetragenen Metadatensatzes. Öffentlich = Sichtbarkeit für alle Personen in der LHM [Standard]. Privat =  Sichtbarkeit nur für Mitglieder der zuständigen Organisation [nur für Qualitätssicherungszwecke].
 
-- field_name: autor
+- field_name: datenverantwortlicher
   label: 
     en: Contact person
-    de: Ansprechpartner
+    de: Datenverantwortlicher
   required: true
   form_snippet: author.html
-  form_placeholder: Erika Mustermann / KR-GSM-GEO-GIS
+  form_placeholder:  KR-GSM-GEO-GIS
   is_info: true
   info_text: Angabe der Organisationseinheit, die fachliche und organisatorische Kenntnis zum Datensatz hat. Meist Team-/Sachgebietsebene (z.B. KR-GSM-GEO-GDM-GDP/GDI). Bitte keine Personen eintragen.
   
-- field_name: autor_email
+- field_name: datenverantwortlicher_email
   label: 
     en: Contact person Email
-    de: Ansprechpartner E-Mail
+    de: Datenverantwortlicher E-Mail
   required: true
   form_placeholder: erika.mustermann@muenchen.de / gdi@muenchen.de
   form_snippet: author_email.html
   display_snippet: email.html
   validators: not_empty unicode_safe strip_value email_validator
   is_info: true
-  info_text: Angabe der Team-E-Mailadresse des Ansprechpartners. Bitte keine persönlichen E-Mailadressen verwenden.
+  info_text: Angabe der Team-E-Mailadresse des Datenverantwortlichers. Bitte keine persönlichen E-Mailadressen verwenden.
 
 - field_name: ext_org
   label: 

@@ -231,12 +231,12 @@ msgstr ""
 
 #: ckanext/lhm/templates/package/snippets/Additional_info.html
 msgid "Contact person"
-msgstr "Ansprechpartner"
+msgstr "Datenverantwortlicher"
 
 msgid "Contact person EMail"
-msgstr "Ansprechpartner E-Mail"
+msgstr "Datenverantwortlicher E-Mail"
 
-msgid "Not Available"
+msgid "Not available"
 msgstr "Kein Wert vorhanden"
 
 msgid "Geometry Type"

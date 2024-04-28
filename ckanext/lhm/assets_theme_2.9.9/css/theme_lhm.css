@@ -374,41 +374,30 @@ border: 1px solid #ccc;
     background: #fff;
 }
 
-.group-icon {
+.group-icon-overview {
     width: 10%; 
     height: auto; 
     float: right; 
     margin: 10px;
 }
 
-/* Define a keyframe animation */
-@keyframes shake {
-    0% { transform: translateX(0); }
-    20% { transform: translateX(-5px); }
-    40% { transform: translateX(5px); }
-    60% { transform: translateX(-5px); }
-    80% { transform: translateX(5px); }
-    100% { transform: translateX(0); }
+.group-icon-detailed {
+    width: 60%; 
+    height: auto; 
+    float: none; 
+    margin: 10px;
 }
 
 .last-data-import {
     /* Position it below the group icon */
     position: absolute; /* Use absolute positioning */
-    top: calc(11% + 20px + 10px); /* Position it below the group icon */
+    /*top: calc(11% + 20px + 10px);  Position it below the group icon */
     right: 50px; /* Adjust as needed */
     background-color: #f0f0f0;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    animation: shake 3.0s infinite;
-}
-
-/* Apply styles to the update info container */
-.update-info {
-    display: inline-block; /* Make it inline-block to contain the label and date */
-    vertical-align: middle; /* Align it vertically in the middle */
-    margin-left: 10px; /* Add some space to the left of the update info */
 }
 
 /* Apply styles to the update title */
@@ -422,3 +411,14 @@ border: 1px solid #ccc;
 .update-date {
     display: block;
 }
+
+/* Create two equal columns that floats next to each other */
+.column_note {
+    float: left;
+    width: 80%;
+  }
+
+.column_date {
+    float: left;
+    width: 20%;
+  }

@@ -6,6 +6,9 @@ import ckan.plugins.toolkit as toolkit
 from ckan.plugins.interfaces import IConfigurer, IDatasetForm
 from ckan.lib.plugins import DefaultTranslation
 import ckanext.lhm.cli as cli
+import ckanext.lhm.views as views
+
+from ckanext.hierarchy.plugin import HierarchyDisplay
 
 # import ckanext.lhm.cli as cli
 import ckanext.lhm.helpers as helpers
@@ -13,7 +16,6 @@ import ckanext.lhm.helpers as helpers
 from ckanext.lhm.logic import action, schema
 #     (action, auth, validators
 # )
-#from ckanext.lhm.listeners import copy_data_to_solr
 
 #from ckanext.datastore.backend.postgres import _cache_types
 from sqlalchemy import create_engine
@@ -71,19 +73,19 @@ def _data_dict_type():
             _type_names.add('blob')
 _data_dict_type()
 
+
 class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
     p.implements(p.IConfigurer, inherit=True)
     # p.implements(p.IDatasetForm, inherit=True)
     # p.implements(p.IAuthFunctions)
     # p.implements(p.IActions)
-    # p.implements(p.IBlueprint)
     p.implements(p.IClick)
     p.implements(p.ITranslation, inherit=True)
     p.implements(p.ITemplateHelpers, inherit=True)
     p.implements(p.IPackageController, inherit=True)
+    # p.implements(p.IBlueprint, inherit=True)
     # p.implements(p.IValidators)
-    
-      
+          
     def i18n_domain(self):
         return 'ckanext-lhm'
 
@@ -117,7 +119,6 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
 
     def before_index(self, data_dict):
 
-
         data_dict_scheming = data_dict['validated_data_dict']
         validated_data_dict = json.loads(data_dict_scheming)
 
@@ -132,8 +133,6 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         data_dict['text'] += wert #'\n'.join(wert)
         data_dict['text'] += bedeutung #'\n'.join(bedeutung)
 
-
-
         usage_keywords = []
         usage_remarks = []
         for sub in data_dict.get('nutzungshinweise', []):
@@ -144,7 +143,6 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         data_dict['nutzungshinweise'] = '\n'.join(usage_keywords)
         data_dict['nutzungshinweise'] += '\n'.join(usage_remarks)
 
-
         return data_dict
 
     def before_map(self, map):
@@ -153,6 +151,17 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
     def after_map(self, map):
         return map
 
+    def before_search(self, search_params):
+        # Call the original method to retain its functionality
+        search_params = HierarchyDisplay.before_dataset_search('', search_params)
+
+        # Add your additional logic here
+        if 'owner_org' in search_params.get('fq', ''):
+            query = search_params.get('q', '')
+            query += ' include_children: "True"'
+            search_params['q'] = query.strip()
+
+        return search_params
 
     def is_fallback(self):
         return False

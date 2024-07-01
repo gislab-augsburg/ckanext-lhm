@@ -31,8 +31,8 @@ dataset_fields:
   preset: tag_string_autocomplete
   form_placeholder: z.B. Gesundheit; Umwelt;
   is_info: true
-  info_text: Tags sind i.d.R. Substantive und sind Schlagworte zur inhaltlichen Beschreibung des Datensatzes. Es können mehrere Tags vergeben werden, 
-
+  info_text: Tags sind i.d.R. Substantive und sind Schlagworte zur inhaltlichen Beschreibung des Datensatzes. Es können mehrere Tags vergeben werden.
+  
 - field_name: group
   label: Group
   form_snippet: group_form.html
@@ -191,8 +191,6 @@ dataset_fields:
     label: 
       en: Polygon
       de: Fläche
-  - value: multipatch
-    label: Multipatch
   - value: raster
     label: Raster (ArcGIS-Raster)
   - value: sachdaten
@@ -201,6 +199,8 @@ dataset_fields:
       de: Sachdaten
   - value: anno
     label: ANNO
+  - value: multipatch
+    label: Multipatch
 
 - field_name: genauigkeit
   label: Genauigkeit 
@@ -324,6 +324,10 @@ dataset_fields:
       label: 
         en: District committees
         de: ausgenommen Bezirksausschüsse
+    - value: keine
+      label: 
+        en: None
+        de: Keine
 
 - field_name: internet_praesentationen
   label: 
@@ -380,7 +384,7 @@ dataset_fields:
   required: true
   preset: select_lhm
   is_info: true
-  info_text: 'Angabe, ob die Daten allgemein an Dritte weitergegeben werden dürfen. Überlicherweise ist hierbei eine Verpflichtungserklärung des Dritten notwendig, in der die Nutzung der Daten geregelt wird. Über die Nutzungsbedingungen kann speziell darauf hingewiesen werden, dass ggf. besondere Nutzungsbedingungen zu beachten sind.'
+  info_text: Angabe, ob die Daten allgemein an Dritte weitergegeben werden dürfen. Überlicherweise ist hierbei eine Verpflichtungserklärung des Dritten notwendig, in der die Nutzung der Daten geregelt wird. Über die Nutzungsbedingungen kann speziell darauf hingewiesen werden, dass ggf. besondere Nutzungsbedingungen zu beachten sind.
   help_text: 
     en: 'Disclosure of the terms of use for the third party is necessary: '
     de: 'Bekanntgabe der Nutzungsbedingungen für den Dritten notwendig: '
@@ -427,7 +431,7 @@ dataset_fields:
   label: Open Data - bestimmte Attribute
   form_snippet: text_lhm.html
   is_info: true
-  info_text: Sind nur ausgewählte Attribute zur Open-Data-Nutzung freigegeben, können die Attributnamen hier definiert werden, z.B. OBJECTID, HAUSNR, GEMEINDE
+  info_text: Sind nur ausgewählte Attribute zur Open-Data-Nutzung freigegeben, können die Attributnamen hier definiert werden, z.B. OBJECTID, HAUSNR, GEMEINDE. Eine Einschränkung der Attribute für OpenData erfolgt bei den Attributen im Datenverzeichnis.
 
 - field_name: nutzungshinweise
   label: weitere Hinweise zur Nutzung
@@ -445,7 +449,7 @@ dataset_fields:
 
 - field_name: letzter_import
   label: Letzter Import
-  form_placeholder: DD-MM-YYYY
+  form_placeholder: DD-MM-YYYY oder keine Angabe
 
 resource_fields:
 

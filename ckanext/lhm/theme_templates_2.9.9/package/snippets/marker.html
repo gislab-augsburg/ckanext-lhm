@@ -1,40 +1,17 @@
 {#% set pkg = g.pkg_dict %#}
 {% set main_categories = h.group_tree_section(id_='main-categories', type_='group', include_siblings=True) %}
 {% set count = main_categories.children %}
-
+{% set number = count | length %}
 {% set class_group_icon = group_icon %}
 
-    {% for grp in pkg.groups %}
-        {% if grp.name == count[0].name %}
-            <a href="{{ g.site_url }}/group/{{ grp.name }}" title="{{ grp.title }}">
-            <img src="{{ grp.image_display_url }}" alt="{{ grp.title }}" title="{{ grp.title }}" class="{{ class_group_icon }}" >
-            </a>
-        {% elif grp.name == count[1].name %}
-            <a href="{{ g.site_url }}/group/{{ grp.name }}" title="{{ grp.title }}">
-            <img src="{{ grp.image_display_url }}" alt="{{ grp.title }}" title="{{ grp.title }}" class="{{ class_group_icon }}" >
-            </a>
-        {% elif grp.name == count[2].name %}
-            <a href="{{ g.site_url }}/group/{{ grp.name }}" title="{{ grp.title }}">
-            <img src="{{ grp.image_display_url }}" alt="{{ grp.title }}" title="{{ grp.title }}" class="{{ class_group_icon }}" >
-            </a>
-        {% elif grp.name == count[3].name %}
-            <a href="{{ g.site_url }}/group/{{ grp.name }}" title="{{ grp.title }}">
-            <img src="{{ grp.image_display_url }}" alt="{{ grp.title }}" title="{{ grp.title }}" class="{{ class_group_icon }}" >
-            </a>
-        {% elif grp.name == count[4].name %}
-            <a href="{{ g.site_url }}/group/{{ grp.name }}" title="{{ grp.title }}">
-            <img src="{{ grp.image_display_url }}" alt="{{ grp.title }}" title="{{ grp.title }}" class="{{ class_group_icon }}" >
-            </a>
-        {% elif grp.name == count[5].name %}
-            <a href="{{ g.site_url }}/group/{{ grp.name }}" title="{{ grp.title }}">
-            <img src="{{ grp.image_display_url }}" alt="{{ grp.title }}" title="{{ grp.title }}" class="{{ class_group_icon }}" >
-            </a>
-        {% elif grp.name == count[6].name %}
-            <a href="{{ g.site_url }}/group/{{ grp.name }}" title="{{ grp.title }}">
-            <img src="{{ grp.image_display_url }}" alt="{{ grp.title }}" title="{{ grp.title }}" class="{{ class_group_icon }}" >
-            </a>
-        {% else %}
-          <!-- Do notthing-->
-        {% endif %}
 
+    {% for grp in pkg.groups %}
+    {% set no = number - 1 %}
+        {% for no in range(number - 1) %}
+            {% if no != -1 and grp.name == count[no].name %}
+                <a href="{{ g.site_url }}/group/{{ grp.name }}" title="{{ grp.title }}">
+                <img src="{{ grp.image_display_url }}" alt="{{ grp.title }}" title="{{ grp.title }}" class="{{ class_group_icon }}" >
+                </a>
+            {% endif %}
+        {% endfor %}
     {% endfor %}

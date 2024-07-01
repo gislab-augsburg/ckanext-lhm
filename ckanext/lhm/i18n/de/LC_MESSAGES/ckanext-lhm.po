@@ -229,7 +229,13 @@ msgstr ""
 "gesamten Gruppen zu haben, sehen Sie sich diese <a "
 "href=\"/group/\">Seite</a> an."
 
-#: ckanext/lhm/templates/package/snippets/Additional_info.html
+#: ckanext/lhm/templates/package/snippets/geodatenpool.html
+msgid "Usage Remarks"
+msgstr "Nutzungshinweise"
+
+msgid "Internet and Data delivery"
+msgstr "Internet und Datenabgabe"
+
 msgid "Contact person"
 msgstr "Datenverantwortlicher"
 
@@ -257,8 +263,8 @@ msgstr "Externe Datenurheber"
 msgid "Basic Information"
 msgstr "Grundinformationen"
 
-msgid "Internet: Publication / Presentation in the LHM Task area"
-msgstr "Internet: Veröffentlichungen / Präsentationen im Aufgabenbereich der LHM"
+msgid "Publication / Presentation in the LHM Task area"
+msgstr "Veröffentlichungen / Präsentationen im Aufgabenbereich der LHM"
 
 msgid ""
 "Disclosure of data or services to third parties acting on behalf of the "
@@ -267,8 +273,8 @@ msgstr ""
 "Weitergabe von Daten oder Diensten an Dritte, die im Auftrag der Stadt "
 "tätig werden"
 
-msgid "Internet: Data handover to external non-contractors"
-msgstr "Internet: Datenabgabe an Externe, die nicht Auftragnehmer sind"
+msgid "Data handover to external non-contractors"
+msgstr "Datenabgabe an Externe, die nicht Auftragnehmer sind"
 
 msgid "Change History"
 msgstr "Änderungshistorie"
@@ -321,3 +327,6 @@ msgstr "Nein"
 
 msgid "Include Sub-%(group_type)ss"
 msgstr "Unter-%(group_type)sen einbeziehen"
+
+msgid "Tags"
+msgstr "Schlagwort"

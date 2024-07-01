@@ -1,9 +1,14 @@
 <section class="additional-info module-content table1">
-    <h3>{{_('Additional Information')}}</h3>
+  <div class="collapsible-header">
+    <h3 style="border-bottom: 5px solid;">{{_('Basic Information')}}</h3>
+    <i class="plus-sign fa fa-minus"></i>
+  </div>
+  <div class="collapsible-content">
     <table class="table package-metadata" id="myTable">
       <tr>
         <td>
-          <p class="heading">{{ _("Contact person") }}</p>
+          <p class="heading">{{ _("Contact person") }}
+          <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Organisationseinheit, die fachlich für die Daten verantwortlich ist."></span></p>
             <p class="metadata">{{ pkg_dict.datenverantwortlicher }}</p>
         </td>
         <td>
@@ -14,8 +19,9 @@
               <p class="metadata">{{ _("Not available") }}</p>
             {% endif %}
         </td>
-        <td>
-          <p class="heading">{{ _("External Ownership") }}</p>
+        <td> 
+          <p class="heading">{{ _("External Ownership") }}
+          <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Um externe Datenurheber handelt es sich, wenn die Daten nicht von der Landeshautpststadt München stammen (z.B. LDBV)"></span></p>
           {% if pkg_dict.ext_org%}     
             <p class="metadata">{{ pkg_dict.ext_org }}</p>
           {% else %}
@@ -25,7 +31,8 @@
       </tr>
       <tr>
         <td>      
-          <p class="heading">{{ _("Schema") }}</p>
+          <p class="heading">{{ _("Schema") }}
+          <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Name des Datenbankschemas im Geodatenpool (z.B. BAUT, PLAN, RKU)"></span></p>
           {% if pkg_dict.schema %}
             <p class="metadata">{%- snippet 'package/snippets/label.html', item='schema', pkg_dict=pkg_dict, schema=schema -%}</p>
           {% else %}
@@ -42,7 +49,8 @@
           {% endif %}
         </td>
         <td>
-          <p class="heading">{{ _("Timeliness") }}</p>
+          <p class="heading">{{ _("Timeliness") }}
+            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Der Update-Zyklus beschreibt, wann Daten aktualisiert werden. Dies kann monatlich oder auf Anforderung erfolgen. Zudem gibt es Daten, für die keine Aktualisierung vorgesehen ist."></span></p>
           {% if pkg_dict.update_zyklus %} 
             <p class="metadata">{%- snippet 'package/snippets/label.html',
               item='update_zyklus', pkg_dict=pkg_dict, schema=schema -%}</p>
@@ -53,7 +61,8 @@
       </tr>
       <tr>
         {% if pkg_dict.stadtarchiv %}
-        <td colspan="3"><p class="heading">{{ _("City Archive")}}</p>
+        <td colspan="3"><p class="heading">{{ _("City Archive")}}
+          <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Archivwürdigkeit von historisch relevanten Daten. "></span></p>
           <p class="metadata">{%- snippet 'package/snippets/label.html',
             item='stadtarchiv', pkg_dict=pkg_dict, schema=schema -%}</p>
         </td>
@@ -61,36 +70,53 @@
       </tr>
       <tr>
         {% if pkg_dict.genauigkeit %}
-        <td colspan="3"><p class="heading">{{ _("Accuracy")}}</p>
+        <td colspan="3"><p class="heading">{{ _("Accuracy")}}
+          <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Die Genauigkeit der Daten, hängt von der Art der Datenerhebung ab und gibt Auskunft darüber, für welche Anwendungsfälle die Daten geeignet sind. Ergänzend ist eine Information zu einem geeigneten Maßstab möglich."></span></p>
           <p class="metadata">{%- snippet 'package/snippets/label.html',
             item='genauigkeit', pkg_dict=pkg_dict, schema=schema -%}</p>
         </td>
         {% endif %}
       </tr>
-    </table>
+    </table></div>
   </section>
   
   <section class="additional-info module-content table2">
+    <div class="collapsible-header">
+    <h3 style="border-bottom: 5px solid;">{{_('Usage Remarks')}}</h3>
+    <i class="plus-sign fa fa-minus"></i>
+  </div>
+  <div class="collapsible-content">
     <table class="table package-metadata">
       <tr>
         {% if pkg_dict.intranet %}
-        <td colspan="4"><p class="heading">{{ _("LHM-Intranet")}}</p>
+        <td colspan="4">
+          <p class="heading">{{ _("LHM-Intranet")}}
+            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Fachverfahren: Der Zugriff durch Fachverfahren meint den direkten (lesenden) Zugriff auf die Daten auf der Datenbank und/oder über Dienste. Standard ist der Zugriff für stadtweit alle Benutzer (d.h. Zugriffsuser inkl. GeoInfoWeb). Teilweise muss der Zugriff auf bestimmte Benutzergruppen (=Zugriffsuser) eingeschränkt werden oder die Daten dürfen nicht für Fachverfahren genutzt werden. 
+GeoInfoWeb: Standard ist der Zugriff für stadtweit alle Benutzer (inkl. Stadtrat und Bezirksausschüsse). Der Zugriff über GeoInfoWeb kann auf bestimmte Gruppen begrenzt werden. Dann sind die Daten im GeoinfoWeb nur für diese Nutzer bzw. Gruppen sichtbar."></span>
+          </p>
           <p class="metadata">{%- snippet 'package/snippets/label.html',
             item='intranet', pkg_dict=pkg_dict, schema=schema -%}</p>
         </td>
         {% endif %}
       </tr>
       <tr>
-        <td colspan="2">      
-          <p class="heading">{{ _("Internet: Publication / Presentation in the LHM Task area") }}</p>
+        <td colspan="4" style="padding-bottom: 0px;"><p class="heading">{{ _("Internet and Data delivery")}}</p></td>
+      </tr>
+      <tr>
+        <td colspan="2" style="border-top: none;">
+          <p class="heading">{{ _("Publication / Presentation in the LHM Task area") }}
+            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title='Angabe, in welcher Form die Daten im Internet bereitgetsellt werden dürfen. "Als Backend-Daten (ohne Präsentation)" meint die Nutzung z.B. für Online-Formulare. "Für Präsentationen (inkl. Backend)" erweitert die Freigabe z.B. für kartografische Darstellungen im Geoportal oder muenchen.de und schließt die Nutzung für Formulare o.ä. mit ein.'></span>
+          </p>
           {% if pkg_dict.internet_praesentationen %}
             <p class="metadata">{%- snippet 'package/snippets/label.html', item='internet_praesentationen', pkg_dict=pkg_dict, schema=schema -%}</p>
           {% else %}
             <p class="metadata">{{ _("Not available") }}</p>
           {% endif %}
         </td>
-        <td colspan="2">
-          <p class="heading">{{ _("Open Data") }}</p>
+        <td colspan="2" style="border-top: none;">
+          <p class="heading">{{ _("Open Data") }}
+            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title='Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Dies bedeutet jedoch nicht, dass es dabei keine Nutzungsbedingungen bzw. Lizenzbedingungen gibt. Ggf. inkludierte und exkludierte Attribute innerhalb des Datensatzes sind der Attributtabelle zu entnehmen. Weitere Hinweise zur Nutzung können unter "Hinweis" mit einem erläuternden Text beschrieben sein.--> Nutzungsrechte bei OpenData: https://www.opengov-muenchen.de/pages/nutzungsbedingungen'></span>
+          </p>
           {% if pkg_dict.open_data %}  
             <p class="metadata">{%- snippet 'package/snippets/label.html',
               item='open_data', pkg_dict=pkg_dict, schema=schema -%}</p>
@@ -104,16 +130,20 @@
         </td>
       </tr>
       <tr>
-        <td colspan="2">      
-          <p class="heading">{{ _("Disclosure of data or services to third parties acting on behalf of the City") }}</p>
+        <td colspan="2" style="border-top: none;">      
+          <p class="heading">{{ _("Disclosure of data or services to third parties acting on behalf of the City") }}
+            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Angabe, ob die Daten an Dritte weitergegeben werden dürfen, sofern diese im Auftrag der Stadt tätig sind. Überlicherweise ist hierbei eine Verpflichtungserklärung des Dritten notwendig, in der die Nutzung der Daten geregelt wird. Ggf. inkludierte und exkludierte Attribute innerhalb des Datensatzes sind der Attributtabelle zu entnehmen."></span>
+          </p>
           {% if pkg_dict.datenabgabe_extern_mit_auftrag %}
             <p class="metadata">{%- snippet 'package/snippets/label.html', item='datenabgabe_extern_mit_auftrag', pkg_dict=pkg_dict, schema=schema -%}</p>
           {% else %}
             <p class="metadata">{{ _("Not available") }}</p>
           {% endif %}
         </td>
-        <td colspan="2">
-          <p class="heading">{{ _("Internet: Data handover to external non-contractors") }}</p>
+        <td colspan="2" style="border-top: none;">
+          <p class="heading">{{ _("Data handover to external non-contractors") }}
+            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Angabe, ob die Daten an Dritte weitergegeben werden dürfen, wenn diese nicht im Auftrag der Stadt tätig sind. Dabei sind - bei einer Weitergabe im Rahmen der Nutzungsbedingungen - die Nutzungsbedingungen bekanntzugeben. Bei einer Nutzung über die Nutzungsbedingungen hinaus ist eine Nutzungsvereinbarung mit dem Dritten zu schließen."></span>
+          </p>
           {% if pkg_dict.datenabgabe_extern %}  
             <p class="metadata">{%- snippet 'package/snippets/label.html',
               item='datenabgabe_extern', pkg_dict=pkg_dict, schema=schema -%}</p>
@@ -122,18 +152,24 @@
           {% endif %}
         </td>
       </tr>
-    </table>
+    </table></div>
   </section>
+  
   {% if pkg_dict.nutzungshinweise %}
   <section class="additional-info module-content table3">
+    <div class="collapsible-header">
+    <h3 style="border-bottom: 5px solid;">{{ _("Additional hints regarding the resource/data useage")}}</h3>
+    <i class="plus-sign fa fa-minus"></i>
+  </div>
+  <div class="collapsible-content">
     <table class="table package-metadata">
       <tr>
-        <td colspan="4"><p class="heading">{{ _("Additional hints regarding the resource/data useage")}}</p>
+        <td colspan="4">
           <p class="metadata">{%- snippet 'package/snippets/label.html',
             item='nutzungshinweise', pkg_dict=pkg_dict, schema=schema -%}</p>
         </td>
       </tr>
-    </table>
+    </table></div>
   </section>
   {% endif %}
   
@@ -151,4 +187,52 @@
       </table>
     </section>
   {% endif %}-->
-  
+  {% set res = pkg_dict.resources[0] %}
+  {% if res.datastore_active %}
+  {% block resource_data_dictionary %}
+    <section class="module-content table4">
+      <div class="collapsible-header">
+      <h3 style="border-bottom: 5px solid;">{{ _('Data Dictionary') }}</h3>
+      <i class="plus-sign fa fa-minus"></i>
+    </div>
+    <div class="collapsible-content">
+      <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
+        {% block resouce_data_dictionary_headers %}
+        <tr>
+          <th scope="col">{{ _('Attribute') }}</th>
+          <th scope="col">{{ _('Data Type') }}</th>
+          <th scope="col">{{ _('Conditions') }}</th>
+          <th scope="col">{{ _('Description') }}</th>
+          <th scope="col">{{ _('Remarks') }}</th>
+          <th scope="col">{{ _('Open Data') }}</th>
+        </tr>
+        {% endblock %}
+      
+        {% block resource_data_dictionary_data %}
+          {% set dict=h.datastore_dictionary(res.id) %}
+          {% for field in dict %}
+            {% snippet "package/snippets/dictionary_view.html", field=field %}
+          {% endfor %}
+        {% endblock %}
+      </table></div>
+    </section>
+  {% endblock %}
+  {% endif %}
+
+
+  <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const collapsibleHeaders = document.querySelectorAll(".collapsible-header");
+            
+            collapsibleHeaders.forEach(header => {
+                const collapsibleContent = header.nextElementSibling;
+                const icon = header.querySelector(".plus-sign");
+
+                header.addEventListener("click", function() {
+                    collapsibleContent.classList.toggle("hide");
+                    icon.classList.toggle("fa-minus");
+                    icon.classList.toggle("fa-plus");
+                });
+            });
+        });
+</script>

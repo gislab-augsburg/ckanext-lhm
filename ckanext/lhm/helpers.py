@@ -4,7 +4,7 @@ import json
 from datetime import date
 import ckan.logic as logic
 from ckan.plugins import toolkit
-from ckan.common import config
+from ckan.common import config, request
 
 from validate_email import validate_email
 
@@ -135,3 +135,4 @@ def about_us():
     '''
     value = config.get('lhm.about_us', '/about')
     return value
+

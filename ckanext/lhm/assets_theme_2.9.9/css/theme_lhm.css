@@ -346,7 +346,7 @@ border: 1px solid #ccc;
 }
 
 .table1{
-    background-color: #effcfa;
+    background-color: #aff2ee;
     margin-top: 10px;
     border-collapse: collapse;
 }
@@ -358,10 +358,48 @@ border: 1px solid #ccc;
 }
 
 .table3{
-    background-color: #aff2ee;
+    background-color: #effcfa;
     margin-top: 10px;
     border-collapse: collapse;
 }
+
+.table4{
+    background-color: #f7fdfd;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+.collapsible-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding-right: 3%;
+    transition: background-color 0.3s ease;
+}
+
+.collapsible-header:hover {    
+    color: #fdfdfd;
+    background-color: #00AB9F;
+    padding-left: 1%;
+}
+
+.collapsible-content {
+    display: block;
+    overflow: hidden;
+    padding: 0 10px;
+}
+
+.collapsible-content.show {
+    display: block;
+}
+
+.plus-sign {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
 
 @media screen and (max-width: 600px) {
     table {
@@ -369,6 +407,7 @@ border: 1px solid #ccc;
         overflow-x: auto; /* Enables horizontal scroll on smaller screens */
     }
 }
+
 
 .row[role='main']{
     background: #fff;
@@ -422,3 +461,4 @@ border: 1px solid #ccc;
     float: left;
     width: 20%;
   }
+

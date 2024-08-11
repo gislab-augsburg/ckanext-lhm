@@ -5,6 +5,7 @@ from datetime import date
 import ckan.logic as logic
 from ckan.plugins import toolkit
 from ckan.common import config, request
+from ckan import model
 
 from validate_email import validate_email
 
@@ -78,6 +79,13 @@ def get_init_data():
             data = json.load(f)
 
     return data
+
+@helper
+def is_activity_user_admin(user_id):
+    user = model.User.get(user_id)
+    if user and user.sysadmin:
+        return True
+    return False
 
 @helper
 def usage_info():

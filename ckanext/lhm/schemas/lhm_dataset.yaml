@@ -36,7 +36,7 @@ dataset_fields:
 - field_name: group
   label: Group
   form_snippet: group_form.html
-  display_snippet: null
+  #display_snippet: null
 
 - field_name: schema
   label: Schema
@@ -59,6 +59,8 @@ dataset_fields:
     label: BEWA
   - value: d
     label: D
+  - value: dirstat
+    label: DIRSTAT
   - value: gsr
     label: GSR
   - value: kvr

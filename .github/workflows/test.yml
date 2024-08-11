@@ -35,7 +35,6 @@ jobs:
       run: |
         pip install -r requirements.txt
         pip install -r dev-requirements.txt
-
         pip install -e .
     - name: Setup extension
       # Extra initialization steps

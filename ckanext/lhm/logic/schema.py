@@ -31,8 +31,10 @@ def copy_data_to_solr(data_dict):
                     records_ = records_str[start_index:end_index+1]
                 else:
                     records_ = records_str
-
+                
+                records_ = records_.replace('\\', '\\\\')
                 records = json.loads(records_)
+                
                 if records:
                     for record in records:
                         attribut.append(record.get('ATTRIBUT', None))

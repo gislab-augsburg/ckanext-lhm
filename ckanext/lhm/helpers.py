@@ -150,9 +150,9 @@ def username_info():
 
     To enable showing the username info text, add this line to the
     [app:main] section of your CKAN config file::
-      lhm.password_info = password_info
+      lhm.username_info = username_info
     '''
-    value = config.get('lhm.password_info', None)
+    value = config.get('lhm.username_info', None)
     return value
 
 @helper

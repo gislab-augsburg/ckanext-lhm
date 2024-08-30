@@ -188,7 +188,7 @@ GeoInfoWeb: Standard ist der Zugriff für stadtweit alle Benutzer (inkl. Stadtra
     </section>
   {% endif %}-->
   {% set res = pkg_dict.resources[0] %} 
-  {% if res.datastore_active %}
+  {% if res and res.datastore_active %}
   {% block resource_data_dictionary %}
     <section class="module-content table4">
       <div class="collapsible-header">

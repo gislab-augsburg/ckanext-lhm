@@ -97,7 +97,7 @@ dataset_fields:
 - field_name: owner_org
   label: 
     en: Responsible organization
-    de: Fachl. Zuständigkeit
+    de: Organisation
   preset: dataset_organization
   form_snippet: organization_lhm.html
   is_info: true

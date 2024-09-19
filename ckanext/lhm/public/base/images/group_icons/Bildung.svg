@@ -1,20 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="Ebene_2" data-name="Ebene 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306.65 218.89">
-  <g id="Ebene_3" data-name="Ebene 3">
+<svg id="Ebene_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 350">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        fill: none;
+        stroke: #000;
+        stroke-linecap: round;
+      }
+
+      .cls-1, .cls-3 {
+        stroke-width: 5px;
+      }
+
+      .cls-2 {
+        stroke-width: 3px;
+      }
+
+      .cls-4 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        stroke-linejoin: round;
+      }
+    </style>
+  </defs>
+  <g id="Ebene_3">
     <g id="Bildung">
-      <path d="m153.5,20.93v173.94c-44.52-18.56-87.63-22.7-129-9V11.93C67.5-3.15,110.5-.15,153.5,20.93Z" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 5px;"/>
-      <path d="m282.5,11.93v173.94c-41.38-13.7-84.49-9.56-129,9V20.93C196.5-.15,239.5-3.15,282.5,11.93Z" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 5px;"/>
-      <path d="m40,35.62c31.67-14.08,63.33-12.74,95,4" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 3px;"/>
-      <path d="m40,65.12c31.67-14.08,63.33-12.74,95,4" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 3px;"/>
-      <path d="m40,94.62c31.67-14.08,63.33-12.74,95,4" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 3px;"/>
-      <path d="m40,124.12c31.67-14.08,63.33-12.74,95,4" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 3px;"/>
-      <path d="m40,153.62c31.67-14.08,63.33-12.74,95,4" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 3px;"/>
-      <path d="m266,35.62c-31.67-14.08-63.33-12.74-95,4" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 3px;"/>
-      <path d="m266,65.12c-31.67-14.08-63.33-12.74-95,4" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 3px;"/>
-      <path d="m266,94.62c-31.67-14.08-63.33-12.74-95,4" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 3px;"/>
-      <path d="m266,124.12c-31.67-14.08-63.33-12.74-95,4" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 3px;"/>
-      <path d="m266,153.62c-31.67-14.08-63.33-12.74-95,4" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 3px;"/>
-      <path d="m304.15,36.96v165.47c0,1.41-1.14,2.55-2.55,2.55h-123.13c-2.08,0-4.07.81-5.6,2.22-13.15,12.13-26.14,12.25-38.98.35-1.61-1.49-3.69-2.36-5.88-2.36H5.41c-1.61,0-2.91-1.3-2.91-2.91V36.87c0-1.06.64-2.02,1.62-2.43l20.38-8.47v159.9c41.37-13.7,84.48-9.56,129,9,44.51-18.56,87.62-22.7,129-9V25.91l19.75,8.2c1.15.48,1.9,1.6,1.9,2.85Z" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 5px;"/>
+      <rect class="cls-4" width="500" height="350"/>
+      <g id="Bildung-2" data-name="Bildung">
+        <path class="cls-3" d="M250.18,86.49v173.94c-44.52-18.56-87.63-22.7-129-9V77.49c43-15.08,86-12.08,129,9Z"/>
+        <path class="cls-3" d="M379.18,77.49v173.94c-41.38-13.7-84.49-9.56-129,9V86.49c43-21.08,86-24.08,129-9Z"/>
+        <path class="cls-2" d="M136.67,101.17c31.67-14.08,63.33-12.74,95,4"/>
+        <path class="cls-2" d="M136.67,130.67c31.67-14.08,63.33-12.74,95,4"/>
+        <path class="cls-2" d="M136.67,160.17c31.67-14.08,63.33-12.74,95,4"/>
+        <path class="cls-2" d="M136.67,189.67c31.67-14.08,63.33-12.74,95,4"/>
+        <path class="cls-2" d="M136.67,219.17c31.67-14.08,63.33-12.74,95,4"/>
+        <path class="cls-2" d="M362.67,101.17c-31.67-14.08-63.33-12.74-95,4"/>
+        <path class="cls-2" d="M362.67,130.67c-31.67-14.08-63.33-12.74-95,4"/>
+        <path class="cls-2" d="M362.67,160.17c-31.67-14.08-63.33-12.74-95,4"/>
+        <path class="cls-2" d="M362.67,189.67c-31.67-14.08-63.33-12.74-95,4"/>
+        <path class="cls-2" d="M362.67,219.17c-31.67-14.08-63.33-12.74-95,4"/>
+        <path class="cls-1" d="M400.82,102.52v165.47c0,1.41-1.14,2.55-2.55,2.55h-123.13c-2.08,0-4.07.81-5.6,2.22-13.15,12.13-26.14,12.25-38.98.35-1.61-1.49-3.69-2.36-5.88-2.36h-122.6c-1.61,0-2.91-1.3-2.91-2.91V102.43c0-1.06.64-2.02,1.62-2.43l20.38-8.47v159.9c41.37-13.7,84.48-9.56,129,9,44.51-18.56,87.62-22.7,129-9V91.47l19.75,8.2c1.15.48,1.9,1.6,1.9,2.85Z"/>
+      </g>
     </g>
   </g>
 </svg>

@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="Ebene_2" data-name="Ebene 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 261.24 235.39">
-  <g id="Ebene_3" data-name="Ebene 3">
+<svg id="Ebene_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 350">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke-width: 6px;
+      }
+
+      .cls-1, .cls-2 {
+        fill: none;
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        stroke-width: 8px;
+      }
+    </style>
+  </defs>
+  <g id="Ebene_3">
     <g id="Gesundheit">
-      <path d="m26,100.07c-2.58-6.45-4.33-11.23-5.16-18.2C11.91,6.24,93.94-21.26,136.18,27.13c42.24-48.39,124.27-20.89,115.34,54.74-.57,4.82-1.58,9.54-3,14.13" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 6px;"/>
-      <path d="m34.39,118c2.11,3.09,4.72,6.25,7.27,9.05l94.52,103.88,94.54-103.88c3.75-4.13,7.07-6.61,9.9-11.36" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 6px;"/>
-      <polyline points="4 109.04 78.74 109.04 92.28 76.51 109.71 142.73 136.18 50.38 153.85 154.34 175.92 73.03 187.54 106.72 257.24 106.72" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 8px;"/>
+      <rect class="cls-3" width="500" height="350"/>
+      <g id="Gesundheit-2" data-name="Gesundheit">
+        <path class="cls-1" d="M145.38,158.11c-2.58-6.45-4.33-11.23-5.16-18.2-8.93-75.63,73.1-103.13,115.34-54.74,42.24-48.39,124.27-20.89,115.34,54.74-.57,4.82-1.58,9.54-3,14.13"/>
+        <path class="cls-1" d="M153.77,176.04c2.11,3.09,4.72,6.25,7.27,9.05l94.52,103.88,94.54-103.88c3.75-4.13,7.07-6.61,9.9-11.36"/>
+        <polyline class="cls-2" points="123.38 167.08 198.12 167.08 211.67 134.55 229.09 200.76 255.56 108.41 273.23 212.38 295.3 131.06 306.92 164.75 376.62 164.75"/>
+      </g>
     </g>
   </g>
 </svg>

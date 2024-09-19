@@ -1,22 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="Ebene_2" data-name="Ebene 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 274.55 261.62">
-  <g id="Ebene_3" data-name="Ebene 3">
+<svg id="Ebene_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 350">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke-dasharray: 25 10;
+        stroke-width: 3px;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5 {
+        stroke: #000;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-1, .cls-3, .cls-4, .cls-5 {
+        fill: none;
+      }
+
+      .cls-6 {
+        fill: #fff;
+      }
+
+      .cls-2, .cls-4 {
+        stroke-width: 4px;
+      }
+
+      .cls-3 {
+        stroke-width: 6px;
+      }
+
+      .cls-5 {
+        stroke-width: 5px;
+      }
+    </style>
+  </defs>
+  <g id="Ebene_3">
     <g id="Stadtplanung">
-      <polygon points="48.9 50.78 90.3 21.89 126.95 50.78 48.9 50.78" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
-      <rect x="56.78" y="50.78" width="64.17" height="45.53" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
-      <polyline points="274.06 96.31 254.63 96.31 253.28 96.31 182.36 96.31" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
-      <polyline points="139.62 96.31 120.94 96.31 56.78 96.31 21.26 96.31 1.12 96.31" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
-      <polygon points="182.36 27.14 182.36 96.31 139.62 96.31 139.46 44.83 182.36 27.14" style="stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
-      <line x1="139.62" y1="97.12" x2="139.62" y2="96.31" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
-      <polyline points="182.36 27.14 182.36 4.16 225.27 38.52 225.27 95.87" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
-      <line x1="253.29" y1="69.17" x2="253.29" y2="96.31" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 6px;"/>
-      <ellipse cx="253.29" cy="35.9" rx="19.26" ry="33.27" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
-      <line x1="21.26" y1="69.17" x2="21.26" y2="96.31" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 6px;"/>
-      <ellipse cx="21.26" cy="35.9" rx="19.26" ry="33.27" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
-      <line x1="11.63" y1="121.7" x2="254.4" y2="121.7" style="fill: none; stroke: #000; stroke-dasharray: 0 0 25 10; stroke-miterlimit: 10; stroke-width: 3px;"/>
-      <line x1="1.12" y1="143.44" x2="272.55" y2="143.44" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
-      <path d="m32.74,143.44v28.47h22.67l12.26,24.22-20.14,20.14,30.64,28.02,19.26-16.64,18.39,9.79v21.69h42.9v-23.95l22.76-9.28,14.88,14.88,30.64-29.77-17.51-17.51,11.38-18.39s24.08,1.31,22.76,0l.05-31.68" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 5px;"/>
-      <path d="m167.92,143.43c.85,2.82,1.31,5.81,1.31,8.91,0,16.92-13.72,30.64-30.64,30.64s-30.64-13.72-30.64-30.64c0-3.1.46-6.09,1.31-8.91" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
+      <rect class="cls-6" width="500" height="350"/>
+      <g id="Stadtplanung-2" data-name="Stadtplanung">
+        <polygon class="cls-4" points="161.31 94.91 202.71 66.01 239.36 94.91 161.31 94.91"/>
+        <rect class="cls-4" x="169.19" y="94.91" width="64.17" height="45.53"/>
+        <polyline class="cls-4" points="386.47 140.44 367.04 140.44 365.69 140.44 294.77 140.44"/>
+        <polyline class="cls-4" points="252.03 140.44 233.35 140.44 169.19 140.44 133.67 140.44 113.53 140.44"/>
+        <polygon class="cls-2" points="294.77 71.27 294.77 140.44 252.03 140.44 251.87 88.96 294.77 71.27"/>
+        <line class="cls-4" x1="252.03" y1="141.25" x2="252.03" y2="140.44"/>
+        <polyline class="cls-4" points="294.77 71.27 294.77 48.29 337.68 82.65 337.68 140"/>
+        <line class="cls-3" x1="365.69" y1="113.29" x2="365.69" y2="140.44"/>
+        <ellipse class="cls-4" cx="365.69" cy="80.02" rx="19.26" ry="33.27"/>
+        <line class="cls-3" x1="133.67" y1="113.29" x2="133.67" y2="140.44"/>
+        <ellipse class="cls-4" cx="133.67" cy="80.02" rx="19.26" ry="33.27"/>
+        <line class="cls-1" x1="124.04" y1="165.83" x2="366.81" y2="165.83"/>
+        <line class="cls-4" x1="113.53" y1="187.56" x2="384.96" y2="187.56"/>
+        <path class="cls-5" d="M145.15,187.56v28.47h22.67l12.26,24.22-20.14,20.14,30.64,28.02,19.26-16.64,18.39,9.79v21.69h42.9v-23.95l22.76-9.28,14.88,14.88,30.64-29.77-17.51-17.51,11.38-18.39s24.08,1.31,22.76,0l.05-31.68"/>
+        <path class="cls-4" d="M280.33,187.56c.85,2.82,1.31,5.81,1.31,8.91,0,16.92-13.72,30.64-30.64,30.64s-30.64-13.72-30.64-30.64c0-3.1.46-6.09,1.31-8.91"/>
+      </g>
     </g>
   </g>
 </svg>

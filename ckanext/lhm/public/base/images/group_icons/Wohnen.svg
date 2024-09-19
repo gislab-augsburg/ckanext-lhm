@@ -1,50 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="Ebene_2" data-name="Ebene 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 370.17 179.11">
-  <g id="Ebene_3" data-name="Ebene 3">
+<svg id="Ebene_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 350">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        stroke-width: 4px;
+      }
+
+      .cls-2, .cls-3 {
+        fill: none;
+        stroke: #000;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-3 {
+        stroke-width: 3px;
+      }
+    </style>
+  </defs>
+  <g id="Ebene_3">
     <g id="Wohnen">
-      <polygon points="68.22 120.76 68.22 177.11 2 177.11 2 120.76 35.13 82 68.22 120.76" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
-      <polygon points="134.22 120.76 134.22 177.11 68 177.11 68 120.76 101.13 82 134.22 120.76" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
-      <polygon points="200.22 120.76 200.22 177.11 134 177.11 134 120.76 167.13 82 200.22 120.76" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
-      <rect x="210.55" y="2" width="84" height="175" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
-      <rect x="295.17" y="40" width="73" height="137" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 4px;"/>
-      <rect x="15.13" y="117" width="13" height="13"/>
-      <rect x="39.13" y="142" width="17" height="35" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
-      <rect x="80.63" y="117.5" width="13" height="13"/>
-      <rect x="104.63" y="142.5" width="17" height="35" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
-      <rect x="146.63" y="117.5" width="13" height="13"/>
-      <rect x="170.63" y="142.5" width="17" height="35" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 3px;"/>
-      <g>
-        <rect x="246.05" y="19.5" width="13" height="13"/>
-        <rect x="222.38" y="19.5" width="13" height="13"/>
-        <rect x="269.71" y="19.5" width="13" height="13"/>
-      </g>
-      <g>
-        <rect x="246.05" y="40.5" width="13" height="13"/>
-        <rect x="222.38" y="40.5" width="13" height="13"/>
-        <rect x="269.71" y="40.5" width="13" height="13"/>
-      </g>
-      <g>
-        <rect x="246.05" y="61.5" width="13" height="13"/>
-        <rect x="222.38" y="61.5" width="13" height="13"/>
-        <rect x="269.71" y="61.5" width="13" height="13"/>
-      </g>
-      <g>
-        <rect x="246.05" y="82.5" width="13" height="13"/>
-        <rect x="222.38" y="82.5" width="13" height="13"/>
-        <rect x="269.71" y="82.5" width="13" height="13"/>
-      </g>
-      <g>
+      <rect class="cls-1" width="500" height="350"/>
+      <g id="Wohnen-2" data-name="Wohnen">
+        <polygon class="cls-2" points="133.13 206.01 133.13 262.36 66.91 262.36 66.91 206.01 100.04 167.25 133.13 206.01"/>
+        <polygon class="cls-2" points="199.13 206.01 199.13 262.36 132.91 262.36 132.91 206.01 166.04 167.25 199.13 206.01"/>
+        <polygon class="cls-2" points="265.13 206.01 265.13 262.36 198.91 262.36 198.91 206.01 232.04 167.25 265.13 206.01"/>
+        <rect class="cls-2" x="275.46" y="87.25" width="84" height="175"/>
+        <rect class="cls-2" x="360.09" y="125.25" width="73" height="137"/>
+        <rect x="80.04" y="202.25" width="13" height="13"/>
+        <rect class="cls-3" x="104.04" y="227.25" width="17" height="35"/>
+        <rect x="145.54" y="202.75" width="13" height="13"/>
+        <rect class="cls-3" x="169.54" y="227.75" width="17" height="35"/>
+        <rect x="211.54" y="202.75" width="13" height="13"/>
+        <rect class="cls-3" x="235.54" y="227.75" width="17" height="35"/>
         <g>
-          <rect x="336" y="58.5" width="13" height="13"/>
-          <rect x="312.34" y="58.5" width="13" height="13"/>
+          <rect x="310.96" y="104.75" width="13" height="13"/>
+          <rect x="287.29" y="104.75" width="13" height="13"/>
+          <rect x="334.63" y="104.75" width="13" height="13"/>
         </g>
         <g>
-          <rect x="336" y="79.5" width="13" height="13"/>
-          <rect x="312.34" y="79.5" width="13" height="13"/>
+          <rect x="310.96" y="125.75" width="13" height="13"/>
+          <rect x="287.29" y="125.75" width="13" height="13"/>
+          <rect x="334.63" y="125.75" width="13" height="13"/>
         </g>
         <g>
-          <rect x="336" y="100.5" width="13" height="13"/>
-          <rect x="312.34" y="100.5" width="13" height="13"/>
+          <rect x="310.96" y="146.75" width="13" height="13"/>
+          <rect x="287.29" y="146.75" width="13" height="13"/>
+          <rect x="334.63" y="146.75" width="13" height="13"/>
+        </g>
+        <g>
+          <rect x="310.96" y="167.75" width="13" height="13"/>
+          <rect x="287.29" y="167.75" width="13" height="13"/>
+          <rect x="334.63" y="167.75" width="13" height="13"/>
+        </g>
+        <g>
+          <g>
+            <rect x="400.92" y="143.75" width="13" height="13"/>
+            <rect x="377.25" y="143.75" width="13" height="13"/>
+          </g>
+          <g>
+            <rect x="400.92" y="164.75" width="13" height="13"/>
+            <rect x="377.25" y="164.75" width="13" height="13"/>
+          </g>
+          <g>
+            <rect x="400.92" y="185.75" width="13" height="13"/>
+            <rect x="377.25" y="185.75" width="13" height="13"/>
+          </g>
         </g>
       </g>
     </g>

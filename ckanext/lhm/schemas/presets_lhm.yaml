@@ -28,7 +28,7 @@ presets:
   values:
       form_snippet: select_lhm.html
       display_snippet: select.html
-      validators: scheming_required scheming_choices
+
 ## an empty template for the required presets
 # - preset_name: 
 #   values:

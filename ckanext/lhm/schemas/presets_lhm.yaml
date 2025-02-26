@@ -40,3 +40,10 @@ presets:
 
 # - preset_name: 
 #   values:
+
+- preset_name: dataset_file_upload
+  values:
+    validators: ignore_missing upload_validator
+    form_snippet: dataset_file_upload.html
+    display_snippet: dataset_file_display.html
+

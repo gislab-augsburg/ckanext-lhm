@@ -1,0 +1,10 @@
+<div class="control-group">
+    <label for="{{ field.field_name }}" class="control-label">{{ field.label }}</label>
+    <div class="controls">
+      <input id="{{ field.field_name }}" name="{{ field.field_name }}" type="file" />
+      {% if field.help_text %}
+        <p class="help-block">{{ field.help_text }}</p>
+      {% endif %}
+    </div>
+  </div>
+  

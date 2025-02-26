@@ -470,6 +470,7 @@ dataset_fields:
     label: Bestimmte Attribute
   - value: offen
     label: Alle Attribute
+
 - field_name: lhm_extern
   label: LHM-extern
   preset: select
@@ -483,6 +484,7 @@ dataset_fields:
     label: eingeschränkt, nicht Auftragnehmer der LHM
   - value: kein_zugriff
     label: kein Zugriff
+
 - field_name: lhm_extern_nutzungsbedingungen
   label: LHM-extern Nutzungsbedingungen, Datenüberlassungen etc.
   #form_snippet: slug.html
@@ -509,11 +511,20 @@ dataset_fields:
 - field_name: letzter_import
   label: Letzter Import
   form_placeholder: DD-MM-YYYY oder keine Angabe
+
 - field_name: url
   label: Photo
   preset: resource_url_upload
   form_placeholder: http://example.com/my-camel-photo.jpg
   upload_label: Photo
+
+
+- field_name: dataset_file
+  label: Dataset File
+  preset: dataset_file_upload
+  upload_to: "datasets"
+  required: true
+
 
 resource_fields:
 

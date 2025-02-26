@@ -28,7 +28,7 @@ presets:
   values:
       form_snippet: select_lhm.html
       display_snippet: select.html
-
+      validators: scheming_required scheming_choices
 ## an empty template for the required presets
 # - preset_name: 
 #   values:
@@ -43,7 +43,6 @@ presets:
 
 - preset_name: dataset_file_upload
   values:
-    validators: ignore_missing upload_validator
     form_snippet: dataset_file_upload.html
     display_snippet: dataset_file_display.html
 

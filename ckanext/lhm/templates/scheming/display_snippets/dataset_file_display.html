@@ -1,5 +1,5 @@
-{% if pkg_dict.dataset_file %}
+{% if pkg and pkg.dataset_file %}
   <div class="dataset-file">
-    <a href="{{ h.url_for_static(pkg_dict.dataset_file) }}">{{ pkg_dict.dataset_file }}</a>
+    <a href="{{ h.url_for_static(pkg.dataset_file) }}">{{ pkg.dataset_file }}</a>
   </div>
 {% endif %}

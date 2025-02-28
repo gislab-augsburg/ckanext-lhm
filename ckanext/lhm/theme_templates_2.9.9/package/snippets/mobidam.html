@@ -144,7 +144,7 @@ GeoInfoWeb: Standard ist der Zugriff für stadtweit alle Benutzer (inkl. Stadtra
       <tr>
         <td colspan="4" style="padding-bottom: 0px;"><p class="heading">{{ _("LHM-extern")}}</p></td>
         {% if pkg_dict.lhm_extern %}
-        <td colspan="2" style="padding-bottom: 0px">
+        <td colspan="2" style="padding-bottom: 0px;">
           <p class="heading">{{ _("Zugriff")}}
             <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Tooltip LHM-extern Zugriff"></span>
           </p>
@@ -196,7 +196,7 @@ GeoInfoWeb: Standard ist der Zugriff für stadtweit alle Benutzer (inkl. Stadtra
             <p class="heading">{{ _("Open Data Nutzungsbedingungen") }}
               <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title='Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Dies bedeutet jedoch nicht, dass es dabei keine Nutzungsbedingungen bzw. Lizenzbedingungen gibt. Ggf. inkludierte und exkludierte Attribute innerhalb des Datensatzes sind der Attributtabelle zu entnehmen. Weitere Hinweise zur Nutzung können unter "Hinweis" mit einem erläuternden Text beschrieben sein.--> Nutzungsrechte bei OpenData: https://www.opengov-muenchen.de/pages/nutzungsbedingungen'></span>
             </p>         
-            <p class="metadata">{{ h.link_to('ODP München Nutzungsbedingungen', 'https://opendata.muenchen.de/pages/nutzungsbedingungen', target='_blank') }}</p>
+            <p class="metadata">{{ h.link_to('opengov-muenchen.de/pages/nutzungsbedingungen', 'https://www.opengov-muenchen.de/pages/nutzungsbedingungen', target='_blank') }}</p>
           {% endif %}
         </td>
       </tr>

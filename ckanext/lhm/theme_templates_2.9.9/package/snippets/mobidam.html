@@ -1,6 +1,6 @@
 <section class="additional-info module-content table1">
   <div class="collapsible-header">
-    <h3 style="border-bottom: 5px solid;">{{_('Basic Information')}}</h3>
+    <h3 style="border-bottom: 2px solid;">{{_('Basic Information')}}</h3>
     <i class="plus-sign fa fa-minus"></i>
   </div>
   <div class="collapsible-content">
@@ -47,7 +47,8 @@
           <p class="heading">{{ _("Organisation Dateneigner") }}
           <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Tooltip Dateneigner Organisation"></span></p>
           {% if pkg_dict.dateneigner_organisation%}     
-            <p class="metadata">{{ pkg_dict.dateneigner_organisation }}</p>
+            <p class="metadata">{%- snippet 'package/snippets/label.html',
+              item='dateneigner_organisation', pkg_dict=pkg_dict, schema=schema -%}</p>
           {% else %}
             <p class="metadata">{{ _("No") }}</p>
           {% endif %}
@@ -64,7 +65,7 @@
           {% endif %}
         </td>
         <td>
-          <p class="heading">{{ _("Geometry Type") }}</p>
+          <p class="heading">{{ _("Datentyp") }}</p>
           {% if pkg_dict.geometrietyp %}  
             <p class="metadata">{%- snippet 'package/snippets/label.html',
               item='geometrietyp', pkg_dict=pkg_dict, schema=schema -%}</p>
@@ -106,37 +107,79 @@
   
   <section class="additional-info module-content table2">
     <div class="collapsible-header">
-    <h3 style="border-bottom: 5px solid;">{{_('Usage Remarks')}}</h3>
+    <h3 style="border-bottom: 1px solid;">{{_('Usage Remarks')}}</h3>
     <i class="plus-sign fa fa-minus"></i>
   </div>
   <div class="collapsible-content">
     <table class="table package-metadata">
+
       <tr>
-        {% if pkg_dict.intranet %}
-        <td colspan="4">
-          <p class="heading">{{ _("LHM-Intranet")}}
+        <td colspan="4" style="padding-bottom: 0px;"><p class="heading">{{ _("LHM-intern")}}</p></td>
+        {% if pkg_dict.lhm_intern %}
+        <td colspan="2" style="padding-bottom: 0px;">
+          <p class="heading">{{ _("Zugriff")}}
             <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Fachverfahren: Der Zugriff durch Fachverfahren meint den direkten (lesenden) Zugriff auf die Daten auf der Datenbank und/oder über Dienste. Standard ist der Zugriff für stadtweit alle Benutzer (d.h. Zugriffsuser inkl. GeoInfoWeb). Teilweise muss der Zugriff auf bestimmte Benutzergruppen (=Zugriffsuser) eingeschränkt werden oder die Daten dürfen nicht für Fachverfahren genutzt werden. 
 GeoInfoWeb: Standard ist der Zugriff für stadtweit alle Benutzer (inkl. Stadtrat und Bezirksausschüsse). Der Zugriff über GeoInfoWeb kann auf bestimmte Gruppen begrenzt werden. Dann sind die Daten im GeoinfoWeb nur für diese Nutzer bzw. Gruppen sichtbar."></span>
           </p>
           <p class="metadata">{%- snippet 'package/snippets/label.html',
-            item='intranet', pkg_dict=pkg_dict, schema=schema -%}</p>
+            item='lhm_intern', pkg_dict=pkg_dict, schema=schema -%}</p>
+        </td>
+        {% endif %}
+
+        <td colspan="2" style="padding-bottom: 0px;">
+          <p class="heading">{{ _("Dokumente zu Nutzungsbedingungen etc.")}}
+            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Fachverfahren: Der Zugriff durch Fachverfahren meint den direkten (lesenden) Zugriff auf die Daten auf der Datenbank und/oder über Dienste. Standard ist der Zugriff für stadtweit alle Benutzer (d.h. Zugriffsuser inkl. GeoInfoWeb). Teilweise muss der Zugriff auf bestimmte Benutzergruppen (=Zugriffsuser) eingeschränkt werden oder die Daten dürfen nicht für Fachverfahren genutzt werden. 
+GeoInfoWeb: Standard ist der Zugriff für stadtweit alle Benutzer (inkl. Stadtrat und Bezirksausschüsse). Der Zugriff über GeoInfoWeb kann auf bestimmte Gruppen begrenzt werden. Dann sind die Daten im GeoinfoWeb nur für diese Nutzer bzw. Gruppen sichtbar."></span>
+          </p>
+          {% for resource in pkg_dict.resources %}
+            {% if resource.nutzungsbed == 'lhm_intern' %}
+              <p class="metadata">
+                <a href="{{ resource.url }}" target="_blank">{{ resource.name }}</a>
+              </p>
+            {% endif %}
+          {% endfor %}
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="4" style="padding-bottom: 0px;"><p class="heading">{{ _("LHM-extern")}}</p></td>
+        {% if pkg_dict.lhm_extern %}
+        <td colspan="2" style="padding-bottom: 0px">
+          <p class="heading">{{ _("Zugriff")}}
+            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Tooltip LHM-extern Zugriff"></span>
+          </p>
+          <p class="metadata">{%- snippet 'package/snippets/label.html',
+            item='lhm_extern', pkg_dict=pkg_dict, schema=schema -%}</p>
+        </td>
+        {% endif %}
+        <td colspan="2" style="padding-bottom: 0px;">
+          <p class="heading">{{ _("Dokumente zu Nutzungsbedingungen etc.")}}
+            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Fachverfahren: Der Zugriff durch Fachverfahren meint den direkten (lesenden) Zugriff auf die Daten auf der Datenbank und/oder über Dienste. Standard ist der Zugriff für stadtweit alle Benutzer (d.h. Zugriffsuser inkl. GeoInfoWeb). Teilweise muss der Zugriff auf bestimmte Benutzergruppen (=Zugriffsuser) eingeschränkt werden oder die Daten dürfen nicht für Fachverfahren genutzt werden. 
+GeoInfoWeb: Standard ist der Zugriff für stadtweit alle Benutzer (inkl. Stadtrat und Bezirksausschüsse). Der Zugriff über GeoInfoWeb kann auf bestimmte Gruppen begrenzt werden. Dann sind die Daten im GeoinfoWeb nur für diese Nutzer bzw. Gruppen sichtbar."></span>
+          </p>
+          {% for resource in pkg_dict.resources %}
+            {% if resource.nutzungsbed == 'lhm_extern' %}
+              <p class="metadata">
+                <a href="{{ resource.url }}" target="_blank">{{ resource.name }}</a>
+              </p>
+            {% endif %}
+          {% endfor %}
+        </td>
+      </tr>
+      <tr>
+        <td colspan="4" style="border-top: none;"><p class="heading">{{ _(" ")}}</p></td>
+        {% if pkg_dict.lhm_extern_inhaltliche_einschraenkungen %}
+        <td colspan="2" style="border-top: none;">
+          <p class="heading">{{ _("Einschränkungen")}}
+            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Tooltip LHM-extern inhaltliche Einschränkungen"></span>
+          </p>
+          <p class="metadata">{%- snippet 'package/snippets/label.html',
+            item='lhm_extern_inhaltliche_einschraenkungen', pkg_dict=pkg_dict, schema=schema -%}</p>
         </td>
         {% endif %}
       </tr>
       <tr>
-        <td colspan="4" style="padding-bottom: 0px;"><p class="heading">{{ _("Internet and Data delivery")}}</p></td>
-      </tr>
-      <tr>
-        <td colspan="2" style="border-top: none;">
-          <p class="heading">{{ _("Publication / Presentation in the LHM Task area") }}
-            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title='Angabe, in welcher Form die Daten im Internet bereitgetsellt werden dürfen. "Als Backend-Daten (ohne Präsentation)" meint die Nutzung z.B. für Online-Formulare. "Für Präsentationen (inkl. Backend)" erweitert die Freigabe z.B. für kartografische Darstellungen im Geoportal oder muenchen.de und schließt die Nutzung für Formulare o.ä. mit ein.'></span>
-          </p>
-          {% if pkg_dict.internet_praesentationen %}
-            <p class="metadata">{%- snippet 'package/snippets/label.html', item='internet_praesentationen', pkg_dict=pkg_dict, schema=schema -%}</p>
-          {% else %}
-            <p class="metadata">{{ _("Not available") }}</p>
-          {% endif %}
-        </td>
+        <td colspan="4" style="border-top: none;"><p class="heading">{{ _(" ")}}</p></td>
         <td colspan="2" style="border-top: none;">
           <p class="heading">{{ _("Open Data") }}
             <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title='Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Dies bedeutet jedoch nicht, dass es dabei keine Nutzungsbedingungen bzw. Lizenzbedingungen gibt. Ggf. inkludierte und exkludierte Attribute innerhalb des Datensatzes sind der Attributtabelle zu entnehmen. Weitere Hinweise zur Nutzung können unter "Hinweis" mit einem erläuternden Text beschrieben sein.--> Nutzungsrechte bei OpenData: https://www.opengov-muenchen.de/pages/nutzungsbedingungen'></span>
@@ -147,32 +190,13 @@ GeoInfoWeb: Standard ist der Zugriff für stadtweit alle Benutzer (inkl. Stadtra
           {% else %}
             <p class="metadata">{{ _("Not available") }}</p>
           {% endif %}
-          {% if pkg_dict.open_data_attribute %}  
-          <p class="metadata">{%- snippet 'package/snippets/label.html',
-            item='open_data_attribute', pkg_dict=pkg_dict, schema=schema -%}</p>
-        {% endif %}
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2" style="border-top: none;">      
-          <p class="heading">{{ _("Disclosure of data or services to third parties acting on behalf of the City") }}
-            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Angabe, ob die Daten an Dritte weitergegeben werden dürfen, sofern diese im Auftrag der Stadt tätig sind. Überlicherweise ist hierbei eine Verpflichtungserklärung des Dritten notwendig, in der die Nutzung der Daten geregelt wird. Ggf. inkludierte und exkludierte Attribute innerhalb des Datensatzes sind der Attributtabelle zu entnehmen."></span>
-          </p>
-          {% if pkg_dict.datenabgabe_extern_mit_auftrag %}
-            <p class="metadata">{%- snippet 'package/snippets/label.html', item='datenabgabe_extern_mit_auftrag', pkg_dict=pkg_dict, schema=schema -%}</p>
-          {% else %}
-            <p class="metadata">{{ _("Not available") }}</p>
-          {% endif %}
         </td>
         <td colspan="2" style="border-top: none;">
-          <p class="heading">{{ _("Data handover to external non-contractors") }}
-            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Angabe, ob die Daten an Dritte weitergegeben werden dürfen, wenn diese nicht im Auftrag der Stadt tätig sind. Dabei sind - bei einer Weitergabe im Rahmen der Nutzungsbedingungen - die Nutzungsbedingungen bekanntzugeben. Bei einer Nutzung über die Nutzungsbedingungen hinaus ist eine Nutzungsvereinbarung mit dem Dritten zu schließen."></span>
-          </p>
-          {% if pkg_dict.datenabgabe_extern %}  
-            <p class="metadata">{%- snippet 'package/snippets/label.html',
-              item='datenabgabe_extern', pkg_dict=pkg_dict, schema=schema -%}</p>
-          {% else %}
-            <p class="metadata">{{ _("Not available") }}</p>
+          {% if pkg_dict.open_data != "nein" %}
+            <p class="heading">{{ _("Open Data Nutzungsbedingungen") }}
+              <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title='Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Dies bedeutet jedoch nicht, dass es dabei keine Nutzungsbedingungen bzw. Lizenzbedingungen gibt. Ggf. inkludierte und exkludierte Attribute innerhalb des Datensatzes sind der Attributtabelle zu entnehmen. Weitere Hinweise zur Nutzung können unter "Hinweis" mit einem erläuternden Text beschrieben sein.--> Nutzungsrechte bei OpenData: https://www.opengov-muenchen.de/pages/nutzungsbedingungen'></span>
+            </p>         
+            <p class="metadata">{{ h.link_to('ODP München Nutzungsbedingungen', 'https://opendata.muenchen.de/pages/nutzungsbedingungen', target='_blank') }}</p>
           {% endif %}
         </td>
       </tr>

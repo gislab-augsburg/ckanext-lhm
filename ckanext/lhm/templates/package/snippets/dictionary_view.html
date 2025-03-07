@@ -11,8 +11,9 @@
   ] %} 
 
 {#%set od_options=[
-  {'value': 'ja', 'label': _('Yes')},
-  {'value': 'nein', 'label': _('No')}
+    {'value': 'Open Data', 'label': _('Open Data')}, 
+    {'value': 'HVD', 'label': _('HVD')},
+    {'value': '-', 'label': _('-')}
   ] %#}
 
 
@@ -29,5 +30,6 @@
     <td>{{ h.render_markdown(
       h.get_translated(field.get('info', {}), 'notes')) }}</td>
     <td>{{ h.get_translated(field.get('info', {}), 'label') }}</td>
+    <td>{{ h.get_translated(field.get('info', {}), 'fachbez') }}</td>
     <td>{{ h.get_translated(field.get('info', {}), 'opendata') }}</td>
   </tr>

@@ -81,6 +81,18 @@ dataset_fields:
   is_info: true
   info_text: Eindeutige und aussagekräftige inhaltliche Beschreibung des Datensatzes, damit auch Laien den Inhalt des Datensatzes einschätzen können. Relevante Informationen können neben dem konkreten Inhalt u.a. die räumliche Abdeckung, die Vollständigkeit, die Genauigkeit, die Urheberschaft oder die Aktualität sein.
   required: true
+
+- field_name: datenquelle
+  label: Datenquelle
+  preset: select_lhm
+  is_info: true
+  info_text: 'Infotext Datenquelle'
+  required: true
+  choices:
+  - value: geodatenpool
+    label: Geodatenpool
+  - value: mobidam
+    label: Mobidam
   
 - field_name: tag_string
   label: Schlagworte
@@ -96,7 +108,7 @@ dataset_fields:
   #required: true
 
 - field_name: geometrietyp
-  label: Datentyp
+  label: Objekttyp
   preset: select_lhm
   is_info: true
   info_text: 'Welcher Geometrietyp ist in der Tabelle enthalten: Punkt, Linie, Fläche, Raster, Sachdaten oder Annotation'
@@ -222,49 +234,74 @@ dataset_fields:
   is_info: true
   info_text: Angabe des fachlich zuständigen Referats und der ersten, das Referat untergliedernden Organisationseinheit (z.B. Amt, Hauptabteilung, Geschäftsbereich)
   choices:
+    - value: bau
+      label: Baureferat (BAU)
+    - value: bau-g
+      label: BAU-G (Baureferat - Gartenbau)
+    - value: bau-j
+      label: BAU-J (Baureferat - Ingenieurbau)
+    - value: bau-t
+      label: BAU-T (Baureferat - Tiefbau)
+    - value: dir
+      label: Direktroium (DIR)
+    - value: d-i-sta
+      label: D-I-STA (Direktorium - Informationsbereitstellung / Anwenderbetreuung)
+    - value: gsr
+      label: Gesundheitsreferat (GSR)
+    - value: gsr-sfm-gv
+      label: GSR-SFM-GV (Gesundheitsreferat - Abteilung GV, Gräberverwaltung, Grabangelegenheiten Friedhof, Zentrale Bestattungsformalitäten, Bestattungen von Amts wegen
+    - value: kr
+      label: Kommunalreferat (KR)
+    - value: kr-bewa
+      label: KR-BewA (Kommunalreferat - Bewertungsamt)
+    - value: kr-gsm
+      label: KR-GSM (Kommunalreferat - GeodatenService München)
+    - value: kvr
+      label: Kreisverwaltungsreferat (KVR)
+    - value: kvr-gl
+      label: KVR-GL (Kreisverwaltungsreferat - Geschäftsleitung)
+    - value: kvr-i
+      label: KVR-I (Sicherheit und Ordnung, Prävention)
     - value: mor
       label: Mobilitätsreferat (MOR)
     - value: mor-gb1
       label: MOR-GB1 (Mobilitätsreferat - Strategie)
     - value: mor-gb2
       label: MOR-GB2 (Mobilitätsreferat - Verkehrs- und Bezirksmanagement)
-    - value: mor-gb3
+    - value: mor-rl
       label: MOR-RL (Mobilitätsreferat - Referatsleitung)
-
-#Baureferat (BAU)
-#BAU-G (Baureferat - Gartenbau)
-#BAU-J (Baureferat - Ingenieurbau)
-#BAU-T (Baureferat - Tiefbau)
-#Direktroium (DIR)
-#D-I-STA (Direktorium - Informationsbereitstellung / Anwenderbetreuung)
-#Gesundheitsreferat (GSR)
-#GSR-SFM-GV (Gesundheitsreferat - Abteilung GV, Gräberverwaltung, Grabangelegenheiten Friedhof, Zentrale Bestattungsformalitäten, Bestattungen von Amts wegen
-#Kommunalreferat (KR)
-#KR-BewA (Kommunalreferat - Bewertungsamt)
-#KR-GSM (Kommunalreferat - GeodatenService München)
-#Kreisverwaltungsreferat (KVR)
-#KVR-GL (Kreisverwaltungsreferat - Geschäftsleitung)
-#KVR-I (Sicherheit und Ordnung, Prävention)
-#Mobilitätsreferat (MOR)
-#MOR-GB1 (Mobilitätsreferat - Strategie)
-#MOR-GB2 (Mobilitätsreferat - Verkehrs- und Bezirksmanagement)
-#MOR-RL (Mobilitätsreferat - Referatsleitung)
-#Referat für Bildung und Sport (RBS)
-#RBS-A (Referat für Bildung und Sport - Allgemeinbildende Schulen)
-#RBS-ZIM (Referat für Bildung und Sport - Zentrales Immobilienmanagement)
-#Referat für Klima- und Umweltschutz (RKU)
-#RKU-GB-I (Referat für Klima- und Umweltschutz - Umweltvorsorge)
-#RKU-GB-II (Referat für Klima- und Umweltschutz - Klimaschutz und Energie)
-#RKU-GB-III (Referat für Klima- und Umweltschutz - Naturschutz und Biodiversität)
-#RKU-GB-IV (Referat für Klima- und Umweltschutz - Umweltschutz)
-#Referat für Stadtplanung und Bauordnung (PLAN)
-#PLAN-HAI (Referat für Stadtplanung und Bauordnung - Stadtentwicklungsplanung)
-#PLAN-HAII (Referat für Stadtplanung und Bauordnung - Stadtplanung)
-#PLAN-HAIII (Referat für Stadtplanung und Bauordnung - Stadtsanierung und Wohnungsbau)
-#PLAN-HAIV (Referat für Stadtplanung und Bauordnung - Lokalbaukommission (LBK))
-#PLAN-SG (Referat für Stadtplanung und Bauordnung - Referatsgeschäftsleitung)
-#Sozialreferat (SOZ)
-#S-GL (Sozialreferat - Geschäftsleitung)
+    - value: rbs
+      label: Referat für Bildung und Sport (RBS)
+    - value: rbs-a
+      label: RBS-A (Referat für Bildung und Sport - Allgemeinbildende Schulen)
+    - value: rbs-zim
+      label: RBS-ZIM (Referat für Bildung und Sport - Zentrales Immobilienmanagement)
+    - value: rku
+      label: Referat für Klima- und Umweltschutz (RKU)
+    - value: rku-gb-i
+      label: RKU-GB-I (Referat für Klima- und Umweltschutz - Umweltvorsorge)
+    - value: rku-gb-ii
+      label: RKU-GB-II (Referat für Klima- und Umweltschutz - Klimaschutz und Energie)
+    - value: rku-gb-iii
+      label: RKU-GB-III (Referat für Klima- und Umweltschutz - Naturschutz und Biodiversität)
+    - value: rku-gb-iv
+      label: RKU-GB-IV (Referat für Klima- und Umweltschutz - Umweltschutz)
+    - value: plan
+      label: Referat für Stadtplanung und Bauordnung (PLAN)
+    - value: plan-hai
+      label: PLAN-HAI (Referat für Stadtplanung und Bauordnung - Stadtentwicklungsplanung)
+    - value: plan-haii
+      label: PLAN-HAII (Referat für Stadtplanung und Bauordnung - Stadtplanung)
+    - value: plan-haiii
+      label: PLAN-HAIII (Referat für Stadtplanung und Bauordnung - Stadtsanierung und Wohnungsbau)
+    - value: plan-haiv
+      label: PLAN-HAIV (Referat für Stadtplanung und Bauordnung - Lokalbaukommission (LBK))
+    - value: plan-sg
+      label: PLAN-SG (Referat für Stadtplanung und Bauordnung - Referatsgeschäftsleitung)
+    - value: soz
+      label: Sozialreferat (SOZ)
+    - value: s-gl
+      label: S-GL (Sozialreferat - Geschäftsleitung)
 
 - field_name: ext_org
   label: 
@@ -283,9 +320,31 @@ dataset_fields:
   label: 
     en: Timeliness
     de: Update-Zyklus
+  preset: select_lhm
   required: true
   is_info: true
   info_text: Mit dem Updatezyklus kann im Geodatenpool angegeben werden, ob Daten regelmäßig (monatlich), unregelmäßig (auf Anforderung) oder nicht (kein) aktualisiert werden. Eine Aktualisierung der Daten kann im Rahmen eines Updatelaufs und im Rahmen eine Fastlane erfolgen.
+  choices:
+  - value: auf_anforderung
+    label: 
+      en: On demand
+      de: Auf Anforderung
+  - value: 15-minuetig
+    label: 15-minütig
+  - value: stuendlich
+    label: Stündlich
+  - value: taeglich
+    label: Täglich
+  - value: woechentlich
+    label: Wöchentlich
+  - value: monatlich
+    label: 
+      en: Monthly
+      de: Monatlich
+  - value: kein
+    label: 
+      en: No update
+      de: Keine Aktualisierung
 
 - field_name: stadtarchiv
   label: Stadtarchiv 
@@ -482,6 +541,7 @@ dataset_fields:
 - field_name: lhm_intern
   label: LHM-intern
   preset: select_lhm
+  required: true
   choices:
   - value: uneingeschraenkt
     label: Uneingeschränkt
@@ -499,14 +559,15 @@ dataset_fields:
   preset: select_lhm
   required: true
   choices:
-  - value: uneingeschraenkt
-    label: Uneingeschränkt
+  - value: backend_und_praesentation
+    label: Backend-Daten und Präsentation
   - value: eingeschraenkt_nur_auftragnehmer
-    label: Eingeschränkt - Nur externe Auftragnehmer der LHM
+    label: Eingeschränkt - Nur Externe Auftragnehmer der LHM
   - value: eingeschraenkt_nicht_auftragnehmer
     label: Eingeschränkt - Nicht Auftragnehmer der LHM
   - value: kein_zugriff
     label: Kein Zugriff
+
 
 #- field_name: lhm_extern_nutzungsbedingungen
 #  label: LHM-extern Nutzungsbedingungen, Datenüberlassungen etc.
@@ -522,17 +583,17 @@ dataset_fields:
   preset: multiple_checkbox
   choices:
   - value: ja
-    label: Es sind inhaltliche Einschränkungen zu beachten, siehe Ressourcen.
+    label: Es sind inhaltliche Einschränkungen zu beachten, s.r.
 
 - field_name: open_data
   label: Open Data 
   preset: select_lhm
   is_info: true
-  info_text: 'Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Einzuhaltende Nutzungsbedingungen sind hier dokumentiert: https://www.opengov-muenchen.de/pages/nutzungsbedingungen'
+  info_text: 'Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Einzuhaltende Nutzungsbedingungen sind hier dokumentiert: https://opendata.muenchen.de/pages/nutzungsbedingungen'
   help_text: 
     en: 'Rights of use open data: '
     de: 'Nutzungsrechte open data: '
-  help_url: https://www.opengov-muenchen.de/pages/nutzungsbedingungen
+  help_url: https://opendata.muenchen.de/pages/nutzungsbedingungen
   required: true
   choices:
   - value: nein
@@ -541,6 +602,42 @@ dataset_fields:
     label: Bestimmte Attribute
   - value: offen
     label: Alle Attribute
+
+
+- field_name: hvd
+  label: High Value Datasets (HVD)
+  preset: select_lhm
+  is_info: true
+  info_text: 'Infotext HVD'
+  required: true
+  choices:
+  - value: alle_attribute
+    label: Alle Attribute
+  - value: bestimmte_attribute
+    label: Bestimmte Attribute
+  - value: nein
+    label: Nein
+
+- field_name: hvd_kategorie
+  label: HVD-Kategorie
+  preset: select_lhm
+  is_info: true
+  info_text: 'Infotext HVD-Kategorie'
+  required: true
+  choices:
+  - value: georaum
+    label: Georaum
+  - value: erdbeobachung_umwelt
+    label: Erdbeobachtung und Umwelt
+  - value: meteorologie
+    label: Meteorologie
+  - value: statistik
+    label: Statistik
+  - value: unternehmen
+    label: Unternehmen und Eigentümerschaft von Unternehmen
+  - value: mobilitaet
+    label: Mobilität
+
 
 #- field_name: open_data_nutzungsbedingungen
 #  label: Open Data Nutzungsbedingungen
@@ -559,6 +656,18 @@ dataset_fields:
     label: Hinweise
     preset: markdown
     form_placeholder: Erläutern Sie die zusätzlichen Verwendungsbedingungen, die nicht unter die obigen Punkte fallen.
+
+- field_name: eignung_geschaeftsprozesse_it
+  label: Eignung für Geschäftprozesse und IT-Systeme
+  preset: select_lhm
+  is_info: true
+  info_text: 'Gewährleistung der dauerhaften Zurverfügungstellung des Datensatzes'
+  required: true
+  choices:
+  - value: ja
+    label: Ja
+  - value: nein
+    label: Nein
 
 - field_name: letzter_import
   label: Letzter Import
@@ -594,7 +703,7 @@ resource_fields:
   help_inline: true
 
 - field_name: nutzungsbed
-  label: Ressource enthält Nutzungsbedingungen etc.
+  label: Ressource enthält Nutzungsbedingungen, inhaltliche Einschränkungen etc.
   preset: select_lhm
   help_text: Test
   help_inline: true
@@ -602,6 +711,8 @@ resource_fields:
   - value: ""
     label: Nein
   - value: lhm_intern
-    label: Für LHM-interne Nutzung
-  - value: lhm_extern
-    label: Für LHM-externe Nutzung
+    label: Nutzungsbedingungen etc. LHM-intern
+  - value: lhm_extern_nutzung
+    label: Nutzungsbedingungen etc. LHM-extern
+  - value: lhm_extern_inhaltlich
+    label: Inhaltliche Einchränkungen LHM-extern

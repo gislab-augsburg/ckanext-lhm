@@ -1,6 +1,6 @@
 <section class="additional-info module-content table1">
   <div class="collapsible-header">
-    <h3 style="border-bottom: 2px solid;">{{_('Basic Information')}}</h3>
+    <h3 style="border-bottom: 5px solid;">{{_('Basic Information')}}</h3>
     <i class="plus-sign fa fa-minus"></i>
   </div>
   <div class="collapsible-content">
@@ -107,7 +107,7 @@
   
   <section class="additional-info module-content table2">
     <div class="collapsible-header">
-    <h3 style="border-bottom: 1px solid;">{{_('Usage Remarks')}}</h3>
+    <h3 style="border-bottom: 5px solid;">{{_('Usage Remarks')}}</h3>
     <i class="plus-sign fa fa-minus"></i>
   </div>
   <div class="collapsible-content">
@@ -158,7 +158,7 @@ GeoInfoWeb: Standard ist der Zugriff für stadtweit alle Benutzer (inkl. Stadtra
 GeoInfoWeb: Standard ist der Zugriff für stadtweit alle Benutzer (inkl. Stadtrat und Bezirksausschüsse). Der Zugriff über GeoInfoWeb kann auf bestimmte Gruppen begrenzt werden. Dann sind die Daten im GeoinfoWeb nur für diese Nutzer bzw. Gruppen sichtbar."></span>
           </p>
           {% for resource in pkg_dict.resources %}
-            {% if resource.nutzungsbed == 'lhm_extern' %}
+            {% if resource.nutzungsbed == 'lhm_extern_nutzung' %}
               <p class="metadata">
                 <a href="{{ resource.url }}" target="_blank">{{ resource.name }}</a>
               </p>
@@ -176,13 +176,25 @@ GeoInfoWeb: Standard ist der Zugriff für stadtweit alle Benutzer (inkl. Stadtra
           <p class="metadata">{%- snippet 'package/snippets/label.html',
             item='lhm_extern_inhaltliche_einschraenkungen', pkg_dict=pkg_dict, schema=schema -%}</p>
         </td>
+        <td colspan="2" style="border-top: none;">
+          <p class="heading">{{ _("Dokumente zu inhaltlichen Einschränkungen")}}
+            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Tooltip Dokumente inhaltliche Einschränkungen"></span>
+          </p>
+          {% for resource in pkg_dict.resources %}
+            {% if resource.nutzungsbed == 'lhm_extern_inhaltlich' %}
+              <p class="metadata">
+                <a href="{{ resource.url }}" target="_blank">{{ resource.name }}</a>
+              </p>
+            {% endif %}
+          {% endfor %}
+        </td>
         {% endif %}
       </tr>
       <tr>
         <td colspan="4" style="border-top: none;"><p class="heading">{{ _(" ")}}</p></td>
         <td colspan="2" style="border-top: none;">
           <p class="heading">{{ _("Open Data") }}
-            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title='Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Dies bedeutet jedoch nicht, dass es dabei keine Nutzungsbedingungen bzw. Lizenzbedingungen gibt. Ggf. inkludierte und exkludierte Attribute innerhalb des Datensatzes sind der Attributtabelle zu entnehmen. Weitere Hinweise zur Nutzung können unter "Hinweis" mit einem erläuternden Text beschrieben sein.--> Nutzungsrechte bei OpenData: https://www.opengov-muenchen.de/pages/nutzungsbedingungen'></span>
+            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title='Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Dies bedeutet jedoch nicht, dass es dabei keine Nutzungsbedingungen bzw. Lizenzbedingungen gibt. Ggf. inkludierte und exkludierte Attribute innerhalb des Datensatzes sind der Attributtabelle zu entnehmen. Weitere Hinweise zur Nutzung können unter "Hinweis" mit einem erläuternden Text beschrieben sein.--> Nutzungsrechte bei OpenData: https://opendata.muenchen.de/pages/nutzungsbedingungen'></span>
           </p>
           {% if pkg_dict.open_data %}  
             <p class="metadata">{%- snippet 'package/snippets/label.html',
@@ -194,32 +206,69 @@ GeoInfoWeb: Standard ist der Zugriff für stadtweit alle Benutzer (inkl. Stadtra
         <td colspan="2" style="border-top: none;">
           {% if pkg_dict.open_data != "nein" %}
             <p class="heading">{{ _("Open Data Nutzungsbedingungen") }}
-              <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title='Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Dies bedeutet jedoch nicht, dass es dabei keine Nutzungsbedingungen bzw. Lizenzbedingungen gibt. Ggf. inkludierte und exkludierte Attribute innerhalb des Datensatzes sind der Attributtabelle zu entnehmen. Weitere Hinweise zur Nutzung können unter "Hinweis" mit einem erläuternden Text beschrieben sein.--> Nutzungsrechte bei OpenData: https://www.opengov-muenchen.de/pages/nutzungsbedingungen'></span>
+              <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title='Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Dies bedeutet jedoch nicht, dass es dabei keine Nutzungsbedingungen bzw. Lizenzbedingungen gibt. Ggf. inkludierte und exkludierte Attribute innerhalb des Datensatzes sind der Attributtabelle zu entnehmen. Weitere Hinweise zur Nutzung können unter "Hinweis" mit einem erläuternden Text beschrieben sein.--> Nutzungsrechte bei OpenData: https://opendata.muenchen.de/pages/nutzungsbedingungen'></span>
             </p>         
-            <p class="metadata">{{ h.link_to('opengov-muenchen.de/pages/nutzungsbedingungen', 'https://www.opengov-muenchen.de/pages/nutzungsbedingungen', target='_blank') }}</p>
+            <p class="metadata">{{ h.link_to('Open Data Portal München', 'https://opendata.muenchen.de/pages/nutzungsbedingungen', target='_blank') }}</p>
+          {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <td colspan="4" style="border-top: none;"><p class="heading">{{ _(" ")}}</p></td>
+        <td colspan="2" style="border-top: none;">
+          <p class="heading">{{ _("High Value Datasets (HVD)") }}
+            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title='Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Dies bedeutet jedoch nicht, dass es dabei keine Nutzungsbedingungen bzw. Lizenzbedingungen gibt. Ggf. inkludierte und exkludierte Attribute innerhalb des Datensatzes sind der Attributtabelle zu entnehmen. Weitere Hinweise zur Nutzung können unter "Hinweis" mit einem erläuternden Text beschrieben sein.--> Nutzungsrechte bei OpenData: https://opendata.muenchen.de/pages/nutzungsbedingungen'></span>
+          </p>
+          {% if pkg_dict.hvd %}  
+            <p class="metadata">{%- snippet 'package/snippets/label.html',
+              item='hvd', pkg_dict=pkg_dict, schema=schema -%}</p>
+          {% else %}
+            <p class="metadata">{{ _("Not available") }}</p>
+          {% endif %}
+        </td>
+        <td colspan="2" style="border-top: none;">
+          <p class="heading">{{ _("HVD-Kategorie") }}
+            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title='Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Dies bedeutet jedoch nicht, dass es dabei keine Nutzungsbedingungen bzw. Lizenzbedingungen gibt. Ggf. inkludierte und exkludierte Attribute innerhalb des Datensatzes sind der Attributtabelle zu entnehmen. Weitere Hinweise zur Nutzung können unter "Hinweis" mit einem erläuternden Text beschrieben sein.--> Nutzungsrechte bei OpenData: https://opendata.muenchen.de/pages/nutzungsbedingungen'></span>
+          </p>
+          {% if pkg_dict.hvd_kategorie %}  
+            <p class="metadata">{%- snippet 'package/snippets/label.html',
+              item='hvd_kategorie', pkg_dict=pkg_dict, schema=schema -%}</p>
+          {% else %}
+            <p class="metadata">{{ _("Not available") }}</p>
           {% endif %}
         </td>
       </tr>
     </table></div>
   </section>
   
-  {% if pkg_dict.nutzungshinweise %}
+  
   <section class="additional-info module-content table3">
     <div class="collapsible-header">
-    <h3 style="border-bottom: 5px solid;">{{ _("Additional hints regarding the resource/data useage")}}</h3>
-    <i class="plus-sign fa fa-minus"></i>
-  </div>
-  <div class="collapsible-content">
-    <table class="table package-metadata">
-      <tr>
-        <td colspan="4">
-          <p class="metadata">{%- snippet 'package/snippets/label.html',
-            item='nutzungshinweise', pkg_dict=pkg_dict, schema=schema -%}</p>
-        </td>
-      </tr>
-    </table></div>
-  </section>
-  {% endif %}
+      <h3 style="border-bottom: 5px solid;">{{ _("Additional hints regarding the resource/data useage")}}</h3>
+      <i class="plus-sign fa fa-minus"></i>
+    </div>
+    <div class="collapsible-content">
+      <table class="table package-metadata">
+        {% if pkg_dict.nutzungshinweise %}
+        <tr>
+          <td colspan="4">
+            <p class="metadata">{%- snippet 'package/snippets/label.html',
+              item='nutzungshinweise', pkg_dict=pkg_dict, schema=schema -%}</p>
+          </td>
+        </tr>
+        {% endif %}
+        {% if pkg_dict.eignung_geschaeftsprozesse_it %}
+        <tr>
+          <td colspan="4">
+            <p class="heading">{{ _("Eignung für Geschäftprozesse und IT-Systeme") }}
+            <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="Gewährleistung der dauerhaften Zurverfügungstellung des Datensatzes."></span></p>
+              <p class="metadata">{%- snippet 'package/snippets/label.html',
+                item='eignung_geschaeftsprozesse_it', pkg_dict=pkg_dict, schema=schema -%}</p>
+          </td>
+        </tr>
+        {% endif %}
+      </table></div>
+    </section>
+  
   
   <!--
   {% set chg_his = pkg_dict.change_history %}
@@ -252,6 +301,7 @@ GeoInfoWeb: Standard ist der Zugriff für stadtweit alle Benutzer (inkl. Stadtra
           <th scope="col">{{ _('Conditions') }}</th>
           <th scope="col">{{ _('Description') }}</th>
           <th scope="col">{{ _('Remarks') }}</th>
+          <th scope="col">{{ _('Fachliche Bezeichnung') }}</th>
           <th scope="col">{{ _('Open Data') }}</th>
         </tr>
         {% endblock %}

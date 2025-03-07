@@ -44,7 +44,12 @@
 </div>
 {% endblock %}
 
+
 {% block package_resources %}
+<hr>
+<h2>Datenquelle</h2>
+<p class="metadata">{%- snippet 'package/snippets/label.html',
+  item='datenquelle', pkg_dict=pkg_dict, schema=schema -%}</p>
 <hr>
 {% snippet "package/snippets/resources_list.html", pkg=pkg, resources=pkg.resources,
   can_edit=h.check_access('package_update', {'id':pkg.id }) %}
@@ -52,7 +57,7 @@
 {% endblock %}
 
 {% block package_tags %}
-<h3>Tags</h3>
+<h3>Schlagworte</h3>
     {% snippet "package/snippets/tags.html", tags=pkg.tags %}
 {% endblock %}
 

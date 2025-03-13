@@ -1,0 +1,798 @@
+scheming_version: 2
+dataset_type: mobidam
+about: The default Munich(LHM) MobidaM catalog dataset schema with form split across multiple pages
+about_url: http://github.com/ckan/ckanext-scheming
+
+dataset_fields:
+# Feld alt
+- field_name: name
+  label: URL
+  preset: dataset_slug
+  form_placeholder: eg. my-dataset
+
+# Feld alt
+- field_name: title
+  label: Title
+  preset: title
+  form_snippet: large_text_lhm.html
+  form_placeholder: Thema | NAME_DER_TABELLE
+  is_info: true
+  info_text: Thema | NAME_DER_TABELLE. Der Titel beteht aus dem Thema (ehemals Datenbestand) und dem Namen der Tabelle im Geodatenpool
+  required: true
+
+# Feld alt, nur zusätzliche choices
+- field_name: schema
+  label: Schema
+  preset: select_lhm
+  is_info: true
+  info_text: Name des Datenbankschemas (z.B. BAUT, PLAN, RKU)
+  required: true
+  choices:
+  - value: ""
+    label: 
+      en: Please choose the Schema
+      de: Schema auswählen
+  - value: baug
+    label: BAUG
+  - value: bauj
+    label: BAUJ
+  - value: baut
+    label: BAUT
+  - value: bewa
+    label: BEWA
+  - value: dirstat
+    label: DIRSTAT
+  - value: gsr
+    label: GSR
+  - value: kvr
+    label: KVR
+  - value: kvrbrand
+    label: KVRBRAND
+  - value: mor
+    label: MOR
+  - value: plan
+    label: PLAN
+  - value: rgu
+    label: RGU
+  - value: rku
+    label: RKU
+  - value: scu
+    label: SCU
+  - value: soz
+    label: SOZ
+  - value: vablock
+    label: VABLOCK
+  - value: vaggd
+    label: VAGGD
+  - value: vagrund
+    label: VAGRUND
+  - value: vaortho
+    label: VAORTHO
+  - value: varegio
+    label: VAREGIO
+  - value: va3d
+    label: VA3D
+  - value: mobidam
+    label: MOBIDAM
+  - value: mobidam_sst
+    label: MOBIDAM_SST
+
+# Feld alt
+- field_name: notes
+  label: Description
+  form_snippet: markdown_lhm.html
+  form_placeholder: eg. Some useful notes about the data
+  is_info: true
+  info_text: Eindeutige und aussagekräftige inhaltliche Beschreibung des Datensatzes, damit auch Laien den Inhalt des Datensatzes einschätzen können. Relevante Informationen können neben dem konkreten Inhalt u.a. die räumliche Abdeckung, die Vollständigkeit, die Genauigkeit, die Urheberschaft oder die Aktualität sein.
+  required: true
+
+# Feld neu
+- field_name: datenquelle
+  label: Datenquelle
+  preset: select_lhm
+  is_info: true
+  info_text: 'Infotext Datenquelle'
+  required: true
+  choices:
+  - value: geodatenpool
+    label: Geodatenpool
+  - value: mobidam
+    label: Mobidam
+
+# Feld alt, nur Label geändert, siehe ckanext-lhm/ckanext/lhm/templates/package/resource_read.html
+- field_name: tag_string
+  label: Schlagworte
+  preset: tag_string_autocomplete
+  form_placeholder: z.B. Gesundheit; Umwelt;
+  is_info: true
+  info_text: Tags sind i.d.R. Substantive und sind Schlagworte zur inhaltlichen Beschreibung des Datensatzes. Es können mehrere Tags vergeben werden. 
+
+# Feld alt, Änderung bei required, siehe ckanext/lhm/templates/scheming/form_snippets/group_form.html
+- field_name: group
+  label: Group
+  form_snippet: group_form.html
+  display_snippet: null
+
+# Feld alt, nur Label geändert ( vorher: Geometrietyp)
+- field_name: geometrietyp
+  label: Objekttyp
+  preset: select_lhm
+  is_info: true
+  info_text: 'Welcher Geometrietyp ist in der Tabelle enthalten: Punkt, Linie, Fläche, Raster, Sachdaten oder Annotation'
+  required: true
+  choices:
+  - value: ""
+    label: 
+      en: Please choose the geometry type
+      de: Geometrietyp auswählen
+  - value: punkt
+    label: 
+      en: Point
+      de: Punkt
+  - value: linie
+    label: 
+      en: Line
+      de: Linie
+  - value: flaeche
+    label: 
+      en: Polygon
+      de: Fläche
+  - value: raster
+    label: Raster (ArcGIS-Raster)
+  - value: sachdaten
+    label: 
+      en: Factual Data
+      de: Sachdaten
+  - value: anno
+    label: ANNO
+  - value: multipatch
+    label: Multipatch
+
+# Feld alt
+- field_name: genauigkeit
+  label: Genauigkeit 
+  preset: composite_lhm
+  subfields:
+  - field_name: lagengenauigkeit
+    label: Lagengenauigkeit
+    is_info: true
+    info_text: Mit der Lagegenauigkeit wird angegeben, auf welcher Basis Daten erhoben bzw. erfasst wurden und welche räumliche Genauigkeit damit einhergeht.
+    preset: select
+    choices:
+    - value: ""
+      label: 
+        en: Please choose the accuracy
+        de: Lagengenauigkeit auswählen
+    - value: tachymeter
+      label: Tachymeter (1 cm)
+    - value: diff_gps
+      label: Diff-GPS / SPAOS (3 cm)
+    - value: gps
+      label: GPS (Handy o.ä) (1 m)
+    - value: satellit
+      label: Satellit (1 m)
+    - value: kataster
+      label: Auf Basis Kataster (Flurstücke / Gebäude) (3 cm)      
+    - value: baubloecke
+      label: Auf Basis Baublöcke (30 cm)
+    - value: luftbild
+      label: Auf Basis Luftbild (30 cm)
+    - value: stadtbezirk
+      label: Auf Basis Stadtbezirke (-teil -viertel)(10m)
+    - value: stadtplan
+      label: Auf Basis Stadtplan (10m)
+  - field_name: bemerkung
+    label: Bemerkung
+    is_info: true
+    info_text: Hier können ergänzende Informationen zur Lagegenauigkeit ergänzt werden, beispielsweise ein geeigneter Maßstab (z.B. 1:500), die größe eines Pixels (z.B. 20cm) oder die Spanne der Abweichung bei der Lage (z.B. +/- 10m)
+
+# Feld alt 
+- field_name: owner_org
+  label: 
+    en: Responsible organization
+    de: Organisation
+  preset: dataset_organization
+  form_snippet: organization_lhm.html
+  is_info: true
+  info_text_orga: Angabe des fachlich zuständigen Referats und der ersten, das Referat untergliedernden Organisationseinheit (z.B. Amt, Hauptabteilung, Geschäftsbereich)
+  info_text_pub: Einstellung zur Sichtbarkeit des eingetragenen Metadatensatzes. Öffentlich = Sichtbarkeit für alle Personen in der LHM [Standard]. Privat =  Sichtbarkeit nur für Mitglieder der zuständigen Organisation [nur für Qualitätssicherungszwecke].
+  required: true
+
+# Feld alt 
+- field_name: datenverantwortlicher
+  label: 
+    en: Contact person
+    de: Datenverantwortlicher
+  required: true
+  form_snippet: author.html
+  form_placeholder:  KR-GSM-GEO-GIS
+  is_info: true
+  info_text: Angabe der Organisationseinheit, die fachliche und organisatorische Kenntnis zum Datensatz hat. Meist Team-/Sachgebietsebene (z.B. KR-GSM-GEO-GDM-GDP/GDI). Bitte keine Personen eintragen.
+
+# Feld alt  
+- field_name: datenverantwortlicher_email
+  label: 
+    en: Contact person Email
+    de: Datenverantwortlicher E-Mail
+  required: true
+  form_placeholder: erika.mustermann@muenchen.de / gdi@muenchen.de
+  form_snippet: author_email.html
+  display_snippet: email.html
+  validators: unicode_safe strip_value email_validator
+  is_info: true
+  info_text: Angabe der Team-E-Mailadresse des Datenverantwortlichers. Bitte keine persönlichen E-Mailadressen verwenden.
+
+# Feld neu
+- field_name: dateneigner
+  label: Dateneigner
+  form_snippet: author.html
+  form_placeholder: Erika Mustermann
+  is_info: true
+  info_text: Angabe der Organisationseinheit, die fachliche und organisatorische Kenntnis zum Datensatz hat. Meist Team-/Sachgebietsebene (z.B. KR-GSM-GEO-GDM-GDP/GDI). Bitte keine Personen eintragen.
+
+# Feld neu
+- field_name: dateneigner_email
+  label: Dateneigner E-Mail
+  form_placeholder: erika.mustermann@muenchen.de / gdi@muenchen.de
+  form_snippet: author_email.html
+  display_snippet: email.html
+  validators: unicode_safe strip_value email_validator
+  is_info: true
+  info_text: Angabe der Team-E-Mailadresse des Datenverantwortlichers. Bitte keine persönlichen E-Mailadressen verwenden.
+
+# Feld neu
+- field_name: dateneigner_organisation
+  label: Organisation Dateneigner
+  required: true
+  preset: select_lhm
+  is_info: true
+  info_text: Angabe des fachlich zuständigen Referats und der ersten, das Referat untergliedernden Organisationseinheit (z.B. Amt, Hauptabteilung, Geschäftsbereich)
+  choices:
+    - value: bau
+      label: Baureferat (BAU)
+    - value: bau-g
+      label: BAU-G (Baureferat - Gartenbau)
+    - value: bau-j
+      label: BAU-J (Baureferat - Ingenieurbau)
+    - value: bau-t
+      label: BAU-T (Baureferat - Tiefbau)
+    - value: dir
+      label: Direktroium (DIR)
+    - value: d-i-sta
+      label: D-I-STA (Direktorium - Informationsbereitstellung / Anwenderbetreuung)
+    - value: gsr
+      label: Gesundheitsreferat (GSR)
+    - value: gsr-sfm-gv
+      label: GSR-SFM-GV (Gesundheitsreferat - Abteilung GV, Gräberverwaltung, Grabangelegenheiten Friedhof, Zentrale Bestattungsformalitäten, Bestattungen von Amts wegen
+    - value: kr
+      label: Kommunalreferat (KR)
+    - value: kr-bewa
+      label: KR-BewA (Kommunalreferat - Bewertungsamt)
+    - value: kr-gsm
+      label: KR-GSM (Kommunalreferat - GeodatenService München)
+    - value: kvr
+      label: Kreisverwaltungsreferat (KVR)
+    - value: kvr-gl
+      label: KVR-GL (Kreisverwaltungsreferat - Geschäftsleitung)
+    - value: kvr-i
+      label: KVR-I (Sicherheit und Ordnung, Prävention)
+    - value: mor
+      label: Mobilitätsreferat (MOR)
+    - value: mor-gb1
+      label: MOR-GB1 (Mobilitätsreferat - Strategie)
+    - value: mor-gb2
+      label: MOR-GB2 (Mobilitätsreferat - Verkehrs- und Bezirksmanagement)
+    - value: mor-rl
+      label: MOR-RL (Mobilitätsreferat - Referatsleitung)
+    - value: rbs
+      label: Referat für Bildung und Sport (RBS)
+    - value: rbs-a
+      label: RBS-A (Referat für Bildung und Sport - Allgemeinbildende Schulen)
+    - value: rbs-zim
+      label: RBS-ZIM (Referat für Bildung und Sport - Zentrales Immobilienmanagement)
+    - value: rku
+      label: Referat für Klima- und Umweltschutz (RKU)
+    - value: rku-gb-i
+      label: RKU-GB-I (Referat für Klima- und Umweltschutz - Umweltvorsorge)
+    - value: rku-gb-ii
+      label: RKU-GB-II (Referat für Klima- und Umweltschutz - Klimaschutz und Energie)
+    - value: rku-gb-iii
+      label: RKU-GB-III (Referat für Klima- und Umweltschutz - Naturschutz und Biodiversität)
+    - value: rku-gb-iv
+      label: RKU-GB-IV (Referat für Klima- und Umweltschutz - Umweltschutz)
+    - value: plan
+      label: Referat für Stadtplanung und Bauordnung (PLAN)
+    - value: plan-hai
+      label: PLAN-HAI (Referat für Stadtplanung und Bauordnung - Stadtentwicklungsplanung)
+    - value: plan-haii
+      label: PLAN-HAII (Referat für Stadtplanung und Bauordnung - Stadtplanung)
+    - value: plan-haiii
+      label: PLAN-HAIII (Referat für Stadtplanung und Bauordnung - Stadtsanierung und Wohnungsbau)
+    - value: plan-haiv
+      label: PLAN-HAIV (Referat für Stadtplanung und Bauordnung - Lokalbaukommission (LBK))
+    - value: plan-sg
+      label: PLAN-SG (Referat für Stadtplanung und Bauordnung - Referatsgeschäftsleitung)
+    - value: soz
+      label: Sozialreferat (SOZ)
+    - value: s-gl
+      label: S-GL (Sozialreferat - Geschäftsleitung)
+
+# Feld alt
+- field_name: ext_org
+  label: 
+    en: External Ownership
+    de: Externe Datenurheber
+  form_snippet: text_lhm.html
+  required: true
+  form_placeholder: 
+    en: No or Yes; If yes, please name the responsibile organisation, the contact person and an email or telephon number
+    de: Nein oder Ja; Wenn ja. Verantwortlicher
+  is_info: true
+  info_text: Um externe Datenurheber handelt es sich, wenn die Daten nicht von der Landeshautpststadt München stammen (z.B. LDBV)
+
+# Feld alt, neue choices hinzugefügt
+- field_name: update_zyklus
+  label: 
+    en: Timeliness
+    de: Update-Zyklus
+  preset: select_lhm
+  required: true
+  is_info: true
+  info_text: Mit dem Updatezyklus kann im Geodatenpool angegeben werden, ob Daten regelmäßig (monatlich), unregelmäßig (auf Anforderung) oder nicht (kein) aktualisiert werden. Eine Aktualisierung der Daten kann im Rahmen eines Updatelaufs und im Rahmen eine Fastlane erfolgen.
+  choices:
+  - value: auf_anforderung
+    label: 
+      en: On demand
+      de: Auf Anforderung
+  - value: 15-minuetig
+    label: 15-minütig
+  - value: stuendlich
+    label: Stündlich
+  - value: taeglich
+    label: Täglich
+  - value: woechentlich
+    label: Wöchentlich
+  - value: monatlich
+    label: 
+      en: Monthly
+      de: Monatlich
+  - value: kein
+    label: 
+      en: No update
+      de: Keine Aktualisierung
+
+- field_name: stadtarchiv
+  label: Stadtarchiv 
+  help_text:
+    en: Evaluation through City Archive
+    de: Bewertung durch Stadtarchiv
+  preset: composite_lhm
+  subfields:
+  - field_name: archivwuerdigkeit
+    label: Archivwürdigkeit
+    form_include_blank_choice: false
+    preset: select
+    is_info: true
+    info_text: Die Bewertung der Archivwürdigkeit wird durch das Stadtarchiv im Rahmen des Change-Prozesses vorgenommen.
+    choices:
+    - value: noch_offen
+      label: 
+        en: Still open
+        de: noch offen
+    - value: archivwuerdig
+      label: 
+        en: Archivable
+        de: archivwürdig
+    - value: nicht_archivwuerdig
+      label: 
+        en: Not archivable
+        de: nicht archivwürdig
+  - field_name: begruendung
+    label: Begründung
+   
+  # field_name: license_id
+  # label: License
+  # form_snippet: license.html
+  # help_text: License definitions and additional information can be found at http://opendefinition.org/
+
+
+# Felder alt GDP
+#
+#- field_name: intranet
+#  label: LHM-Intranet
+#  preset: composite_lhm
+#  subfields:
+#  - field_name: fachverfahren
+#    label: Fachverfahren
+#    preset: select
+#    is_info:  true
+#    info_text: Der Zugriff durch Fachverfahren meint den direkten (lesenden) Zugriff auf die Daten auf der Datenbank und/oder über Diensten. Standard ist der Zugriff für stadtweit alle Benutzer (d.h. Zugriffsuser inkl. GeoInfoWeb). Teilweise muss der Zugriff auf bestimmte Zugriffsuser eingeschränkt werden oder die Daten dürfen nicht für Fachverfahren genutzt werden.
+#    required: true
+#    form_include_blank_choice: false
+#    choices:
+#    - value: alle_mit_geoinfoweb
+#      label: 
+#        en: All access users (incl. GeoInfoWeb)
+#        de: alle Zugriffsuser (inkl. GeoInfoWeb)
+#    - value: zugriffsuser
+#      label: 
+#        en: Specific access users
+#        de: bestimmte Zugriffsuser
+#    - value: keine
+#      label: 
+#        en: 'None'
+#        de: keine
+#  - field_name: geoinfoweb
+#    label: GeoInfoWeb
+#    preset: select
+#    is_info: true
+#    info_text: Der Zugriff über GeoInfoWeb kann auf bestimmte Gruppen begrenzt werden. Dann sind die Daten nur für diese Nutzer bzw. Gruppen sichtbar. Standardeinstellung ist der stadtweite Zugriff (alle Nutzer). "ausgenommen Bezirksausschüsse" meint, dass stadtweit alle Nutzer Zugriff haben - ausgenommen den Bezirksausschüssen. 
+#    required: true
+#    form_include_blank_choice: false
+#    choices:
+#    - value: alle_nutzer
+#      label: 
+#        en: All users
+#        de: alle Nutzer
+#    - value: organisationseinheiten
+#      label: 
+#        en: Specific organizational units
+#        de: bestimmte Organisationseinheiten
+#    - value: gruppen
+#      label: 
+#        en: Specific (overarching) group(s)
+#        de: bestimmte (übergreifende) Gruppe(n)
+#    - value: bezirksausschüsse
+#      label: 
+#        en: District committees
+#        de: ausgenommen Bezirksausschüsse
+#    - value: keine
+#      label: 
+#        en: None
+#        de: Keine
+#
+#- field_name: internet_praesentationen
+#  label: 
+#    en: 'Internet: Publication / Presentation in the LHM Task area'
+#    de: 'Internet: Veröffentlichungen / Präsentationen im Aufgabenbereich der LHM'
+#  preset: select_lhm
+#  is_info: true
+#  info_text: Angabe, in welcher Form die Daten im Internet bereitgetsellt werden dürfen. "Als Backend-Daten (ohne Präsentation" meint die Nutzung z.B. für Online-Formulare. "Für Präsentationen (inkl. Backend)" erweitert die Freigabe z.B. für kartografische Darstellungen im Geoportal oder muenchen.de und schließt die Nutzung für Formulare o.ä. ein.
+#  required: true
+#  choices:
+#  - value: keine
+#    label: 
+#      en: No
+#      de: Keine
+#  - value: praesentation
+#    label: 
+#      en: For presentation purposes (incl. Backend)
+#      de: für Präsentationen (inkl. Backend)
+#    help_text: 
+#      en: e.g. Online Template server
+#      de: z. B. Online Formularserver
+#  - value: backend
+#    label: 
+#      en: As the backend data without presentation 
+#      de: als Backend-Daten ohne Präsentation
+#    help_text: 
+#      en: e.g. Geoportal, Munich Maps, Service finde, muenchen.de, App, GeoInfo Online
+#      de: z.B. GeoPortal, München maps, Dienstleistungsfinder, muenchen.de, App, GeoInfo Online
+#
+#- field_name: datenabgabe_extern_mit_auftrag
+#  label:
+#    en: Disclosure of data or services to third parties acting on behalf of the City
+#    de: Weitergabe von Daten oder Diensten an Dritte, die im Auftrag der Stadt tätig werden 
+#  preset: select_lhm
+#  is_info: true
+#  info_text: Angabe, ob die Daten an Dritte weitergegeben werden dürfen, sofern diese im Auftrag der Stadt tätig sind. Überlicherweise ist hierbei eine Verpflichtungserklärung des Dritten notwendig, in der die Nutzung der Daten geregelt wird.
+#  required: true
+#  help_text: 
+#    en: 'Declaration of commitment of the third party necessary: http://geo.muenchen.de/metadaten/Nutzungsvereinbarung/Nutzungsvereinbarungen_GSM/03_Hinweise%20Datenabgabe%20an%20Dritte%20im%20Auftrag%20der%20Stadt.pdf'
+#    de: 'Verpflichtungserklärung des Dritten notwendig: '
+#  help_url: http://geo.muenchen.de/metadaten/Nutzungsvereinbarung/Nutzungsvereinbarungen_GSM/03_Hinweise%20Datenabgabe%20an%20Dritte%20im%20Auftrag%20der%20Stadt.pdf
+#  choices:
+#  - value: ja
+#    label:
+#      en: 'Yes'
+#      de: Ja
+#  - value: nein
+#    label:
+#      en: 'No'
+#      de: Nein
+#
+#- field_name: datenabgabe_extern
+#  label: 'Internet: Datenabgabe an Externe, die nicht Auftragnehmer sind'
+#  required: true
+#  preset: select_lhm
+#  is_info: true
+#  info_text: Angabe, ob die Daten allgemein an Dritte weitergegeben werden dürfen. Überlicherweise ist hierbei eine Verpflichtungserklärung des Dritten notwendig, in der die Nutzung der Daten geregelt wird. Über die Nutzungsbedingungen kann speziell darauf hingewiesen werden, dass ggf. besondere Nutzungsbedingungen zu beachten sind.
+#  help_text: 
+#    en: 'Disclosure of the terms of use for the third party is necessary: '
+#    de: 'Bekanntgabe der Nutzungsbedingungen für den Dritten notwendig: '
+#  help_url: http://geo.muenchen.de/metadaten/Nutzungsvereinbarung/Nutzungsvereinbarungen_GSM/01_Hinweise%20Weitergabe%20im%20Rahmen%20Nutzungsbedingung.pdf
+#  choices:
+#  - value: keine
+#    label: 
+#      en: 'None'
+#      de: Keine
+#  - value: im_rahmen_nutzungsbedingungen 
+#    label:
+#      en: Within the scope of the terms of use
+#      de: im Rahmen der Nutzungsbedingungen
+#  - value: ueber_rahmen_nutzungsbedingungen
+#    label:
+#      en: Beyond the scope of given terms of use
+#      de: über den Rahmen der Nutzungsbedingungen hinaus
+#
+#- field_name: open_data
+#  label: Open Data 
+#  preset: select_lhm
+#  is_info: true
+#  info_text: 'Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Einzuhaltende Nutzungsbedingungen sind hier dokumentiert: https://www.opengov-muenchen.de/pages/nutzungsbedingungen'
+#  help_text: 
+#    en: 'Rights of use open data: '
+#    de: 'Nutzungsrechte open data: '
+#  help_url: https://www.opengov-muenchen.de/pages/nutzungsbedingungen
+#  required: true
+#  choices:
+#  - value: nein
+#    label: 
+#      en: 'No'
+#      de: Nein
+#  - value: beschraenkt
+#    label: 
+#      en: Only following attributes and contents can be used
+#      de: nur folgende Attribute und Inhalte nutzbar
+#  - value: offen
+#    label: 
+#      en: All attributes and contents usable
+#      de: alle Attribute und Inhalte nutzbar
+#
+#- field_name: open_data_attribute
+#  label: Open Data - bestimmte Attribute
+#  form_snippet: text_lhm.html
+#  is_info: true
+#  info_text: Sind nur ausgewählte Attribute zur Open-Data-Nutzung freigegeben, können die Attributnamen hier definiert werden, z.B. OBJECTID, HAUSNR, GEMEINDE. Eine Einschränkung der Attribute für OpenData erfolgt bei den Attributen im Datenverzeichnis.
+
+# Feld neu
+- field_name: lhm_intern
+  label: LHM-intern
+  preset: select_lhm
+  required: true
+  choices:
+  - value: uneingeschraenkt
+    label: Uneingeschränkt
+  - value: eingeschraenkt
+    label: Eingeschränkt
+  - value: kein_zugriff
+    label: Kein Zugriff
+
+# Nur GDP:
+# Feld alt, values mit Änderungen
+#  - field_name: geoinfoweb
+#    label: GeoInfoWeb
+#    preset: select
+#    is_info: true
+#    info_text: Der Zugriff über GeoInfoWeb kann auf bestimmte Gruppen begrenzt werden. Dann sind die Daten nur für diese Nutzer bzw. Gruppen sichtbar. Standardeinstellung ist der stadtweite Zugriff (alle Nutzer). "ausgenommen Bezirksausschüsse" meint, dass stadtweit alle Nutzer Zugriff haben - ausgenommen den Bezirksausschüssen. 
+#    required: true
+#    form_include_blank_choice: false
+#    choices:
+#    - value: alle_nutzer
+#      label: 
+#        en: All users
+#        de: alle Nutzer (Standard)
+#    - value: ohne_bezirksausschuesse
+#      label: 
+#        en: District committees
+#        de: alle Nutzer (Standard) - ohne Bezirksausschüsse
+#    - value: bestimmte_zugriffsuser
+#      label: bestimmte Zugriffsuser
+#    - value: keine
+#      label: 
+#        en: None
+#        de: Keine
+## fällt raus:
+#    - value: organisationseinheiten
+#      label: 
+#        en: Specific organizational units
+#        de: bestimmte Organisationseinheiten
+#    - value: gruppen
+#      label: 
+#        en: Specific (overarching) group(s)
+#        de: bestimmte (übergreifende) Gruppe(n)
+#    - value: bezirksausschüsse
+#      label: 
+#        en: District committees
+#        de: ausgenommen Bezirksausschüsse
+
+# Feld Neu
+- field_name: lhm_extern
+  label: LHM-extern
+  preset: select_lhm
+  required: true
+  choices:
+  - value: backend_und_praesentation
+    label: Backend-Daten und Präsentation
+  - value: eingeschraenkt_nur_auftragnehmer
+    label: Eingeschränkt - Nur Externe Auftragnehmer der LHM
+  - value: eingeschraenkt_nicht_auftragnehmer
+    label: Eingeschränkt - Nicht Auftragnehmer der LHM
+  - value: kein_zugriff
+    label: Kein Zugriff
+
+
+#- field_name: lhm_extern_nutzungsbedingungen
+#  label: LHM-extern Nutzungsbedingungen, Datenüberlassungen etc.
+#  display_snippet: link.html
+#  repeating_subfields:
+#  - field_name: dokumente
+#   label: Dokumente
+#    preset: link
+#  preset: link
+
+#- field_name: lhm_extern_inhaltliche_einschraenkungen
+#  label: LHM-extern Einschränkungen
+#  preset: multiple_checkbox
+#  choices:
+#  - value: ja
+#    label: Es sind inhaltliche Einschränkungen zu beachten, s.r.
+
+# Feld alt, kein Änderung values, nur labels geändert
+- field_name: open_data
+  label: Open Data 
+  preset: select_lhm
+  is_info: true
+  info_text: 'Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Einzuhaltende Nutzungsbedingungen sind hier dokumentiert: https://opendata.muenchen.de/pages/nutzungsbedingungen'
+  help_text: 
+    en: 'Rights of use open data: '
+    de: 'Nutzungsrechte open data: '
+  help_url: https://opendata.muenchen.de/pages/nutzungsbedingungen
+  required: true
+  choices:
+  - value: offen
+    label: Open Data - alle Attribute
+  - value: beschraenkt
+    label: Open Data - bestimmte Attribute
+  - value: nein
+    label: Nein
+
+# Feld neu
+- field_name: hvd
+  label: High Value Datasets (HVD)
+  preset: select_lhm
+  is_info: true
+  info_text: 'Infotext HVD'
+  required: true
+  choices:
+  - value: alle_attribute
+    label: Alle Attribute
+  - value: bestimmte_attribute
+    label: Bestimmte Attribute
+  - value: nein
+    label: Nein
+
+# Feld neu
+- field_name: hvd_kategorie
+  label: HVD-Kategorie
+  preset: select_lhm
+  is_info: true
+  info_text: 'Infotext HVD-Kategorie'
+  required: true
+  choices:
+  - value: georaum
+    label: Georaum
+  - value: erdbeobachung_umwelt
+    label: Erdbeobachtung und Umwelt
+  - value: meteorologie
+    label: Meteorologie
+  - value: statistik
+    label: Statistik
+  - value: unternehmen
+    label: Unternehmen und Eigentümerschaft von Unternehmen
+  - value: mobilitaet
+    label: Mobilität
+  - value: keine
+    label: "-"
+
+# Feld alt, aber inhaltich plus HVD, check values inhaltlich!!
+- field_name: open_data_attribute
+  label: Open Data / HVD - bestimmte Attribute
+  form_snippet: text_lhm.html
+  is_info: true
+  info_text: Sind nur ausgewählte Attribute zur Open-Data-Nutzung freigegeben, können die Attributnamen hier definiert werden, z.B. OBJECTID, HAUSNR, GEMEINDE. Eine Einschränkung der Attribute für OpenData erfolgt bei den Attributen im Datenverzeichnis.
+
+# Feld alt
+- field_name: nutzungshinweise
+  label: weitere Hinweise zur Nutzung
+  is_info: true
+  info_text: Weitere Hinweise zur Nutzung können mit einen Stichwort und unter "Hinweis" mit einem erläuternden Text beschrieben werden. Die Hinweise müssen auch für einen Laien nachvollziehbar sein. Denkbar sind etwa spezielle Hinweise zu vertraglichen Rahmenbedingungen, im Rahmen der Nutzung zu beachtende Besonderheiten im Datensatz o.ä.
+  repeating_label: Hinweis
+  repeating_subfields:
+  - field_name: stichwort
+    label: Stichwort
+    form_placeholder: z.b. Wirtschaft, geistige Gesundheit, Regierung
+  - field_name: hinweise
+    label: Hinweise
+    preset: markdown
+    form_placeholder: Erläutern Sie die zusätzlichen Verwendungsbedingungen, die nicht unter die obigen Punkte fallen.
+
+# Feld kommt später voraussichtlich
+#- field_name: eignung_geschaeftsprozesse_it
+#  label: Eignung für Geschäftprozesse und IT-Systeme
+#  preset: select_lhm
+#  is_info: true
+#  info_text: 'Gewährleistung der dauerhaften Zurverfügungstellung des Datensatzes'
+#  required: true
+#  choices:
+#  - value: ja
+#    label: Ja
+#  - value: nein
+#    label: Nein
+
+# Feld alt
+- field_name: letzter_import
+  label: Letzter Import
+  form_placeholder: DD-MM-YYYY oder keine Angabe
+
+# Feld neu
+- field_name: state
+  label: Status
+  preset: select_lhm
+  choices:
+    - value: active
+      label: Aktiv
+    - value: draft
+      label: Entwurf
+  is_info: true
+  info_text: Ein Datensatz mit dem Status 'Entwurf' wird nicht in der Datensatz-Übersicht und -Suche angezeigt. Er ist nur für den Ersteller des Datensatzes in dessen Profil sichtbar. Wird einem Datensatz beim Erstellen keine Ressource hinzugefügt, bleibt sein Status auf 'Entwurf'. Werden dem Datensatz Daten als Ressource hinzugefügt, ändert sich sein Status auf 'Aktiv'. Der Status kann durch Bearbeiten des Datensatzes jederzeit wieder geändert werden.
+
+
+resource_fields:
+
+# Feld alt
+- field_name: url
+  label: URL
+  preset: resource_url_upload
+
+# Feld alt, required geändert
+- field_name: name
+  label: Name
+  help_text: Bei Tabellen im Geodatenpool immer "oracle-db"
+  help_inline: true
+  validators: scheming_required
+  required: true
+
+# Feld alt, required geändert
+- field_name: description
+  label: Description
+  preset: markdown
+  help_text: Bei Tabellen im Geodatenpool immer "oracle-db"
+  help_inline: true
+  validators: scheming_required
+  required: true
+
+# Feld alt, required geändert
+- field_name: format
+  label: Format
+  preset: resource_format_autocomplete
+  help_text: Bei Tabellen im Geodatenpool immer "oracle-db"
+  help_inline: true
+  validators: scheming_required
+  required: true
+
+# Feld doch raus :(
+#- field_name: nutzungsbed
+#  label: Ressource enthält Nutzungsbedingungen, inhaltliche Einschränkungen etc.
+#  preset: select
+#  help_text: Test
+#  help_inline: true
+#  choices:
+#  - value: ""
+#    label: Nein
+#  - value: lhm_intern
+#    label: Nutzungsbedingungen etc. LHM-intern
+#  - value: lhm_extern_nutzung
+#    label: Nutzungsbedingungen etc. LHM-extern
+#  - value: lhm_extern_inhaltlich
+#    label: Inhaltliche Einchränkungen LHM-extern

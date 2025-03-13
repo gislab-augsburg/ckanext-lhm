@@ -17,10 +17,15 @@ body {
 .fa-sign-in,
 .attribution,
 .fa-address-card-o,
-.fa-suitcase,
-.fa-info-circle{
+.fa-suitcase{
     color: #CCDEE3;
 }
+
+.fa-info-circle{
+    color: #6e6e6e;
+}
+
+
 
 a:hover, a:active {
     color: #00AB9F;

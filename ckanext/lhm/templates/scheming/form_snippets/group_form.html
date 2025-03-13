@@ -44,7 +44,7 @@
 {% set info_MainCat = 'Alle Einträge in diesem Katalog können auf verschiedene Weise gruppiert werden. Dabei muss jeder Katalogeintrag genau einer Hauptkategorie und optional beliebig vielen Themenfeldern zugeordnet werden. Die Hauptkategorie gibt Auskunft über die Art der Informationsressource und bestimmt damit, welche Metadaten benötigt werden.' %}
 {% set info_Topic = 'Themen sind eine Möglichkeit zur inhaltlich-thematischen Kategorisierung von Datensätzen. Die Zuordnung ist optional, es sollte aber wenigstens ein passendes Thema ausgewählt werden. Es können auch mehr als ein Thema ausgewählt werden.' %}
 
-<label class="control-label" for="field-group"><span title="This field is required" class="control-required">*</span>{{_('Groups')}}</label>
+<label class="control-label" for="field-group"><span title="Diese Feld ist erforderlich" class="control-required"></span>{{_('Groups')}}</label>
 <br><br><ol>
 
     {% if data.groups %}
@@ -59,7 +59,7 @@
         <label class="control-label" for="field-group" style="display:none"><span title="abc" class="control-required"></span>{{ data_groups_ids.append(group.id) }}</label>
     {%endfor %}
 
-    <label class="control-label" for="field-group"><span title="This field is required" class="control-required">* </span>{{_('Main Categories')}}</label>
+    <label class="control-label" for="field-group"><span title="Diese Feld ist erforderlich" class="control-required">* </span>{{_('Main Categories')}}</label>
     <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="{{ _(info_MainCat) }}"></span>
 
        
@@ -81,7 +81,7 @@
        {% endif %}
    {% endfor %}
 
-   <label class="control-label" for="field-group"><span title="This field is required" class="control-required"></span>{{_('Topics')}}</label>
+   <label class="control-label" for="field-group"><span title="Diese Feld ist erforderlich" class="control-required">* </span>{{_('Topics')}}</label>
    <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="{{ _(info_Topic) }}"></span>
 
    {# checking if group is included in data.groups does for some reason not work in Jinja, hence the id check, again with an invisible label #}
@@ -99,12 +99,11 @@
    {%endfor%}
    <div class="controls">
        <select id="field-group_2" name="groups__2__id" data-module="autocomplete" onclick="show_checkboxes(this)">
-           <option value=""selected="selected">{{_('Please choose a topic')}}</option>
-               {% for group in t_grp_children %}
-                   {% if group.id not in data_group_ids %}
-                       <option value="{{ group.id }}">{{ group.title }}</option>
-                   {% endif %}
-               {% endfor %}
+            {% for group in t_grp_children %}
+                {% if group.id not in data_group_ids %}
+                    <option value="{{ group.id }}">{{ group.title }}</option>
+                {% endif %}
+            {% endfor %}
        </select>
    </div>
    <br>
@@ -112,7 +111,7 @@
 {% endif %}
 
 {% if not data.groups or data.groups == []  %}
-    <label class="control-label" for="field-group"><span title="This field is required" class="control-required">* </span>{{_('Main Categories')}}</label>
+    <label class="control-label" for="field-group"><span title="Diese Feld ist erforderlich" class="control-required">* </span>{{_('Main Categories')}}</label>
     <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="{{ _(info_MainCat) }}"></span>
     <div class="controls">
         <select id="field-group_1" name="groups__0__id" data-module="autocomplete"> 
@@ -123,7 +122,7 @@
         </select>
     </div>
     <br>
-    <label class="control-label" for="field-group"><span title="This field is required" class="control-required"></span>{{_('Topics')}}</label>
+    <label class="control-label" for="field-group"><span title="Diese Feld ist erforderlich" class="control-required">* </span>{{_('Topics')}}</label>
     <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="{{ _(info_Topic) }}"></span>
     {% for group in t_grp_children %}
         <label class="checkbox" for="field-group-{{ loop.index0 + 100 }}" style="display:none">
@@ -132,7 +131,6 @@
     {% endfor %}
     <div class="controls">
         <select id="field-group_2" name="groups__2__id" data-module="autocomplete" onclick="show_checkboxes(this)">
-            <option value=""selected="selected">{{_('Please choose a topic')}}</option>
             {% for group in t_grp_children  %}
                 {% set existing_group_id = group.id %}
                 <option value="{{ group.id }}">{{ group.title }}</option>

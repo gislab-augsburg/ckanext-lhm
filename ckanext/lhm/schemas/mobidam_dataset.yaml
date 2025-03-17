@@ -378,15 +378,15 @@ dataset_fields:
     - value: noch_offen
       label: 
         en: Still open
-        de: noch offen
+        de: Noch offen
     - value: archivwuerdig
       label: 
         en: Archivable
-        de: archivwürdig
+        de: Archivwürdig
     - value: nicht_archivwuerdig
       label: 
         en: Not archivable
-        de: nicht archivwürdig
+        de: Nicht archivwürdig
   - field_name: begruendung
     label: Begründung
    
@@ -651,9 +651,9 @@ dataset_fields:
   required: true
   choices:
   - value: offen
-    label: Open Data - alle Attribute
+    label: Alle Attribute
   - value: beschraenkt
-    label: Open Data - bestimmte Attribute
+    label: Bestimmte Attribute
   - value: nein
     label: Nein
 
@@ -704,7 +704,7 @@ dataset_fields:
 
 # Feld alt
 - field_name: nutzungshinweise
-  label: weitere Hinweise zur Nutzung
+  label: Weitere Hinweise zur Nutzung
   is_info: true
   info_text: Weitere Hinweise zur Nutzung können mit einen Stichwort und unter "Hinweis" mit einem erläuternden Text beschrieben werden. Die Hinweise müssen auch für einen Laien nachvollziehbar sein. Denkbar sind etwa spezielle Hinweise zu vertraglichen Rahmenbedingungen, im Rahmen der Nutzung zu beachtende Besonderheiten im Datensatz o.ä.
   repeating_label: Hinweis
@@ -765,7 +765,7 @@ resource_fields:
 
 # Feld alt, required geändert
 - field_name: description
-  label: Description
+  label: Beschreibung
   preset: markdown
   help_text: Bei Tabellen im Geodatenpool immer "oracle-db"
   help_inline: true

@@ -738,14 +738,14 @@ dataset_fields:
 # Feld neu
 - field_name: state
   label: Status
-  preset: select_lhm
+  preset: state
   choices:
     - value: active
       label: Aktiv
     - value: draft
       label: Entwurf
   is_info: true
-  info_text: Ein Datensatz mit dem Status 'Entwurf' wird nicht in der Datensatz-Übersicht und -Suche angezeigt. Er ist nur für den Ersteller des Datensatzes in dessen Profil sichtbar. Wird einem Datensatz beim Erstellen keine Ressource hinzugefügt, bleibt sein Status auf 'Entwurf'. Werden dem Datensatz Daten als Ressource hinzugefügt, ändert sich sein Status auf 'Aktiv'. Der Status kann durch Bearbeiten des Datensatzes jederzeit wieder geändert werden.
+  info_text: Ein Datensatz mit dem Status 'Entwurf' wird nicht in der Datensatz-Übersicht und -Suche angezeigt. Er ist nur für den Ersteller des Datensatzes in dessen Profil sichtbar.
 
 
 resource_fields:

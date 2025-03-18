@@ -60,7 +60,7 @@
     {%endfor %}
 
     <label class="control-label" for="field-group"><span title="Diese Feld ist erforderlich" class="control-required">* </span>{{_('Main Categories')}}</label>
-    <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="{{ _(info_MainCat) }}"></span>
+    <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="{{ _(info_MainCat) }}"></span>
 
        
    {# This would produce multiple drop-down bars, but since there can only be one main category, we are fine. Still really bad coding, but I don't know how to do it better in Jinja. #}
@@ -82,7 +82,7 @@
    {% endfor %}
 
    <label class="control-label" for="field-group"><span title="Diese Feld ist erforderlich" class="control-required">* </span>{{_('Topics')}}</label>
-   <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="{{ _(info_Topic) }}"></span>
+   <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="{{ _(info_Topic) }}"></span>
 
    {# checking if group is included in data.groups does for some reason not work in Jinja, hence the id check, again with an invisible label #}
 
@@ -112,7 +112,7 @@
 
 {% if not data.groups or data.groups == []  %}
     <label class="control-label" for="field-group"><span title="Diese Feld ist erforderlich" class="control-required">* </span>{{_('Main Categories')}}</label>
-    <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="{{ _(info_MainCat) }}"></span>
+    <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="{{ _(info_MainCat) }}"></span>
     <div class="controls">
         <select id="field-group_1" name="groups__0__id" data-module="autocomplete"> 
             {% for group in mc_grp_children  %}
@@ -123,7 +123,7 @@
     </div>
     <br>
     <label class="control-label" for="field-group"><span title="Diese Feld ist erforderlich" class="control-required">* </span>{{_('Topics')}}</label>
-    <span class="fa fa-info-circle" style="font-size: 13pt;" data-toggle="tooltip" title="{{ _(info_Topic) }}"></span>
+    <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="{{ _(info_Topic) }}"></span>
     {% for group in t_grp_children %}
         <label class="checkbox" for="field-group-{{ loop.index0 + 100 }}" style="display:none">
             <input id="field-group-{{ loop.index0 + 100 }}" type="checkbox" name="groups__{{ loop.index0 + 100 }}__id" value="{{ group.id }}"/>{{ group.title }}

@@ -614,13 +614,16 @@ dataset_fields:
   choices:
   - value: backend_und_praesentation
     label: Backend-Daten und Präsentation
+  - value: backend_und_praesentation_nur_auftragnehmer
+    label: Backend-Daten und Präsentation & Externe Auftragnehmer der LHM
+  - value: backend_und_praesentation_nicht_auftragnehmer
+    label: Backend-Daten und Präsentation & Nicht Auftragnehmer der LHM
   - value: eingeschraenkt_nur_auftragnehmer
-    label: Eingeschränkt - Nur Externe Auftragnehmer der LHM
+    label: Nur externe Auftragnehmer der LHM
   - value: eingeschraenkt_nicht_auftragnehmer
-    label: Eingeschränkt - Nicht Auftragnehmer der LHM
+    label: Nicht-Auftragnehmer der LHM & Externe Auftragnehmer der LHM
   - value: kein_zugriff
     label: Kein Zugriff
-
 
 #- field_name: lhm_extern_nutzungsbedingungen
 #  label: LHM-extern Nutzungsbedingungen, Datenüberlassungen etc.
@@ -758,28 +761,56 @@ resource_fields:
 # Feld alt, required geändert
 - field_name: name
   label: Name
-  help_text: Bei Tabellen im Geodatenpool immer "oracle-db"
-  help_inline: true
+  form_snippet: text_lhm.html
+  is_info: true
+  info_text: Tabellenname im Geodatenpool
   validators: scheming_required
   required: true
 
 # Feld alt, required geändert
 - field_name: description
   label: Beschreibung
-  preset: markdown
-  help_text: Bei Tabellen im Geodatenpool immer "oracle-db"
-  help_inline: true
+  form_snippet: markdown_lhm.html
+  is_info: true
+  info_text: Optionale Beschreibung der Ressource, z.B. "Tabelle im stadtweit verfügbaren Geodatenpool."
   validators: scheming_required
   required: true
 
-# Feld alt, required geändert
+# Feld alt, required und preset geändert
 - field_name: format
   label: Format
-  preset: resource_format_autocomplete
-  help_text: Bei Tabellen im Geodatenpool immer "oracle-db"
-  help_inline: true
+  preset: select_lhm
+  is_info: true
+  info_text: Bei Tabellen im Geodatenpool immer "oracle-db"
   validators: scheming_required
-  required: true
+  required: true 
+  choices:
+  - value: oracle-db
+    label: Oracle-DB
+  - value: XLSX
+    label: XLSX
+  - value: PDF
+    label: PDF
+  - value: WCS
+    label: WCS
+  - value: WFS
+    label: WFS
+  - value: WMS
+    label: WMS
+  - value: WMTS
+    label: WMTS
+  - value: JSON
+    label: JSON
+  - value: XML/GML
+    label: XML/GML
+  - value: ArcGIS Kartenservice
+    label: ArcGIS Kartenservice
+  - value: URL
+    label: URL
+  - value: Link
+    label: Link
+
+     
 
 # Feld doch raus :(
 #- field_name: nutzungsbed

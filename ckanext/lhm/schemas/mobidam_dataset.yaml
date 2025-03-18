@@ -20,6 +20,29 @@ dataset_fields:
   info_text: Thema | NAME_DER_TABELLE. Der Titel beteht aus dem Thema (ehemals Datenbestand) und dem Namen der Tabelle im Geodatenpool
   required: true
 
+# Feld alt
+- field_name: notes
+  label: Description
+  form_snippet: markdown_lhm.html
+  form_placeholder: eg. Some useful notes about the data
+  is_info: true
+  info_text: Eindeutige und aussagekräftige inhaltliche Beschreibung des Datensatzes, damit auch Laien den Inhalt des Datensatzes einschätzen können. Relevante Informationen können neben dem konkreten Inhalt u.a. die räumliche Abdeckung, die Vollständigkeit, die Genauigkeit, die Urheberschaft oder die Aktualität sein.
+  required: true
+
+# Feld alt, nur Label geändert, siehe ckanext-lhm/ckanext/lhm/templates/package/resource_read.html
+- field_name: tag_string
+  label: Schlagworte
+  preset: tag_string_autocomplete
+  form_placeholder: z.B. Gesundheit; Umwelt;
+  is_info: true
+  info_text: Tags sind i.d.R. Substantive und sind Schlagworte zur inhaltlichen Beschreibung des Datensatzes. Es können mehrere Tags vergeben werden.
+
+  # Feld alt, Änderung bei required, siehe ckanext/lhm/templates/scheming/form_snippets/group_form.html
+- field_name: group
+  label: Group
+  form_snippet: group_form.html
+  display_snippet: null
+
 # Feld alt, nur zusätzliche choices
 - field_name: schema
   label: Schema
@@ -76,115 +99,6 @@ dataset_fields:
     label: MOBIDAM
   - value: mobidam_sst
     label: MOBIDAM_SST
-
-# Feld alt
-- field_name: notes
-  label: Description
-  form_snippet: markdown_lhm.html
-  form_placeholder: eg. Some useful notes about the data
-  is_info: true
-  info_text: Eindeutige und aussagekräftige inhaltliche Beschreibung des Datensatzes, damit auch Laien den Inhalt des Datensatzes einschätzen können. Relevante Informationen können neben dem konkreten Inhalt u.a. die räumliche Abdeckung, die Vollständigkeit, die Genauigkeit, die Urheberschaft oder die Aktualität sein.
-  required: true
-
-# Feld neu
-- field_name: datenquelle
-  label: Datenquelle
-  preset: select_lhm
-  is_info: true
-  info_text: 'Infotext Datenquelle'
-  required: true
-  choices:
-  - value: geodatenpool
-    label: Geodatenpool
-  - value: mobidam
-    label: Mobidam
-
-# Feld alt, nur Label geändert, siehe ckanext-lhm/ckanext/lhm/templates/package/resource_read.html
-- field_name: tag_string
-  label: Schlagworte
-  preset: tag_string_autocomplete
-  form_placeholder: z.B. Gesundheit; Umwelt;
-  is_info: true
-  info_text: Tags sind i.d.R. Substantive und sind Schlagworte zur inhaltlichen Beschreibung des Datensatzes. Es können mehrere Tags vergeben werden. 
-
-# Feld alt, Änderung bei required, siehe ckanext/lhm/templates/scheming/form_snippets/group_form.html
-- field_name: group
-  label: Group
-  form_snippet: group_form.html
-  display_snippet: null
-
-# Feld alt, nur Label geändert ( vorher: Geometrietyp)
-- field_name: geometrietyp
-  label: Objekttyp
-  preset: select_lhm
-  is_info: true
-  info_text: 'Welcher Geometrietyp ist in der Tabelle enthalten: Punkt, Linie, Fläche, Raster, Sachdaten oder Annotation'
-  required: true
-  choices:
-  - value: ""
-    label: 
-      en: Please choose the geometry type
-      de: Geometrietyp auswählen
-  - value: punkt
-    label: 
-      en: Point
-      de: Punkt
-  - value: linie
-    label: 
-      en: Line
-      de: Linie
-  - value: flaeche
-    label: 
-      en: Polygon
-      de: Fläche
-  - value: raster
-    label: Raster (ArcGIS-Raster)
-  - value: sachdaten
-    label: 
-      en: Factual Data
-      de: Sachdaten
-  - value: anno
-    label: ANNO
-  - value: multipatch
-    label: Multipatch
-
-# Feld alt
-- field_name: genauigkeit
-  label: Genauigkeit 
-  preset: composite_lhm
-  subfields:
-  - field_name: lagengenauigkeit
-    label: Lagengenauigkeit
-    is_info: true
-    info_text: Mit der Lagegenauigkeit wird angegeben, auf welcher Basis Daten erhoben bzw. erfasst wurden und welche räumliche Genauigkeit damit einhergeht.
-    preset: select
-    choices:
-    - value: ""
-      label: 
-        en: Please choose the accuracy
-        de: Lagengenauigkeit auswählen
-    - value: tachymeter
-      label: Tachymeter (1 cm)
-    - value: diff_gps
-      label: Diff-GPS / SPAOS (3 cm)
-    - value: gps
-      label: GPS (Handy o.ä) (1 m)
-    - value: satellit
-      label: Satellit (1 m)
-    - value: kataster
-      label: Auf Basis Kataster (Flurstücke / Gebäude) (3 cm)      
-    - value: baubloecke
-      label: Auf Basis Baublöcke (30 cm)
-    - value: luftbild
-      label: Auf Basis Luftbild (30 cm)
-    - value: stadtbezirk
-      label: Auf Basis Stadtbezirke (-teil -viertel)(10m)
-    - value: stadtplan
-      label: Auf Basis Stadtplan (10m)
-  - field_name: bemerkung
-    label: Bemerkung
-    is_info: true
-    info_text: Hier können ergänzende Informationen zur Lagegenauigkeit ergänzt werden, beispielsweise ein geeigneter Maßstab (z.B. 1:500), die größe eines Pixels (z.B. 20cm) oder die Spanne der Abweichung bei der Lage (z.B. +/- 10m)
 
 # Feld alt 
 - field_name: owner_org
@@ -389,6 +303,79 @@ dataset_fields:
         de: Nicht archivwürdig
   - field_name: begruendung
     label: Begründung
+
+# Feld alt
+- field_name: genauigkeit
+  label: Genauigkeit 
+  preset: composite_lhm
+  subfields:
+  - field_name: lagengenauigkeit
+    label: Lagengenauigkeit
+    is_info: true
+    info_text: Mit der Lagegenauigkeit wird angegeben, auf welcher Basis Daten erhoben bzw. erfasst wurden und welche räumliche Genauigkeit damit einhergeht.
+    preset: select
+    choices:
+    - value: ""
+      label: 
+        en: Please choose the accuracy
+        de: Lagengenauigkeit auswählen
+    - value: tachymeter
+      label: Tachymeter (1 cm)
+    - value: diff_gps
+      label: Diff-GPS / SPAOS (3 cm)
+    - value: gps
+      label: GPS (Handy o.ä) (1 m)
+    - value: satellit
+      label: Satellit (1 m)
+    - value: kataster
+      label: Auf Basis Kataster (Flurstücke / Gebäude) (3 cm)      
+    - value: baubloecke
+      label: Auf Basis Baublöcke (30 cm)
+    - value: luftbild
+      label: Auf Basis Luftbild (30 cm)
+    - value: stadtbezirk
+      label: Auf Basis Stadtbezirke (-teil -viertel)(10m)
+    - value: stadtplan
+      label: Auf Basis Stadtplan (10m)
+  - field_name: bemerkung
+    label: Bemerkung
+    is_info: true
+    info_text: Hier können ergänzende Informationen zur Lagegenauigkeit ergänzt werden, beispielsweise ein geeigneter Maßstab (z.B. 1:500), die größe eines Pixels (z.B. 20cm) oder die Spanne der Abweichung bei der Lage (z.B. +/- 10m)
+
+# Feld alt, nur Label geändert ( vorher: Geometrietyp)
+- field_name: geometrietyp
+  label: Objekttyp
+  preset: select_lhm
+  is_info: true
+  info_text: 'Welcher Geometrietyp ist in der Tabelle enthalten: Punkt, Linie, Fläche, Raster, Sachdaten oder Annotation'
+  required: true
+  choices:
+  - value: ""
+    label: 
+      en: Please choose the geometry type
+      de: Geometrietyp auswählen
+  - value: punkt
+    label: 
+      en: Point
+      de: Punkt
+  - value: linie
+    label: 
+      en: Line
+      de: Linie
+  - value: flaeche
+    label: 
+      en: Polygon
+      de: Fläche
+  - value: raster
+    label: Raster (ArcGIS-Raster)
+  - value: sachdaten
+    label: 
+      en: Factual Data
+      de: Sachdaten
+  - value: anno
+    label: ANNO
+  - value: multipatch
+    label: Multipatch
    
   # field_name: license_id
   # label: License
@@ -666,6 +653,8 @@ dataset_fields:
   preset: select_lhm
   is_info: true
   info_text: 'Infotext HVD'
+  help_text: 'Durchführungsverordnung: '
+  help_url: https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://eur-lex.europa.eu/legal-content/DE/TXT/PDF/%3Furi%3DCELEX:32023R0138%26from%3DDE&ved=2ahUKEwidrpDW3YmMAxUYRfEDHbxQEckQFnoECAkQAQ&usg=AOvVaw3WDQRF0xfddSJsN4ZaSxFO
   required: true
   choices:
   - value: alle_attribute

@@ -41,12 +41,12 @@
 
 {% set is_info = 'true' %}
 {% set info_text_id = 'Name des Attributs mit Großbuchstaben und Unterstrich' %}
-{% set info_text_type = 'Angabe zum Datentyp des Attributs. Zulässig sind im Geodatenpool folgende Oracle Datentypen (ArcGIS-Datentypen): 
-number(Objekt-ID), sdo_geometry(Geometry), nvarchar2(Text), float(Float), number(short oder long), date(DATE) oder timestamp(6), blob(BLOB)' %}
-{% set info_text_condition = 'Angabe von Bedingungen, falls vorhanden. Dies sind z.B. "NOT NULL" oder "PRIMARY KEY"' %}
-{% set info_text_notes = 'Eine für Laien nachvollziehbare, kurze Beschreibung des Attributs (z.B. Anzahl der Vollgeschosse, Gemarkung des Flurstücks)' %}
-{% set info_text_hint = 'ggf. erforderliche ergänzende Bemerkungen' %}
-{% set info_text_opendata = 'Wenn für die Nutzung als OpenData angegeben ist, dass dies nur für bestimmte Attribute gilt, kann hier über Ja/Nein gewählt werden, ob das Attribut freigegeben ist.' %}
+{% set info_text_type = 'Angabe zum Datentyp des Attributs' %}
+{% set info_text_condition = 'Angabe von Bedingungen, falls vorhanden. Dies sind z.B. "NOT NULL" oder "PRIMARY KEY".' %}
+{% set info_text_notes = 'Kann auch enthalten: Fachliche Bezeichnung.
+Beschreibung: Eine für Laien nachvollziehbare, kurze Beschreibung des Attributs (z.B. Anzahl der Vollgeschosse, Gemarkung des Flurstücks).' %}
+{% set info_text_hint = 'Ggf. erforderliche ergänzende Bemerkungen' %}
+{% set info_text_opendata = 'Angabe zur Nutzung des Attribut als Open Data bzw. HVD' %}
 
 <div class="dictionary-field-{{ position }}">
   {% if field and total_records %}

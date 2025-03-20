@@ -17,7 +17,7 @@ dataset_fields:
   form_snippet: large_text_lhm.html
   form_placeholder: Thema | NAME_DER_TABELLE
   is_info: true
-  info_text: Thema | NAME_DER_TABELLE. Der Titel beteht aus dem Thema (ehemals Datenbestand) und dem Namen der Tabelle im Geodatenpool
+  info_text: 'Thema | NAME_DER_TABELLE. Der Titel beteht aus dem Thema (für Geodatenpool: ehemals Datenbestand) und dem Namen der Tabelle in der Datenbank'
   required: true
 
 # Feld alt
@@ -33,9 +33,10 @@ dataset_fields:
 - field_name: tag_string
   label: Schlagworte
   preset: tag_string_autocomplete
+  form_snippet: text_lhm.html
   form_placeholder: z.B. Gesundheit; Umwelt;
   is_info: true
-  info_text: Tags sind i.d.R. Substantive und sind Schlagworte zur inhaltlichen Beschreibung des Datensatzes. Es können mehrere Tags vergeben werden.
+  info_text: Schlagworte sind i.d.R. Substantive zur inhaltlichen Beschreibung des Datensatzes. Es können mehrere Schlagworte vergeben werden. 
 
   # Feld alt, Änderung bei required, siehe ckanext/lhm/templates/scheming/form_snippets/group_form.html
 - field_name: group
@@ -48,7 +49,7 @@ dataset_fields:
   label: Schema
   preset: select_lhm
   is_info: true
-  info_text: Name des Datenbankschemas (z.B. BAUT, PLAN, RKU)
+  info_text: Name des Datenbankschemas (beim Geodatenpool z.B. BAUT, PLAN, RKU)
   required: true
   choices:
   - value: ""
@@ -121,7 +122,7 @@ dataset_fields:
   form_snippet: author.html
   form_placeholder:  KR-GSM-GEO-GIS
   is_info: true
-  info_text: Angabe der Organisationseinheit, die fachliche und organisatorische Kenntnis zum Datensatz hat. Meist Team-/Sachgebietsebene (z.B. KR-GSM-GEO-GDM-GDP/GDI). Bitte keine Personen eintragen.
+  info_text: Angabe der Stelle, die fachliche und organisatorische Kenntnis zum Datensatz hat.
 
 # Feld alt  
 - field_name: datenverantwortlicher_email
@@ -134,7 +135,7 @@ dataset_fields:
   display_snippet: email.html
   validators: unicode_safe strip_value email_validator
   is_info: true
-  info_text: Angabe der Team-E-Mailadresse des Datenverantwortlichers. Bitte keine persönlichen E-Mailadressen verwenden.
+  info_text: Angabe der (Team-)E-Mailadresse des Datenverantwortlichen.
 
 # Feld neu
 - field_name: dateneigner
@@ -142,7 +143,7 @@ dataset_fields:
   form_snippet: author.html
   form_placeholder: Erika Mustermann
   is_info: true
-  info_text: Angabe der Organisationseinheit, die fachliche und organisatorische Kenntnis zum Datensatz hat. Meist Team-/Sachgebietsebene (z.B. KR-GSM-GEO-GDM-GDP/GDI). Bitte keine Personen eintragen.
+  info_text: Angabe der Person aus der Managementebene mit Entscheidungsbefugnissen zum Datensatz
 
 # Feld neu
 - field_name: dateneigner_email
@@ -152,7 +153,7 @@ dataset_fields:
   display_snippet: email.html
   validators: unicode_safe strip_value email_validator
   is_info: true
-  info_text: Angabe der Team-E-Mailadresse des Datenverantwortlichers. Bitte keine persönlichen E-Mailadressen verwenden.
+  info_text: Angabe der E-Mailadresse des Dateneigners
 
 # Feld neu
 - field_name: dateneigner_organisation
@@ -160,7 +161,7 @@ dataset_fields:
   required: true
   preset: select_lhm
   is_info: true
-  info_text: Angabe des fachlich zuständigen Referats und der ersten, das Referat untergliedernden Organisationseinheit (z.B. Amt, Hauptabteilung, Geschäftsbereich)
+  info_text: Angabe der Organisation des Dateneigners, bspw. Referat und der ersten, das Referat untergliedernden Organisationseinheit (z.B. Amt, Hauptabteilung, Geschäftsbereich)
   choices:
     - value: bau
       label: Baureferat (BAU)
@@ -252,7 +253,7 @@ dataset_fields:
   preset: select_lhm
   required: true
   is_info: true
-  info_text: Mit dem Updatezyklus kann im Geodatenpool angegeben werden, ob Daten regelmäßig (monatlich), unregelmäßig (auf Anforderung) oder nicht (kein) aktualisiert werden. Eine Aktualisierung der Daten kann im Rahmen eines Updatelaufs und im Rahmen eine Fastlane erfolgen.
+  info_text: Mit dem Updatezyklus kann angegeben werden, ob und wie regelmäßig die Daten in der Datenbank aktualisiert werden.
   choices:
   - value: auf_anforderung
     label: 
@@ -284,7 +285,7 @@ dataset_fields:
     form_include_blank_choice: false
     preset: select
     is_info: true
-    info_text: Die Bewertung der Archivwürdigkeit wird durch das Stadtarchiv im Rahmen des Change-Prozesses vorgenommen.
+    info_text: Die Bewertung der Archivwürdigkeit erfolgt durch das Stadtarchiv
     choices:
     - value: noch_offen
       label: 
@@ -344,13 +345,13 @@ dataset_fields:
   label: Objekttyp
   preset: select_lhm
   is_info: true
-  info_text: 'Welcher Geometrietyp ist in der Tabelle enthalten: Punkt, Linie, Fläche, Raster, Sachdaten oder Annotation'
+  info_text: 'Angabe des in der Tabelle enthaltenen Objekt- bzw. Geometrietyps'
   required: true
   choices:
   - value: ""
     label: 
-      en: Please choose the geometry type
-      de: Geometrietyp auswählen
+      en: Please choose the object type
+      de: Objekttyp auswählen
   - value: punkt
     label: 
       en: Point
@@ -544,6 +545,8 @@ dataset_fields:
   label: LHM-intern
   preset: select_lhm
   required: true
+  is_info: true
+  info_text: 'Information über den direkten (lesenden) Zugriff auf die Daten auf der Datenbank durch Mitarbeitende und/oder über Dienste innerhalb der LHM. Teilweise ist der Zugriff für bestimmte Benutzergruppen (auch: Zugriffsuser von Fachverfahren) einzuschränken.'
   choices:
   - value: uneingeschraenkt
     label: Uneingeschränkt
@@ -595,6 +598,8 @@ dataset_fields:
   label: LHM-extern
   preset: select_lhm
   required: true
+  is_info: true
+  info_text: Information über die Zugriffsberechtigungen bzw. Bereitstellungsformen für Dritte, d.h. Personen und Organisationen außerhalb der LHM. 'Backend-Daten und Präsentation' bezeichnet die Bereitstellung der Daten zur Nutzung in z.B. Online-Formularen und kartografischen Darstellungen. '(Nur) externe Auftragnehmer der LHM' bedeutet, dass die Daten an Dritte weitergegeben werden düren, sofern diese im Auftrag der Stadt tätig werden. 'Nicht Auftragnehmer der LHM' gibt an, dass die Daten allgemein an Dritte weitergegeben werden dürfen. Bei der Weitergabe der Daten an LHM-Externe sind die notwendigen Verträge oder vertragsähnlichen Dokumente in den Ressourcen zu hinterlegen.
   choices:
   - value: backend_und_praesentation
     label: Backend-Daten und Präsentation
@@ -630,7 +635,7 @@ dataset_fields:
   label: Open Data 
   preset: select_lhm
   is_info: true
-  info_text: 'Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Einzuhaltende Nutzungsbedingungen sind hier dokumentiert: https://opendata.muenchen.de/pages/nutzungsbedingungen'
+  info_text: Mit Open Data sind Daten gemeint, die frei verfügbar gemacht und frei genutzt werden können.
   help_text: 
     en: 'Rights of use open data: '
     de: 'Nutzungsbedingungen Open Data: '
@@ -649,7 +654,7 @@ dataset_fields:
   label: High Value Datasets (HVD)
   preset: select_lhm
   is_info: true
-  info_text: 'Infotext HVD'
+  info_text: Mit High Value Datasets sind Daten gemeint, die in unter die DVO-HVD fallen. HVD-Daten sind per Definition immer auch Open Data.
   help_text: 'Durchführungsverordnung HVD: '
   help_url: https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://eur-lex.europa.eu/legal-content/DE/TXT/PDF/%3Furi%3DCELEX:32023R0138%26from%3DDE&ved=2ahUKEwidrpDW3YmMAxUYRfEDHbxQEckQFnoECAkQAQ&usg=AOvVaw3WDQRF0xfddSJsN4ZaSxFO
   help_url_view: 'https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://eur-lex...'
@@ -669,7 +674,7 @@ dataset_fields:
   label: HVD-Kategorie
   preset: select_lhm
   is_info: true
-  info_text: 'Infotext HVD-Kategorie'
+  info_text: Falls HVD im Datensatz enthalten sind, ist hier die Kategorie der HVD gemäß Verordnung auszuwählen.
   required: true
   choices:
   - value: georaum
@@ -692,13 +697,14 @@ dataset_fields:
   label: Open Data / HVD - bestimmte Attribute
   form_snippet: text_lhm.html
   is_info: true
-  info_text: Sind nur ausgewählte Attribute zur Open-Data-Nutzung freigegeben, können die Attributnamen hier definiert werden, z.B. OBJECTID, HAUSNR, GEMEINDE. Eine Einschränkung der Attribute für OpenData erfolgt bei den Attributen im Datenverzeichnis.
+  info_text: Sind nur ausgewählte Attribute zur Open-Data-Nutzung oder als HVD freigegeben, können die Attributnamen hier definiert werden, z.B. OBJECTID, HAUSNR, GEMEINDE
 
 # Feld alt
 - field_name: nutzungshinweise
   label: Weitere Hinweise zur Nutzung
   is_info: true
-  info_text: Weitere Hinweise zur Nutzung können mit einen Stichwort und unter "Hinweis" mit einem erläuternden Text beschrieben werden. Die Hinweise müssen auch für einen Laien nachvollziehbar sein. Denkbar sind etwa spezielle Hinweise zu vertraglichen Rahmenbedingungen, im Rahmen der Nutzung zu beachtende Besonderheiten im Datensatz o.ä.
+  info_text: Weitere Hinweise zur Nutzung können mit einen Stichwort und unter 'Hinweis' mit einem erläuternden Text beschrieben werden. Die Hinweise müssen auch für einen Laien nachvollziehbar sein. Denkbar sind etwa spezielle Hinweise zu vertraglichen Rahmenbedingungen, im Rahmen der Nutzung zu beachtende Besonderheiten im Datensatz o.ä.
+  form_snippet: repeating_subfields_lhm.html
   repeating_label: Hinweis
   repeating_subfields:
   - field_name: stichwort
@@ -726,6 +732,8 @@ dataset_fields:
 - field_name: letzter_import
   label: Letzter Import
   form_placeholder: DD-MM-YYYY oder keine Angabe
+  is_info: true
+  info_text: Letzte Aktualisierung der Datentabelle in der Datenquelle
 
 # Feld neu
 - field_name: state
@@ -752,7 +760,7 @@ resource_fields:
   label: Name
   form_snippet: text_lhm.html
   is_info: true
-  info_text: Tabellenname im Geodatenpool
+  info_text: Tabellenname in der Datenbank
   validators: scheming_required
   required: true
 
@@ -761,7 +769,7 @@ resource_fields:
   label: Beschreibung
   form_snippet: markdown_lhm.html
   is_info: true
-  info_text: Optionale Beschreibung der Ressource, z.B. "Tabelle im stadtweit verfügbaren Geodatenpool."
+  info_text: Beschreibung der Ressource, z.B. 'Tabelle im stadtweit verfügbaren Geodatenpool.', kann auch Verwendungszweck /-möglichkeiten der Ressource enthalten.
   validators: scheming_required
   required: true
 
@@ -770,7 +778,7 @@ resource_fields:
   label: Format
   preset: select_lhm
   is_info: true
-  info_text: Bei Tabellen im Geodatenpool immer "oracle-db"
+  info_text: Dateiformat der Ressource
   validators: scheming_required
   required: true 
   choices:

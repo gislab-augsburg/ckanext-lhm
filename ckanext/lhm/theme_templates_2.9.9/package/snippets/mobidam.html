@@ -30,31 +30,6 @@
         </td>
       </tr>
       <tr>
-        <td style="border-top: none;">
-          <p class="heading">{{ _("Dateneigner") }}
-          <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Person aus der Managementebene mit Entscheidungsbefugnissen zum Datensatz"></span></p>
-            <p class="metadata">{{ pkg_dict.dateneigner }}</p>
-        </td>
-        <td style="border-top: none;">
-          <p class="heading">{{ _("Dateneigner E-Mail") }}</p>
-          {% if pkg_dict.dateneigner_email %}
-            <p class="metadata">{{ h.mail_to(email_address=h.lhm_validate_email(pkg_dict.dateneigner_email), name=pkg_dict.dateneigner_email) }}</p>
-          {% else %}
-            <p class="metadata">{{ _("Not available") }}</p>
-          {% endif %}
-        </td>
-        <td style="border-top: none;"> 
-          <p class="heading">{{ _("Organisation Dateneigner") }}
-          <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Tooltip Dateneigner Organisation"></span></p>
-          {% if pkg_dict.dateneigner_organisation%}     
-            <p class="metadata">{%- snippet 'package/snippets/label.html',
-              item='dateneigner_organisation', pkg_dict=pkg_dict, schema=schema -%}</p>
-          {% else %}
-            <p class="metadata">{{ _("No") }}</p>
-          {% endif %}
-        </td>
-      </tr>
-      <tr>
         <td>      
           <p class="heading">{{ _("Datenquelle") }}
           <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Die Datenquelle bezeichnet das System aus dem die Daten bezogen werden können, bspw. Geodatenpool"></span></p>

@@ -105,8 +105,7 @@
         {% if pkg_dict.lhm_intern %}
         <td style="padding-bottom: 0px;">
           <p class="heading">{{ _("Zugriff")}}
-            <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Fachverfahren: Der Zugriff durch Fachverfahren meint den direkten (lesenden) Zugriff auf die Daten auf der Datenbank und/oder über Dienste. Standard ist der Zugriff für stadtweit alle Benutzer (d.h. Zugriffsuser inkl. GeoInfoWeb). Teilweise muss der Zugriff auf bestimmte Benutzergruppen (=Zugriffsuser) eingeschränkt werden oder die Daten dürfen nicht für Fachverfahren genutzt werden. 
-GeoInfoWeb: Standard ist der Zugriff für stadtweit alle Benutzer (inkl. Stadtrat und Bezirksausschüsse). Der Zugriff über GeoInfoWeb kann auf bestimmte Gruppen begrenzt werden. Dann sind die Daten im GeoinfoWeb nur für diese Nutzer bzw. Gruppen sichtbar."></span>
+            <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Information über den direkten (lesenden) Zugriff auf die Daten auf der Datenbank durch Mitarbeitende und/oder über Dienste innerhalb der LHM. Teilweise ist der Zugriff für bestimmte Benutzergruppen (auch: Zugriffsuser von Fachverfahren) eingeschränkt. Bei eingeschränktem Zugriff wenden Sie sich bei Nutzungsbedarf der Daten bitte an den Datenverantwortlichen bzw. die verantwortliche Organisationseinheit."></span>
           </p>
           <p class="metadata">{%- snippet 'package/snippets/label.html',
             item='lhm_intern', pkg_dict=pkg_dict, schema=schema -%}</p>

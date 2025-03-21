@@ -1,5 +1,5 @@
 scheming_version: 2
-dataset_type: mobidam
+dataset_type: geodatenpool
 about: The default Munich(LHM) MobidaM catalog dataset schema with form split across multiple pages
 about_url: http://github.com/ckan/ckanext-scheming
 
@@ -463,30 +463,30 @@ dataset_fields:
   - value: kein_zugriff
     label: Kein Zugriff
 
-# Nur GDP:
-# Feld alt, values mit Änderungen
-#  - field_name: geoinfoweb
-#    label: GeoInfoWeb
-#    preset: select
-#    is_info: true
-#    info_text: Der Zugriff über GeoInfoWeb kann auf bestimmte Gruppen begrenzt werden. Dann sind die Daten nur für diese Nutzer bzw. Gruppen sichtbar. Standardeinstellung ist der stadtweite Zugriff (alle Nutzer). "ausgenommen Bezirksausschüsse" meint, dass stadtweit alle Nutzer Zugriff haben - ausgenommen den Bezirksausschüssen. 
-#    required: true
-#    form_include_blank_choice: false
-#    choices:
-#    - value: alle_nutzer
-#      label: 
-#        en: All users
-#        de: alle Nutzer (Standard)
-#    - value: ohne_bezirksausschuesse
-#      label: 
-#        en: District committees
-#        de: alle Nutzer (Standard) - ohne Bezirksausschüsse
-#    - value: bestimmte_zugriffsuser
-#      label: bestimmte Zugriffsuser
-#    - value: keine
-#      label: 
-#        en: None
-#        de: Keine
+#Nur GDP:
+#Feld alt, values mit Änderungen
+- field_name: geoinfoweb
+  label: GeoInfoWeb
+  preset: select_lhm
+  is_info: true
+  info_text: Der Zugriff über GeoInfoWeb kann auf bestimmte Gruppen begrenzt werden. Dann sind die Daten nur für diese Nutzer bzw. Gruppen sichtbar. Standardeinstellung ist der stadtweite Zugriff (alle Nutzer). "ausgenommen Bezirksausschüsse" meint, dass stadtweit alle Nutzer Zugriff haben - ausgenommen den Bezirksausschüssen. 
+  required: true
+  form_include_blank_choice: false
+  choices:
+  - value: alle_nutzer
+    label: 
+      en: All users
+      de: alle Nutzer (Standard)
+  - value: ohne_bezirksausschuesse
+    label: 
+      en: District committees
+      de: alle Nutzer (Standard) - ohne Bezirksausschüsse
+  - value: bestimmte_zugriffsuser
+    label: bestimmte Zugriffsuser
+  - value: keine
+    label: 
+      en: None
+      de: Keine
 ## fällt raus:
 #    - value: organisationseinheiten
 #      label: 

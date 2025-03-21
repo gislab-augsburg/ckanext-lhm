@@ -640,17 +640,19 @@ dataset_fields:
   is_info: true
   info_text: Letzte Aktualisierung der Datentabelle in der Datenquelle
 
-# Feld neu
-- field_name: state
-  label: Status
-  preset: state
+# Feld neu (war mit organization verknüpft, Attribut private ist CKAN-Standard)
+- field_name: private
+  label: Sichtbarkeit
+  preset: select_lhm
   choices:
-    - value: active
-      label: Aktiv
-    - value: draft
-      label: Entwurf
+    - value: false
+      label: Öffentlich
+    - value: true
+      label: Privat
+  validators: scheming_required boolean_validator
+  output_validators: boolean_validator
   is_info: true
-  info_text: Ein Datensatz mit dem Status 'Entwurf' wird nicht in der Datensatz-Übersicht und -Suche angezeigt. Er ist nur für den Ersteller des Datensatzes in dessen Profil sichtbar.
+  info_text: 'Einstellung zur Sichtbarkeit des eingetragenen Metadatensatzes. Öffentlich: Sichtbarkeit für alle Personen in der LHM (Standard). Privat: Sichtbarkeit nur für Mitglieder der zuständigen Organisation.'
 
 
 resource_fields:

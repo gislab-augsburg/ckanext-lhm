@@ -62,6 +62,25 @@
         </td>
       </tr>
       <tr>
+        <td colspan="3">
+          <p class="heading">{{ _("Objekttyp") }}</p>
+          {% if pkg_dict.geometrietyp %}  
+            <p class="metadata">{%- snippet 'package/snippets/label.html',
+              item='objekttyp', pkg_dict=pkg_dict, schema=schema -%}</p>
+          {% else %}
+            <p class="metadata">{{ _("Not available") }}</p>
+          {% endif %}
+        </td>
+      </tr>
+      <tr>
+        {% if pkg_dict.genauigkeit %}
+        <td colspan="3" style="border-top: none;"><p class="heading">{{ _("Accuracy")}}
+          <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Die Genauigkeit der Daten hängt von der Art der Datenerhebung ab und gibt Auskunft darüber, für welche Anwendungsfälle die Daten geeignet sind. Ergänzend ist eine Information zu einem geeigneten Maßstab möglich."></span></p>
+          <p class="metadata">{%- snippet 'package/snippets/label.html',
+            item='genauigkeit', pkg_dict=pkg_dict, schema=schema -%}</p>
+        </td>
+        {% endif %}
+      </tr>      
         {% if pkg_dict.stadtarchiv %}
         <td colspan="3"><p class="heading">{{ _("City Archive")}}
           <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Archivwürdigkeit von historisch relevanten Daten. "></span></p>
@@ -71,25 +90,7 @@
         {% endif %}
       </tr>
       <tr>
-        {% if pkg_dict.genauigkeit %}
-        <td colspan="3"><p class="heading">{{ _("Accuracy")}}
-          <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Die Genauigkeit der Daten hängt von der Art der Datenerhebung ab und gibt Auskunft darüber, für welche Anwendungsfälle die Daten geeignet sind. Ergänzend ist eine Information zu einem geeigneten Maßstab möglich."></span></p>
-          <p class="metadata">{%- snippet 'package/snippets/label.html',
-            item='genauigkeit', pkg_dict=pkg_dict, schema=schema -%}</p>
-        </td>
-        {% endif %}
-      </tr>
-      <tr>
-        <td colspan="3">
-          <p class="heading">{{ _("Objekttyp") }}</p>
-          {% if pkg_dict.geometrietyp %}  
-            <p class="metadata">{%- snippet 'package/snippets/label.html',
-              item='geometrietyp', pkg_dict=pkg_dict, schema=schema -%}</p>
-          {% else %}
-            <p class="metadata">{{ _("Not available") }}</p>
-          {% endif %}
-        </td>
-      </tr>
+
     </table></div>
   </section>
   
@@ -101,22 +102,43 @@
   <div class="collapsible-content">
     <table class="table package-metadata">
       <tr>
-        <td style="padding-bottom: 0px;"><p class="heading">{{ _("LHM-intern")}}</p></td>
-        {% if pkg_dict.lhm_intern %}
-        <td style="padding-bottom: 0px;">
+        <td colspan="1" style="padding-bottom: 0px;"><p class="heading">{{ _("LHM-intern")}}</p></td>
+        <td colspan="1" style="padding-bottom: 0px;">
           <p class="heading">{{ _("Zugriff")}}
-            <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Information über den direkten (lesenden) Zugriff auf die Daten auf der Datenbank durch Mitarbeitende und/oder über Dienste innerhalb der LHM. Teilweise ist der Zugriff für bestimmte Benutzergruppen (auch: Zugriffsuser von Fachverfahren) eingeschränkt. Bei eingeschränktem Zugriff wenden Sie sich bei Nutzungsbedarf der Daten bitte an den Datenverantwortlichen bzw. die verantwortliche Organisationseinheit."></span>
+            <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="
+            Information über den direkten (lesenden) Zugriff auf die Daten auf der Datenbank durch Mitarbeitende und/oder über Dienste innerhalb der LHM. Teilweise ist der Zugriff für bestimmte Benutzergruppen (auch: Zugriffsuser von Fachverfahren) eingeschränkt. Bei eingeschränktem Zugriff wenden Sie sich bei Nutzungsbedarf der Daten bitte an den Datenverantwortlichen bzw. die verantwortliche Organisationseinheit."></span>
           </p>
           <p class="metadata">{%- snippet 'package/snippets/label.html',
             item='lhm_intern', pkg_dict=pkg_dict, schema=schema -%}</p>
         </td>
-        <td style="padding-bottom: 0px;"></td>
-        {% endif %}     
+        <td colspan="1" style="padding-bottom: 0px;">
+          <p class="heading">{{ _("GeoInfoWeb")}}
+            <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Standard ist der Zugriff für stadtweit alle Benutzer (inkl. Stadtrat und Bezirksausschüsse). Der Zugriff über GeoInfoWeb kann auf bestimmte Gruppen begrenzt werden. Dann sind die Daten im GeoinfoWeb nur für diese Nutzer bzw. Gruppen sichtbar."></span>
+          </p>
+          <p class="metadata">{%- snippet 'package/snippets/label.html',
+            item='geoinfoweb', pkg_dict=pkg_dict, schema=schema -%}</p>
+        </td>   
       </tr>
       
       <tr>
         <td colspan="1" style="padding-bottom: 0px;"><p class="heading">{{ _("LHM-extern")}}</p></td>
-        {% if pkg_dict.lhm_extern %}
+        {% if pkg_dict.nutzungsoptionen_bei_einschraenkungen %}
+        <td colspan="1" style="padding-bottom: 0px;">
+          <p class="heading">{{ _("Zugriff")}}
+            <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title='
+            Information über die Zugriffsberechtigungen bzw. Bereitstellungsformen für Dritte, d.h. Personen und Organisationen außerhalb der LHM. Bei der Datennutzung durch Externe der LHM sind Nutzungsbedingungen bzw. -Vereinbarungen einzuhalten. Mögliche Einschränkungen zur Datennutzung sind im Feld Nutzungsoptionen bei Einschränkungen näher definiert.'></span>
+          </p>
+          <p class="metadata">{%- snippet 'package/snippets/label.html',
+            item='lhm_extern', pkg_dict=pkg_dict, schema=schema -%}</p>
+        </td>
+        <td colspan="1" style="padding-bottom: 0px;">
+          <p class="heading">{{ _("Nutzungsoptionen bei Einschränkungen")}}
+            <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title='Infotext Nutzungsoptionen'></span>
+          </p>
+          <p class="metadata">{%- snippet 'package/snippets/label.html',
+            item='nutzungsoptionen_bei_einschraenkungen', pkg_dict=pkg_dict, schema=schema -%}</p>
+        </td>
+        {% else %}
         <td colspan="2" style="padding-bottom: 0px;">
           <p class="heading">{{ _("Zugriff")}}
             <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title='Information über die Zugriffsberechtigungen bzw. Bereitstellungsformen für Dritte, d.h. Personen und Organisationen außerhalb der LHM. "Backend-Daten und Präsentation" bezeichnet die Bereitstellung der Daten zur Nutzung in z.B. Online-Formularen und kartografischen Darstellungen. "Nur externe Auftragnehmer der LHM" bedeutet, dass die Daten an Dritte weitergegeben werden düren, sofern diese im Auftrag der Stadt tätig werden. "Nicht Auftragnehmer der LHM" gibt an, dass die Daten allgemein an Dritte weitergegeben werden dürfen. Es sind mögliche weitere Hinweise zur Nutzung zu beachten.'></span>
@@ -124,14 +146,14 @@
           <p class="metadata">{%- snippet 'package/snippets/label.html',
             item='lhm_extern', pkg_dict=pkg_dict, schema=schema -%}</p>
         </td>
-        {% endif %} 
+        {% endif %}
       </tr>
       
       <tr>
         <td colspan="1" style="border-top: none;"><p class="heading">{{ _(" ")}}</p></td>
         <td colspan="2" style="border-top: none;">
           <p class="heading">{{ _("Open Data") }}
-            <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title='Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Dies bedeutet jedoch nicht, dass es dabei keine Nutzungsbedingungen bzw. Lizenzbedingungen gibt. Ggf. inkludierte und exkludierte Attribute innerhalb des Datensatzes sind der Attributtabelle zu entnehmen. Weitere Hinweise zur Nutzung können unter "Hinweis" mit einem erläuternden Text beschrieben sein.--> Nutzungsrechte bei OpenData: https://opendata.muenchen.de/pages/nutzungsbedingungen'></span>
+            <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title='Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Dies bedeutet jedoch nicht, dass es dabei keine Nutzungsbedingungen bzw. Lizenzbedingungen gibt. Ggf. inkludierte und exkludierte Attribute innerhalb des Datensatzes sind der Attributtabelle zu entnehmen. Gegebenenfalls sind weitere Hinweise zur Nutzung zu beachten, siehe unten.'></span>
           </p>
           {% if pkg_dict.open_data %}  
             <p class="metadata">{%- snippet 'package/snippets/label.html',
@@ -176,7 +198,7 @@
       <tr>
         <td colspan="1" style="border-top: none;"><p class="heading">{{ _(" ")}}</p></td>
         <td colspan="2" style="border-top: none;">
-          <p class="heading">{{ _("Open Data / HVD bestimmte Attribute") }}
+          <p class="heading">{{ _("Open Data / HVD bestimmte Attribute und Inhalte") }}
             <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title='Nur folgende Attribute sind Open Data oder High Value Data'></span>
           </p> 
             <p class="metadata">{{ pkg_dict.open_data_attribute }}</p>
@@ -186,7 +208,7 @@
     </table></div>
   </section>
   
-  
+  {% if pkg_dict.nutzungshinweise %}
   <section class="additional-info module-content table3">
     <div class="collapsible-header">
       <h3 style="border-bottom: 0px solid;">{{ _("Weitere Hinweise zur Nutzung")}}</h3>
@@ -194,26 +216,15 @@
     </div>
     <div class="collapsible-content">
       <table class="table package-metadata">
-        {% if pkg_dict.nutzungshinweise %}
         <tr>
           <td colspan="4">
             <p class="metadata">{%- snippet 'package/snippets/label.html',
               item='nutzungshinweise', pkg_dict=pkg_dict, schema=schema -%}</p>
           </td>
         </tr>
-        {% endif %}
-        {% if pkg_dict.eignung_geschaeftsprozesse_it %}
-        <tr>
-          <td colspan="4">
-            <p class="heading">{{ _("Eignung für Geschäftprozesse und IT-Systeme") }}
-            <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Gewährleistung der dauerhaften Zurverfügungstellung des Datensatzes."></span></p>
-              <p class="metadata">{%- snippet 'package/snippets/label.html',
-                item='eignung_geschaeftsprozesse_it', pkg_dict=pkg_dict, schema=schema -%}</p>
-          </td>
-        </tr>
-        {% endif %}
       </table></div>
     </section>
+    {% endif %}
   
   
   <!--

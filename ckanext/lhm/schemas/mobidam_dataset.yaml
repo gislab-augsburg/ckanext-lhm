@@ -44,7 +44,8 @@ dataset_fields:
   form_snippet: group_form.html
   display_snippet: null
 
-# Feld alt, nur zusätzliche choices
+# Feld alt, choices spezifisch
+# GDP:
 - field_name: schema
   label: Schema
   preset: select_lhm
@@ -56,46 +57,47 @@ dataset_fields:
     label: 
       en: Please choose the Schema
       de: Schema auswählen
-  - value: baug
-    label: BAUG
-  - value: bauj
-    label: BAUJ
-  - value: baut
-    label: BAUT
-  - value: bewa
-    label: BEWA
-  - value: dirstat
-    label: DIRSTAT
-  - value: gsr
-    label: GSR
-  - value: kvr
-    label: KVR
-  - value: kvrbrand
-    label: KVRBRAND
-  - value: mor
-    label: MOR
-  - value: plan
-    label: PLAN
-  - value: rgu
-    label: RGU
-  - value: rku
-    label: RKU
-  - value: scu
-    label: SCU
-  - value: soz
-    label: SOZ
-  - value: vablock
-    label: VABLOCK
-  - value: vaggd
-    label: VAGGD
-  - value: vagrund
-    label: VAGRUND
-  - value: vaortho
-    label: VAORTHO
-  - value: varegio
-    label: VAREGIO
-  - value: va3d
-    label: VA3D
+  #- value: baug
+  #  label: BAUG
+  #- value: bauj
+  #  label: BAUJ
+  #- value: baut
+  #  label: BAUT
+  #- value: bewa
+  #  label: BEWA
+  #- value: dirstat
+  #  label: DIRSTAT
+  #- value: gsr
+  #  label: GSR
+  #- value: kvr
+  #  label: KVR
+  #- value: kvrbrand
+  #  label: KVRBRAND
+  #- value: mor
+  #  label: MOR
+  #- value: plan
+  #  label: PLAN
+  #- value: rgu
+  #  label: RGU
+  #- value: rku
+  #  label: RKU
+  #- value: scu
+  #  label: SCU
+  #- value: soz
+  #  label: SOZ
+  #- value: vablock
+  #  label: VABLOCK
+  #- value: vaggd
+  #  label: VAGGD
+  #- value: vagrund
+  #  label: VAGRUND
+  #- value: vaortho
+  #  label: VAORTHO
+  #- value: varegio
+  #  label: VAREGIO
+  #- value: va3d
+  #  label: VA3D
+  # Mobidam:
   - value: mobidam
     label: MOBIDAM
   - value: mobidam_sst
@@ -135,7 +137,7 @@ dataset_fields:
   display_snippet: email.html
   validators: unicode_safe strip_value email_validator
   is_info: true
-  info_text: Angabe der (Team-)E-Mailadresse des Datenverantwortlichen.
+  info_text: Angabe der Team-E-Mailadresse des Datenverantwortlichen.
 
 # Feld alt
 - field_name: ext_org
@@ -181,75 +183,8 @@ dataset_fields:
       en: No update
       de: Keine Aktualisierung
 
-- field_name: stadtarchiv
-  label: Stadtarchiv 
-  preset: composite_lhm
-  subfields:
-  - field_name: archivwuerdigkeit
-    label: Archivwürdigkeit
-    form_include_blank_choice: false
-    preset: select
-    is_info: true
-    info_text: Die Bewertung der Archivwürdigkeit erfolgt durch das Stadtarchiv
-    choices:
-    - value: noch_offen
-      label: 
-        en: Still open
-        de: Noch offen
-    - value: archivwuerdig
-      label: 
-        en: Archivable
-        de: Archivwürdig
-    - value: nicht_archivwuerdig
-      label: 
-        en: Not archivable
-        de: Nicht archivwürdig
-  - field_name: begruendung
-    label: Begründung
-    form_snippet: text_lhm.html
-    is_info: true
-    info_text: Begründung der Archivwürdigkeit
-
-# Feld alt
-- field_name: genauigkeit
-  label: Genauigkeit 
-  preset: composite_lhm
-  subfields:
-  - field_name: lagengenauigkeit
-    label: Lagengenauigkeit
-    is_info: true
-    info_text: Mit der Lagegenauigkeit wird angegeben, auf welcher Basis Daten erhoben bzw. erfasst wurden und welche räumliche Genauigkeit damit einhergeht.
-    preset: select
-    choices:
-    - value: ""
-      label: 
-        en: Please choose the accuracy
-        de: Lagengenauigkeit auswählen
-    - value: tachymeter
-      label: Tachymeter (1 cm)
-    - value: diff_gps
-      label: Diff-GPS / SPAOS (3 cm)
-    - value: gps
-      label: GPS (Handy o.ä) (1 m)
-    - value: satellit
-      label: Satellit (1 m)
-    - value: kataster
-      label: Auf Basis Kataster (Flurstücke / Gebäude) (3 cm)      
-    - value: baubloecke
-      label: Auf Basis Baublöcke (30 cm)
-    - value: luftbild
-      label: Auf Basis Luftbild (30 cm)
-    - value: stadtbezirk
-      label: Auf Basis Stadtbezirke (-teil -viertel)(10m)
-    - value: stadtplan
-      label: Auf Basis Stadtplan (10m)
-  - field_name: bemerkung
-    label: Bemerkung
-    is_info: true
-    info_text: Hier können ergänzende Informationen zur Lagegenauigkeit ergänzt werden, beispielsweise ein geeigneter Maßstab (z.B. 1:500), die größe eines Pixels (z.B. 20cm) oder die Spanne der Abweichung bei der Lage (z.B. +/- 10m)
-
-# Feld alt, nur Label geändert ( vorher: Geometrietyp)
-- field_name: geometrietyp
+# Feld neu, field_name und label geändert ( vorher: geometrietyp)
+- field_name: objekttyp
   label: Objekttyp
   preset: select_lhm
   is_info: true
@@ -282,171 +217,74 @@ dataset_fields:
     label: ANNO
   - value: multipatch
     label: Multipatch
-   
-  # field_name: license_id
-  # label: License
-  # form_snippet: license.html
-  # help_text: License definitions and additional information can be found at http://opendefinition.org/
 
+# Feld neu, field_name, label und choice SAPOS geändert (war vorher lagengenauigkeit und SPAOS, Typos)
+- field_name: genauigkeit
+  label: Genauigkeit 
+  preset: composite_lhm
+  subfields:
+  - field_name: lagegenauigkeit
+    label: Lagegenauigkeit
+    is_info: true
+    info_text: Mit der Lagegenauigkeit wird angegeben, auf welcher Basis Daten erhoben bzw. erfasst wurden und welche räumliche Genauigkeit damit einhergeht.
+    preset: select
+    choices:
+    - value: ""
+      label: 
+        en: Please choose the accuracy
+        de: Lagegenauigkeit auswählen
+    - value: tachymeter
+      label: Tachymeter (1 cm)
+    - value: diff_gps
+      label: Diff-GPS / SAPOS (3 cm)
+    - value: gps
+      label: GPS (Handy o.ä) (1 m)
+    - value: satellit
+      label: Satellit (1 m)
+    - value: kataster
+      label: Auf Basis Kataster (Flurstücke / Gebäude) (3 cm)      
+    - value: baubloecke
+      label: Auf Basis Baublöcke (30 cm)
+    - value: luftbild
+      label: Auf Basis Luftbild (30 cm)
+    - value: stadtbezirk
+      label: Auf Basis Stadtbezirke (-teil -viertel)(10m)
+    - value: stadtplan
+      label: Auf Basis Stadtplan (10m)
+  - field_name: bemerkung
+    label: Bemerkung
+    is_info: true
+    info_text: Hier können ergänzende Informationen zur Lagegenauigkeit ergänzt werden, beispielsweise ein geeigneter Maßstab (z.B. 1:500), die größe eines Pixels (z.B. 20cm) oder die Spanne der Abweichung bei der Lage (z.B. +/- 10m)
 
-# Felder alt GDP
-#
-#- field_name: intranet
-#  label: LHM-Intranet
-#  preset: composite_lhm
-#  subfields:
-#  - field_name: fachverfahren
-#    label: Fachverfahren
-#    preset: select
-#    is_info:  true
-#    info_text: Der Zugriff durch Fachverfahren meint den direkten (lesenden) Zugriff auf die Daten auf der Datenbank und/oder über Diensten. Standard ist der Zugriff für stadtweit alle Benutzer (d.h. Zugriffsuser inkl. GeoInfoWeb). Teilweise muss der Zugriff auf bestimmte Zugriffsuser eingeschränkt werden oder die Daten dürfen nicht für Fachverfahren genutzt werden.
-#    required: true
-#    form_include_blank_choice: false
-#    choices:
-#    - value: alle_mit_geoinfoweb
-#      label: 
-#        en: All access users (incl. GeoInfoWeb)
-#        de: alle Zugriffsuser (inkl. GeoInfoWeb)
-#    - value: zugriffsuser
-#      label: 
-#        en: Specific access users
-#        de: bestimmte Zugriffsuser
-#    - value: keine
-#      label: 
-#        en: 'None'
-#        de: keine
-#  - field_name: geoinfoweb
-#    label: GeoInfoWeb
-#    preset: select
-#    is_info: true
-#    info_text: Der Zugriff über GeoInfoWeb kann auf bestimmte Gruppen begrenzt werden. Dann sind die Daten nur für diese Nutzer bzw. Gruppen sichtbar. Standardeinstellung ist der stadtweite Zugriff (alle Nutzer). "ausgenommen Bezirksausschüsse" meint, dass stadtweit alle Nutzer Zugriff haben - ausgenommen den Bezirksausschüssen. 
-#    required: true
-#    form_include_blank_choice: false
-#    choices:
-#    - value: alle_nutzer
-#      label: 
-#        en: All users
-#        de: alle Nutzer
-#    - value: organisationseinheiten
-#      label: 
-#        en: Specific organizational units
-#        de: bestimmte Organisationseinheiten
-#    - value: gruppen
-#      label: 
-#        en: Specific (overarching) group(s)
-#        de: bestimmte (übergreifende) Gruppe(n)
-#    - value: bezirksausschüsse
-#      label: 
-#        en: District committees
-#        de: ausgenommen Bezirksausschüsse
-#    - value: keine
-#      label: 
-#        en: None
-#        de: Keine
-#
-#- field_name: internet_praesentationen
-#  label: 
-#    en: 'Internet: Publication / Presentation in the LHM Task area'
-#    de: 'Internet: Veröffentlichungen / Präsentationen im Aufgabenbereich der LHM'
-#  preset: select_lhm
-#  is_info: true
-#  info_text: Angabe, in welcher Form die Daten im Internet bereitgetsellt werden dürfen. "Als Backend-Daten (ohne Präsentation" meint die Nutzung z.B. für Online-Formulare. "Für Präsentationen (inkl. Backend)" erweitert die Freigabe z.B. für kartografische Darstellungen im Geoportal oder muenchen.de und schließt die Nutzung für Formulare o.ä. ein.
-#  required: true
-#  choices:
-#  - value: keine
-#    label: 
-#      en: No
-#      de: Keine
-#  - value: praesentation
-#    label: 
-#      en: For presentation purposes (incl. Backend)
-#      de: für Präsentationen (inkl. Backend)
-#    help_text: 
-#      en: e.g. Online Template server
-#      de: z. B. Online Formularserver
-#  - value: backend
-#    label: 
-#      en: As the backend data without presentation 
-#      de: als Backend-Daten ohne Präsentation
-#    help_text: 
-#      en: e.g. Geoportal, Munich Maps, Service finde, muenchen.de, App, GeoInfo Online
-#      de: z.B. GeoPortal, München maps, Dienstleistungsfinder, muenchen.de, App, GeoInfo Online
-#
-#- field_name: datenabgabe_extern_mit_auftrag
-#  label:
-#    en: Disclosure of data or services to third parties acting on behalf of the City
-#    de: Weitergabe von Daten oder Diensten an Dritte, die im Auftrag der Stadt tätig werden 
-#  preset: select_lhm
-#  is_info: true
-#  info_text: Angabe, ob die Daten an Dritte weitergegeben werden dürfen, sofern diese im Auftrag der Stadt tätig sind. Überlicherweise ist hierbei eine Verpflichtungserklärung des Dritten notwendig, in der die Nutzung der Daten geregelt wird.
-#  required: true
-#  help_text: 
-#    en: 'Declaration of commitment of the third party necessary: http://geo.muenchen.de/metadaten/Nutzungsvereinbarung/Nutzungsvereinbarungen_GSM/03_Hinweise%20Datenabgabe%20an%20Dritte%20im%20Auftrag%20der%20Stadt.pdf'
-#    de: 'Verpflichtungserklärung des Dritten notwendig: '
-#  help_url: http://geo.muenchen.de/metadaten/Nutzungsvereinbarung/Nutzungsvereinbarungen_GSM/03_Hinweise%20Datenabgabe%20an%20Dritte%20im%20Auftrag%20der%20Stadt.pdf
-#  choices:
-#  - value: ja
-#    label:
-#      en: 'Yes'
-#      de: Ja
-#  - value: nein
-#    label:
-#      en: 'No'
-#      de: Nein
-#
-#- field_name: datenabgabe_extern
-#  label: 'Internet: Datenabgabe an Externe, die nicht Auftragnehmer sind'
-#  required: true
-#  preset: select_lhm
-#  is_info: true
-#  info_text: Angabe, ob die Daten allgemein an Dritte weitergegeben werden dürfen. Überlicherweise ist hierbei eine Verpflichtungserklärung des Dritten notwendig, in der die Nutzung der Daten geregelt wird. Über die Nutzungsbedingungen kann speziell darauf hingewiesen werden, dass ggf. besondere Nutzungsbedingungen zu beachten sind.
-#  help_text: 
-#    en: 'Disclosure of the terms of use for the third party is necessary: '
-#    de: 'Bekanntgabe der Nutzungsbedingungen für den Dritten notwendig: '
-#  help_url: http://geo.muenchen.de/metadaten/Nutzungsvereinbarung/Nutzungsvereinbarungen_GSM/01_Hinweise%20Weitergabe%20im%20Rahmen%20Nutzungsbedingung.pdf
-#  choices:
-#  - value: keine
-#    label: 
-#      en: 'None'
-#      de: Keine
-#  - value: im_rahmen_nutzungsbedingungen 
-#    label:
-#      en: Within the scope of the terms of use
-#      de: im Rahmen der Nutzungsbedingungen
-#  - value: ueber_rahmen_nutzungsbedingungen
-#    label:
-#      en: Beyond the scope of given terms of use
-#      de: über den Rahmen der Nutzungsbedingungen hinaus
-#
-#- field_name: open_data
-#  label: Open Data 
-#  preset: select_lhm
-#  is_info: true
-#  info_text: 'Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Einzuhaltende Nutzungsbedingungen sind hier dokumentiert: https://www.opengov-muenchen.de/pages/nutzungsbedingungen'
-#  help_text: 
-#    en: 'Rights of use open data: '
-#    de: 'Nutzungsrechte open data: '
-#  help_url: https://www.opengov-muenchen.de/pages/nutzungsbedingungen
-#  required: true
-#  choices:
-#  - value: nein
-#    label: 
-#      en: 'No'
-#      de: Nein
-#  - value: beschraenkt
-#    label: 
-#      en: Only following attributes and contents can be used
-#      de: nur folgende Attribute und Inhalte nutzbar
-#  - value: offen
-#    label: 
-#      en: All attributes and contents usable
-#      de: alle Attribute und Inhalte nutzbar
-#
-#- field_name: open_data_attribute
-#  label: Open Data - bestimmte Attribute
-#  form_snippet: text_lhm.html
-#  is_info: true
-#  info_text: Sind nur ausgewählte Attribute zur Open-Data-Nutzung freigegeben, können die Attributnamen hier definiert werden, z.B. OBJECTID, HAUSNR, GEMEINDE. Eine Einschränkung der Attribute für OpenData erfolgt bei den Attributen im Datenverzeichnis.
+# Feld alt
+- field_name: stadtarchiv
+  label: Stadtarchiv 
+  preset: composite_lhm
+  subfields:
+  - field_name: archivwuerdigkeit
+    label: Archivwürdigkeit
+    form_include_blank_choice: false
+    preset: select
+    is_info: true
+    info_text: Die Bewertung der Archivwürdigkeit erfolgt durch das Stadtarchiv
+    choices:
+    - value: noch_offen
+      label: 
+        en: Still open
+        de: Noch offen
+    - value: archivwuerdig
+      label: 
+        en: Archivable
+        de: Archivwürdig
+    - value: nicht_archivwuerdig
+      label: 
+        en: Not archivable
+        de: Nicht archivwürdig
+  - field_name: begruendung
+    label: Begründung
+    form_snippet: text_lhm.html
+    is_info: true
+    info_text: Begründung der Archivwürdigkeit
 
 # Feld neu
 - field_name: lhm_intern
@@ -459,47 +297,30 @@ dataset_fields:
   - value: uneingeschraenkt
     label: Uneingeschränkt
   - value: eingeschraenkt
-    label: Eingeschränkt
+    label: Mit Einschränkungen
   - value: kein_zugriff
     label: Kein Zugriff
 
-# Nur GDP:
-# Feld alt, values mit Änderungen
-#  - field_name: geoinfoweb
-#    label: GeoInfoWeb
-#    preset: select
-#    is_info: true
-#    info_text: Der Zugriff über GeoInfoWeb kann auf bestimmte Gruppen begrenzt werden. Dann sind die Daten nur für diese Nutzer bzw. Gruppen sichtbar. Standardeinstellung ist der stadtweite Zugriff (alle Nutzer). "ausgenommen Bezirksausschüsse" meint, dass stadtweit alle Nutzer Zugriff haben - ausgenommen den Bezirksausschüssen. 
-#    required: true
-#    form_include_blank_choice: false
-#    choices:
-#    - value: alle_nutzer
-#      label: 
-#        en: All users
-#        de: alle Nutzer (Standard)
-#    - value: ohne_bezirksausschuesse
-#      label: 
-#        en: District committees
-#        de: alle Nutzer (Standard) - ohne Bezirksausschüsse
-#    - value: bestimmte_zugriffsuser
-#      label: bestimmte Zugriffsuser
-#    - value: keine
-#      label: 
-#        en: None
-#        de: Keine
-## fällt raus:
-#    - value: organisationseinheiten
-#      label: 
-#        en: Specific organizational units
-#        de: bestimmte Organisationseinheiten
-#    - value: gruppen
-#      label: 
-#        en: Specific (overarching) group(s)
-#        de: bestimmte (übergreifende) Gruppe(n)
-#    - value: bezirksausschüsse
-#      label: 
-#        en: District committees
-#        de: ausgenommen Bezirksausschüsse
+#Nur GDP:
+#Feld alt, values mit Änderungen
+#- field_name: geoinfoweb
+#  label: GeoInfoWeb
+#  preset: select_lhm
+#  is_info: true
+#  info_text: Der Zugriff über GeoInfoWeb kann auf bestimmte Gruppen begrenzt werden. Dann sind die Daten nur für diese Nutzer bzw. Gruppen sichtbar. Standardeinstellung ist der stadtweite Zugriff (alle Nutzer). 'ausgenommen Bezirksausschüsse' meint, dass stadtweit alle Nutzer Zugriff haben - ausgenommen den Bezirksausschüssen. 
+#  required: true
+#  form_include_blank_choice: false
+#  choices:
+#  - value: alle_nutzer
+#    label: Alle Nutzer
+#  - value: organisationseinheiten
+#    label: Bestimmte Organisationseinheiten
+#  - value: gruppen
+#    label: Bestimmte (übergreifende) Gruppe(n)
+#  - value: ohne_bezirksausschuesse
+#    label: Ausgenommen Bezirksausschüsse
+#  - value: keine
+#    label: Keine
 
 # Feld Neu
 - field_name: lhm_extern
@@ -507,38 +328,33 @@ dataset_fields:
   preset: select_lhm
   required: true
   is_info: true
-  info_text: Information über die Zugriffsberechtigungen bzw. Bereitstellungsformen für Dritte, d.h. Personen und Organisationen außerhalb der LHM. 'Backend-Daten und Präsentation' bezeichnet die Bereitstellung der Daten zur Nutzung in z.B. Online-Formularen und kartografischen Darstellungen. '(Nur) externe Auftragnehmer der LHM' bedeutet, dass die Daten an Dritte weitergegeben werden düren, sofern diese im Auftrag der Stadt tätig werden. 'Nicht Auftragnehmer der LHM' gibt an, dass die Daten allgemein an Dritte weitergegeben werden dürfen. Bei der Weitergabe der Daten an LHM-Externe sind die notwendigen Verträge oder vertragsähnlichen Dokumente in den Ressourcen zu hinterlegen.
+  info_text: Information über die Zugriffsberechtigungen bzw. Bereitstellungsformen für Dritte, d.h. Personen und Organisationen außerhalb der LHM. Bei der Datennutzung durch Externe der LHM sind Nutzungsbedingungen bzw. -Vereinbarungen einzuhalten. Mögliche Einschränkungen zur Datennutzung sind im Feld Nutzungsoptionen bei Einschränkungen näher definiert. 
   choices:
-  - value: backend_und_praesentation
-    label: Backend-Daten und Präsentation
-  - value: backend_und_praesentation_nur_auftragnehmer
-    label: Backend-Daten und Präsentation & Externe Auftragnehmer der LHM
-  - value: backend_und_praesentation_nicht_auftragnehmer
-    label: Backend-Daten und Präsentation & Nicht Auftragnehmer der LHM
-  - value: eingeschraenkt_nur_auftragnehmer
-    label: Nur externe Auftragnehmer der LHM
-  - value: eingeschraenkt_nicht_auftragnehmer
-    label: Nicht-Auftragnehmer der LHM & Externe Auftragnehmer der LHM
-  - value: kein_zugriff
+  - value: nutzungsbedingungen
+    label: Mit Nutzungsbedingungen/ -vereinbarungen
+  - value: einschraenkungen
+    label: Mit Einschränkungen
+  - value: kein_Zugriff
     label: Kein Zugriff
 
-#- field_name: lhm_extern_nutzungsbedingungen
-#  label: LHM-extern Nutzungsbedingungen, Datenüberlassungen etc.
-#  display_snippet: link.html
-#  repeating_subfields:
-#  - field_name: dokumente
-#   label: Dokumente
-#    preset: link
-#  preset: link
+# Feld Neu
+- field_name: nutzungsoptionen_bei_einschraenkungen
+  label: Nutzungsoptionen bei Einschränkungen
+  is_info: true
+  info_text: Die Auswahl 'Backend-Daten und Präsentation' bezeichnet die Bereitstellung der Daten zur Nutzung in z.B. Online-Formularen und kartografischen Darstellungen. 'Nutzung durch externe Auftragnehmer' bedeutet, dass die Daten an Dritte weitergegeben werden dürfen, sofern diese im Auftrag der Stadt tätig werden. 'Nutzung durch Externe (nicht Auftragnehmer) mit Nutzungsbedingungen/-vereinbarungen' gibt an, dass die Daten allgemein an Dritte weitergegeben werden dürfen, wobei mögliche weitere Hinweise zur Nutzung zu beachten sind. 'Einschränkungen bei Inhalten oder Attributen' bezeichnet eine Beschränkung der Weitergabe an Externe auf bestimmte Inhalte des Datensatzes.
+  form_snippet: multiple_checkbox_lhm_2.html
+  display_snippet: multiple_choice_lhm.html
+  choices:
+  - value: backend_praesentation
+    label: Nutzung für Backendverarbeitung oder Präsentation
+  - value: auftragnehmer
+    label: Nutzung durch externe Auftragnehmer mit Nutzungsbedingungen/ -vereinbarungen
+  - value: nicht_auftragnehmer
+    label: Nutzung durch Externe (nicht Auftragnehmer) mit Nutzungsbedingungen/ -vereinbarungen
+  - value: einschraenkungen_inhalte_attribute
+    label: Einschränkungen bei Inhalten oder Attributen
 
-#- field_name: lhm_extern_inhaltliche_einschraenkungen
-#  label: LHM-extern Einschränkungen
-#  preset: multiple_checkbox
-#  choices:
-#  - value: ja
-#    label: Es sind inhaltliche Einschränkungen zu beachten, s.r.
-
-# Feld alt, kein Änderung values, nur labels geändert
+# Feld alt, values und labels geändert
 - field_name: open_data
   label: Open Data 
   preset: select_lhm
@@ -550,10 +366,10 @@ dataset_fields:
   help_url: https://opendata.muenchen.de/pages/nutzungsbedingungen
   required: true
   choices:
-  - value: offen
-    label: Alle Attribute
-  - value: beschraenkt
-    label: Bestimmte Attribute
+  - value: ja
+    label: Ja
+  - value: teilweise
+    label: Nur bestimmte Attribute & Inhalte
   - value: nein
     label: Nein
 
@@ -570,10 +386,10 @@ dataset_fields:
   help_url_2: https://www.govdata.de/informationen/hochwertige-datensaetze
   required: true
   choices:
-  - value: alle_attribute
-    label: Alle Attribute
-  - value: bestimmte_attribute
-    label: Bestimmte Attribute
+  - value: ja
+    label: Ja
+  - value: teilweise
+    label: Nur bestimmte Attribute & Inhalte 
   - value: nein
     label: Nein
 
@@ -602,7 +418,7 @@ dataset_fields:
 
 # Feld alt, aber inhaltich plus HVD, check values inhaltlich!!
 - field_name: open_data_attribute
-  label: Open Data / HVD - bestimmte Attribute
+  label: Open Data und HVD - bestimmte Attribute
   form_snippet: text_lhm.html
   is_info: true
   info_text: Sind nur ausgewählte Attribute zur Open-Data-Nutzung oder als HVD freigegeben, können die Attributnamen hier definiert werden, z.B. OBJECTID, HAUSNR, GEMEINDE
@@ -643,7 +459,7 @@ dataset_fields:
   is_info: true
   info_text: Letzte Aktualisierung der Datentabelle in der Datenquelle
 
-# Feld neu (war mit organization verknüpft, Attribut private ist CKAN-Standard)
+# Feld neu, nur für Mobidam (war mit organization verknüpft, Attribut private ist CKAN-Standard)
 - field_name: private
   label: Sichtbarkeit
   preset: select_lhm
@@ -683,7 +499,7 @@ resource_fields:
   validators: scheming_required
   required: true
 
-# Feld alt, required und preset geändert
+# Feld alt, required preset und choices geändert
 - field_name: format
   label: Format
   preset: select_lhm
@@ -716,21 +532,3 @@ resource_fields:
     label: URL
   - value: Link
     label: Link
-
-     
-
-# Feld doch raus :(
-#- field_name: nutzungsbed
-#  label: Ressource enthält Nutzungsbedingungen, inhaltliche Einschränkungen etc.
-#  preset: select
-#  help_text: Test
-#  help_inline: true
-#  choices:
-#  - value: ""
-#    label: Nein
-#  - value: lhm_intern
-#    label: Nutzungsbedingungen etc. LHM-intern
-#  - value: lhm_extern_nutzung
-#    label: Nutzungsbedingungen etc. LHM-extern
-#  - value: lhm_extern_inhaltlich
-#    label: Inhaltliche Einchränkungen LHM-extern

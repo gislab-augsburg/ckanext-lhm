@@ -124,7 +124,7 @@ dataset_fields:
   form_snippet: author.html
   form_placeholder:  KR-GSM-GEO-GIS
   is_info: true
-  info_text: Angabe der Stelle, die fachliche und organisatorische Kenntnis zum Datensatz hat.
+  info_text: Angabe der Stelle, die fachliche und organisatorische Kenntnis zum Datensatz hat
 
 # Feld alt  
 - field_name: datenverantwortlicher_email
@@ -137,7 +137,7 @@ dataset_fields:
   display_snippet: email.html
   validators: unicode_safe strip_value email_validator
   is_info: true
-  info_text: Angabe der Team-E-Mailadresse des Datenverantwortlichen.
+  info_text: Angabe der Team-E-Mailadresse des Datenverantwortlichen
 
 # Feld alt
 - field_name: ext_org
@@ -254,7 +254,7 @@ dataset_fields:
   - field_name: bemerkung
     label: Bemerkung
     is_info: true
-    info_text: Hier können ergänzende Informationen zur Lagegenauigkeit ergänzt werden, beispielsweise ein geeigneter Maßstab (z.B. 1:500), die größe eines Pixels (z.B. 20cm) oder die Spanne der Abweichung bei der Lage (z.B. +/- 10m)
+    info_text: Hier können ergänzende Informationen zur Lagegenauigkeit ergänzt werden, beispielsweise ein geeigneter Maßstab (z.B. 1:500), die Größe eines Pixels (z.B. 20cm) oder die Spanne der Abweichung bei der Lage (z.B. +/- 10m).
 
 # Feld alt
 - field_name: stadtarchiv
@@ -347,9 +347,9 @@ dataset_fields:
   choices:
   - value: backend_praesentation
     label: Nutzung für Backendverarbeitung oder Präsentation
-  - value: auftragnehmer
+  - value: externe_auftragnehmer
     label: Nutzung durch externe Auftragnehmer mit Nutzungsbedingungen/ -vereinbarungen
-  - value: nicht_auftragnehmer
+  - value: externe_nicht_auftragnehmer
     label: Nutzung durch Externe (nicht Auftragnehmer) mit Nutzungsbedingungen/ -vereinbarungen
   - value: einschraenkungen_inhalte_attribute
     label: Einschränkungen bei Inhalten oder Attributen
@@ -418,7 +418,7 @@ dataset_fields:
 
 # Feld alt, aber inhaltich plus HVD, check values inhaltlich!!
 - field_name: open_data_attribute
-  label: Open Data und HVD - bestimmte Attribute
+  label: Open Data und HVD - bestimmte Attribute und Inhalte
   form_snippet: text_lhm.html
   is_info: true
   info_text: Sind nur ausgewählte Attribute zur Open-Data-Nutzung oder als HVD freigegeben, können die Attributnamen hier definiert werden, z.B. OBJECTID, HAUSNR, GEMEINDE
@@ -495,7 +495,7 @@ resource_fields:
   label: Beschreibung
   form_snippet: markdown_lhm.html
   is_info: true
-  info_text: Beschreibung der Ressource, z.B. 'Tabelle im stadtweit verfügbaren Geodatenpool.', kann auch Verwendungszweck /-möglichkeiten der Ressource enthalten.
+  info_text: Beschreibung der Ressource, z.B. 'Tabelle im stadtweit verfügbaren Geodatenpool'. Kann auch Verwendungszweck /-möglichkeiten der Ressource enthalten.
   validators: scheming_required
   required: true
 

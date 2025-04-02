@@ -62,7 +62,7 @@ Beschreibung: Eine für Laien nachvollziehbare, kurze Beschreibung des Attributs
       value=field.get('info', {}).get('condition', ''), classes=['control-full'], is_info=is_info, info_text=info_text_condition)}}
 
     {{ form.markdown('info__' ~ position ~ '__notes',
-      label=_('Beschreibung*'), id='field-d' ~ position ~ 'notes',
+      label=_('Beschreibung'), id='field-d' ~ position ~ 'notes',
       value=field.get('info', {}).get('notes', ''), is_info=is_info, info_text=info_text_notes) }}
 
     {{ form.input('info__' ~ position ~ '__label',
@@ -89,7 +89,7 @@ Beschreibung: Eine für Laien nachvollziehbare, kurze Beschreibung des Attributs
       value=field.get('info', {}).get('condition', ''), classes=['control-full'], is_info=is_info, info_text=info_text_condition) }}
 
     {{ form.markdown('info__' ~ position ~ '__notes',
-      label=_('Beschreibung*'), id='field-d' ~ position ~ 'notes',
+      label=_('Beschreibung'), id='field-d' ~ position ~ 'notes',
       value=field.get('info', {}).get('notes', ''), is_info=is_info, info_text=info_text_notes) }}
 
     {{ form.input('info__' ~ position ~ '__label',
@@ -117,7 +117,7 @@ Beschreibung: Eine für Laien nachvollziehbare, kurze Beschreibung des Attributs
       value='', classes=['control-full'], is_info=is_info, info_text=info_text_condition) }}
 
     {{ form.markdown('info__' ~ position ~ '__notes',
-      label=_('Beschreibung*'), id='field-d' ~ position ~ 'notes',
+      label=_('Beschreibung'), id='field-d' ~ position ~ 'notes',
       value='', is_info=is_info, info_text=info_text_notes) }}
 
     {{ form.input('info__' ~ position ~ '__label',

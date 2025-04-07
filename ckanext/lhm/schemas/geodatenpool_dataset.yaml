@@ -341,7 +341,7 @@ dataset_fields:
 - field_name: nutzungsoptionen_bei_einschraenkungen
   label: Nutzungsoptionen bei Einschränkungen
   is_info: true
-  info_text: Die Auswahl 'Backend-Daten und Präsentation' bezeichnet die Bereitstellung der Daten zur Nutzung in z.B. Online-Formularen und kartografischen Darstellungen. 'Nutzung durch externe Auftragnehmer' bedeutet, dass die Daten an Dritte weitergegeben werden dürfen, sofern diese im Auftrag der Stadt tätig werden. 'Nutzung durch Externe (nicht Auftragnehmer) mit Nutzungsbedingungen/-vereinbarungen' gibt an, dass die Daten allgemein an Dritte weitergegeben werden dürfen, wobei mögliche weitere Hinweise zur Nutzung zu beachten sind. 'Einschränkungen bei Inhalten oder Attributen' bezeichnet eine Beschränkung der Weitergabe an Externe auf bestimmte Inhalte des Datensatzes.
+  info_text: Die Auswahl 'Nutzung für Backendverarbeitung oder Präsentation' bezeichnet die Bereitstellung der Daten zur Nutzung in z.B. Online-Formularen und kartografischen Darstellungen. 'Nutzung durch externe Auftragnehmer mit Nutzungsbedingungen/ -vereinbarungen' bedeutet, dass die Daten unter Berücksichtigung der jeweiligen Verträge an Dritte weitergegeben werden dürfen, sofern diese im Auftrag der Stadt tätig werden. 'Nutzung durch Externe (nicht Auftragnehmer) mit Nutzungsbedingungen/ -vereinbarungen' bedeutet, dass die Daten allgemein an Dritte weitergegeben werden dürfen, wobei mögliche Nutzungsbedingungen/-vereinbarungen zu berücksichtigen sind. 'Einschränkungen bei Inhalten oder Attributen' bezeichnet eine Beschränkung der Weitergabe an Externe auf bestimmte Inhalte des Datensatzes.
   form_snippet: multiple_checkbox_lhm_2.html
   display_snippet: multiple_choice_lhm.html
   choices:

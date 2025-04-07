@@ -10,13 +10,10 @@
 {%- if labels|length == 1 -%}
   {% if labels[0] == 'Nutzung für Backendverarbeitung oder Präsentation' %}
     {{ 'Backendverarbeitung oder Präsentation' }}
-    <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Nutzung für Backendverarbeitung oder Präsentation"></span>
   {% elif labels[0] == 'Nutzung durch externe Auftragnehmer mit Nutzungsbedingungen/ -vereinbarungen' %}
     {{ 'Externe Auftragnehmer' }}
-    <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Nutzung durch externe Auftragnehmer mit Nutzungsbedingungen/ -vereinbarungen"></span>
   {% elif labels[0] == 'Nutzung durch Externe (nicht Auftragnehmer) mit Nutzungsbedingungen/ -vereinbarungen' %}
     {{ 'Externe (nicht Auftragnehmer)' }}
-    <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Nutzung durch Externe (nicht Auftragnehmer) mit Nutzungsbedingungen/ -vereinbarungen"></span>
   {% elif labels[0] == 'Einschränkungen bei Inhalten oder Attributen' %}
     {{ 'Einschränkungen bei Inhalten oder Attributen' }}
   {%- endif -%}
@@ -28,15 +25,12 @@
     {%- for label in labels -%}
       {% if label == 'Nutzung für Backendverarbeitung oder Präsentation' %}
         <li>{{ 'Backendverarbeitung oder Präsentation' }}
-          <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Nutzung für Backendverarbeitung oder Präsentation"></span>
         </li>
       {% elif label == 'Nutzung durch externe Auftragnehmer mit Nutzungsbedingungen/ -vereinbarungen' %}
         <li>{{ 'Externe Auftragnehmer' }}
-          <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Nutzung durch externe Auftragnehmer mit Nutzungsbedingungen/ -vereinbarungen"></span>
         </li>
       {% elif label == 'Nutzung durch Externe (nicht Auftragnehmer) mit Nutzungsbedingungen/ -vereinbarungen' %}
         <li>{{ 'Externe (nicht Auftragnehmer)' }}
-          <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Nutzung durch Externe (nicht Auftragnehmer) mit Nutzungsbedingungen/ -vereinbarungen"></span>
         </li>
       {% elif label == 'Einschränkungen bei Inhalten oder Attributen' %}
         <li>{{ 'Einschränkungen bei Inhalten oder Attributen' }}

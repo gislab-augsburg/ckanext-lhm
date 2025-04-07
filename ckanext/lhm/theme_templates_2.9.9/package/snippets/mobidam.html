@@ -104,13 +104,17 @@
     <table class="table package-metadata">
       <tr>
         <td colspan="1" style="padding-bottom: 0px;"><p class="heading">{{ _("LHM-intern")}}</p></td>
-        <td colspan="2" style="padding-bottom: 0px;">
+        <td colspan="1" style="padding-bottom: 0px;">
           <p class="heading">{{ _("Zugriff")}}
             <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Information über den direkten (lesenden) Zugriff auf die Daten auf der Datenbank durch Mitarbeitende und/oder über Dienste innerhalb der LHM. Teilweise ist der Zugriff für bestimmte Benutzergruppen (auch: Zugriffsuser von Fachverfahren) eingeschränkt. Bei eingeschränktem Zugriff wenden Sie sich bei Nutzungsbedarf der Daten bitte an den Datenverantwortlichen bzw. die verantwortliche Organisationseinheit."></span>
           </p>
           <p class="metadata">{%- snippet 'package/snippets/label.html',
             item='lhm_intern', pkg_dict=pkg_dict, schema=schema -%}</p>
         </td>
+        <td colspan="2" style="padding-bottom: 0px;">
+          <p class="heading">{{ _(" ")}}
+          </p>
+        </td> 
       </tr>
       
       <tr>
@@ -123,7 +127,7 @@
           <p class="metadata">{%- snippet 'package/snippets/label.html',
             item='lhm_extern', pkg_dict=pkg_dict, schema=schema -%}</p>
         </td>
-        <td colspan="1" style="padding-bottom: 0px;">
+        <td colspan="2" style="padding-bottom: 0px;">
           <p class="heading">{{ _("Nutzungsoptionen bei Einschränkungen")}}
             <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title='"Backendverarbeitung oder Präsentation" bezeichnet die Bereitstellung der Daten zur Nutzung in z.B. Online-Formularen und kartografischen Darstellungen. "Externe Auftragnehmer" bedeutet, dass die Daten unter Berücksichtigung der jeweiligen Verträge an Dritte weitergegeben werden dürfen, sofern diese im Auftrag der Stadt tätig werden. "Externe (nicht Auftragnehmer)" bedeutet, dass die Daten allgemein an Dritte weitergegeben werden dürfen, wobei mögliche Nutzungsbedingungen/-vereinbarungen zu berücksichtigen sind. "Einschränkungen bei Inhalten oder Attributen" bezeichnet eine Beschränkung der Weitergabe an Externe auf bestimmte Inhalte des Datensatzes.'></span>
           </p>
@@ -131,7 +135,7 @@
             item='nutzungsoptionen_bei_einschraenkungen', pkg_dict=pkg_dict, schema=schema -%}</p>
         </td>
         {% else %}
-        <td colspan="2" style="padding-bottom: 0px;">
+        <td colspan="4" style="padding-bottom: 0px;">
           <p class="heading">{{ _("Zugriff")}}
             <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title='Information über die Zugriffsberechtigungen bzw. Bereitstellungsformen für Dritte, d.h. Personen und Organisationen außerhalb der LHM. "Backend-Daten und Präsentation" bezeichnet die Bereitstellung der Daten zur Nutzung in z.B. Online-Formularen und kartografischen Darstellungen. "Nur externe Auftragnehmer der LHM" bedeutet, dass die Daten an Dritte weitergegeben werden düren, sofern diese im Auftrag der Stadt tätig werden. "Nicht Auftragnehmer der LHM" gibt an, dass die Daten allgemein an Dritte weitergegeben werden dürfen. Es sind mögliche weitere Hinweise zur Nutzung zu beachten.'></span>
           </p>
@@ -143,7 +147,7 @@
       
       <tr>
         <td colspan="1" style="border-top: none;"><p class="heading">{{ _(" ")}}</p></td>
-        <td colspan="2" style="border-top: none;">
+        <td colspan="3" style="border-top: none;">
           <p class="heading">{{ _("Open Data") }}
             <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title='Mit Open Data sind Daten gemeint, die frei verfügbar gemacht werden und frei genutzt werden können. Es sind die Nutzungs- bzw. Lizenzbedingungen der LH München einzuhalten, s. Link. Ggf. inkludierte und exkludierte Attribute innerhalb des Datensatzes sind der Attributtabelle zu entnehmen. Gegebenenfalls sind weitere Hinweise zur Nutzung zu beachten, siehe unten.'></span>
           </p>
@@ -161,8 +165,8 @@
       </tr>
       
       <tr>
-        <td style="border-top: none;"><p class="heading">{{ _(" ")}}</p></td>
-        <td style="border-top: none;">
+        <td colspan="1" style="border-top: none;"><p class="heading">{{ _(" ")}}</p></td>
+        <td colspan="1" style="border-top: none;">
           <p class="heading">{{ _("High Value Datasets (HVD)") }}
             <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title='High Value Datasets sind Daten, die in unter die HVD Durchführungsverordnung (DVO-HVD) fallen.'></span>
           </p>
@@ -173,7 +177,7 @@
             <p class="metadata">{{ h.link_to('FAQs zur DVO-HVD', 'https://www.govdata.de/informationen/hochwertige-datensaetze', target='_blank') }}</p>
             {% endif %}
         </td>
-        <td style="border-top: none;">
+        <td colspan="2" style="border-top: none;">
           <p class="heading">{{ _("HVD-Kategorie") }}
             <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title='HVD-Kategorie gemäß DVO-HVD'></span>
           </p>
@@ -189,7 +193,7 @@
       {% if pkg_dict.open_data_attribute %} 
       <tr>
         <td colspan="1" style="border-top: none;"><p class="heading">{{ _(" ")}}</p></td>
-        <td colspan="2" style="border-top: none;">
+        <td colspan="3" style="border-top: none;">
           <p class="heading">{{ _("Open Data / HVD bestimmte Attribute und Inhalte") }}
             <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title='Nur folgende Attribute sind Open Data oder High Value Data'></span>
           </p> 

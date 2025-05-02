@@ -1,6 +1,6 @@
 scheming_version: 2
 dataset_type: mobidam
-about: The default Munich(LHM) MobidaM catalog dataset schema with form split across multiple pages
+about: The Munich(LHM) MobidaM catalog dataset schema
 about_url: http://github.com/ckan/ckanext-scheming
 
 dataset_fields:
@@ -26,7 +26,7 @@ dataset_fields:
   form_snippet: markdown_lhm.html
   form_placeholder: eg. Some useful notes about the data
   is_info: true
-  info_text: Eindeutige und aussagekräftige inhaltliche Beschreibung des Datensatzes, damit auch Laien den Inhalt des Datensatzes einschätzen können. Relevante Informationen können neben dem konkreten Inhalt u.a. die räumliche Abdeckung, die Vollständigkeit, die Genauigkeit, die Urheberschaft oder die Aktualität sein.
+  info_text: Klare und prägnante Beschreibung des Datensatzes, damit auch Laien den Inhalt verstehen und einschätzen können. Dazu können neben dem konkreten Inhalt z.B. die räumliche Abdeckung, Vollständigkeit, Urheberschaft und Aktualität gehören.
   required: true
 
 # Feld alt, nur Label geändert, siehe ckanext-lhm/ckanext/lhm/templates/package/resource_read.html
@@ -50,7 +50,7 @@ dataset_fields:
   label: Schema
   preset: select_lhm
   is_info: true
-  info_text: Name des Datenbankschemas (beim Geodatenpool z.B. BAUT, PLAN, RKU)
+  info_text: Name des Datenbankschemas (beim Geodatenpool z.B. BAUT, PLAN, RKU).
   required: true
   choices:
   - value: ""
@@ -150,7 +150,7 @@ dataset_fields:
     en: No or Yes; If yes, please name the responsibile organisation, the contact person and an email or telephon number
     de: Nein oder Ja; Wenn ja. Verantwortlicher
   is_info: true
-  info_text: Um externe Datenurheber handelt es sich, wenn die Daten nicht von der Landeshautpststadt München stammen (z.B. LDBV)
+  info_text: Um externe Datenurheber handelt es sich, wenn die Daten nicht von der Landeshautpststadt München stammen (z.B. LDBV).
 
 # Feld alt, neue choices hinzugefügt
 - field_name: update_zyklus
@@ -188,7 +188,7 @@ dataset_fields:
   label: Objekttyp
   preset: select_lhm
   is_info: true
-  info_text: 'Angabe des in der Tabelle enthaltenen Objekt- bzw. Geometrietyps'
+  info_text: Angabe des in der Tabelle enthaltenen Objekttyps
   required: true
   choices:
   - value: ""
@@ -265,6 +265,7 @@ dataset_fields:
     label: Archivwürdigkeit
     form_include_blank_choice: false
     preset: select
+    required: true
     is_info: true
     info_text: Die Bewertung der Archivwürdigkeit erfolgt durch das Stadtarchiv
     choices:
@@ -328,7 +329,7 @@ dataset_fields:
   preset: select_lhm
   required: true
   is_info: true
-  info_text: Information über die Zugriffsberechtigungen bzw. Bereitstellungsformen für Dritte, d.h. Personen und Organisationen außerhalb der LHM. Bei der Datennutzung durch Externe der LHM sind Nutzungsbedingungen bzw. -Vereinbarungen einzuhalten. Mögliche Einschränkungen zur Datennutzung sind im Feld Nutzungsoptionen bei Einschränkungen näher definiert. 
+  info_text: Infos zu Zugriffsrechten und Bereitstellung für Externe, d.h. Personen und Organisationen außerhalb der LHM. Bei externer Datennutzung gelten Nutzungsbedingungen. Einschränkungen sind im Feld 'Nutzungsoptionen bei Einschränkungen' zu definieren.
   choices:
   - value: nutzungsbedingungen
     label: Mit Nutzungsbedingungen/ -vereinbarungen
@@ -421,13 +422,14 @@ dataset_fields:
   label: Open Data und HVD - bestimmte Attribute und Inhalte
   form_snippet: text_lhm.html
   is_info: true
-  info_text: Sind nur ausgewählte Attribute zur Open-Data-Nutzung oder als HVD freigegeben, können die Attributnamen hier definiert werden, z.B. OBJECTID, HAUSNR, GEMEINDE
+  info_text: Sind nur ausgewählte Attribute oder Inhalte zur Open-Data-Nutzung oder als HVD freigegeben, können die Attributnamen bzw. Inhalte hier definiert werden, z.B. OBJECTID, HAUSNR, GEMEINDE.
 
 # Feld alt
 - field_name: nutzungshinweise
   label: Weitere Hinweise zur Nutzung
   is_info: true
-  info_text: Weitere Hinweise zur Nutzung können mit einen Stichwort und unter 'Hinweis' mit einem erläuternden Text beschrieben werden. Die Hinweise müssen auch für einen Laien nachvollziehbar sein. Denkbar sind etwa spezielle Hinweise zu vertraglichen Rahmenbedingungen, im Rahmen der Nutzung zu beachtende Besonderheiten im Datensatz o.ä.
+  info_text: Zusätzliche Hinweise zur Nutzung können unter 'Hinweise' mit Stichwort und Erklärung eingefügt werden. Diese müssen auch für Laien verständlich sein. Hinweis können sein zu bspw. vertraglichen Bedingungen oder Besonderheiten im Datensatz.
+
   form_snippet: repeating_subfields_lhm.html
   repeating_label: Hinweis
   repeating_subfields:
@@ -456,8 +458,9 @@ dataset_fields:
 - field_name: letzter_import
   label: Letzter Import
   form_placeholder: DD-MM-YYYY oder keine Angabe
+  form_snippet: text_lhm.html
   is_info: true
-  info_text: Letzte Aktualisierung der Datentabelle in der Datenquelle
+  info_text: Letzte Aktualisierung der Datentabelle in der Datenquelle.
 
 # Feld neu, nur für Mobidam (war mit organization verknüpft, Attribut private ist CKAN-Standard)
 - field_name: private

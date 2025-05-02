@@ -41,11 +41,11 @@
 {% set topics = h.group_tree_section(id_='topics', type_='group', include_siblings=True) %}
 {% set t_grp_children = topics.children %}
 
-{% set info_MainCat = 'Alle Einträge in diesem Katalog können auf verschiedene Weise gruppiert werden. Dabei muss jeder Katalogeintrag genau einer Hauptkategorie zugeordnet werden. Die Hauptkategorie gibt Auskunft über die Art der Informationsressource und bestimmt damit, welche Metadaten benötigt werden.' %}
+{% set info_MainCat = 'Einträge im Katalog können auf verschiedene Weisen gruppiert werden. Jeder Eintrag muss einer Hauptkategorie zugeordnet werden, die die Art der Informationsressource angibt und damit die benötigten Metadaten bestimmt.' %}
 {% if data.type == "mobidam" %}
-    {% set info_Topic = 'Themen sind eine Möglichkeit zur inhaltlich-thematischen Kategorisierung von Datensätzen. Es muss mindestens ein passendes Thema ausgewählt werden. Es können auch mehrere ausgewählt werden.' %}
+    {% set info_Topic = 'Themen sind eine Möglichkeit zur inhaltlich-thematischen Kategorisierung von Datensätzen. Es muss mindestens ein passendes Thema ausgewählt werden' %}
 {% else %}
-    {% set info_Topic = 'Themen sind eine Möglichkeit zur inhaltlich-thematischen Kategorisierung von Datensätzen. Es sollte aber wenigstens ein passendes Thema ausgewählt werden. Es können auch mehrere Themen ausgewählt werden.' %}
+    {% set info_Topic = 'Themen sind eine Möglichkeit zur inhaltlich-thematischen Kategorisierung von Datensätzen. Es ist mindestens ein passendes Thema auszuwählen.' %}
 {% endif %}
 
 <label class="control-label" for="field-group"><span title="Diese Feld ist erforderlich" class="control-required"></span>{{_('Groups')}}</label>

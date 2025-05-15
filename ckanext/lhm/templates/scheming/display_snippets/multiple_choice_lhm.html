@@ -8,8 +8,8 @@
 {%- endfor -%}
 
 {%- if labels|length == 1 -%}
-  {% if labels[0] == 'Nutzung für Backendverarbeitung oder Präsentation' %}
-    {{ 'Backendverarbeitung oder Präsentation' }}
+  {% if labels[0] == 'Nutzung für Backendverarbeitung und Präsentation' %}
+    {{ 'Backendverarbeitung und Präsentation' }}
   {% elif labels[0] == 'Nutzung durch externe Auftragnehmer mit Nutzungsbedingungen/ -vereinbarungen' %}
     {{ 'Externe Auftragnehmer' }}
   {% elif labels[0] == 'Nutzung durch Externe (nicht Auftragnehmer) mit Nutzungsbedingungen/ -vereinbarungen' %}
@@ -23,8 +23,8 @@
     {%- endif -%}
     <ul style="list-style: inside; padding-left: 0;">
     {%- for label in labels -%}
-      {% if label == 'Nutzung für Backendverarbeitung oder Präsentation' %}
-        <li>{{ 'Backendverarbeitung oder Präsentation' }}
+      {% if label == 'Nutzung für Backendverarbeitung und Präsentation' %}
+        <li>{{ 'Backendverarbeitung und Präsentation' }}
         </li>
       {% elif label == 'Nutzung durch externe Auftragnehmer mit Nutzungsbedingungen/ -vereinbarungen' %}
         <li>{{ 'Externe Auftragnehmer' }}

@@ -122,14 +122,14 @@
         {% if pkg_dict.nutzungsoptionen_bei_einschraenkungen %}
         <td colspan="1" style="padding-bottom: 0px;">
           <p class="heading">{{ _("Zugriff")}}
-            <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title='Information über den direkten (lesenden) Zugriff auf die Daten auf der Datenbank durch Mitarbeitende und/oder über Dienste innerhalb der LHM. Teilweise ist der Zugriff für bestimmte Benutzergruppen (auch: Zugriffsuser von Fachverfahren) eingeschränkt. Bei eingeschränktem Zugriff wenden Sie sich bei Nutzungsbedarf der Daten bitte an den Datenverantwortlichen bzw. die verantwortliche Organisationseinheit.'></span>
+            <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title='Information über die Zugriffsberechtigungen bzw. Bereitstellungsformen für Dritte, d.h. Personen und Organisationen außerhalb der LHM. Bei der Datennutzung durch Externe der LHM sind Nutzungsbedingungen bzw. -Vereinbarungen einzuhalten. Mögliche Einschränkungen zur Datennutzung sind im Feld Nutzungsoptionen bei Einschränkungen näher definiert. '></span>
           </p>
           <p class="metadata">{%- snippet 'package/snippets/label.html',
             item='lhm_extern', pkg_dict=pkg_dict, schema=schema -%}</p>
         </td>
         <td colspan="2" style="padding-bottom: 0px;">
           <p class="heading">{{ _("Nutzungsoptionen bei Einschränkungen")}}
-            <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title='"Backendverarbeitung oder Präsentation" bezeichnet die Bereitstellung der Daten zur Nutzung in z.B. Online-Formularen und kartografischen Darstellungen. "Externe Auftragnehmer" bedeutet, dass die Daten unter Berücksichtigung der jeweiligen Verträge an Dritte weitergegeben werden dürfen, sofern diese im Auftrag der Stadt tätig werden. "Externe (nicht Auftragnehmer)" bedeutet, dass die Daten allgemein an Dritte weitergegeben werden dürfen, wobei mögliche Nutzungsbedingungen/-vereinbarungen zu berücksichtigen sind. "Einschränkungen bei Inhalten oder Attributen" bezeichnet eine Beschränkung der Weitergabe an Externe auf bestimmte Inhalte des Datensatzes.'></span>
+            <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title='"Backendverarbeitung und Präsentation" bezeichnet die Bereitstellung der Daten zur Nutzung in z.B. Online-Formularen und kartografischen Darstellungen. "Externe Auftragnehmer" bedeutet, dass die Daten unter Berücksichtigung der jeweiligen Verträge an Dritte weitergegeben werden dürfen, sofern diese im Auftrag der Stadt tätig werden. "Externe (nicht Auftragnehmer)" bedeutet, dass die Daten allgemein an Dritte weitergegeben werden dürfen, wobei mögliche Nutzungsbedingungen/-vereinbarungen zu berücksichtigen sind. "Einschränkungen bei Inhalten oder Attributen" bezeichnet eine Beschränkung der Weitergabe an Externe auf bestimmte Inhalte des Datensatzes.'></span>
           </p>
           <p class="metadata">{%- snippet 'package/snippets/label.html',
             item='nutzungsoptionen_bei_einschraenkungen', pkg_dict=pkg_dict, schema=schema -%}</p>
@@ -137,7 +137,7 @@
         {% else %}
         <td colspan="4" style="padding-bottom: 0px;">
           <p class="heading">{{ _("Zugriff")}}
-            <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title='Information über die Zugriffsberechtigungen bzw. Bereitstellungsformen für Dritte, d.h. Personen und Organisationen außerhalb der LHM. "Backend-Daten und Präsentation" bezeichnet die Bereitstellung der Daten zur Nutzung in z.B. Online-Formularen und kartografischen Darstellungen. "Nur externe Auftragnehmer der LHM" bedeutet, dass die Daten an Dritte weitergegeben werden düren, sofern diese im Auftrag der Stadt tätig werden. "Nicht Auftragnehmer der LHM" gibt an, dass die Daten allgemein an Dritte weitergegeben werden dürfen. Es sind mögliche weitere Hinweise zur Nutzung zu beachten.'></span>
+            <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title='Information über die Zugriffsberechtigungen bzw. Bereitstellungsformen für Dritte, d.h. Personen und Organisationen außerhalb der LHM. Bei der Datennutzung durch Externe der LHM sind Nutzungsbedingungen bzw. -Vereinbarungen einzuhalten. Mögliche Einschränkungen zur Datennutzung sind im Feld Nutzungsoptionen bei Einschränkungen näher definiert. '></span>
           </p>
           <p class="metadata">{%- snippet 'package/snippets/label.html',
             item='lhm_extern', pkg_dict=pkg_dict, schema=schema -%}</p>

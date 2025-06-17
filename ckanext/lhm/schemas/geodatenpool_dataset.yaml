@@ -380,8 +380,8 @@ dataset_fields:
   is_info: true
   info_text: Mit High Value Datasets sind Daten gemeint, die in unter die DVO-HVD fallen. HVD-Daten sind per Definition immer auch Open Data.
   help_text: 'Durchführungsverordnung HVD: '
-  help_url: https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://eur-lex.europa.eu/legal-content/DE/TXT/PDF/%3Furi%3DCELEX:32023R0138%26from%3DDE&ved=2ahUKEwidrpDW3YmMAxUYRfEDHbxQEckQFnoECAkQAQ&usg=AOvVaw3WDQRF0xfddSJsN4ZaSxFO
-  help_url_view: 'https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://eur-lex...'
+  help_url: https://eur-lex.europa.eu/legal-content/DE/TXT/PDF/?uri=CELEX:32023R0138
+  help_url_view: 'https://eur-lex.europa.eu/legal-content/DE/TXT/PDF/?uri=CELEX:32023R0138'
   help_text_2: 'FAQs zur DVO-HVD: '
   help_url_2: https://www.govdata.de/informationen/hochwertige-datensaetze
   required: true

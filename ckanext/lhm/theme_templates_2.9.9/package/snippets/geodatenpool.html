@@ -176,7 +176,7 @@
             <p class="metadata">{%- snippet 'package/snippets/label.html',
               item='hvd', pkg_dict=pkg_dict, schema=schema -%}</p>
             {% if pkg_dict.hvd != "nein"%}  
-            <p class="metadata">{{ h.link_to('Durchführungsverordnung HVD', 'https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://eur-lex.europa.eu/legal-content/DE/TXT/PDF/%3Furi%3DCELEX:32023R0138%26from%3DDE&ved=2ahUKEwidrpDW3YmMAxUYRfEDHbxQEckQFnoECAkQAQ&usg=AOvVaw3WDQRF0xfddSJsN4ZaSxFO', target='_blank') }}</p>
+            <p class="metadata">{{ h.link_to('Durchführungsverordnung HVD', 'https://eur-lex.europa.eu/legal-content/DE/TXT/PDF/?uri=CELEX:32023R0138', target='_blank') }}</p>
             <p class="metadata">{{ h.link_to('FAQs zur DVO-HVD', 'https://www.govdata.de/informationen/hochwertige-datensaetze', target='_blank') }}</p>
             {% endif %}
         </td>

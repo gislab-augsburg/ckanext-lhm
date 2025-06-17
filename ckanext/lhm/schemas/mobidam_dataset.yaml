@@ -17,7 +17,7 @@ dataset_fields:
   form_snippet: large_text_lhm.html
   form_placeholder: Thema | NAME_DER_TABELLE
   is_info: true
-  info_text: 'Thema | NAME_DER_TABELLE. Der Titel beteht aus dem Thema (für Geodatenpool: ehemals Datenbestand) und dem Namen der Tabelle in der Datenbank'
+  info_text: 'Thema | NAME_DER_TABELLE. Der Titel beteht aus dem Thema (für Geodatenpool: ehemals Datenbestand) und dem Namen der Tabelle in der Datenbank.'
   required: true
 
 # Feld alt
@@ -112,7 +112,6 @@ dataset_fields:
   form_snippet: organization_lhm.html
   is_info: true
   info_text_orga: Angabe des fachlich zuständigen Referats und der ersten, das Referat untergliedernden Organisationseinheit (z.B. Amt, Hauptabteilung, Geschäftsbereich)
-  info_text_pub: Einstellung zur Sichtbarkeit des eingetragenen Metadatensatzes. Öffentlich = Sichtbarkeit für alle Personen in der LHM [Standard]. Privat =  Sichtbarkeit nur für Mitglieder der zuständigen Organisation [nur für Qualitätssicherungszwecke].
   required: true
 
 # Feld alt 
@@ -150,7 +149,7 @@ dataset_fields:
     en: No or Yes; If yes, please name the responsibile organisation, the contact person and an email or telephon number
     de: Nein oder Ja; Wenn ja. Verantwortlicher
   is_info: true
-  info_text: Um externe Datenurheber handelt es sich, wenn die Daten nicht von der Landeshautpststadt München stammen (z.B. LDBV).
+  info_text: Um externe Datenurheber handelt es sich, wenn die Daten nicht von der Landeshauptstadt München stammen (z.B. LDBV).
 
 # Feld alt, neue choices hinzugefügt
 - field_name: update_zyklus
@@ -474,7 +473,7 @@ dataset_fields:
   validators: scheming_required boolean_validator
   output_validators: boolean_validator
   is_info: true
-  info_text: 'Einstellung zur Sichtbarkeit des eingetragenen Metadatensatzes. Öffentlich: Sichtbarkeit für alle Personen in der LHM (Standard). Privat: Sichtbarkeit nur für Mitglieder der zuständigen Organisation.'
+  info_text: 'Einstellung zur Sichtbarkeit des eingetragenen Metadatensatzes. Öffentlich = Sichtbarkeit für alle Personen in der LHM [Standard]. Privat = Sichtbarkeit nur für Mitglieder der zuständigen Organisation.'
 
 
 resource_fields:

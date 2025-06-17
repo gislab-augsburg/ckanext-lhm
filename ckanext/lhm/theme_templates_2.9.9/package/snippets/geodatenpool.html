@@ -21,7 +21,7 @@
         </td>
         <td> 
           <p class="heading">{{ _("External Ownership") }}
-          <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Um externe Datenurheber handelt es sich, wenn die Daten nicht von der Landeshautpststadt München stammen (z.B. LDBV, DWD, Here)"></span></p>
+          <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Um externe Datenurheber handelt es sich, wenn die Daten nicht von der Landeshauptstadt München stammen (z.B. LDBV, DWD, Here)"></span></p>
           {% if pkg_dict.ext_org%}     
             <p class="metadata">{{ pkg_dict.ext_org }}</p>
           {% else %}
@@ -43,7 +43,7 @@
         </td>
         <td>      
           <p class="heading">{{ _("Schema") }}
-          <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Name des Datenbankschemas im Geodatenpool (z.B. BAUT, PLAN, RKU)"></span></p>
+          <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Name des Datenbankschemas (im Geodatenpool z.B. BAUT, PLAN, RKU)"></span></p>
           {% if pkg_dict.schema %}
             <p class="metadata">{%- snippet 'package/snippets/label.html', item='schema', pkg_dict=pkg_dict, schema=schema -%}</p>
           {% else %}

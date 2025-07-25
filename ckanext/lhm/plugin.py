@@ -83,7 +83,7 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
     p.implements(p.ITranslation, inherit=True)
     p.implements(p.ITemplateHelpers, inherit=True)
     p.implements(p.IPackageController, inherit=True)
-    # p.implements(p.IBlueprint, inherit=True)
+    p.implements(p.IBlueprint, inherit=True)
     # p.implements(p.IValidators)
           
     def i18n_domain(self):

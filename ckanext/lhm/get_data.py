@@ -32,7 +32,7 @@ def config():
     #    sys.exit()
     #else:
     #    arg_config = sys.argv[1]
-    arg_config = '/srv/app/data/md_download/config-download.json'
+    arg_config = '/srv/app/md_download/config-download.json'
 #################################
 
     #Sensitive information are stored in a config file.

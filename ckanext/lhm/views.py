@@ -49,7 +49,7 @@ def generate_pdf(dataset_name):
     ## Generate Package Excel
     # Get config values
     #arg_config = sys.argv[1]
-    arg_config = '/srv/app/data/md_download/config-download.json'
+    arg_config = '/srv/app/md_download/config-download.json'
     with open(arg_config, 'r') as config_file:
         config = json.load(config_file)
     wdir= config['wdir']
@@ -114,7 +114,7 @@ def generate_xlsx(dataset_name):
     ## Generate Package Excel
     # Get config values
     #arg_config = sys.argv[1]
-    arg_config = '/srv/app/data/md_download/config-download.json'
+    arg_config = '/srv/app/md_download/config-download.json'
     with open(arg_config, 'r') as config_file:
         config = json.load(config_file)
     wdir= config['wdir']

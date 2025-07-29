@@ -5,8 +5,18 @@ import os
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment
 from ckanext.lhm.get_data import packages_to_files
+#from ckan.common import config
+from pylons import config
+from pkg_resources import resource_filename
 
 lhm_view = Blueprint('lhm_view', __name__)
+
+## Define variables, Create working dir
+storage = config.get('ckan.storage_path')
+wdir = storage + '/export/'
+if os.path.exists(wdir) == False:
+    os.mkdir(wdir)
+excel_template = resource_filename('ckanext.lhm', 'schemas/template_v1.2.2.xlsx')
 
 ## Excel to PDF Conversion
 def convert_xlsx_to_pdf(input_path, output_dir, package):
@@ -49,22 +59,24 @@ def generate_pdf(dataset_name):
     ## Generate Package Excel
     # Get config values
     #arg_config = sys.argv[1]
-    arg_config = '/srv/app/md_download/config-download.json'
-    with open(arg_config, 'r') as config_file:
-        config = json.load(config_file)
-    wdir= config['wdir']
-    template = config['template']
+    #arg_config = '/srv/app/md_download/config-download.json'
+    #with open(arg_config, 'r') as config_file:
+    #    config = json.load(config_file)
+    #wdir= config['wdir']
+    #template = config['template']
 
     # Create directories
-    if os.path.exists(wdir) == False:
-        os.mkdir(wdir)
+    #if os.path.exists(wdir) == False:
+    #    os.mkdir(wdir)
+
+    # Create pdf directory
     if os.path.exists(f'{wdir}/pdf') == False:
         os.mkdir(f'{wdir}/pdf')
     
     package = dataset_name
-    packages_to_files(package, 1, wdir, template)
+    packages_to_files(package, 1, wdir, excel_template)
 
-    # Define path
+    # Define path to excel
     file_path = wdir + '/excel/' + package + '.xlsx'
 
     # Add headers
@@ -93,13 +105,13 @@ def generate_pdf(dataset_name):
             cell.alignment = Alignment(wrapText=True,vertical='top')
     wb.save(file_path)
 
-    ## Convert to PDF
+    ## Convert to pdf
     input_file = file_path
     output_dir = wdir + '/pdf'
     convert_xlsx_to_pdf(input_file, output_dir, package)
     output_pdf = wdir + '/pdf/' + package + '.pdf'
 
-    ## Download PDF
+    ## Download pdf
     return send_file(
         output_pdf,
         mimetype='application/pdf',
@@ -111,23 +123,23 @@ def generate_pdf(dataset_name):
 @lhm_view.route("/lhm_view/excel/<dataset_name>")
 def generate_xlsx(dataset_name):
 
-    ## Generate Package Excel
+    ## Generate package excel
     # Get config values
     #arg_config = sys.argv[1]
-    arg_config = '/srv/app/md_download/config-download.json'
-    with open(arg_config, 'r') as config_file:
-        config = json.load(config_file)
-    wdir= config['wdir']
-    template = config['template']
+    #arg_config = '/srv/app/md_download/config-download.json'
+    #with open(arg_config, 'r') as config_file:
+    #    config = json.load(config_file)
+    #wdir= config['wdir']
+    #template = config['template']
 
     # Create directories
-    if os.path.exists(wdir) == False:
-        os.mkdir(wdir)
-    if os.path.exists(f'{wdir}/pdf') == False:
-        os.mkdir(f'{wdir}/pdf')
+    #if os.path.exists(wdir) == False:
+    #    os.mkdir(wdir)
+    #if os.path.exists(f'{wdir}/pdf') == False:
+    #    os.mkdir(f'{wdir}/pdf')
 
     package = dataset_name
-    packages_to_files(package, 1, wdir, template)
+    packages_to_files(package, 1, wdir, excel_template)
 
     ## Download Excel
     file_path = wdir + '/excel/' + package + '.xlsx'

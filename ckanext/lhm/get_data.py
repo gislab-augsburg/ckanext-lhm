@@ -32,17 +32,18 @@ def config():
     #    sys.exit()
     #else:
     #    arg_config = sys.argv[1]
-    arg_config = '/srv/app/md_download/config-download.json'
-#################################
+    #arg_config = '/var/md_download/config-download.json'
+
 
     #Sensitive information are stored in a config file.
     #api_key is stored in the config and is called with the following:
-    with open(arg_config, 'r') as config_file:
-        config = json.load(config_file)
-    api_key = config['api_key_harvester']
-    base_url = config['base_url']
+    #with open(arg_config, 'r') as config_file:
+    #    config = json.load(config_file)
+    api_key = ''
+    base_url = 'http://localhost:5000'
 
     return api_key, base_url
+#################################
 
 
 

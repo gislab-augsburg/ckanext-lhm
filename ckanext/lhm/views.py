@@ -5,8 +5,8 @@ import os
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment
 from ckanext.lhm.get_data import packages_to_files
-#from ckan.common import config
-from pylons import config
+from ckan.common import config
+#from pylons import config
 from pkg_resources import resource_filename
 
 lhm_view = Blueprint('lhm_view', __name__)

@@ -27,25 +27,11 @@ import ckanext.lhm.tp as tp
 # Defining Config File
 # MB_CHANGE FOR DOWNLOAD BUTTON ###
 def config():
-    #if len(sys.argv) != 2:
-    #    print("Please specify config file as argument, e.g.: python3 get-data.py ../config-demo.json")
-    #    sys.exit()
-    #else:
-    #    arg_config = sys.argv[1]
-    #arg_config = '/var/md_download/config-download.json'
-
-
-    #Sensitive information are stored in a config file.
-    #api_key is stored in the config and is called with the following:
-    #with open(arg_config, 'r') as config_file:
-    #    config = json.load(config_file)
     api_key = ''
     base_url = 'http://localhost:5000'
 
     return api_key, base_url
 #################################
-
-
 
 # Define request, get response as dict
 def ckan_request(api_string):
@@ -56,13 +42,7 @@ def ckan_request(api_string):
     # Define the request
     url = base_url + api_string
     headers = {'Authorization': api_key}
-    print('URL:')
-    print(url)
-    print('HEADERS:')
-    print(headers)
     response = requests.get(url, headers=headers)
-    print('RESPONSE:')
-    print(response)
     for ir in range(0, 10):
         if response.status_code == 200:
             response_dict = response.json()

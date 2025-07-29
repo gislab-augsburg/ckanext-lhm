@@ -14,7 +14,7 @@ lhm_view = Blueprint('lhm_view', __name__)
 def get_export_vars():
     from ckan.common import config
     storage = config.get('ckan.storage_path')
-    wdir = storage + '/export/'
+    wdir = storage + '/export'
     if os.path.exists(wdir) == False:
         os.mkdir(wdir)
     excel_template = resource_filename('ckanext.lhm', 'schemas/template_v1.2.2.xlsx')

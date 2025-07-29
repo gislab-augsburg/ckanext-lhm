@@ -30,7 +30,7 @@ def convert_xlsx_to_pdf(input_path, output_dir, package):
         "--outdir", output_dir
     ]
     try:
-        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True, env={"HOME": "/var/lib/ckan/export"})
         print("LibreOffice output:", result.stdout)
         print("LibreOffice errors:", result.stderr)
     except subprocess.CalledProcessError as e:
@@ -46,7 +46,7 @@ def convert_xlsx_to_pdf(input_path, output_dir, package):
         "--outdir", output_dir
     ]
     try:
-        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True, env={"HOME": "/var/lib/ckan/export"})
         print("LibreOffice output:", result.stdout)
         print("LibreOffice errors:", result.stderr)
         return True

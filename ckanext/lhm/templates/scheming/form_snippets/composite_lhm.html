@@ -21,9 +21,9 @@
      {% else %}
        {% if subfield.get('choices', false) %}
           {% if subfield.get('preset', '') == "multiple_checkbox"%}
-              {%- snippet 'scheming/form_snippets/multiple_checkbox_lhm_composite.html', subfield=subfield, subfield_index=0, subfields_repeating_label=subfields_repeating_label, subfields_repeating_label=subfields_repeating_label, name=name, value=value, errors=errors -%}
+              {%- snippet 'scheming/form_snippets/multiple_checkbox_lhm_composite.html', subfield=subfield, subfield_index=0, subfields_repeating_label=subfields_repeating_label, name=name, value=value, errors=errors -%}
           {% elif subfield.get('preset', '') == "radio"%}
-              {%- snippet 'scheming/form_snippets/radio.html', data=data, subfield=subfield, subfield_index=0, subfields_repeating_label=subfields_repeating_label, subfields_repeating_label=subfields_repeating_label, name=name, value=value, errors=errors -%}
+              {%- snippet 'scheming/form_snippets/radio.html', data=data, subfield=subfield, subfield_index=0, subfields_repeating_label=subfields_repeating_label, name=name, value=value, errors=errors -%}
           {% else %}
 
               {%- snippet 'scheming/form_snippets/composite_select_lhm.html', subfield=subfield, subfield_index=0, subfields_repeating_label=subfields_repeating_label, name=name, value=value, errors=errors -%}

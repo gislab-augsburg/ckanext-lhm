@@ -226,9 +226,66 @@ class LHMThemePlugin(p.SingletonPlugin, DefaultTranslation):
             p.toolkit.add_public_directory(config, 'public')
             p.toolkit.add_resource('assets_theme', 'lhm_theme')
 
+    elif toolkit.check_ckan_version("2.11"):
+        print('MB_debug: theme_templates, assets for ckan 2.11')
+        # IConfigurer
+        def update_config(self, config):
+            p.toolkit.add_template_directory(config, 'theme_templates_2.9.9')
+            p.toolkit.add_public_directory(config, 'public')
+            p.toolkit.add_resource('assets_theme_2.9.9', 'lhm_theme')
+
 
     # IActions
     def get_actions(self):
         return {
             'user_create': action.user_create,
         }
+
+
+from ckan.plugins import SingletonPlugin
+from flask import template_rendered, current_app
+import os
+
+class LHMTemplateWrapper(SingletonPlugin):
+    """Automatically wrap all CKAN core and ckanext-* templates in HTML comments."""
+
+    def __init__(self):
+        template_rendered.connect(self.wrap_template, current_app)
+
+    def wrap_template(self, sender, template, context, **extra):
+        # Only wrap if debug_templates is enabled in ckan.ini
+        debug_enabled = getattr(sender.config, 'ckan.debug_templates', False)
+        if not debug_enabled:
+            return
+
+        template_name = getattr(template, 'name', None)
+        if not template_name:
+            return
+
+        # Wrap core templates (package/home) or any template from ckanext-* directories
+        if template_name.startswith('package/') \
+           or template_name.startswith('home/') \
+           or self.is_ckanext_template(template_name):
+            original_render = template.render
+
+            def wrapped_render(*args, **kwargs):
+                return (
+                    f"<!-- START template: {template_name} -->\n"
+                    + original_render(*args, **kwargs)
+                    + f"\n<!-- END template: {template_name} -->"
+                )
+
+            template.render = wrapped_render
+
+    def is_ckanext_template(self, template_name):
+        """
+        Detect if template belongs to any ckanext-* directory.
+        Looks at absolute template path.
+        """
+        try:
+            template_path = getattr(template, 'filename', None)
+            if template_path and '/ckanext-' in template_path:
+                return True
+        except Exception:
+            return False
+        return False

@@ -8,7 +8,7 @@
       <tr>
         <td>
           <p class="heading">{{ _("Contact person") }}
-          <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Angabe der Stelle, die fachliche und organisatorische Kenntnis zum Datensatz hat"></span></p>
+          <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Angabe der Organisationseinheit, die fachliche und organisatorische Kenntnis zum Datensatz hat"></span></p>
             <p class="metadata">{{ pkg_dict.datenverantwortlicher }}</p>
         </td>
         <td>
@@ -43,7 +43,7 @@
         </td>
         <td>      
           <p class="heading">{{ _("Schema") }}
-          <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Name des Datenbankschemas (im Geodatenpool z.B. BAUT, PLAN, RKU)"></span></p>
+          <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Name des Datenbankschemas (z.B. BAU, PLAN, RKU im Geodatenpool)"></span></p>
           {% if pkg_dict.schema %}
             <p class="metadata">{%- snippet 'package/snippets/label.html', item='schema', pkg_dict=pkg_dict, schema=schema -%}</p>
           {% else %}

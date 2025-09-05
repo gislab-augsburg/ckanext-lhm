@@ -50,7 +50,7 @@ dataset_fields:
   label: Schema
   preset: select_lhm
   is_info: true
-  info_text: Name des Datenbankschemas (beim Geodatenpool z.B. BAUT, PLAN, RKU).
+  info_text: Name des Datenbankschemas (z.B. BAU, PLAN, RKU im Geodatenpool)
   required: true
   choices:
   - value: ""
@@ -123,7 +123,7 @@ dataset_fields:
   form_snippet: author.html
   form_placeholder:  KR-GSM-GEO-GIS
   is_info: true
-  info_text: Angabe der Stelle, die fachliche und organisatorische Kenntnis zum Datensatz hat
+  info_text: Angabe der Organisationseinheit, die fachliche und organisatorische Kenntnis zum Datensatz hat
 
 # Feld alt  
 - field_name: datenverantwortlicher_email

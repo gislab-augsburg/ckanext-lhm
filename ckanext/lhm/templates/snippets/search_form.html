@@ -4,6 +4,7 @@
 
 
 {% block search_input %}
+<a href="https://wilma.muenchen.de/workspaces/geodatenpool-gdp-geodateninfrastruktur-gdi/apps/wiki/metadatenkatalog/list/view/92c485cf-67d6-42c9-94b8-4a37f269843a" style="margin-left:2px">{{ _("Hilfe zur Suche") }}</a>
 <div class="input-group search-input-group">
   <input aria-label="{% block header_site_search_label %}{{ placeholder }}{% endblock %}" id="field-giant-search" type="text" class="form-control input-lg" name="q" value="{{ query }}" autocomplete="off" placeholder="{{ placeholder }}">
   {% block search_input_button %}

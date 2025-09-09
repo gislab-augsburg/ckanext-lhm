@@ -44,13 +44,11 @@ html,
 .masthead {
     width: 100%;
     height: auto;
-    background-image: url("../../../base/images/Hintergrundbild_1.jpg");
+    background: none;
     background-color: #48CCBF;
-    background-size: contain; /* This ensures that the image covers the entire element */
-    background-repeat: no-repeat; /* This prevents the image from repeating */
-    background-position-x: 20%;
     margin-right: auto;
     margin-left: auto;
+    padding: 0;
 }
 
 .masthead .main-navbar ul li:hover a, .masthead .main-navbar ul li:focus a, .masthead .main-navbar ul li.active a {
@@ -138,7 +136,7 @@ html,
 }
 
 .lhm-footer .account-footer .nav,
-.lhm-footer .account-footer .account,{
+.lhm-footer .account-footer .account {
     float: left;
 }
 
@@ -154,7 +152,7 @@ html,
 
 .homepage .hero-lhm {
     background: url("../../../base/images/Hintergrund_Stadt_3D.jpg");
-    background-size: cover; This ensures that the image covers the entire element */
+    background-size: cover; /* This ensures that the image covers the entire element */
     background-repeat: no-repeat; /* This prevents the image from repeating */
     background-position: center;
     padding: 20px 0;
@@ -467,3 +465,22 @@ border: 1px solid #ccc;
     width: 20%;
   }
 
+/* Breit (Desktop): UL rechts andocken */
+@media (min-width: 768px) {
+  #main-navigation-toggle .nav.nav-pills {
+    position: absolute;
+    right: 0;
+    display: inline-block;
+    padding-top:10px;
+  }
+}
+
+/* Schmal (Mobile): bei ausgeklapptem Burger-Menü UL relativ lassen */
+@media (max-width: 767.98px) {
+  /* In Bootstrap 3 erhält die Collapse bei "auf" die Klasse .in */
+  #main-navigation-toggle.in .nav.nav-pills {
+    position: relative;
+    right: auto; /* Sicherheitsreset */
+    display: inline-block
+  }
+}

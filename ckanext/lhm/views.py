@@ -85,6 +85,11 @@ def generate_pdf(dataset_name):
     ws_2.oddHeader.center.text = "Katalogwerte"
     ws_3.oddHeader.center.text = "Dienste und Dokumente"
 
+    # Remove infotext long version 'LHM-Extern Nutzungsoptionen' for pdf
+    coords = 'A35'
+    cell = ws_0[coords]
+    cell.value = ''
+
     # Add text wrap and save excel file
     for row in ws_0:
         for cell in row:

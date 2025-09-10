@@ -4,7 +4,7 @@
 <div class="module module-search module-narrow module-shallow box">
   <form class="module-content search-form" method="get" action="{% url_for 'dataset.search' %}">
     <h3 class="heading">{{ _("Metadatensätze suchen") }}</h3>
-    <a href="https://wilma.muenchen.de/workspaces/geodatenpool-gdp-geodateninfrastruktur-gdi/apps/wiki/metadatenkatalog/list/view/92c485cf-67d6-42c9-94b8-4a37f269843a" style="color:white">{{ _("Hilfe zur Suche") }}</a>
+    <a href="https://wilma.muenchen.de/workspaces/geodatenpool-gdp-geodateninfrastruktur-gdi/apps/wiki/metadatenkatalog/list/view/92c485cf-67d6-42c9-94b8-4a37f269843a" style="color:white">{{ _("Hilfe zur Suche (Wilma-Seite)") }}</a>
     <div class="search-input form-group search-giant" style="margin-top:10px;">
       <input aria-label="{% block header_site_search_label %}{{ _('Search datasets') }}{% endblock %}" id="field-main-search" type="text" class="form-control" name="q" value="" autocomplete="off" placeholder="{% block search_placeholder %}{{ placeholder }}{% endblock %}" />
       <button type="submit" aria-labelledby="search-label">

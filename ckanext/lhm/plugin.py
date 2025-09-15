@@ -232,3 +232,21 @@ class LHMThemePlugin(p.SingletonPlugin, DefaultTranslation):
         return {
             'user_create': action.user_create,
         }
+    
+
+class LHMOverridePlugin(p.SingletonPlugin, DefaultTranslation):
+    '''Override theme plugin for LHM UDP Catalog.'''
+
+    # Declare the iterfaces this class implements
+    #p.implements(p.IBlueprint)
+    p.implements(p.IConfigurer)
+    #p.implements(p.IFacets, inherit=True)
+    #p.implements(p.IActions)
+    #p.implements(p.ITemplateHelpers)
+
+    # IConfigurer
+    def update_config(self, config):
+        p.toolkit.add_template_directory(config, 'override')
+
+
+

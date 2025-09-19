@@ -1,34 +1,31 @@
-{% set options=[
-  {'text': '', 'value': ''},
-  {'text': 'OBJECT-ID/Number', 'value': 'number_'},
-  {'text': 'GEOMETRY/SDO_GEOMETRY', 'value': 'sdo_geometry'},
-  {'text': 'TEXT/NVARCHAR2', 'value': 'nvarchar2'},
-  {'text': 'FLOAT', 'value': 'float8'},
-  {'text': 'DATE/DATUM', 'value': 'date'},
-  {'text': 'TIMESTAMP(6)', 'value': 'timestamp'},
+{# ckanext/lhm/templates/package/snippets/dictionary_view.html #}
+{% set options = [
   {'text': 'BLOB', 'value': 'blob'},
-  {'text': 'TEXT/NVARCHAR2', 'value': 'text'},
-  ] %} 
-
-{#%set od_options=[
-    {'value': 'Open Data', 'label': _('Open Data')}, 
-    {'value': 'HVD', 'label': _('HVD')},
-    {'value': 'nein', 'label': _('-')}
-  ] %#}
-
+  {'text': 'DATE/DATUM', 'value': 'date'},
+  {'text': 'FLOAT', 'value': 'float8'},
+  {'text': 'GEOMETRY/SDO_GEOMETRY', 'value': 'sdo_geometry'},
+  {'text': 'GEOMETRY/ST_GEOMETRY', 'value': 'st_geometry'},
+  {'text': 'OBJECT-ID/NUMBER', 'value': 'number_'},
+  {'text': 'TEXT/CHAR', 'value': 'char'},
+  {'text': 'TEXT/NVARCHAR2', 'value': 'nvarchar2'},
+  {'text': 'TEXT/VARCHAR2', 'value': 'varchar2'},
+  {'text': 'TIMESTAMP(6)', 'value': 'timestamp'},
+  {'text': 'TIMESTAMP(9)', 'value': 'timestamp9'}, 
+] %}
 
 <tr>
-    <td>{{ field.id }}</td>
-    <td>
+  <td>{{ field.id }}</td>
+  <td>
+    {# Fallback: prefer custom info.db_type, else fall back to field.type #}
+    {% set db_type = field.get('info', {}).get('db_type', field.get('type', '')) %}
     {% for option in options %}
-      {% if option.value == field.type %}
-          {{ option.text }}
+      {% if option.value == db_type %}
+        {{ option.text }}
       {% endif %}
     {% endfor %}
-    </td>
-    <td>{{ h.get_translated(field.get('info', {}), 'condition') }}</td>
-    <td>{{ h.render_markdown(
-      h.get_translated(field.get('info', {}), 'notes')) }}</td>
-    <td>{{ h.get_translated(field.get('info', {}), 'label') }}</td>
-    <td>{{ h.get_translated(field.get('info', {}), 'opendata') }}</td>
-  </tr>
+  </td>
+  <td>{{ h.get_translated(field.get('info', {}), 'condition') }}</td>
+  <td>{{ h.render_markdown(h.get_translated(field.get('info', {}), 'notes')) }}</td>
+  <td>{{ h.get_translated(field.get('info', {}), 'label') }}</td>
+  <td>{{ h.get_translated(field.get('info', {}), 'opendata') }}</td>
+</tr>

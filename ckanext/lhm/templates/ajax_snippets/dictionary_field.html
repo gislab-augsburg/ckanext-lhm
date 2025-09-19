@@ -1,88 +1,60 @@
+{# ckanext/lhm/templates/ajax_snippets/dictionary_field.html #}
 {% import 'macros/form.html' as form %}
 
-{#
-  Data Dictionary fields may be added this snippet. New fields following
-  the 'info__' ~ position ~ '__namegoeshere' convention will be saved
-  as part of the "info" object on the column.
-#}
-
-{#% set options=[
-  {'text': '', 'value': ''},
-  {'text': 'Text', 'value': 'text'},
-  {'text': 'Integer', 'value': 'int4'},
-  {'text': 'Decimal', 'value': 'numeric'},
-  {'text': 'Float', 'value': 'float8'},
-  {'text': 'Date', 'value': 'date'},
-  {'text': 'Time', 'value': 'time'},
-  {'text': 'Timestamp', 'value': 'timestamp'},
-  {'text': 'Byte array', 'value': 'bytea'},
-  {'text': 'Array[Integer]', 'value': '_int4'},
-  {'text': 'Array[Text]', 'value': '_text'},
-  {'text': 'Geometry', 'value': 'sdo_geometry'},
-  {'text': 'complex_geom', 'value': 'geom'},
-  ] %#}
-
-{% set options=[
-  {'text': '', 'value': ''},
-  {'text': 'OBJECT-ID/Number', 'value': 'number_'},
-  {'text': 'GEOMETRY/SDO_GEOMETRY', 'value': 'sdo_geometry'},
-  {'text': 'TEXT/NVARCHAR2', 'value': 'nvarchar2'},
-  {'text': 'FLOAT', 'value': 'float8'},
-  {'text': 'DATE/DATUM', 'value': 'date'},
-  {'text': 'TTIMSTAMP(6)', 'value': 'timestamp'},
+{# Options for your custom DB types shown in the UI (stored under info.db_type) #}
+{% set options = [
   {'text': 'BLOB', 'value': 'blob'},
-  ] %} 
+  {'text': 'DATE/DATUM', 'value': 'date'},
+  {'text': 'FLOAT', 'value': 'float8'},
+  {'text': 'GEOMETRY/SDO_GEOMETRY', 'value': 'sdo_geometry'},
+  {'text': 'GEOMETRY/ST_GEOMETRY', 'value': 'st_geometry'},
+  {'text': 'OBJECT-ID/NUMBER', 'value': 'number_'},
+  {'text': 'TEXT/CHAR', 'value': 'char'},
+  {'text': 'TEXT/NVARCHAR2', 'value': 'nvarchar2'},
+  {'text': 'TEXT/VARCHAR2', 'value': 'varchar2'},
+  {'text': 'TIMESTAMP(6)', 'value': 'timestamp'},
+  {'text': 'TIMESTAMP(9)', 'value': 'timestamp9'}, 
+] %}
 
-{% set od_options=[
-  {'value': 'Open Data', 'label': _('Open Data')}, 
+{% set od_options = [
+  {'value': 'Open Data', 'label': _('Open Data')},
   {'value': 'HVD', 'label': _('HVD')},
   {'value': 'nein', 'label': _('-')}
-  ] %}
+] %}
 
 {% set is_info = 'true' %}
 {% set info_text_id = 'Name des Attributs mit Großbuchstaben und Unterstrich' %}
 {% set info_text_type = 'Angabe zum Datentyp des Attributs' %}
 {% set info_text_condition = "Angabe von Bedingungen, falls vorhanden. Dies sind z.B. 'NOT NULL' oder 'PRIMARY KEY'." %}
-{% set info_text_notes = 'Soll enthalten: Fachliche Bezeichnung.
-Beschreibung: Eine für Laien nachvollziehbare, kurze Beschreibung des Attributs (z.B. Anzahl der Vollgeschosse, Gemarkung des Flurstücks).' %}
+{% set info_text_notes = 'Soll enthalten: Fachliche Bezeichnung. Beschreibung: Eine für Laien nachvollziehbare, kurze Beschreibung des Attributs (z.B. Anzahl der Vollgeschosse, Gemarkung des Flurstücks).' %}
 {% set info_text_hint = 'Ggf. erforderliche ergänzende Bemerkungen' %}
 {% set info_text_opendata = 'Angabe zur Nutzung des Attributs als Open Data bzw. HVD' %}
 
 <div class="dictionary-field-{{ position }}">
   {% if field and total_records %}
 
-    <h3>{{ _( "Field: ") }} {{ field.id }} ({{ field.type }})</h3>
+    <h3>{{ _("Field: ") }} {{ field.id }} ({{ field.type }})</h3>
 
-    <input id="field__{{ position }}__id" type="text" name="field__{{ position }}__id" value="{{ field.get('id') | empty_and_escape }}" hidden />
+    {# Keep ID #}
+    <input id="field__{{ position }}__id"
+           type="text"
+           name="field__{{ position }}__id"
+           value="{{ field.get('id') | empty_and_escape }}"
+           hidden />
 
-    <input id="info__{{ position }}__type" type="text" name="info__{{ position }}__type" value="{{ field.get('type') | empty_and_escape }}" hidden />
+    {# IMPORTANT: Preserve Datastore-safe type under the expected key info__..__type #}
+    <input id="info__{{ position }}__type"
+           type="text"
+           name="info__{{ position }}__type"
+           value="{{ field.get('type', 'text') | empty_and_escape }}"
+           hidden />
 
-    {{ form.input('info__' ~ position ~ '__condition',
-      label=_('Bedingung'), id='field-f' ~ position ~ 'condition',
-      value=field.get('info', {}).get('condition', ''), classes=['control-full'], is_info=is_info, info_text=info_text_condition)}}
-
-    {{ form.markdown('info__' ~ position ~ '__notes',
-      label=_('Beschreibung'), id='field-d' ~ position ~ 'notes',
-      value=field.get('info', {}).get('notes', ''), is_info=is_info, info_text=info_text_notes) }}
-
-    {{ form.input('info__' ~ position ~ '__label',
-      label=_('Bemerkung'), id='field-f' ~ position ~ 'label',
-      value=field.get('info', {}).get('label', ''), classes=['control-full'], is_info=is_info, info_text=info_text_hint) }}
-
-    {{ form.select('info__' ~ position ~ '__opendata',
-      label=_('Open Data & HVD*'), options=od_options,
-      selected=field.get('info', {}).get('opendata', ''), is_info=is_info, info_text=info_text_opendata)}}
-
-
-  {% elif field and not total_records %}
-
-    {{ form.input('field__' ~ position ~ '__id',
-      label=_('Attribut*'), id='field-f' ~ position ~ 'id',
-      value=field.get('id'), classes=['control-full'], is_info=is_info, info_text=info_text_id) }}
-
-    {{ form.select('info__' ~ position ~ '__type',
-      label=_('Datentyp*'), options=options,
-      selected=field.get('type'), is_info=is_info, info_text=info_text_type) }}      
+    {# Your custom DB type stored separately #}
+    <input id="info__{{ position }}__db_type"
+           type="text"
+           name="info__{{ position }}__db_type"
+           value="{{ field.get('info', {}).get('db_type', field.get('type', '')) | empty_and_escape }}"
+           hidden />
 
     {{ form.input('info__' ~ position ~ '__condition',
       label=_('Bedingung'), id='field-f' ~ position ~ 'condition',
@@ -98,8 +70,42 @@ Beschreibung: Eine für Laien nachvollziehbare, kurze Beschreibung des Attributs
 
     {{ form.select('info__' ~ position ~ '__opendata',
       label=_('Open Data & HVD*'), options=od_options,
-      selected=field.get('info', {}).get('opendata', ''), is_info=is_info, info_text=info_text_opendata)}}
-  
+      selected=field.get('info', {}).get('opendata', ''), is_info=is_info, info_text=info_text_opendata) }}
+
+  {% elif field and not total_records %}
+
+    {{ form.input('field__' ~ position ~ '__id',
+      label=_('Attribut*'), id='field-f' ~ position ~ 'id',
+      value=field.get('id'), classes=['control-full'], is_info=is_info, info_text=info_text_id) }}
+
+    {# UI select for *custom* DB type -> stored under info.db_type #}
+    {{ form.select('info__' ~ position ~ '__db_type',
+      label=_('Datentyp*'), options=options,
+      selected=field.get('info', {}).get('db_type', field.get('type', '')),
+      is_info=is_info, info_text=info_text_type) }}
+
+    {# IMPORTANT: still post info__..__type for the backend; keep it DS-safe #}
+    <input id="info__{{ position }}__type"
+           type="text"
+           name="info__{{ position }}__type"
+           value="{{ field.get('type', 'text') | empty_and_escape }}"
+           hidden />
+
+    {{ form.input('info__' ~ position ~ '__condition',
+      label=_('Bedingung'), id='field-f' ~ position ~ 'condition',
+      value=field.get('info', {}).get('condition', ''), classes=['control-full'], is_info=is_info, info_text=info_text_condition) }}
+
+    {{ form.markdown('info__' ~ position ~ '__notes',
+      label=_('Beschreibung'), id='field-d' ~ position ~ 'notes',
+      value=field.get('info', {}).get('notes', ''), is_info=is_info, info_text=info_text_notes) }}
+
+    {{ form.input('info__' ~ position ~ '__label',
+      label=_('Bemerkung'), id='field-f' ~ position ~ 'label',
+      value=field.get('info', {}).get('label', ''), classes=['control-full'], is_info=is_info, info_text=info_text_hint) }}
+
+    {{ form.select('info__' ~ position ~ '__opendata',
+      label=_('Open Data & HVD*'), options=od_options,
+      selected=field.get('info', {}).get('opendata', ''), is_info=is_info, info_text=info_text_opendata) }}
 
     {% snippet "dictionary/snippets/delete_field_button.html" %}
 
@@ -109,8 +115,17 @@ Beschreibung: Eine für Laien nachvollziehbare, kurze Beschreibung des Attributs
       label=_('Attribut*'), id='field-f' ~ position ~ 'id',
       value='', classes=['control-full'], is_info=is_info, info_text=info_text_id) }}
 
-    {{ form.select('info__' ~ position ~ '__type',
-      label=_('Datentyp*'), options=options, is_info=is_info, info_text=info_text_type) }}
+    {# New row: choose custom DB type -> info.db_type #}
+    {{ form.select('info__' ~ position ~ '__db_type',
+      label=_('Datentyp*'), options=options,
+      is_info=is_info, info_text=info_text_type) }}
+
+    {# Post a safe default for the expected info__..__type key #}
+    <input id="info__{{ position }}__type"
+           type="text"
+           name="info__{{ position }}__type"
+           value="text"
+           hidden />
 
     {{ form.input('info__' ~ position ~ '__condition',
       label=_('Bedingung'), id='field-f' ~ position ~ 'condition',
@@ -125,7 +140,8 @@ Beschreibung: Eine für Laien nachvollziehbare, kurze Beschreibung des Attributs
       value='', is_info=is_info, info_text=info_text_hint) }}
 
     {{ form.select('info__' ~ position ~ '__opendata',
-      label=_('Open Data & HVD*'), options=od_options, is_info=is_info, info_text=info_text_opendata) }}   
+      label=_('Open Data & HVD*'), options=od_options,
+      is_info=is_info, info_text=info_text_opendata) }}
 
     {% snippet "dictionary/snippets/delete_field_button.html" %}
 

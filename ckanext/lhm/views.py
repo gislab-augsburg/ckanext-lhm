@@ -6,9 +6,25 @@ from openpyxl import load_workbook
 from openpyxl.styles import Alignment
 from ckanext.lhm.get_data import packages_to_files
 from pkg_resources import resource_filename
+from ckan.logic import get_action
+from ckan import model
+from ckan.common import g
 
 # Create routes
 lhm_view = Blueprint('lhm_view', __name__)
+
+# Get package type
+def get_package_type(dataset_id):
+    context = {
+        'model': model,
+        'session': model.Session,
+        'user': g.user,
+        'auth_user_obj': g.userobj,
+    }
+    # fetch the package and read its type
+    pkg_dict = get_action('package_show')(context, {'id': dataset_id})
+    p_type = pkg_dict.get('type')
+    return p_type
 
 # Define variables, Create working dir
 def get_export_vars():
@@ -17,8 +33,7 @@ def get_export_vars():
     wdir = storage + '/export'
     if os.path.exists(wdir) == False:
         os.mkdir(wdir)
-    excel_template = resource_filename('ckanext.lhm', 'schemas/template_v1.2.2.xlsx')
-    return wdir, excel_template
+    return wdir
 
 # Excel to PDF Conversion
 def convert_xlsx_to_pdf(input_path, output_dir, package):
@@ -61,8 +76,14 @@ def generate_pdf(dataset_name):
 
     # Get vars
     vars = get_export_vars()
-    wdir = vars[0]
-    excel_template = vars[1]
+    wdir = vars
+    p_type = get_package_type(dataset_name)
+    if p_type == 'geodatenpool':
+        excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp_v1.2.4.xlsx')
+    elif p_type == 'mobidam':
+        excel_template = resource_filename('ckanext.lhm', 'schemas/template_mobidam_v1.2.4.xlsx')
+    else:
+        excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp_v1.2.4.xlsx')
 
     # Create pdf directory
     if os.path.exists(f'{wdir}/pdf') == False:
@@ -76,17 +97,20 @@ def generate_pdf(dataset_name):
 
     # Add headers
     wb = load_workbook(file_path)
-    ws_0 = wb["GDP Metadaten"]
+    ws_0 = wb["Metadaten"]
     ws_1 = wb["Datenverzeichnis"]
     ws_2 = wb["Katalogwerte"]
     ws_3 = wb["Dienste und Dokumente"]
-    ws_0.oddHeader.center.text = "GDP Metadaten"
+    ws_0.oddHeader.center.text = "Metadaten"
     ws_1.oddHeader.center.text = "Datenverzeichnis"
     ws_2.oddHeader.center.text = "Katalogwerte"
     ws_3.oddHeader.center.text = "Dienste und Dokumente"
 
     # Remove infotext long version 'LHM-Extern Nutzungsoptionen' for pdf
-    coords = 'A35'
+    if p_type == 'geodatenpool':
+        coords = 'A37'
+    elif p_type == 'mobidam':
+        coords = 'A35'
     cell = ws_0[coords]
     cell.value = ''
 
@@ -125,8 +149,14 @@ def generate_xlsx(dataset_name):
 
     # Get vars
     vars = get_export_vars()
-    wdir = vars[0]
-    excel_template = vars[1]
+    wdir = vars
+    p_type = get_package_type(dataset_name)
+    if p_type == 'geodatenpool':
+        excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp_v1.2.4.xlsx')
+    elif p_type == 'mobidam':
+        excel_template = resource_filename('ckanext.lhm', 'schemas/template_mobidam_v1.2.4.xlsx')
+    else:
+        excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp_v1.2.4.xlsx')
 
     package = dataset_name
     packages_to_files(package, 1, wdir, excel_template)

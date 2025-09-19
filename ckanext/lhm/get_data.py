@@ -22,7 +22,7 @@ import __main__
 import ckanext.lhm.tp as tp
 ###############################
 
-# Suitable for template_v1.2.2.xlsx
+# Suitable for template_v1.2.4.xlsx
 
 # Defining Config File
 # MB_CHANGE FOR DOWNLOAD BUTTON ###
@@ -183,7 +183,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 wb = load_workbook(filename=excel_template)
                 dv_exists = False
                 kw_exists = False
-                ws = wb["GDP Metadaten"]
+                ws = wb["Metadaten"]
                 ws_1 = wb["Datenverzeichnis"]
                 ws_2 = wb["Katalogwerte"]
                 ws_3 = wb["Dienste und Dokumente"]
@@ -262,6 +262,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                             for j in range(len(value)):
                                 package_dict[f'nutzungshinweise.{j}.stichwort'] = value[j]['stichwort']
                                 package_dict[f'nutzungshinweise.{j}.hinweise'] = value[j]['hinweise']
+                                
                     # Resources
                     border_thin = Side(style='thin')
                     Border_thin = Border(top=border_thin, left=border_thin, right=border_thin, bottom=border_thin)
@@ -308,7 +309,10 @@ def packages_to_files(packages, limit, wdir, excel_template):
                                                 cell.value = Att
                                                 cell.border = Border_thin
                                                 # Datentyp
-                                                Dat = field['type']
+                                                if 'db_type' in field['info'].keys():    
+                                                    Dat = field['info']['db_type']
+                                                else:
+                                                    Dat = field['type']
                                                 for key, val in tp.dv_datentyp_transpose.items():
                                                     if val == Dat:
                                                         Dat = key
@@ -316,7 +320,10 @@ def packages_to_files(packages, limit, wdir, excel_template):
                                                 cell = ws_1[coords]
                                                 cell.value = Dat
                                                 cell.border = Border_thin
-                                                dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$P$2:$P$8')
+                                                if type_ == 'geodatenpool':
+                                                    dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$P$2:$P$8')
+                                                elif type_ == 'mobidam':
+                                                    dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$U$2:$U$12')
                                                 ws_1.add_data_validation(dv)
                                                 # Bedingung
                                                 Bed = field['info']['condition']
@@ -448,8 +455,11 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 # DV-Datentyp
                 for pos in range(m + 1, 201):
                     coords = f'B{str(pos)}'
-                    cell = ws_1[coords]
-                    dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$P$2:$P$8')
+                    cell = ws_1[coords]                    
+                    if type_ == 'geodatenpool':
+                        dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$P$2:$P$8')
+                    elif type_ == 'mobidam':
+                        dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$U$2:$U$12')
                     ws_1.add_data_validation(dv)
 
                 # DV-OpenData
@@ -504,7 +514,10 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 cell = ws[coords]
                 cell.value = package_dict['notes']
                 # Letzter Import
-                coords = 'B30'
+                if type_ == 'geodatenpool':
+                    coords = 'B30'
+                elif type_ == 'mobidam':
+                    coords = 'B28'
                 cell = ws[coords]
                 cell.value = package_dict['letzter_import']
                 # Tags
@@ -579,7 +592,10 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 coords = 'B3'
                 cell = ws[coords]
                 cell.value = tp.schema_transpose_r[package_dict['schema']]
-                dv = add_validation_dropdown(ws, coords, '=Wertelisten!$C$2:$C$21')
+                if type_ == 'geodatenpool':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$C$2:$C$21')
+                elif type_ == 'mobidam':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$S$2:$S$3')
                 ws.add_data_validation(dv)
                 # Objekttyp
                 coords = 'B7'
@@ -635,13 +651,19 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 #dv = add_validation_dropdown(ws, coords, '=Wertelisten!$J$2:$J$4')
                 #ws.add_data_validation(dv)
                 # LHM-extern
-                coords = 'B21'
+                if type_ == 'geodatenpool':
+                    coords = 'B21'
+                elif type_ == 'mobidam':
+                    coords = 'B18'
                 cell = ws[coords]
                 cell.value = tp.lhm_extern_transpose_r[package_dict['lhm_extern']]
                 dv = add_validation_dropdown(ws, coords, '=Wertelisten!$J$2:$J$4')
                 ws.add_data_validation(dv)
                 # LHM-extern - Nutzungsoptionen bei Einschränkungen
-                line = '22'
+                if type_ == 'geodatenpool':
+                    line = '22'
+                elif type_ == 'mobidam':
+                    line = '19'
                 ind = 0
                 cols_nu = ["B", "C", "D", "E"]
                 if 'nutzungsoptionen_list' in package_dict.keys():
@@ -664,28 +686,40 @@ def packages_to_files(packages, limit, wdir, excel_template):
                         ind = ind + 1
 
                 # LHM-extern - Open Data
-                coords = 'B23'
+                if type_ == 'geodatenpool':
+                    coords = 'B23'
+                elif type_ == 'mobidam':
+                    coords = 'B20'
                 cell = ws[coords]
                 cell.value = tp.open_data_transpose_r[package_dict['open_data']]
                 dv = add_validation_dropdown(ws, coords, '=Wertelisten!$L$2:$L$4')
                 ws.add_data_validation(dv)
 
-                # LHM-extern - High Value Datasets (HVD) 
-                coords = 'B24'
+                # LHM-extern - High Value Datasets (HVD)
+                if type_ == 'geodatenpool': 
+                    coords = 'B24'
+                elif type_ == 'mobidam':
+                    coords = 'B21'
                 cell = ws[coords]
                 cell.value = tp.hvd_transpose_r[package_dict['hvd']]
                 dv = add_validation_dropdown(ws, coords, '=Wertelisten!$M$2:$M$4')
                 ws.add_data_validation(dv)
 
                 # LHM-extern - HVD-Kategorie
-                coords = 'B25'
+                if type_ == 'geodatenpool':
+                    coords = 'B25'
+                elif type_ == 'mobidam':
+                    coords = 'B22'
                 cell = ws[coords]
                 cell.value = tp.hvd_kategorie_transpose_r[package_dict['hvd_kategorie']]
                 dv = add_validation_dropdown(ws, coords, '=Wertelisten!$N$2:$N$8')
                 ws.add_data_validation(dv)
 
                 # LHM-extern - Open Data / HVD - bestimmte Attribute
-                coords = 'B26'
+                if type_ == 'geodatenpool':
+                    coords = 'B26'
+                elif type_ == 'mobidam':
+                    coords = 'B23'
                 cell = ws[coords]
                 cell.value = package_dict['open_data_attribute']
                 
@@ -707,7 +741,10 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     if 'nutzungshinweise.' in key_ and '.stichwort' in key_:
                         nr_ = int(key_.split('.')[1])
                         row_ = chr(65 + nr_ + 1)
-                        coords = f'{row_}27'
+                        if type_ == 'geodatenpool':
+                            coords = f'{row_}27'
+                        elif type_ == 'mobidam':
+                            coords = f'{row_}24'
                         cell = ws[coords]
                         cell.value = package_dict[key_]
                 # Nutzungshinweise - Hinweise
@@ -715,7 +752,10 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     if 'nutzungshinweise.' in key_ and '.hinweise' in key_:
                         nr_ = int(key_.split('.')[1])
                         row_ = chr(65 + nr_ + 1)
-                        coords = f'{row_}28'
+                        if type_ == 'geodatenpool':
+                            coords = f'{row_}28'
+                        elif type_ == 'mobidam':
+                            coords = f'{row_}25'
                         cell = ws[coords]
                         cell.value = package_dict[key_]
                 # MB_CHANGE FOR DOWNLOAD BUTTON ###
@@ -724,10 +764,26 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 # Replace PDF Header (Exportieren) with 'Metadaten' (for all schemes) or 'Mobidam_Metadaten' (for Mobidam)
                 ###################################
 
+                # Sichtbarkeit
+                if type_ == 'mobidam':
+                    coords = 'B26'
+                    cell = ws[coords]
+                    cell.value = package_dict['private']
+                    cell.value = tp.sichtbarkeit_transpose_r[package_dict['private']]
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$T$2:$T$3')
+                    ws.add_data_validation(dv)
 
+                # Datenquelle
+                if type_ == 'geodatenpool':
+                    coords = 'B31'
+                elif type_ == 'mobidam':
+                    coords = 'B29'
+                cell = ws[coords]
+                cell.value = tp.datenquelle_transpose_r[package_dict['type']]
+                dv = add_validation_dropdown(ws, coords, '=Wertelisten!$V$2:$V$3')
+                ws.add_data_validation(dv)
 
                 
-
 
                 #####
                 #print('#####################')
@@ -743,70 +799,3 @@ def packages_to_files(packages, limit, wdir, excel_template):
 
             else:
                 print('...')                       
-
-# Get packages data
-
-if __name__ == "__main__":
-
-#    transfer_outdir = 'y'
-#   
-    config_ = config()
-    api_key = config_[0]
-    base_url = config_[1]
-#
-#    # a) via package list  
-#    package_list = ckan_request('/api/3/action/package_list')
-#
-##    # Check data
-#    private = ['waermeplanung_baublock', 'altlasten_flaechenumgriffe', 'altlasten', 'hausmaxpegel2017']
-##    i = 0
-##    for el in private:
-##        i = i + 1
-##        if i < 1000:
-##            #print(el)
-##            package_dict = ckan_request(f'/api/3/action/package_show?id={el}')
-##            #print(package_dict['title'])
-##            if ' | ' in package_dict['title']:
-##                if not package_dict['title'].split(' | ')[1].lower() == el:
-##                    print(el, 'a')
-##                if not len(package_dict['title'].split(' | ')) == 2:
-##                    print(el, 'b')
-##            else:
-##                print(el, 'c')
-##    print(i)
-#
-#    #print(package_list)
-#    packages = packages_to_files(package_list, 1000, 'gdp_prod_05', 'schema_template/template_v1.2.1.xlsx')
-#    #packages = packages_to_files('richtwerte_2018', 10, 'gdp_dev_v1.2.1_02', 'schema_template/template_v1.2.1.xlsx')
-#
-#    # To Netzlaufwerk
-#    if transfer_outdir == 'y':
-#        print('Copy files to network drive:')
-#        wdir = 'gdp_prod_05'
-#        outdir = '/mnt/l/KOM/GDP_Metadaten'
-#        #outdir = 'outdir'
-#        for file in os.listdir(f'{wdir}/excel'):
-#            print(file)
-#            if os.path.isfile(f'{wdir}/excel' + '/' + file):
-#                #shutil.copy(f'gdp_prod_v1.2.1/excel/{file}', f'/mnt/l/KOM/GDP_Metadaten/aktuell/{file}')
-#                #shutil.copyfile(f'gdp_prod_v1.2.1/excel/{file}', f'aktuell/{file}')
-#                shutil.copy2(f'{wdir}/excel/{file}', f'{outdir}/aktuell/{file}')
-#                os.chmod(f'{outdir}/aktuell/{file}', 0o777)
-#            elif os.path.isdir(f'{wdir}/excel' + '/' + file):
-#                dir = file
-#                shutil.copytree(f'{wdir}/excel/{dir}', f'{outdir}/aktuell/{dir}', dirs_exist_ok=True)
-#                os.chmod(f'{outdir}/aktuell/{dir}', 0o777)
-#                for file in os.listdir(f'{outdir}/aktuell/{dir}'):
-#                    os.chmod(f'{outdir}/aktuell/{dir}/{file}', 0o777)
-
-
-    # b) via package id
-    #packages = packages_to_files('enp_erg_aggr_blo_poly', 1, 'gdp_test_v1.2.1_prod_selection', 'schema_template/template_v1.2.1.xlsx')
-    #packages = packages_to_files('bauwerke_polygon_akt', 1, 'gdp_test_v1.2.1_prod_selection', 'schema_template/template_v1.2.1.xlsx')
-    #packages = packages_to_files('richtwerte_2016', 1, 'gdp_test_v1.2.1_prod_selection', 'schema_template/template_v1.2.1.xlsx')
-
-    packages = packages_to_files('rad_vepr_zone30_poly', 1, 'gdp_upgrade_dataset_3', 'schema_template/template_v1.2.1_upgrade.xlsx')
-    
-
-
-

@@ -76,15 +76,19 @@ bool_transpose = {
 }
 # Datentyp für Sheet Datenverzeichnis
 dv_datentyp_transpose = {
-    'OBJECT-ID/Number': 'number_',
-    'GEOMETRY/SDO_GEOMETRY': 'sdo_geometry',
-    'TEXT/NVCHAR2': 'nvarchar2',
-    'FLOAT': 'float8',
-    'DATE/DATUM': 'date',
-    'TTIMSTAMP(6)': 'timestamp',
     'BLOB': 'blob',
-    None: None
+    'DATE/DATUM': 'date',
+    'FLOAT': 'float8',
+    'GEOMETRY/SDO_GEOMETRY': 'sdo_geometry',
+    'GEOMETRY/ST_GEOMETRY': 'st_geometry',
+    'OBJECT-ID/NUMBER': 'number_',
+    'TEXT/CHAR': 'char',
+    'TEXT/NVARCHAR2': 'nvarchar2',
+    'TEXT/VARCHAR2': 'varchar2',
+    'TIMESTAMP(6)': 'timestamp',
+    'TIMESTAMP(9)': 'timestamp9'
 }
+
 # Restliche
 update_zyklus_transpose = {
     "Auf Anforderung": "auf_anforderung",
@@ -199,17 +203,18 @@ schema_transpose = {
     "VA3D": "va3d"
 }
 
+sichtbarkeit_transpose = {
+    "Privat": True,
+    "Öffentlich":False
+}
+
+datenquelle_transpose = {
+    "Geodatenpool": "geodatenpool",
+    "Mobidam":"mobidam"
+}
+
 
 # Reversing keys and values for reverse transpose arrays
-
-transpose_arrays = ['main_group_transpose', 'topic_group_transpose', 'org_transpose', 'bool_transpose', 'gdp_datentyp_transpose', 'update_zyklus_transpose', 
-                    'objekttyp_transpose', 'lagegenauigkeit_transpose', 'archivwuerdigkeit_transpose', 'lhm_intern_transpose', 'geoinfoweb_transpose', 
-                    'lhm_extern_transpose', 'nutzungsoptionen_transpose', 'datenabgabe_extern_transpose', 'open_data_transpose', 'hvd_transpose', 
-                    'hvd_kategorie_transpose', 'schema_transpose']
-
-# Use the following to generate code for getting the reverse arrays
-#for el in transpose_arrays:
-    #print(el + '_r = {value: key for key, value in ' + el + '.items()}')
 
 main_group_transpose_r = {value: key for key, value in main_group_transpose.items()}
 topic_group_transpose_r = {value: key for key, value in topic_group_transpose.items()}
@@ -229,3 +234,5 @@ open_data_transpose_r = {value: key for key, value in open_data_transpose.items(
 hvd_transpose_r = {value: key for key, value in hvd_transpose.items()}
 hvd_kategorie_transpose_r = {value: key for key, value in hvd_kategorie_transpose.items()}
 schema_transpose_r = {value: key for key, value in schema_transpose.items()}
+sichtbarkeit_transpose_r = {value: key for key, value in sichtbarkeit_transpose.items()}
+datenquelle_transpose_r = {value: key for key, value in datenquelle_transpose.items()}

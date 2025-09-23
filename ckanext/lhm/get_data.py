@@ -533,7 +533,10 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 for key_ in package_dict.keys():
                     # Hauptkategorien
                     if 'groups.main' in key_:
-                        coords = 'B29'
+                        if type_ == 'geodatenpool':
+                            coords = 'B29'
+                        elif type_ == 'mobidam':
+                            coords = 'B27'
                         cell = ws[coords]
                         cell.value = package_dict[key_]
                         dv = add_validation_dropdown(ws, coords, '=Wertelisten!$A$2:$A$7')

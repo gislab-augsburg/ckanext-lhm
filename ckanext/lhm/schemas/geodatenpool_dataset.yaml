@@ -282,7 +282,6 @@ dataset_fields:
         de: Nicht archivwürdig
   - field_name: begruendung
     label: Begründung
-    form_snippet: text_lhm.html
     is_info: true
     info_text: Begründung der Archivwürdigkeit
 

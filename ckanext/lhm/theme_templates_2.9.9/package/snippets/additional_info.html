@@ -2,6 +2,8 @@
 {% snippet "/package/snippets/geodatenpool.html", pkg_dict=pkg_dict, schema=schema %}
 {% elif dataset_type == 'mobidam' %}
 {% snippet "/package/snippets/mobidam.html", pkg_dict=pkg_dict, schema=schema %}
-{% else %}
+{% elif dataset_type == 'geodatenmanagement' %}
+{% snippet "/package/snippets/geodatenmanagement.html", pkg_dict=pkg_dict, schema=schema %}
+{#{% else %}#}
 
 {% endif %}

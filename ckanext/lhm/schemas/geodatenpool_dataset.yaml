@@ -402,7 +402,7 @@ dataset_fields:
   choices:
   - value: georaum
     label: Georaum
-  - value: erdbeobachung_umwelt
+  - value: erdbeobachtung_umwelt
     label: Erdbeobachtung und Umwelt
   - value: meteorologie
     label: Meteorologie

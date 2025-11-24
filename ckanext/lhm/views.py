@@ -79,11 +79,11 @@ def generate_pdf(dataset_name):
     wdir = vars
     p_type = get_package_type(dataset_name)
     if p_type == 'geodatenpool':
-        excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp_v1.2.4.xlsx')
+        excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp.xlsx')
     elif p_type == 'mobidam':
-        excel_template = resource_filename('ckanext.lhm', 'schemas/template_mobidam_v1.2.4.xlsx')
+        excel_template = resource_filename('ckanext.lhm', 'schemas/template_mobidam.xlsx')
     else:
-        excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp_v1.2.4.xlsx')
+        excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp.xlsx')
 
     # Create pdf directory
     if os.path.exists(f'{wdir}/pdf') == False:
@@ -152,11 +152,11 @@ def generate_xlsx(dataset_name):
     wdir = vars
     p_type = get_package_type(dataset_name)
     if p_type == 'geodatenpool':
-        excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp_v1.2.4.xlsx')
+        excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp.xlsx')
     elif p_type == 'mobidam':
-        excel_template = resource_filename('ckanext.lhm', 'schemas/template_mobidam_v1.2.4.xlsx')
+        excel_template = resource_filename('ckanext.lhm', 'schemas/template_mobidam.xlsx')
     else:
-        excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp_v1.2.4.xlsx')
+        excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp.xlsx')
 
     package = dataset_name
     packages_to_files(package, 1, wdir, excel_template)

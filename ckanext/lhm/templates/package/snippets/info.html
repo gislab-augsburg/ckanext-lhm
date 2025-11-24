@@ -22,24 +22,26 @@ Example:
               </div>
             {% endblock %}           
             {% block download_button %}
-              <div class="btn-group dropdown">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  {{ _('Exportieren') }}
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                  <li>
-                    <a class="dropdown-item" href="/lhm_view/excel/{{ pkg.name }}">
-                      {{ _('Excel') }}
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="/lhm_view/pdf/{{ pkg.name }}">
-                      {{ _('PDF') }}
-                    </a>
-                  </li>
-                </ul>
-              </div>
+              {% if pkg.type == 'geodatenpool' or pkg.type == 'mobidam' %}
+                <div class="btn-group dropdown">
+                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ _('Exportieren') }}
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a class="dropdown-item" href="/lhm_view/excel/{{ pkg.name }}">
+                        {{ _('Excel') }}
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="/lhm_view/pdf/{{ pkg.name }}">
+                        {{ _('PDF') }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              {% endif %}
             {% endblock %}
             {% block follow_button %}
               {% if not hide_follow_button %}

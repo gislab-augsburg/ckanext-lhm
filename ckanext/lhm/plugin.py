@@ -133,15 +133,37 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         data_dict['text'] += wert #'\n'.join(wert)
         data_dict['text'] += bedeutung #'\n'.join(bedeutung)
 
+        # get list of dicts from repeating subfield fields to prevent Solr errors
         usage_keywords = []
         usage_remarks = []
         for sub in data_dict.get('nutzungshinweise', []):
             usage_keywords.append(sub['stichwort'])
             usage_remarks.append(sub['hinweise'])
 
+        refsystem_code = []
+        refsystem_codespace = []
+        refsystem_version = []
+        for sub in data_dict.get('refsystem', []):
+            refsystem_code.append(sub['refsystem_code'])
+            refsystem_codespace.append(sub['refsystem_codespace'])
+            refsystem_version.append(sub['refsystem_version'])
+
+        distrib_format_name = []
+        distrib_format_version = []
+        for sub in data_dict.get('distrib_format', []):
+            distrib_format_name.append(sub['distrib_format_name'])
+            distrib_format_version.append(sub['distrib_format_version'])
+
         # replace list of dicts with plain texts to prevent Solr errors
         data_dict['nutzungshinweise'] = '\n'.join(usage_keywords)
         data_dict['nutzungshinweise'] += '\n'.join(usage_remarks)
+
+        data_dict['refsystem'] = '\n'.join(refsystem_code)
+        data_dict['refsystem'] += '\n'.join(refsystem_codespace)
+        data_dict['refsystem'] += '\n'.join(refsystem_version)
+
+        data_dict['distrib_format'] = '\n'.join(distrib_format_name)
+        data_dict['distrib_format'] += '\n'.join(distrib_format_version)
 
         return data_dict
 

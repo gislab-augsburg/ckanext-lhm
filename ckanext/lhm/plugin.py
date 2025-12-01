@@ -144,15 +144,30 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         refsystem_codespace = []
         refsystem_version = []
         for sub in data_dict.get('refsystem', []):
-            refsystem_code.append(sub['refsystem_code'])
-            refsystem_codespace.append(sub['refsystem_codespace'])
-            refsystem_version.append(sub['refsystem_version'])
+            if 'refsystem_code' in sub.keys():
+                refsystem_code.append(sub['refsystem_code'])
+            else:
+                refsystem_code.append('')
+            if 'refsystem_codespace' in sub.keys():
+                refsystem_codespace.append(sub['refsystem_codespace'])
+            else:
+                refsystem_codespace.append('')
+            if 'refsystem_version' in sub.keys():
+                refsystem_version.append(sub['refsystem_version'])
+            else:
+                refsystem_version.append('')
 
         distrib_format_name = []
         distrib_format_version = []
         for sub in data_dict.get('distrib_format', []):
-            distrib_format_name.append(sub['distrib_format_name'])
-            distrib_format_version.append(sub['distrib_format_version'])
+            if 'distrib_format_name' in sub.keys():
+                distrib_format_name.append(sub['distrib_format_name'])
+            else:
+                distrib_format_name.append('')
+            if 'distrib_format_version' in sub.keys():
+                distrib_format_version.append(sub['distrib_format_version'])
+            else:
+                distrib_format_version.append('')
 
         # replace list of dicts with plain texts to prevent Solr errors
         data_dict['nutzungshinweise'] = '\n'.join(usage_keywords)

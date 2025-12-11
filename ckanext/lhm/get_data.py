@@ -160,12 +160,19 @@ def packages_to_files(packages, limit, wdir, excel_template):
     ## Loop through package list
     i = 0
     for id in package_list:
-        if i < limit:
+        #if i < limit:
+        if id == 'test_mobidam':
             ##
             #id = "historisches_luftbildmosaik_1984"
             #print('.')
             ##
             package_dict = ckan_request(f'/api/3/action/package_show?id={id}')
+            print('-----------------')
+            print(package_dict)
+            print('-----------------')
+            package_dict_search = ckan_request(f'/api/3/action/package_search?fq=name:{id}&include_drafts=true&include_private=true')
+            print(package_dict_search)
+            package_dict = package_dict_search['results'][0]
             df = pd.DataFrame([package_dict])
             type_ = df['type'][0]
             # MB_CHANGE FOR DOWNLOAD BUTTON ### add mobidam

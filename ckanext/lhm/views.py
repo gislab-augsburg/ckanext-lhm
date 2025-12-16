@@ -9,6 +9,10 @@ from pkg_resources import resource_filename
 from ckan.logic import get_action
 from ckan import model
 from ckan.common import g
+import ckan.plugins.toolkit as toolkit
+from ckanext.lhm.gp_to_iso1939 import convert_metadata_dict
+import shutil
+import requests
 
 # Create routes
 lhm_view = Blueprint('lhm_view', __name__)
@@ -68,7 +72,7 @@ def convert_xlsx_to_pdf(input_path, output_dir, package):
     except subprocess.CalledProcessError as e:
         print("Fehler bei der Konvertierung:", e.stderr)
         return False
-    
+
 
 # Generate package pdf for download
 @lhm_view.route("/lhm_view/pdf/<dataset_name>")
@@ -88,7 +92,7 @@ def generate_pdf(dataset_name):
     # Create pdf directory
     if os.path.exists(f'{wdir}/pdf') == False:
         os.mkdir(f'{wdir}/pdf')
-    
+
     package = dataset_name
     packages_to_files(package, 1, wdir, excel_template)
 
@@ -174,3 +178,119 @@ def generate_xlsx(dataset_name):
 # Register blueprint with ckan
 def get_blueprints():
     return [lhm_view]
+
+
+# Test push_csw route
+@lhm_view.route("/lhm_view/push_csw")
+def test_csw_push():
+    #toolkit.h.flash_success("Simulating push to csw here, success :)")
+
+    ###################
+    # Get template
+    iso_template = resource_filename('ckanext.lhm', 'schemas/iso_template.xml')
+    # Get packages of type geoportal
+    package_search = toolkit.get_action('package_search')
+    data_dict = {'q': 'type:geoportal', 'rows': 1000  }
+    context = {'ignore_auth': True}
+    search_results = package_search(context, data_dict)
+    datasets = search_results.get('results', [])
+
+    # Delete old and create new output_dir
+    output_dir = '/var/lib/ckan/csw_edit'
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    else:
+        shutil.rmtree(output_dir)
+        os.makedirs(output_dir)
+
+
+    # Delete all datasets on pycsw server before importing (update is not available for xml)
+    
+    # Pagination: Get number matched
+    feat_ids = []
+    url_m = 'http://pycsw:8000/collections/metadata:main/items?f=json'
+    response_m = requests.post(url_m)
+    dict_m = json.loads(response_m.text)
+    number_matched = dict_m['numberMatched']
+    for offset in range(0, number_matched, 20):
+
+        all_url = f'http://pycsw:8000/collections/metadata:main/items?f=json&limit=20&offset={offset}'
+        response_all = requests.post(all_url)
+        dict_all = json.loads(response_all.text)
+        for feat in dict_all['features']:
+            feat_id = feat['id']
+            feat_ids.append(feat_id)
+    
+    for feat_id in feat_ids:
+        print('-----')
+        print(f"Deleting {feat_id}")
+        try:   
+            del_url = f'http://pycsw:8000/collections/metadata:main/items/{feat_id}'
+            del_response = requests.delete(del_url)
+            print(f"Status Code delete: {del_response.status_code}")
+            print("Response Body delete:")
+            print(del_response.text)
+            if del_response.status_code != 200:
+                for i in range(10):
+                    del_url = f'http://pycsw:8000/collections/metadata:main/items/{feat_id}'
+                    del_response = requests.delete(del_url)
+                    print(f"Status Code delete: {del_response.status_code}")
+                    print("Response Body delete:")
+                    print(del_response.text)
+                    if del_response.status_code == 200:
+                        break
+        except:
+            print(f"An error occurred:")
+            print(f"Status Code delete: {del_response.status_code}")
+            print("Response Body delete:")
+            print(del_response.text)
+    
+    # Process and import each dataset to Pycsw Server
+    i = 0
+    for dataset in datasets:
+        if 1 < 11:
+            identifier = dataset.get("file_identifier")
+            name = dataset.get("name")
+            print('-----')
+            print(f"Processing {name}, {identifier}")
+            tree = convert_metadata_dict(meta_dict = dataset, template_xml = iso_template)
+            outpath = output_dir + '/' + identifier + '.xml'
+            tree.write(outpath, xml_declaration=True, encoding="utf-8", pretty_print=True)
+
+            # Save dataset dict as JSON
+            #dataset_name = dataset.get('name')
+            #file_path = os.path.join(output_dir, f"{dataset_name}.json")
+            #with open(file_path, 'w', encoding='utf-8') as f:
+                #json.dump(dataset, f, indent=4, ensure_ascii=False)
+
+            # Push the Iso XML to Pycsw
+            pycsw_url = 'http://pycsw:8000/collections/metadata:main/items'
+            file_path = outpath
+            with open(file_path, 'rb') as f:
+                xml_data = f.read()
+            headers = {'Content-Type': 'application/xml'}
+            try:
+                response = requests.post(pycsw_url, data=xml_data, headers=headers, verify=True)
+                print(f"Status Code: {response.status_code}")
+                print("Response Body:")
+                print(response.text)
+
+            except:
+                print(f"An error occurred:")
+                print(f"Status Code: {response.status_code}")
+                print("Response Body:")
+                print(response.text)
+        
+            i = i + 1
+
+    # Flash success message
+    toolkit.h.flash_success(f"Processed {str(i)} datasets successfully and pushed them to PyCSW Server :)" )
+    #toolkit.h.flash_success(f"All datasets deleted" )
+
+    #return len(datasets)
+
+    ###################
+    referrer = toolkit.request.referrer
+    if referrer:
+        return toolkit.redirect_to(referrer)
+    return toolkit.redirect_to('/')

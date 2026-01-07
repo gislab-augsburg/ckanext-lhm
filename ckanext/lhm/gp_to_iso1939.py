@@ -658,7 +658,35 @@ def apply_mapping(meta: dict,
         nodes = root.xpath(xpath, namespaces=NSMAP)
         if not nodes:
             continue
+
         if isinstance(value, list):
+            # --- Sonderfall: ident_keywords -> pro Eintrag ein eigenes <gmd:keyword> ---
+            if field == "ident_keywords":
+                # nodes zeigen (laut Mapping) auf gco:CharacterString unter gmd:keyword
+                base_cs = nodes[0]                      # gco:CharacterString
+                base_keyword = base_cs.getparent()       # gmd:keyword
+                if base_keyword is None:
+                    continue
+                kw_parent = base_keyword.getparent()     # gmd:MD_Keywords
+                if kw_parent is None:
+                    continue
+
+                # alle bestehenden <gmd:keyword> entfernen (nicht nur CharacterString)
+                for kw in kw_parent.xpath("./gmd:keyword", namespaces=NSMAP):
+                    kw_parent.remove(kw)
+
+                # neue <gmd:keyword> Elemente erzeugen
+                for v in value:
+                    new_kw = deepcopy(base_keyword)
+                    # Text im enthaltenen CharacterString setzen
+                    cs_nodes = new_kw.xpath(".//gco:CharacterString", namespaces=NSMAP)
+                    if cs_nodes:
+                        cs_nodes[0].text = str(v)
+                    kw_parent.append(new_kw)
+
+                continue  # wichtig: normalen Listen-Handler überspringen
+
+            # --- Default-Listen-Handling (wie bisher) ---
             base_node = nodes[0]
             parent = base_node.getparent()
             for n in nodes:
@@ -669,6 +697,7 @@ def apply_mapping(meta: dict,
                 new_node = deepcopy(base_node)
                 set_node_value(new_node, v)
                 parent.append(new_node)
+
         else:
             for n in nodes:
                 set_node_value(n, value)

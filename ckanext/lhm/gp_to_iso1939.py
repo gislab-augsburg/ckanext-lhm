@@ -103,6 +103,7 @@ MAPPING_PAIRS = [
     ('iso_version', 'gmd:MD_Metadata/gmd:metadataStandardVersion/gco:CharacterString'),
     ('service_type', 'gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceType/gco:LocalName'),
     ('file_identifier', 'gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString'),
+    ('hierarchylevel_scopecode', 'gmd:MD_Metadata/gmd:hierarchyLevel/gmd:MD_ScopeCode')
 ]
 def load_embedded_mapping():
     """Return a fresh list of mapping dicts from the embedded mapping pairs."""

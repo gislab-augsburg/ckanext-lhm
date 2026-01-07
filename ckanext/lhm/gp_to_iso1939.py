@@ -660,33 +660,53 @@ def apply_mapping(meta: dict,
             continue
 
         if isinstance(value, list):
-            # --- Sonderfall: ident_keywords -> pro Eintrag ein eigenes <gmd:keyword> ---
-            if field == "ident_keywords":
-                # nodes zeigen (laut Mapping) auf gco:CharacterString unter gmd:keyword
-                base_cs = nodes[0]                      # gco:CharacterString
-                base_keyword = base_cs.getparent()       # gmd:keyword
-                if base_keyword is None:
+            # Felder, bei denen ISO19139 verlangt, dass der *Container* wiederholt wird
+            CONTAINER_REPEAT_FIELDS = {
+                "ident_keywords",
+                "ident_accessconstraints",
+                "ident_useconstraints",
+                "ident_uselimitation",
+                "ident_otherconstraints",
+                "dataquality_scopedescription_dataset",
+                "dataquality_scopedescription_other",
+            }
+
+            if field in CONTAINER_REPEAT_FIELDS:
+                base_leaf = nodes[0]                 # z.B. gco:CharacterString oder gmd:MD_RestrictionCode
+                repeat_elem = base_leaf.getparent()  # z.B. gmd:keyword / gmd:useLimitation / gmd:accessConstraints / gmd:dataset ...
+                if repeat_elem is None:
                     continue
-                kw_parent = base_keyword.getparent()     # gmd:MD_Keywords
-                if kw_parent is None:
+                repeat_parent = repeat_elem.getparent()  # z.B. gmd:MD_Keywords / gmd:MD_LegalConstraints / gmd:MD_ScopeDescription
+                if repeat_parent is None:
                     continue
 
-                # alle bestehenden <gmd:keyword> entfernen (nicht nur CharacterString)
-                for kw in kw_parent.xpath("./gmd:keyword", namespaces=NSMAP):
-                    kw_parent.remove(kw)
+                # Alle vorhandenen Container dieses Typs entfernen (damit nicht alte + neue gemischt werden)
+                for child in list(repeat_parent):
+                    if child.tag == repeat_elem.tag:
+                        repeat_parent.remove(child)
 
-                # neue <gmd:keyword> Elemente erzeugen
+                # Pro Wert genau EINEN Container erzeugen
                 for v in value:
-                    new_kw = deepcopy(base_keyword)
-                    # Text im enthaltenen CharacterString setzen
-                    cs_nodes = new_kw.xpath(".//gco:CharacterString", namespaces=NSMAP)
-                    if cs_nodes:
-                        cs_nodes[0].text = str(v)
-                    kw_parent.append(new_kw)
+                    new_container = deepcopy(repeat_elem)
 
-                continue  # wichtig: normalen Listen-Handler überspringen
+                    # Leaf im neuen Container finden (gleiche Tag-Struktur wie im Template)
+                    leaf_in_new = None
+                    for e in new_container.iter():
+                        if e.tag == base_leaf.tag:
+                            leaf_in_new = e
+                            break
 
-            # --- Default-Listen-Handling (wie bisher) ---
+                    if leaf_in_new is not None:
+                        set_node_value(leaf_in_new, v)
+                    else:
+                        # Fallback: falls Template unerwartet ist
+                        set_node_value(new_container, v)
+
+                    repeat_parent.append(new_container)
+
+                continue  # wichtig: Default-Listenlogik überspringen
+
+            # Default-Listen-Handling (wie bisher)
             base_node = nodes[0]
             parent = base_node.getparent()
             for n in nodes:

@@ -610,7 +610,7 @@
       <srv:serviceTypeVersion>
         <gco:CharacterString/>
       </srv:serviceTypeVersion>
-      <srv:extent>
+      <gmd:extent>
         <gmd:EX_Extent>
           <gmd:geographicElement>
             <gmd:EX_GeographicDescription>
@@ -624,8 +624,8 @@
             </gmd:EX_GeographicDescription>
           </gmd:geographicElement>
         </gmd:EX_Extent>
-      </srv:extent>
-      <srv:extent>
+      </gmd:extent>
+      <gmd:extent>
         <gmd:EX_Extent>
           <gmd:description>
             <gco:CharacterString/>
@@ -650,7 +650,7 @@
             </gmd:EX_GeographicBoundingBox>
           </gmd:geographicElement>
         </gmd:EX_Extent>
-      </srv:extent>
+      </gmd:extent>
       <srv:couplingType>
         <srv:SV_CouplingType codeList="http://www.isotc211.org/2005/iso19119/resources/Codelist/gmxCodelists.xml#SV_CouplingType"/>
       </srv:couplingType>

@@ -29,11 +29,6 @@ SKIP_COVERAGE_FIELDS = {
     "refsystem_code",
     "refsystem_codespace",
     "refsystem_version",
-    # werden über apply_bbox_from_json() gesetzt
-    "extras.bbox-west-long",
-    "extras.bbox-east-long",
-    "extras.bbox-south-lat",
-    "extras.bbox-north-lat",
     # werden über apply_distrib_format_from_json() gesetzt
     "distrib_format_name",
     "distrib_format_version",
@@ -103,7 +98,11 @@ MAPPING_PAIRS = [
     ('iso_version', 'gmd:MD_Metadata/gmd:metadataStandardVersion/gco:CharacterString'),
     ('service_type', 'gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceType/gco:LocalName'),
     ('file_identifier', 'gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString'),
-    ('hierarchylevel_scopecode', 'gmd:MD_Metadata/gmd:hierarchyLevel/gmd:MD_ScopeCode')
+    ('hierarchylevel_scopecode', 'gmd:MD_Metadata/gmd:hierarchyLevel/gmd:MD_ScopeCode'),
+    ('bbox_east', 'gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:eastBoundLongitude/gco:Decimal'),
+    ('bbox_north', 'gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:northBoundLatitude/gco:Decimal'),
+    ('bbox_south', 'gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:southBoundLatitude/gco:Decimal'),
+    ('bbox_west', 'gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:westBoundLongitude/gco:Decimal')
 ]
 def load_embedded_mapping():
     """Return a fresh list of mapping dicts from the embedded mapping pairs."""
@@ -161,16 +160,32 @@ def adjust_mappings_for_iso_type_and_date(meta: dict, mappings, iso_type: str):
       für dieses Feld komplett mit dem gewünschten DateTime-Pfad.
     """
     # 1) Basis-Anpassung für MD_DataIdentification
+
     if iso_type == "MD_DataIdentification":
         old1 = "gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification"
         new1 = "gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification"
         old2 = "MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification"
         new2 = "MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification"
+
+        # NEU: bei MD_DataIdentification ist extent im gmd:-Namespace (nicht srv:)
+        old_ext1 = "gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent"
+        new_ext1 = "gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent"
+        old_ext2 = "MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent"
+        new_ext2 = "MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent"
+
         for m in mappings:
             p = m["xml_path_pattern"]
+
+            # erst extent korrigieren (damit srv:extent verschwindet)
+            p = p.replace(old_ext1, new_ext1)
+            p = p.replace(old_ext2, new_ext2)
+
+            # dann Identification-Knoten ersetzen (wie bisher)
             p = p.replace(old1, new1)
             p = p.replace(old2, new2)
+
             m["xml_path_pattern"] = p
+
     # 2) Sonderfall ident_date_ -> DateTime-Pfad, falls DateTime
     date_val = meta.get("ident_date_")
     use_datetime = looks_like_datetime(date_val)
@@ -486,70 +501,6 @@ def apply_ident_date_from_json(meta: dict, root: etree._Element, iso_type: str):
         date_container = etree.SubElement(ci_date, qn("gmd:date"))
         date_node = etree.SubElement(date_container, qn("gco:Date"))
     date_node.text = str(value)
-# -------------------------------
-# BBOX -> gmd:EX_GeographicBoundingBox
-# -------------------------------
-def apply_bbox_from_json(meta: dict, root: etree._Element, iso_type: str):
-    """
-    Holt die BBOX-Extras aus metadata.json:
-    bbox-west-long, bbox-east-long, bbox-south-lat, bbox-north-lat
-    und trägt sie in ein vorhandenes gmd:EX_GeographicBoundingBox ein.
-    Die Funktion wählt den BoundingBox-Knoten abhängig von iso_type:
-      - MD_DataIdentification -> unter gmd:MD_DataIdentification
-      - sonst -> unter srv:SV_ServiceIdentification
-    """
-    west = get_extra_value(meta, "bbox-west-long")
-    east = get_extra_value(meta, "bbox-east-long")
-    south = get_extra_value(meta, "bbox-south-lat")
-    north = get_extra_value(meta, "bbox-north-lat")
-    if not any([west, east, south, north]):
-        return
-
-    # 1) passenden identification-Knoten wählen
-    if iso_type == "MD_DataIdentification":
-        ident_nodes = root.xpath(
-            ".//gmd:identificationInfo/gmd:MD_DataIdentification",
-            namespaces=NSMAP,
-        )
-    else:
-        ident_nodes = root.xpath(
-            ".//gmd:identificationInfo/srv:SV_ServiceIdentification",
-            namespaces=NSMAP,
-        )
-
-    # Fallback: altes Verhalten, falls Struktur unerwartet ist
-    if not ident_nodes:
-        bbox_nodes = root.xpath(
-            ".//gmd:identificationInfo//gmd:EX_GeographicBoundingBox",
-            namespaces=NSMAP,
-        )
-    else:
-        ident = ident_nodes[0]
-        bbox_nodes = ident.xpath(".//gmd:EX_GeographicBoundingBox", namespaces=NSMAP)
-
-    if not bbox_nodes:
-        return
-
-    bbox = bbox_nodes[0]
-
-    # extentTypeCode muss 1 sein
-    extent_type_nodes = bbox.xpath("./gmd:extentTypeCode/gco:Boolean", namespaces=NSMAP)
-    if extent_type_nodes:
-        extent_type_nodes[0].text = "1"
-
-    # Koordinaten setzen
-    if west is not None:
-        for n in bbox.xpath("./gmd:westBoundLongitude/gco:Decimal", namespaces=NSMAP):
-            n.text = str(west)
-    if east is not None:
-        for n in bbox.xpath("./gmd:eastBoundLongitude/gco:Decimal", namespaces=NSMAP):
-            n.text = str(east)
-    if south is not None:
-        for n in bbox.xpath("./gmd:southBoundLatitude/gco:Decimal", namespaces=NSMAP):
-            n.text = str(south)
-    if north is not None:
-        for n in bbox.xpath("./gmd:northBoundLatitude/gco:Decimal", namespaces=NSMAP):
-            n.text = str(north)
 
 
 ########################################################################
@@ -726,7 +677,6 @@ def apply_mapping(meta: dict,
     apply_refsystem_from_json(meta, root)
     apply_distrib_format_from_json(meta, root)
     iso_type = meta.get("iso_type", "SV_ServiceIdentification")
-    apply_bbox_from_json(meta, root, iso_type)
     # ident_date_ explizit setzen (unabhängig vom Mapping-Pfad)
     apply_ident_date_from_json(meta, root, iso_type)
     # zum Schluss: leere Elemente entfernen (z.B. leere serviceType)

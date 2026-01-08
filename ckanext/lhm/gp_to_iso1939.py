@@ -286,6 +286,16 @@ def set_node_value(node: etree._Element, value):
     Wert in ein XML-Element setzen.
     Bei CodeList-Elementen wird codeListValue verwendet.
     """
+    # Special case: MD_TopicCategoryCode is typically encoded as element text
+    # (ISO 19115 enumeration), not as a customizable codeListValue attribute.
+    # Example:
+    #   <gmd:MD_TopicCategoryCode>transportation</gmd:MD_TopicCategoryCode>
+    if node.tag.endswith("}MD_TopicCategoryCode") or node.tag.endswith("MD_TopicCategoryCode"):
+        node.attrib.pop("codeList", None)
+        node.attrib.pop("codeListValue", None)
+        node.text = str(value)
+        return
+
     if node.tag.endswith("Code"):
         node.attrib["codeListValue"] = str(value)
     else:

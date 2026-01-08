@@ -592,6 +592,209 @@ def prune_empty_elements(elem: etree._Element):
         if parent is not None:
             parent.remove(elem)
         return
+
+# -------------------------------
+# nilReason handling (from meta_dict["nil_reason"])
+# -------------------------------
+def _parse_nil_reason_item(item: str) -> Optional[dict]:
+    """
+    Expected format (parts separated by ';  '):
+      "<label>;  nilReason:<val>;  value:<val-or-None>;  <field_name>;  <xpath>"
+
+    value:None means Python None (no value), not the string "None".
+    """
+    parts = [p.strip() for p in item.split(";  ") if p.strip()]
+    if len(parts) < 5:
+        return None
+
+    label = parts[0]
+    nil_part = next((p for p in parts if p.startswith("nilReason:")), "")
+    val_part = next((p for p in parts if p.startswith("value:")), "")
+    # field_name is usually the 2nd last part, xpath is last part
+    field_name = parts[-2]
+    xpath = parts[-1]
+
+    nil_reason = nil_part.split(":", 1)[1].strip() if ":" in nil_part else ""
+    raw_value = val_part.split(":", 1)[1].strip() if ":" in val_part else ""
+    value = None if raw_value == "None" or raw_value == "" else raw_value
+
+    if not nil_reason or not xpath:
+        return None
+
+    return {
+        "label": label,
+        "nilReason": nil_reason,
+        "value": value,
+        "field_name": field_name,
+        "xpath": xpath,
+    }
+
+
+def _build_full_xpath_lxml(elem: etree._Element) -> str:
+    """Build an absolute-ish XPath with sibling indexes using known NSMAP prefixes."""
+    uri_to_prefix = {uri: pfx for pfx, uri in NSMAP.items()}
+    parts = []
+    cur = elem
+    while cur is not None:
+        tag = cur.tag
+        if isinstance(tag, str) and tag.startswith("{"):
+            uri, local = tag[1:].split("}", 1)
+            pfx = uri_to_prefix.get(uri, "")
+            qname = f"{pfx}:{local}" if pfx else local
+        else:
+            qname = str(tag)
+
+        parent = cur.getparent()
+        if parent is None:
+            idx = 1
+        else:
+            same = [c for c in parent if c.tag == cur.tag]
+            idx = same.index(cur) + 1
+
+        parts.append(f"{qname}[{idx}]")
+        cur = parent
+
+    return "/" + "/".join(reversed(parts))
+
+
+def _canonicalize_xpath(xp: str) -> str:
+    """Remove positional predicates like [1], [2] to allow comparison."""
+    return re.sub(r"\[\d+\]", "", (xp or ""))
+
+
+def _to_relative_xpath(input_xpath: str, root: etree._Element) -> str:
+    """
+    Convert an absolute path like /gmd:MD_Metadata[1]/... into a relative XPath for root.xpath().
+    We strip indices because output indices may change after template modifications.
+    """
+    xp = (input_xpath or "").strip()
+    if not xp.startswith("/"):
+        # already relative-ish
+        xp = "/" + xp
+    xp_no_idx = _canonicalize_xpath(xp)
+
+    # split and drop the root step if it matches the actual root qname (without index)
+    steps = [s for s in xp_no_idx.strip("/").split("/") if s]
+    if not steps:
+        return "."
+    root_full = _build_full_xpath_lxml(root)
+    root_step = _canonicalize_xpath(root_full).strip("/").split("/", 1)[0]  # e.g. gmd:MD_Metadata
+    if steps[0] == root_step:
+        steps = steps[1:]
+    if not steps:
+        return "."
+    return "./" + "/".join(steps)
+
+
+def _best_match_by_suffix(candidates, target_canon: str) -> Optional[etree._Element]:
+    """
+    Choose the candidate whose canonical xpath shares the longest suffix with target_canon.
+    """
+    target_steps = [s for s in target_canon.strip("/").split("/") if s]
+    best = None
+    best_score = -1
+    for c in candidates:
+        c_canon = _canonicalize_xpath(_build_full_xpath_lxml(c))
+        c_steps = [s for s in c_canon.strip("/").split("/") if s]
+        # compare suffix length
+        i = 1
+        while i <= min(len(target_steps), len(c_steps)) and target_steps[-i] == c_steps[-i]:
+            i += 1
+        score = i - 1
+        if score > best_score:
+            best_score = score
+            best = c
+    return best
+
+
+def _find_target_element_for_nilreason(root: etree._Element, input_xpath: str) -> Optional[etree._Element]:
+    """
+    Try to locate the element where nilReason should be set, based on the input_xpath.
+    We ignore numeric predicates and pick best match by suffix.
+    """
+    rel = _to_relative_xpath(input_xpath, root)
+    try:
+        candidates = root.xpath(rel, namespaces=NSMAP)
+    except etree.XPathError:
+        candidates = []
+
+    if not candidates:
+        # fallback: search by last step tag
+        xp_no_idx = _canonicalize_xpath(input_xpath)
+        last = xp_no_idx.strip("/").split("/")[-1] if xp_no_idx.strip("/") else ""
+        if last:
+            try:
+                candidates = root.xpath(f".//{last}", namespaces=NSMAP)
+            except etree.XPathError:
+                candidates = []
+
+    if not candidates:
+        return None
+
+    target_canon = _canonicalize_xpath(input_xpath)
+    if len(candidates) == 1:
+        return candidates[0]
+    return _best_match_by_suffix(candidates, target_canon)
+
+
+def _set_nilreason_and_value(target: etree._Element, nil_reason: str, value: Optional[str]) -> None:
+    """
+    Apply gco:nilReason on target and set value in a child (or self if leaf).
+    If value is None -> remove children/text to produce self-closing element with nilReason.
+    """
+    target.set(f"{{{NSMAP['gco']}}}nilReason", nil_reason)
+
+    if value is None:
+        # remove children + text
+        target.text = None
+        for c in list(target):
+            target.remove(c)
+        return
+
+    # If the target is itself a primitive leaf element, set its text
+    if len(target) == 0 and (target.text is None or target.text.strip() == ""):
+        target.text = value
+        return
+
+    # Prefer existing primitive child if present
+    primitive_child = None
+    for c in target:
+        if isinstance(c.tag, str) and c.tag.startswith("{"):
+            uri, local = c.tag[1:].split("}", 1)
+            if uri == NSMAP["gco"] and local in {"CharacterString", "Decimal", "Date", "DateTime", "Integer", "Real", "LocalName"}:
+                primitive_child = c
+                break
+        # gmd:URL is also common
+        if c.tag == f"{{{NSMAP['gmd']}}}URL":
+            primitive_child = c
+            break
+
+    if primitive_child is None:
+        # Create gco:CharacterString by default
+        primitive_child = etree.SubElement(target, f"{{{NSMAP['gco']}}}CharacterString")
+
+    primitive_child.text = value
+
+
+def apply_nil_reasons(meta: dict, root: etree._Element) -> None:
+    """
+    Process meta["nil_reason"] list and apply nilReason/value into the output XML tree.
+    """
+    items = meta.get("nil_reason") or []
+    if not isinstance(items, list) or not items:
+        return
+
+    for raw in items:
+        if not isinstance(raw, str):
+            continue
+        parsed = _parse_nil_reason_item(raw)
+        if not parsed:
+            continue
+        target = _find_target_element_for_nilreason(root, parsed["xpath"])
+        if target is None:
+            continue
+        _set_nilreason_and_value(target, parsed["nilReason"], parsed["value"])
+
 # -------------------------------
 # Haupt-Mapping-Logik
 # -------------------------------
@@ -723,28 +926,40 @@ def convert_metadata_dict(
     """
     Wandelt ein Metadata-Dictionary (wie metadata.json)
     in einen ISO19139 XML-ElementTree um.
+
     Parameter:
-      meta_dict        dict mit gleicher Struktur wie metadata.json
-      mapping_csv      Pfad zur mapping.csv
-      template_xml     Pfad zur ISO-Template-XML
+      meta_dict          dict mit gleicher Struktur wie metadata.json
+      mapping_csv        Pfad zur mapping.csv (optional; wenn None -> eingebettetes Mapping)
+      template_xml       Pfad zur ISO-Template-XML
       do_coverage_check  optional: Konsistenzcheck Mapping <-> XML
+
     Rückgabe:
       lxml.etree.ElementTree
     """
     mapping_path = Path(mapping_csv) if mapping_csv is not None else None
     template_path = Path(template_xml)
+
     if mapping_path is None:
-            mappings = load_embedded_mapping()   # <-- Name ggf. anpassen!
+        mappings = load_embedded_mapping()
     else:
         mappings = load_mapping_csv(mapping_path)
+
     iso_type = meta_dict.get("iso_type", "SV_ServiceIdentification")
+
     # Mapping an iso_type + ident_date_ anpassen
     adjust_mappings_for_iso_type_and_date(meta_dict, mappings, iso_type)
+
     template_tree = load_template_xml(template_path)
     result_tree = apply_mapping(meta_dict, template_tree, mappings)
+
+    # Apply nilReason/value hints from meta_dict["nil_reason"]
+    apply_nil_reasons(meta_dict, result_tree.getroot())
+
     if do_coverage_check:
         check_mapping_coverage(meta_dict, mappings, result_tree.getroot())
+
     return result_tree
+
 # -------------------------------
 # CLI
 # -------------------------------

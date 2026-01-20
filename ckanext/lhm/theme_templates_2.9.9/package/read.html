@@ -13,14 +13,6 @@
 </span>
 {% endif %}
 <div class="row">
-  <div class="column_date">
-    {% if pkg.letzter_import%}
-      <div class="last-data-import">
-            <span class="update-title">Letzter Import: </span>
-            <span class="update-date">{{ pkg.letzter_import }}</span>
-      </div>
-    {% endif %}
-  </div>
   <div class="column_note">
     <h1>
       {% block page_heading %}
@@ -40,6 +32,14 @@
         </div>
       {% endif %}
     {% endblock %}
+  </div>
+  <div class="column_date">
+    {% if pkg.letzter_import%}
+      <div class="last-data-import">
+            <span class="update-title">Letzter Import: </span>
+            <span class="update-date">{{ pkg.letzter_import }}</span>
+      </div>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

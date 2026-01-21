@@ -140,7 +140,7 @@ def generate_pdf(dataset_name):
         output_pdf,
         mimetype='application/pdf',
         as_attachment=True,
-        attachment_filename=package + '.pdf'
+        download_name=package + '.pdf'
     )
 
 # Generate package excel for download
@@ -168,7 +168,7 @@ def generate_xlsx(dataset_name):
         file_path,
         mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         as_attachment = True,
-        attachment_filename = package + '.xlsx'
+        download_name = package + '.xlsx'
     )
 
 # Register blueprint with ckan

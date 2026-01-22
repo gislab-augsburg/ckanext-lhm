@@ -484,3 +484,14 @@ border: 1px solid #ccc;
     display: inline-block
   }
 }
+
+/* Adaptations CKAN 2.11 */
+table.package-metadata {
+    width: 100%;
+    table-layout: fixed;
+}
+
+/* restore old BS3 behaviour */
+.hide { 
+    display: none !important; 
+}

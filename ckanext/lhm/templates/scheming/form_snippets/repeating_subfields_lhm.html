@@ -5,9 +5,9 @@
 
 {% macro repeating_panel(index, index1) %}
   <div class="scheming-subfield-group" data-field="{{ field.field_name }}" data-group-index="{{ index }}">
-    <div class="panel panel-default">
+    <div class="card mb2">
       {% block repeating_panel_header %}
-        <header class="panel-heading">
+        <header class="card-header">
           {% block field_removal_button%}
             <a class="btn btn-danger btn-repeating-remove" name="repeating-remove" href="javascript:;"
               >{% block delete_button_text %}{{ _('Remove') }}{% endblock %}</a>
@@ -15,7 +15,7 @@
           {{ h.scheming_language_text(field.repeating_label or field.label) }} {{ index1 }}
         </header>
       {% endblock %}
-      <div class="panel-body fields-content">
+      <div class="card-body fields-content">
         {% for subfield in field.repeating_subfields %}
           {% set sf = dict(
             subfield,
@@ -31,7 +31,7 @@
           -%}
         {% endfor %}
       </div>
-      <div class="panel-body fields-removed-notice" style="display:none">
+      <div class="card-body fields-removed-notice d-none">
         {% block removal_text %}
           {% if 'id' in data %}
             {{ _('These fields have been removed, click update below to save your changes.') }}

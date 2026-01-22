@@ -427,8 +427,8 @@ dataset_fields:
   label: Weitere Hinweise zur Nutzung
   is_info: true
   info_text: Zusätzliche Hinweise zur Nutzung können unter 'Hinweise' mit Stichwort und Erklärung eingefügt werden. Diese müssen auch für Laien verständlich sein. Hinweis können sein zu bspw. vertraglichen Bedingungen oder Besonderheiten im Datensatz.
-
   form_snippet: repeating_subfields_lhm.html
+  display_snippet: repeating_subfields_lhm.html
   repeating_label: Hinweis
   repeating_subfields:
   - field_name: stichwort

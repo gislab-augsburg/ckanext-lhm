@@ -495,3 +495,32 @@ table.package-metadata {
 .hide { 
     display: none !important; 
 }
+
+/* Adaptations CKAN 2.11 datatables view*/
+/* Container styling: white background and solid white outline */
+#resize_wrapper {
+    background-color: white !important;
+    outline: 2px solid white !important;
+}
+
+/* Remove the left border from the scrollable table body */
+.dataTables_scrollBody {
+    border-left: 0px !important;
+}
+
+/* Add a lightgrey left border to the table body rows */
+#dtprv tbody {
+    border-left: 1px solid lightgrey !important;
+}
+
+/* Hide resource and sorting information blocks */
+.resourceinfo, 
+.sortinfo {
+    display: none !important;
+}
+
+/* Remove top margin from the pagination controls */
+.dataTables_paginate.paging_simple_numbers {
+    margin-top: 0px !important;
+}
+

@@ -1,0 +1,61 @@
+{# package/snippets/datastore_first_resource_table.html
+   Shows datastore records of the first resource that has datastore_active
+#}
+
+{% set limit = 20 %}
+{% set ds_res = None %}
+
+{# Find first resource with datastore #}
+{% if pkg_dict.resources %}
+  {% for r in pkg_dict.resources %}
+    {% if r.datastore_active %}
+      {% set ds_res = r %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if ds_res %}
+  {% set result = h.get_action('datastore_search')({}, {'resource_id': ds_res.id, 'limit': limit}) %}
+
+  {% if result and result.records and (result.records|length) > 0 %}
+    <section class="additional-info module-content table-datastore-preview">
+      <div class="collapsible-header">
+        <h3 style="border-bottom: 0px solid;">{{ _('Datastore preview') }}</h3>
+        <i class="plus-sign fa fa-minus"></i>
+      </div>
+
+      <div class="collapsible-content">
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              {% for f in result.fields %}
+                {% if f.id != '_id' %}
+                  <th>{{ f.id|e }}</th>
+                {% endif %}
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in result.records %}
+              <tr>
+                {% for f in result.fields %}
+                  {% if f.id != '_id' %}
+                    <td>{{ row.get(f.id, '') }}</td>
+                  {% endif %}
+                {% endfor %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <p class="muted" style="margin-top: 8px;">
+          {{ _('Showing') }} {{ result.records|length }} {{ _('of') }} {{ result.total }} {{ _('rows from resource') }}:
+          <a href="{{ h.url_for('resource.read', id=pkg_dict.name, resource_id=ds_res.id) }}">
+            {{ ds_res.name or ds_res.id }}
+          </a>
+        </p>
+      </div>
+    </section>
+  {% endif %}
+{% endif %}

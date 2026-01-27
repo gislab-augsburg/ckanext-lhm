@@ -275,6 +275,8 @@
   {% endblock %}
   {% endif %}
 
+  {# Datastore table preview (first datastore resource) #}
+  {% snippet 'package/snippets/datastore_first_resource_table.html', pkg_dict=pkg_dict %}
 
   <script>
         document.addEventListener("DOMContentLoaded", function() {

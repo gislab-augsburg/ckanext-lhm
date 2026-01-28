@@ -1,26 +1,34 @@
 body {
-    background-color: #1a3a60;
+    background-color: #00AB9F;
 }
 
-[role=main],
-.main {
-  background-color: #fff;
+.homepage
+[role=main]{
+    padding: 0%;
 }
 
-.attribution,
-.fa-envelope,
+.fa-arrow-right-to-bracket,
+.fa-person,
 .fa-file-contract,
+.fa-envelope,
 .fa-github,
 .fa-codepen,
 .fa-sign-out,
-.fa-arrow-right-to-bracket,
-.fa-person,
-.fa-info-circle{
+.fa-sign-in,
+.attribution,
+.fa-address-card-o,
+.fa-suitcase{
     color: #CCDEE3;
 }
 
+.fa-info-circle{
+    color: #6e6e6e;
+}
+
+
+
 a:hover, a:active {
-    color: #1a3a60;
+    color: #00AB9F;
 }
 
 html,
@@ -28,7 +36,7 @@ html,
 .masthead .navigation .nav-pills li.active a,
 .homepage .module-search .tags,
 .hero .tags {
-    background-color: #1a3a60;
+    background-color: #00AB9F;
     color: #FFF;
 }
 
@@ -36,25 +44,38 @@ html,
 .masthead {
     width: 100%;
     height: auto;
-    background-image: url("../../../base/images/Hintergrundbild_1.jpg");
-    background-color: #c1d5ee;
-    background-size: contain; /* This ensures that the image covers the entire element */
-    background-repeat: no-repeat; /* This prevents the image from repeating */
-    background-position-x: 20%;
+    background: none;
+    background-color: #48CCBF;
     margin-right: auto;
     margin-left: auto;
+    padding: 0;
 }
 
 .masthead .main-navbar ul li:hover a, .masthead .main-navbar ul li:focus a, .masthead .main-navbar ul li.active a {
     border-radius: 0.3rem;
-    background-color: #1a3a60;
+    background-color: #00AB9F;
 }
 
+.btn-info {
+    color: #fff;
+    background-color: #00AB9F;
+    border-color: #00AB9F;
+}
+
+.btn-info:hover {
+    background-color: #66d3cc;
+    border-color: #2f948a;
+}
+
+.btn.btn-info:active {
+    background-color: #122826;
+    border-color: #2f948a;
+}
 
 
 .account-masthead .navigation .nav-pills li a:hover,
 .account-masthead .navigation .nav-pills li a:active {
-    background-color: #1a3a60;
+    background-color: #00AB9F;
 }
 
 .account-masthead .logo_lhm img {
@@ -66,7 +87,7 @@ html,
 
 .account-masthead {
     min-height: 20px;
-    background-color: #1a3a60;
+    background-color: #00AB9F;
 }
 
 .account-masthead .nav-tabs:after,
@@ -77,7 +98,7 @@ html,
 .hero .module-dark .module-content,
 .homepage .module-search .module-content,
 .lhm-footer {
-    background-color: #1a3a60;
+    background-color: #00AB9F;
 }
 
 .lhm-footer {
@@ -130,8 +151,8 @@ html,
 }
 
 .homepage .hero-lhm {
-    background: url("../../../base/images/Hintergrundbild_3.jpg");
-    background-size: cover; This ensures that the image covers the entire element */
+    background: url("../../../base/images/Hintergrund_Stadt_3D.jpg");
+    background-size: cover; /* This ensures that the image covers the entire element */
     background-repeat: no-repeat; /* This prevents the image from repeating */
     background-position: center;
     padding: 20px 0;
@@ -175,7 +196,7 @@ border: 1px solid #ccc;
 }
 
 .module-promotion .promotion-text {
-    background: #1a3a60;
+    background: #00AB9F;
     }
 
 .promotion-text p {
@@ -193,7 +214,7 @@ border: 1px solid #ccc;
 a.tag:hover {
     text-decoration: none;
     color: #fff;
-    background-color: #1a3a60;
+    background-color: #00AB9F;
     border: 1px solid #c2e5e2;
     box-shadow: inset 0 1px 0 #c2e5e2;
   }
@@ -214,12 +235,12 @@ border: 1px solid #ccc;
 }
 
 .category-box {
-    background-color: #1a3a60;
+    background-color: #00AB9F;
     opacity: 0.9;
 }
 
 .category-box:hover {
-    background-color: #1a3a60;
+    background-color: #00AB9F;
     opacity: 1.0;
 }
 
@@ -239,12 +260,12 @@ border: 1px solid #ccc;
 .page-item.active .page-link {
     z-index: 3;
     color: #fff;
-    background-color: #1a3a60 ;
-    border-color: #1a3a60;
+    background-color: #00AB9F ;
+    border-color: #00AB9F;
 }
 
 .group-box {
-    background-color: #1a3a60;
+    background-color: #00AB9F;
 }
 
 .group-box h2 {
@@ -260,7 +281,7 @@ border: 1px solid #ccc;
 
 .media-grid {
     display: flex;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
 }
 
 .media-item {
@@ -274,8 +295,42 @@ border: 1px solid #ccc;
     float: right;
 }
 
-.btn-primary {
-    background-color: #1a3a60;
+.btn-primary{
+    background-color: #00AB9F;
+    border-color: #00AB9F;
+}
+.btn-primary:hover {
+    background-color: #66d3cc;
+    border-color: #2f948a;
+}
+
+.dropdown-toggle.btn-primary:focus {
+    background-color: #03756e;
+}
+
+.btn-success {
+    color: #fff;
+    background-color: #00AB9F;
+    border-color: #00AB9F;
+}
+.btn-success:hover {
+    background-color: #66d3cc;
+}
+
+.pagination .active a {
+    z-index: 3;
+    color: #fff;
+    cursor: default;
+    background-color: #00AB9F;
+    border-color: #00AB9F;
+}
+
+.pagination .active a:hover {
+    z-index: 3;
+    color: #fff;
+    cursor: default;
+    background-color: #66d3cc;
+    border-color: #66d3cc;
 }
 
 .contact {
@@ -287,3 +342,185 @@ border: 1px solid #ccc;
     width: 80%;
     padding: 10px;
 }
+
+.additional-info table .heading {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.table1{
+    background-color: #aff2ee;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+.table2{
+    background-color: #e1faf8;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+.table3{
+    background-color: #effcfa;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+.table4{
+    background-color: #f7fdfd;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+.collapsible-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding-right: 3%;
+    transition: background-color 0.3s ease;
+}
+
+.collapsible-header:hover {    
+    color: #fdfdfd;
+    background-color: #00AB9F;
+    padding-left: 1%;
+}
+
+.collapsible-content {
+    display: block;
+    overflow: hidden;
+    padding: 0 10px;
+}
+
+.collapsible-content.show {
+    display: block;
+}
+
+.plus-sign {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+
+@media screen and (max-width: 600px) {
+    table {
+        width: 100%;
+        overflow-x: auto; /* Enables horizontal scroll on smaller screens */
+    }
+}
+
+
+.row[role='main']{
+    background: #fff;
+}
+
+.group-icon-overview {
+    width: 10%; 
+    height: auto; 
+    float: right; 
+    margin: 10px;
+}
+
+.group-icon-detailed {
+    width: 60%; 
+    height: auto; 
+    float: none; 
+    margin: 10px;
+}
+
+.last-data-import {
+    /* Position it below the group icon */
+    position: absolute; /* Use absolute positioning */
+    /*top: calc(11% + 20px + 10px);  Position it below the group icon */
+    right: 50px; /* Adjust as needed */
+    background-color: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Apply styles to the update title */
+.update-title {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px; /* Add some space below the title */
+}
+
+/* Apply styles to the update date */
+.update-date {
+    display: block;
+}
+
+/* Create two equal columns that floats next to each other */
+.column_note {
+    float: left;
+    width: 80%;
+  }
+
+.column_date {
+    float: left;
+    width: 20%;
+  }
+
+/* Breit (Desktop): UL rechts andocken */
+@media (min-width: 768px) {
+  #main-navigation-toggle .nav.nav-pills {
+    position: absolute;
+    right: 0;
+    display: inline-block;
+    padding-top:10px;
+  }
+}
+
+/* Schmal (Mobile): bei ausgeklapptem Burger-Menü UL relativ lassen */
+@media (max-width: 767.98px) {
+  /* In Bootstrap 3 erhält die Collapse bei "auf" die Klasse .in */
+  #main-navigation-toggle.in .nav.nav-pills {
+    position: relative;
+    right: auto; /* Sicherheitsreset */
+    display: inline-block
+  }
+}
+
+/* Adaptations CKAN 2.11 */
+table.package-metadata {
+    width: 100%;
+    table-layout: fixed;
+}
+
+/* restore old BS3 behaviour */
+.hide { 
+    display: none !important; 
+}
+
+/* Adaptations CKAN 2.11 datatables view*/
+/* Container styling: white background and solid white outline */
+#resize_wrapper {
+    background-color: white !important;
+    outline: 2px solid white !important;
+}
+
+/* Remove the left border from the scrollable table body */
+.dataTables_scrollBody {
+    border-left: 0px !important;
+}
+
+/* Add a lightgrey left border to the table body rows */
+#dtprv tbody {
+    border-left: 1px solid lightgrey !important;
+}
+
+/* Hide resource and sorting information blocks */
+.resourceinfo, 
+.sortinfo {
+    display: none !important;
+}
+
+/* Remove top margin from the pagination controls */
+.dataTables_paginate.paging_simple_numbers {
+    margin-top: 0px !important;
+}
+

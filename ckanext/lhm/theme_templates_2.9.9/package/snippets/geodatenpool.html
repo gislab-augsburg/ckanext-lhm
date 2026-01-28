@@ -225,58 +225,6 @@
       </table></div>
     </section>
     {% endif %}
-  
-  
-  <!--
-  {% set chg_his = pkg_dict.change_history %}
-  {% if chg_his %}
-    <section class="additional-info module-content table4">
-      <table class="table package-metadata">
-        <tr>
-          <td colspan="3"><p class="heading">{{ _("Change History")}}</p>
-            <p class="metadata">{%- snippet 'package/snippets/label.html',
-              item='change_history', pkg_dict=pkg_dict, schema=schema -%}</p>
-          </td>
-        </tr>
-      </table>
-    </section>
-  {% endif %}-->
-  <!--
-  {% set res = pkg_dict.resources[0] %} 
-  {% if res and res.datastore_active %}
-  {% block resource_data_dictionary %}
-    <section class="module-content table4">
-      <div class="collapsible-header">
-      <h3 style="border-bottom: 0px solid;">{{ _('Data Dictionary') }}</h3>
-      <i class="plus-sign fa fa-minus"></i>
-    </div>
-    <div class="collapsible-content">
-      <hr style="margin-top: 0; border-block-color: #dbdcdc;">
-      <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
-        {% block resouce_data_dictionary_headers %}
-        <tr>
-          <th scope="col">{{ _('Attribute') }}</th>
-          <th scope="col">{{ _('Data Type') }}</th>
-          <th scope="col">{{ _('Conditions') }}</th>
-          <th scope="col">{{ _('Description') }}
-            <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Auch: Fachliche Bezeichnung"></span>
-          </th>
-          <th scope="col">{{ _('Remarks') }}</th>
-          <th scope="col">{{ _('Open Data & HVD') }}</th>
-        </tr>
-        {% endblock %}
-      
-        {% block resource_data_dictionary_data %}
-          {% set dict=h.datastore_dictionary(res.id) %}
-          {% for field in dict %}
-            {% snippet "package/snippets/dictionary_view.html", field=field %}
-          {% endfor %}
-        {% endblock %}
-      </table></div>
-    </section>
-  {% endblock %}
-  {% endif %}
-  -->
 
   {# Datastore table preview (first datastore resource) #}
   {% snippet 'package/snippets/datastore_first_resource_table.html', pkg_dict=pkg_dict %}

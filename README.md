@@ -4,6 +4,18 @@
 ![GitHub forks](https://img.shields.io/github/forks/MandanaMoshref/ckanext-lhm?style=social)
 ![GitHub Repo stars](https://img.shields.io/github/stars/MandanaMoshref/ckanext-lhm?style=social)
 
+# To do for changed data dictionary along with CKAN 2.11.2
+
+- Add new custom DV view to Mobidam and Geodatenmanagement (and further new) package view snippets (like for Geodatenpool)
+- Slightly change style of custom DV view:
+  - tooltips for truncated values
+  - no fat lines above and under header
+  - space under heading "Datenverzeichnis"
+  - add info circle to Heading "Beschreibung" in custom DV view at package view
+  - add info circle to Heading "Beschreibung" in datatables DV view if it's a DV (first ressource)
+  - adapt resonsive reaction of datatables view for small screens/ mobile devices
+  - adapt resonsive reaction of package view "Grundinformationen" and "Nutzungshinweise" boxes (also to be done in old DV version)
+ 
 # ckanext-lhm
 This extension is built exclusively to meet the requirements of the City of Munich. This extension is a work in progress, the following explanations cover the current state of development and the features included.
 

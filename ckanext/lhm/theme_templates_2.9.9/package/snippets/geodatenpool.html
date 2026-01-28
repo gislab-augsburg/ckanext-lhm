@@ -1,3 +1,4 @@
+
 <section class="additional-info module-content table1">
   <div class="collapsible-header">
     <h3 style="border-bottom: 0px solid;">{{_('Basic Information')}}</h3>
@@ -240,6 +241,7 @@
       </table>
     </section>
   {% endif %}-->
+  <!--
   {% set res = pkg_dict.resources[0] %} 
   {% if res and res.datastore_active %}
   {% block resource_data_dictionary %}
@@ -274,6 +276,7 @@
     </section>
   {% endblock %}
   {% endif %}
+  -->
 
   {# Datastore table preview (first datastore resource) #}
   {% snippet 'package/snippets/datastore_first_resource_table.html', pkg_dict=pkg_dict %}

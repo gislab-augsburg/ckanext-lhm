@@ -1,61 +1,169 @@
-{# package/snippets/datastore_first_resource_table.html
-   Shows datastore records of the first resource that has datastore_active
+
+{# package/snippets/datastore_first_resource_table_js.html
+   Client-side datastore preview (DataTables-view style): fetch via /api/3/action/datastore_search
+   and render a simple equal-width table using <colgroup>.
 #}
 
-{% set limit = 20 %}
-{% set ds_res = None %}
+{% set limit = 200 %}
 
-{# Find first resource with datastore #}
-{% if pkg_dict.resources %}
+{# Pick a resource ID:
+   - Prefer first resource with datastore_active (if present in pkg_dict)
+   - Otherwise fall back to first resource
+#}
+{% set first_res_id = None %}
+{% if pkg_dict and pkg_dict.resources %}
   {% for r in pkg_dict.resources %}
-    {% if r.datastore_active %}
-      {% set ds_res = r %}
+    {% if r.get('datastore_active') and r.get('id') %}
+      {% set first_res_id = r.get('id') %}
       {% break %}
     {% endif %}
   {% endfor %}
+  {% if not first_res_id and (pkg_dict.resources|length) > 0 %}
+    {% set first_res_id = pkg_dict.resources[0].get('id') %}
+  {% endif %}
 {% endif %}
 
-{% if ds_res %}
-  {% set result = h.get_action('datastore_search')({}, {'resource_id': ds_res.id, 'limit': limit}) %}
+{% if first_res_id %}
+  <style>
+    /* Datastore preview table: force equal column widths */
+    .table-datastore-preview table {
+      table-layout: fixed;
+      width: 100%;
+    }
+    .table-datastore-preview th,
+    .table-datastore-preview td {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      vertical-align: top;
+    }
+    .table-datastore-preview .ds-preview-status {
+      margin: 0.5rem 0;
+    }
+  </style>
 
-  {% if result and result.records and (result.records|length) > 0 %}
-    <section class="additional-info module-content table-datastore-preview">
-      <div class="collapsible-header">
-        <h3 style="border-bottom: 0px solid;">{{ _('Datastore preview') }}</h3>
-        <i class="plus-sign fa fa-minus"></i>
+  <section class="additional-info module-content table-datastore-preview">
+    <div class="collapsible-header">
+      <h3 style="border-bottom: 0px solid;">{{ _('Datenverzeichnis') }}</h3>
+      <i class="plus-sign fa fa-minus"></i>
+    </div>
+
+    <div class="collapsible-content">
+      <div id="ds-preview-status" class="ds-preview-status text-muted">
+        {{ _('Loading datastore rows…') }}
       </div>
 
-      <div class="collapsible-content">
-        <table class="table table-striped table-bordered table-condensed">
-          <thead>
-            <tr>
-              {% for f in result.fields %}
-                {% if f.id != '_id' %}
-                  <th>{{ f.id|e }}</th>
-                {% endif %}
-              {% endfor %}
-            </tr>
-          </thead>
-          <tbody>
-            {% for row in result.records %}
-              <tr>
-                {% for f in result.fields %}
-                  {% if f.id != '_id' %}
-                    <td>{{ row.get(f.id, '') }}</td>
-                  {% endif %}
-                {% endfor %}
-              </tr>
-            {% endfor %}
-          </tbody>
+      <div class="table-responsive" id="ds-preview-container" style="display:none;">
+        <table class="table table-striped table-bordered table-condensed" id="ds-preview-table">
+          {# colgroup inserted by JS #}
+          <thead></thead>
+          <tbody></tbody>
         </table>
-
-        <p class="muted" style="margin-top: 8px;">
-          {{ _('Showing') }} {{ result.records|length }} {{ _('of') }} {{ result.total }} {{ _('rows from resource') }}:
-          <a href="{{ h.url_for('resource.read', id=pkg_dict.name, resource_id=ds_res.id) }}">
-            {{ ds_res.name or ds_res.id }}
-          </a>
-        </p>
       </div>
-    </section>
-  {% endif %}
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      const resourceId = {{ first_res_id|tojson }};
+      const limit = {{ limit|int }};
+      const apiUrl = {{ h.url_for('api.action', ver=3, logic_function='datastore_search')|tojson }};
+
+      const statusEl = document.getElementById('ds-preview-status');
+      const containerEl = document.getElementById('ds-preview-container');
+      const tableEl = document.getElementById('ds-preview-table');
+      const theadEl = tableEl.querySelector('thead');
+      const tbodyEl = tableEl.querySelector('tbody');
+
+      function setStatus(msg) {
+        statusEl.textContent = msg;
+        statusEl.style.display = '';
+        containerEl.style.display = 'none';
+      }
+
+      function showTable() {
+        statusEl.style.display = 'none';
+        containerEl.style.display = '';
+      }
+
+      // /api/3/action/datastore_search?id=<rid>&limit=<n>
+      const url = apiUrl + '?id=' + encodeURIComponent(resourceId) + '&limit=' + encodeURIComponent(limit);
+
+      fetch(url, { credentials: 'same-origin' })
+        .then(r => r.json())
+        .then(data => {
+          if (!data || !data.success || !data.result) {
+            setStatus({{ _("No datastore data returned.")|tojson }});
+            return;
+          }
+
+          const result = data.result;
+          const fields = (result.fields || []).filter(f => f && f.id && f.id !== '_id');
+          const records = result.records || [];
+
+          if (!fields.length) {
+            setStatus({{ _("Datastore returned no fields.")|tojson }});
+            return;
+          }
+
+          // ---- Force equal column widths using COLGROUP ----
+          const colCount = fields.length;
+          const colWidth = (100 / colCount).toFixed(2) + '%';
+
+          // remove old colgroup if any (in case of re-render)
+          const existing = tableEl.querySelector('colgroup');
+          if (existing) existing.remove();
+
+          const colgroup = document.createElement('colgroup');
+          for (let i = 0; i < colCount; i++) {
+            const col = document.createElement('col');
+            col.style.width = colWidth;
+            colgroup.appendChild(col);
+          }
+          tableEl.insertBefore(colgroup, tableEl.firstChild);
+
+          // Render header
+          const trHead = document.createElement('tr');
+          fields.forEach(f => {
+            const th = document.createElement('th');
+            th.textContent = String(f.id);
+            trHead.appendChild(th);
+          });
+          theadEl.innerHTML = '';
+          theadEl.appendChild(trHead);
+
+          // Render body
+          tbodyEl.innerHTML = '';
+
+          if (!records.length) {
+            const tr = document.createElement('tr');
+            const td = document.createElement('td');
+            td.colSpan = colCount;
+            td.textContent = {{ _("No records returned.")|tojson }};
+            tr.appendChild(td);
+            tbodyEl.appendChild(tr);
+            showTable();
+            return;
+          }
+
+          records.forEach(row => {
+            const tr = document.createElement('tr');
+            fields.forEach(f => {
+              const td = document.createElement('td');
+              const val = (row && Object.prototype.hasOwnProperty.call(row, f.id)) ? row[f.id] : '';
+              td.textContent = (val === null || val === undefined) ? '' : String(val);
+              tr.appendChild(td);
+            });
+            tbodyEl.appendChild(tr);
+          });
+
+          showTable();
+        })
+        .catch(err => {
+          console.error('Datastore preview error', err);
+          setStatus({{ _("Failed to load datastore rows.")|tojson }});
+        });
+    })();
+  </script>
 {% endif %}

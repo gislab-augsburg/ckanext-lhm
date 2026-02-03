@@ -330,3 +330,8 @@ msgstr "Unter-%(group_type)sen einbeziehen"
 
 msgid "Tags"
 msgstr "Schlagwort"
+
+#: ckan/public/base/javascript/modules/resource-view-filters.js:9
+#: ckan/templates/package/snippets/view_form_filters.html:16
+msgid "Add Filter"
+msgstr "Filter hinzufügen"

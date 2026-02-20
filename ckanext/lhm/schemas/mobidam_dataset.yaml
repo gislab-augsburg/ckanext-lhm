@@ -181,6 +181,8 @@ dataset_fields:
     label: 
       en: No update
       de: Keine Aktualisierung
+  - value: k.A.
+    label: k.A.
 
 # Feld neu, field_name und label geändert ( vorher: geometrietyp)
 - field_name: objekttyp
@@ -216,6 +218,8 @@ dataset_fields:
     label: ANNO
   - value: multipatch
     label: Multipatch
+  - value: k.A.
+    label: k.A.
 
 # Feld neu, field_name, label und choice SAPOS geändert (war vorher lagengenauigkeit und SPAOS, Typos)
 - field_name: genauigkeit
@@ -250,6 +254,8 @@ dataset_fields:
       label: Auf Basis Stadtbezirke (-teil -viertel)(10m)
     - value: stadtplan
       label: Auf Basis Stadtplan (10m)
+    - value: k.A.
+      label: k.A.
   - field_name: bemerkung
     label: Bemerkung
     is_info: true
@@ -280,6 +286,8 @@ dataset_fields:
       label: 
         en: Not archivable
         de: Nicht archivwürdig
+    - value: k.A.
+      label: k.A.
   - field_name: begruendung
     label: Begründung
     is_info: true
@@ -299,6 +307,8 @@ dataset_fields:
     label: Mit Einschränkungen
   - value: kein_zugriff
     label: Kein Zugriff
+  - value: k.A.
+    label: k.A.
 
 #Nur GDP:
 #Feld alt, values mit Änderungen
@@ -335,6 +345,8 @@ dataset_fields:
     label: Mit Einschränkungen
   - value: kein_Zugriff
     label: Kein Zugriff
+  - value: k.A.
+    label: k.A.
 
 # Feld Neu
 - field_name: nutzungsoptionen_bei_einschraenkungen
@@ -371,6 +383,8 @@ dataset_fields:
     label: Nur bestimmte Attribute & Inhalte
   - value: nein
     label: Nein
+  - value: k.A.
+    label: k.A.
 
 # Feld neu
 - field_name: hvd
@@ -391,6 +405,8 @@ dataset_fields:
     label: Nur bestimmte Attribute & Inhalte 
   - value: nein
     label: Nein
+  - value: k.A.
+    label: k.A.
 
 # Feld neu
 - field_name: hvd_kategorie
@@ -414,6 +430,8 @@ dataset_fields:
     label: Mobilität
   - value: keine
     label: "-"
+  - value: k.A.
+    label: k.A.
 
 # Feld alt, aber inhaltich plus HVD, check values inhaltlich!!
 - field_name: open_data_attribute

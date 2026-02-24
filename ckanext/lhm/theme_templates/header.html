@@ -70,7 +70,7 @@
               {% set dataset_type = h.default_package_type() %}
                 <form class="search-form" method="get" action="{% url_for dataset_type ~ '.search' %}" style="padding:0px;margin:0px;">
                   <div class="search-input form-group search-giant" style="margin: 0px;">
-                    <input aria-label="{% block header_site_search_label_header_lhm %}{{ h.humanize_entity_type('package', dataset_type, 'search placeholder') or _('Search datasets') }}{% endblock %}" id="field-header-search" type="text" class="form-control" name="q" value="" autocomplete="on" placeholder="Datensätze suchen ..." style="padding-top: 6.5px;padding-bottom: 6.5px;padding-left: 13px;padding-right: 13px;font-size: var(--bs-body-font-size);" />
+                    <input aria-label="{% block header_site_search_label_header_lhm %}{{ h.humanize_entity_type('package', dataset_type, 'search placeholder') or _('Search datasets') }}{% endblock %}" id="field-header-search" type="text" class="form-control" name="q" value="" autocomplete="off" placeholder="Datensätze suchen ..." style="padding-top: 6.5px;padding-bottom: 6.5px;padding-left: 13px;padding-right: 13px;font-size: var(--bs-body-font-size);" />
                   </div>
                 </form>
               </li>

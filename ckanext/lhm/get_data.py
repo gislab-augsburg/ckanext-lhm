@@ -161,11 +161,12 @@ def packages_to_files(packages, limit, wdir, excel_template):
     i = 0
     for id in package_list:
         if i < limit:
-            ##
-            #id = "historisches_luftbildmosaik_1984"
-            #print('.')
-            ##
-            package_dict = ckan_request(f'/api/3/action/package_show?id={id}')
+            package_dict_search = ckan_request(f'/api/3/action/package_search?fq=name:{id}&include_drafts=true&include_private=true')
+            # Because of Harvest sources are found as datasets by package_search, but have no results (??), but are found by package_show as dataset with type 'harvest
+            if len(package_dict_search['results']) > 0:
+                package_dict = package_dict_search['results'][0]
+            else:
+                package_dict = package_dict = ckan_request(f'/api/3/action/package_show?id={id}')
             df = pd.DataFrame([package_dict])
             type_ = df['type'][0]
             # MB_CHANGE FOR DOWNLOAD BUTTON ### add mobidam

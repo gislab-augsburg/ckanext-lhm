@@ -8,7 +8,7 @@
     {% block content %}
         <div class="dataset-content">
         {% block package_markers %}
-            {% snippet 'package/snippets/marker.html', pkg = package %}
+            {% snippet 'package/snippets/marker.html', pkg = package, group_icon = 'group-icon-overview' %}
         {% endblock %}      
         {{ super() }}
         </div>

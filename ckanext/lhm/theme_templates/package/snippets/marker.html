@@ -1,32 +1,17 @@
 {#% set pkg = g.pkg_dict %#}
 {% set main_categories = h.group_tree_section(id_='main-categories', type_='group', include_siblings=True) %}
 {% set count = main_categories.children %}
+{% set number = count | length %}
+{% set class_group_icon = group_icon %}
 
 
-<ul class="dataset-markers">
     {% for grp in pkg.groups %}
-        {% if grp.name == count[0].name %}
-            <li class="marker zero">
-            <a href="{{ g.site_url }}/group/{{ grp.name }}">{{ grp.title }}</a></li>
-        {% elif grp.name == count[1].name %}
-            <li class="marker one">
-            <a href="{{ g.site_url }}/group/{{ grp.name }}">{{ grp.title }}</a></li>
-        {% elif grp.name == count[2].name %}
-            <li class="marker two">
-            <a href="{{ g.site_url }}/group/{{ grp.name }}">{{ grp.title }}</a></li>
-        {% elif grp.name == count[3].name %}
-            <li class="marker three">
-            <a href="{{ g.site_url }}/group/{{ grp.name }}">{{ grp.title }}</a></li>
-        {% elif grp.name == count[4].name %}
-            <li class="marker four">
-            <a href="{{ g.site_url }}/group/{{ grp.name }}">{{ grp.title }}</a></li>
-        {% elif grp.name == count[5].name %}
-            <li class="marker five">
-            <a href="{{ g.site_url }}/group/{{ grp.name }}">{{ grp.title }}</a></li>
-        {% else %}
-          <!-- Do notthing-->
-        {% endif %}
-
+    {% set no = number - 1 %}
+        {% for no in range(number - 1) %}
+            {% if no != -1 and grp.name == count[no].name %}
+                <a href="{{ g.site_url }}/group/{{ grp.name }}" title="{{ grp.title }}">
+                <img src="{{ grp.image_display_url }}" alt="{{ grp.title }}" title="{{ grp.title }}" class="{{ class_group_icon }}" >
+                </a>
+            {% endif %}
+        {% endfor %}
     {% endfor %}
-</ul>
-

@@ -1,0 +1,39 @@
+{% ckan_extends %}
+
+{% block dictionary_view %}
+
+  {% if res and res.position == 0 %}
+
+    {% if res.datastore_active %}
+    {% block resource_data_dictionary %}
+      <section class="module-content table4">
+        <h3 style="border-bottom: 0px solid; margin-bottom: 12px;">{{ _('Data Dictionary') }}</h3>
+
+        <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more" style="table-layout: fixed; width: 100%; word-wrap: break-word;">
+          {% block resouce_data_dictionary_headers %}
+          <tr>
+            <th scope="col">{{ _('Attribute') }}</th>
+            <th scope="col">{{ _('Data Type') }}</th>
+            <th scope="col">{{ _('Conditions') }}</th>
+            <th scope="col">{{ _('Description') }}
+              <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Auch: Fachliche Bezeichnung"></span>
+            </th>
+            <th scope="col">{{ _('Remarks') }}</th>
+            <th scope="col">{{ _('Open Data & HVD') }}</th>
+          </tr>
+          {% endblock %}
+
+          {% block resource_data_dictionary_data %}
+            {% set dict=h.datastore_dictionary(res.id) %}
+            {% for field in dict %}
+              {% snippet "package/snippets/dictionary_view.html", field=field %}
+            {% endfor %}
+          {% endblock %}
+        </table>
+      </section>
+    {% endblock %}
+    {% endif %}
+  
+  {% endif %}
+
+{% endblock %}

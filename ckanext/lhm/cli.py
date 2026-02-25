@@ -30,7 +30,7 @@ def create_org_or_group(group, is_org=False):
             "model": model,
             "session": model.Session,
             "user": user['name'],
-            "return_id_only": True
+            #"return_id_only": True
         }
     data_dict = {
         "id": group['name']

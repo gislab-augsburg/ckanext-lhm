@@ -1,30 +1,33 @@
 {#
 Displays a sidebar module with information for given package
 
-pkg    - The package dict that owns the resources.
+pkg          - The package dict that owns the resources.
+am_following - True if the user is following the package.
 
 Example:
 
-  {% snippet "package/snippets/info.html", pkg=pkg %}
+  {% snippet "package/snippets/info.html", pkg=pkg, am_following=am_following %}
 
 #}
 {% block package_info %}
   {% if pkg %}
-    <section class="module module-narrow">
+    <section id="package-info" class="module module-narrow">
       <div class="module context-info">
         <div class="module-content">
           {% block package_info_inner %}
             {% block heading %}
               <h1 class="heading">{{ h.dataset_display_name(pkg) }}</h1>
-            {% endblock %} 
+            {% endblock %}
+            
             {% block nums %}
               <div class="nums" style="padding-bottom: 10px;">
               </div>
-            {% endblock %}           
+            {% endblock %}
+            
             {% block download_button %}
               {% if pkg.type == 'geodatenpool' or pkg.type == 'mobidam' %}
                 <div class="btn-group dropdown">
-                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {{ _('Exportieren') }}
                     <span class="caret"></span>
                   </button>
@@ -43,13 +46,22 @@ Example:
                 </div>
               {% endif %}
             {% endblock %}
+            
             {% block follow_button %}
-              {% if not hide_follow_button %}
-                <div class="follow_button">
-                  {{ h.follow_button('dataset', pkg.id) }}
-                </div>
-              {% endif %}
+              <div class="follow_button" style="margin-top: 10px; margin-bottom: 10px">
+                {% if current_user.is_authenticated %}
+                  {% if error_message %}
+                    <div class="alert alert-danger">{{ error_message }}</div>
+                  {% endif %}
+                  {% if am_following %}
+                    <a class="btn btn-danger" hx-post="{{ h.url_for('dataset.unfollow', id=pkg.id) }}" hx-target="#package-info"><i class="fa-solid fa-circle-minus"></i> Entfolgen</a>
+                  {% else %}
+                    <a class="btn btn-success" hx-post="{{ h.url_for('dataset.follow', id=pkg.id) }}" hx-target="#package-info"><i class="fa-solid fa-circle-plus"></i> Folgen</a>
+                  {% endif %}
+                {% endif %}
+              </div>
             {% endblock %}
+
           {% endblock %}
         </div>
       </div>

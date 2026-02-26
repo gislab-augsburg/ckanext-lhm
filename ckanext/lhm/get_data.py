@@ -20,6 +20,9 @@ import shutil
 import __main__
 # MB_CHANGE FOR DOWNLOAD BUTTON ###
 import ckanext.lhm.tp as tp
+import ckan.plugins.toolkit as tk
+from flask import g
+from ckan.common import json as ckan_json
 ###############################
 
 # Suitable for template_v1.2.4.xlsx
@@ -61,6 +64,18 @@ def ckan_request(api_string):
                 result = response_dict['result']
                 print('* Success')
                 return result
+
+# Define internal action, get response as dict            
+def ckan_action(action_name: str, data_dict: dict):
+    """
+    Call CKAN action internally using logged-in user,
+    and return a fully JSON-safe plain-Python dict.
+    """
+    user = getattr(g, "user", None)
+    context = {"user": user}
+    result = tk.get_action(action_name)(context, data_dict)
+    # Normalize to plain JSON-compatible Python types
+    return ckan_json.loads(ckan_json.dumps(result))
 
 # Add BOM
 def add_utf8_bom(filename):
@@ -161,12 +176,16 @@ def packages_to_files(packages, limit, wdir, excel_template):
     i = 0
     for id in package_list:
         if i < limit:
-            package_dict_search = ckan_request(f'/api/3/action/package_search?fq=name:{id}&include_drafts=true&include_private=true')
+            package_dict_search = ckan_action("package_search", {
+                "fq": f"name:{id}",
+                "include_drafts": True,
+                "include_private": True,
+            })
             # Because of Harvest sources are found as datasets by package_search, but have no results (??), but are found by package_show as dataset with type 'harvest
             if len(package_dict_search['results']) > 0:
                 package_dict = package_dict_search['results'][0]
             else:
-                package_dict = package_dict = ckan_request(f'/api/3/action/package_show?id={id}')
+                package_dict = ckan_action("package_show", {"id": id})
             df = pd.DataFrame([package_dict])
             type_ = df['type'][0]
             # MB_CHANGE FOR DOWNLOAD BUTTON ### add mobidam
@@ -292,7 +311,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                                     #print(f'/api/3/action/datastore_search?resource_id={res_id}')
                                     # for dv which has no table, datsore = false:
                                     if value[j]['datastore_active']:
-                                        res_dict = ckan_request(f'/api/3/action/datastore_search?resource_id={res_id}')
+                                        res_dict = ckan_action("datastore_search", {"resource_id": res_id})
                                         ## create json
                                         res_name = value[j]['name'].lower()
                                         with open(f'{wdir}/json/{id}.resources.{j}.dv.json', 'w') as fp:
@@ -368,7 +387,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                                     # HTTP Error 404: NOT FOUND if immediatly, sleep needed (???):
                                     #if not __name__ == "__main__":
                                         #time.sleep(2)
-                                    res_dict = ckan_request(f'/api/3/action/datastore_search?resource_id={res_id}')
+                                    res_dict = ckan_action("datastore_search", {"resource_id": res_id})
                                     ## create json
                                     res_name = value[j]['name'].lower()
                                     with open(f'{wdir}/json/{id}.resources.{j}.kw.json', 'w') as fp:

@@ -20,6 +20,9 @@ import shutil
 import __main__
 # MB_CHANGE FOR DOWNLOAD BUTTON ###
 import ckanext.lhm.tp as tp
+import ckan.plugins.toolkit as tk
+from flask import g
+from ckan.common import json as ckan_json
 ###############################
 
 # Suitable for template_v1.2.4.xlsx
@@ -61,6 +64,18 @@ def ckan_request(api_string):
                 result = response_dict['result']
                 print('* Success')
                 return result
+
+# Define internal action, get response as dict            
+def ckan_action(action_name: str, data_dict: dict):
+    """
+    Call CKAN action internally using logged-in user,
+    and return a fully JSON-safe plain-Python dict.
+    """
+    user = getattr(g, "user", None)
+    context = {"user": user}
+    result = tk.get_action(action_name)(context, data_dict)
+    # Normalize to plain JSON-compatible Python types
+    return ckan_json.loads(ckan_json.dumps(result))
 
 # Add BOM
 def add_utf8_bom(filename):
@@ -161,12 +176,16 @@ def packages_to_files(packages, limit, wdir, excel_template):
     i = 0
     for id in package_list:
         if i < limit:
-            package_dict_search = ckan_request(f'/api/3/action/package_search?fq=name:{id}&include_drafts=true&include_private=true')
+            package_dict_search = ckan_action("package_search", {
+                "fq": f"name:{id}",
+                "include_drafts": True,
+                "include_private": True,
+            })
             # Because of Harvest sources are found as datasets by package_search, but have no results (??), but are found by package_show as dataset with type 'harvest
             if len(package_dict_search['results']) > 0:
                 package_dict = package_dict_search['results'][0]
             else:
-                package_dict = package_dict = ckan_request(f'/api/3/action/package_show?id={id}')
+                package_dict = ckan_action("package_show", {"id": id})
             df = pd.DataFrame([package_dict])
             type_ = df['type'][0]
             # MB_CHANGE FOR DOWNLOAD BUTTON ### add mobidam
@@ -292,7 +311,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                                     #print(f'/api/3/action/datastore_search?resource_id={res_id}')
                                     # for dv which has no table, datsore = false:
                                     if value[j]['datastore_active']:
-                                        res_dict = ckan_request(f'/api/3/action/datastore_search?resource_id={res_id}')
+                                        res_dict = ckan_action("datastore_search", {"resource_id": res_id})
                                         ## create json
                                         res_name = value[j]['name'].lower()
                                         with open(f'{wdir}/json/{id}.resources.{j}.dv.json', 'w') as fp:
@@ -350,7 +369,10 @@ def packages_to_files(packages, limit, wdir, excel_template):
                                                 cell = ws_1[coords]
                                                 cell.value = Ope
                                                 cell.border = Border_thin
-                                                dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$Q$2:$Q$4')
+                                                if type_ == 'geodatenpool':
+                                                    dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$Q$2:$Q$4')
+                                                elif type_ == 'mobidam':
+                                                    dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$Q$2:$Q$4')
                                                 ws_1.add_data_validation(dv)
                                             
                                 
@@ -365,7 +387,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                                     # HTTP Error 404: NOT FOUND if immediatly, sleep needed (???):
                                     #if not __name__ == "__main__":
                                         #time.sleep(2)
-                                    res_dict = ckan_request(f'/api/3/action/datastore_search?resource_id={res_id}')
+                                    res_dict = ckan_action("datastore_search", {"resource_id": res_id})
                                     ## create json
                                     res_name = value[j]['name'].lower()
                                     with open(f'{wdir}/json/{id}.resources.{j}.kw.json', 'w') as fp:
@@ -467,7 +489,10 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 for pos in range(m + 1, 201):
                     coords = f'F{str(pos)}'
                     cell = ws_1[coords]
-                    dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$Q$2:$Q$4')
+                    if type_ == 'geodatenpool':
+                        dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$Q$2:$Q$4')
+                    elif type_ == 'mobidam':
+                        dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$Q$2:$Q$4')
                     ws_1.add_data_validation(dv)
 
                 # Dienste-Format
@@ -605,19 +630,28 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 coords = 'B7'
                 cell = ws[coords]
                 cell.value = tp.objekttyp_transpose_r[package_dict['objekttyp']]
-                dv = add_validation_dropdown(ws, coords, '=Wertelisten!$D$2:$D$8')
+                if type_ == 'geodatenpool':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$D$2:$D$8')
+                elif type_ == 'mobidam':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$D$2:$D$8')
                 ws.add_data_validation(dv)
                 # Update-Zyklus
                 coords = 'B14'
                 cell = ws[coords]
                 cell.value = tp.update_zyklus_transpose_r[package_dict['update_zyklus']]
-                dv = add_validation_dropdown(ws, coords, '=Wertelisten!$E$2:$E$8')
+                if type_ == 'geodatenpool':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$E$2:$E$8')
+                elif type_ == 'mobidam':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$E$2:$E$8')
                 ws.add_data_validation(dv)
                 # Stadtarchiv - Archivwürdigkeit
                 coords = 'B15'
                 cell = ws[coords]
                 cell.value = tp.archivwuerdigkeit_transpose_r[package_dict['stadtarchiv.archivwuerdigkeit']]
-                dv = add_validation_dropdown(ws, coords, '=Wertelisten!$F$2:$F$4')
+                if type_ == 'geodatenpool':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$F$2:$F$4')
+                elif type_ == 'mobidam':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$F$2:$F$4')
                 ws.add_data_validation(dv)
                 # Stadtarchiv - Begründung
                 coords = 'B16'
@@ -627,7 +661,10 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 coords = 'B8'
                 cell = ws[coords]
                 cell.value = tp.lagegenauigkeit_transpose_r[package_dict['genauigkeit.lagegenauigkeit']]
-                dv = add_validation_dropdown(ws, coords, '=Wertelisten!$G$2:$G$11')
+                if type_ == 'geodatenpool':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$G$2:$G$11')
+                elif type_ == 'mobidam':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$G$2:$G$11')
                 ws.add_data_validation(dv)
                 # Genauigkeit - Bemerkung
                 coords = 'B9'
@@ -637,7 +674,10 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 coords = 'B17'
                 cell = ws[coords]
                 cell.value = tp.lhm_intern_transpose_r[package_dict['lhm_intern']]
-                dv = add_validation_dropdown(ws, coords, '=Wertelisten!$H$2:$H$4')
+                if type_ == 'geodatenpool':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$H$2:$H$4')
+                elif type_ == 'mobidam':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$H$2:$H$4')
                 ws.add_data_validation(dv)
                 # MB_CHANGE FOR DOWNLOAD BUTTON ###
                 # LHM-intern - GeoInfoWeb
@@ -661,7 +701,10 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     coords = 'B18'
                 cell = ws[coords]
                 cell.value = tp.lhm_extern_transpose_r[package_dict['lhm_extern']]
-                dv = add_validation_dropdown(ws, coords, '=Wertelisten!$J$2:$J$4')
+                if type_ == 'geodatenpool':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$J$2:$J$4')
+                elif type_ == 'mobidam':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$J$2:$J$4')
                 ws.add_data_validation(dv)
                 # LHM-extern - Nutzungsoptionen bei Einschränkungen
                 if type_ == 'geodatenpool':
@@ -696,7 +739,10 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     coords = 'B20'
                 cell = ws[coords]
                 cell.value = tp.open_data_transpose_r[package_dict['open_data']]
-                dv = add_validation_dropdown(ws, coords, '=Wertelisten!$L$2:$L$4')
+                if type_ == 'geodatenpool':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$L$2:$L$4')
+                elif type_ == 'mobidam':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$L$2:$L$4')
                 ws.add_data_validation(dv)
 
                 # LHM-extern - High Value Datasets (HVD)
@@ -706,7 +752,10 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     coords = 'B21'
                 cell = ws[coords]
                 cell.value = tp.hvd_transpose_r[package_dict['hvd']]
-                dv = add_validation_dropdown(ws, coords, '=Wertelisten!$M$2:$M$4')
+                if type_ == 'geodatenpool':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$M$2:$M$4')
+                elif type_ == 'mobidam':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$M$2:$M$4')
                 ws.add_data_validation(dv)
 
                 # LHM-extern - HVD-Kategorie
@@ -716,7 +765,10 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     coords = 'B22'
                 cell = ws[coords]
                 cell.value = tp.hvd_kategorie_transpose_r[package_dict['hvd_kategorie']]
-                dv = add_validation_dropdown(ws, coords, '=Wertelisten!$N$2:$N$8')
+                if type_ == 'geodatenpool':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$N$2:$N$8')
+                elif type_ == 'mobidam':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$N$2:$N$8')
                 ws.add_data_validation(dv)
 
                 # LHM-extern - Open Data / HVD - bestimmte Attribute

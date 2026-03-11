@@ -372,7 +372,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                                                 if type_ == 'geodatenpool':
                                                     dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$Q$2:$Q$4')
                                                 elif type_ == 'mobidam':
-                                                    dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$Q$2:$Q$4')
+                                                    dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$Q$2:$Q$5')
                                                 ws_1.add_data_validation(dv)
                                             
                                 
@@ -492,7 +492,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     if type_ == 'geodatenpool':
                         dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$Q$2:$Q$4')
                     elif type_ == 'mobidam':
-                        dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$Q$2:$Q$4')
+                        dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$Q$2:$Q$5')
                     ws_1.add_data_validation(dv)
 
                 # Dienste-Format
@@ -633,7 +633,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 if type_ == 'geodatenpool':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$D$2:$D$8')
                 elif type_ == 'mobidam':
-                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$D$2:$D$8')
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$D$2:$D$9')
                 ws.add_data_validation(dv)
                 # Update-Zyklus
                 coords = 'B14'
@@ -642,7 +642,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 if type_ == 'geodatenpool':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$E$2:$E$8')
                 elif type_ == 'mobidam':
-                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$E$2:$E$8')
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$E$2:$E$9')
                 ws.add_data_validation(dv)
                 # Stadtarchiv - Archivwürdigkeit
                 coords = 'B15'
@@ -651,7 +651,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 if type_ == 'geodatenpool':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$F$2:$F$4')
                 elif type_ == 'mobidam':
-                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$F$2:$F$4')
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$F$2:$F$5')
                 ws.add_data_validation(dv)
                 # Stadtarchiv - Begründung
                 coords = 'B16'
@@ -664,7 +664,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 if type_ == 'geodatenpool':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$G$2:$G$11')
                 elif type_ == 'mobidam':
-                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$G$2:$G$11')
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$G$2:$G$12')
                 ws.add_data_validation(dv)
                 # Genauigkeit - Bemerkung
                 coords = 'B9'
@@ -677,7 +677,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 if type_ == 'geodatenpool':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$H$2:$H$4')
                 elif type_ == 'mobidam':
-                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$H$2:$H$4')
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$H$2:$H$5')
                 ws.add_data_validation(dv)
                 # MB_CHANGE FOR DOWNLOAD BUTTON ###
                 # LHM-intern - GeoInfoWeb
@@ -704,7 +704,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 if type_ == 'geodatenpool':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$J$2:$J$4')
                 elif type_ == 'mobidam':
-                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$J$2:$J$4')
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$J$2:$J$5')
                 ws.add_data_validation(dv)
                 # LHM-extern - Nutzungsoptionen bei Einschränkungen
                 if type_ == 'geodatenpool':
@@ -742,7 +742,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 if type_ == 'geodatenpool':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$L$2:$L$4')
                 elif type_ == 'mobidam':
-                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$L$2:$L$4')
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$L$2:$L$5')
                 ws.add_data_validation(dv)
 
                 # LHM-extern - High Value Datasets (HVD)
@@ -755,7 +755,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 if type_ == 'geodatenpool':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$M$2:$M$4')
                 elif type_ == 'mobidam':
-                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$M$2:$M$4')
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$M$2:$M$5')
                 ws.add_data_validation(dv)
 
                 # LHM-extern - HVD-Kategorie
@@ -768,7 +768,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 if type_ == 'geodatenpool':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$N$2:$N$8')
                 elif type_ == 'mobidam':
-                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$N$2:$N$8')
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$N$2:$N$9')
                 ws.add_data_validation(dv)
 
                 # LHM-extern - Open Data / HVD - bestimmte Attribute

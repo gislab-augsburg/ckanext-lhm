@@ -98,6 +98,7 @@ update_zyklus_transpose = {
     "Wöchentlich": "woechentlich",
     "Monatlich": "monatlich",
     "Keine Aktualisierung": "kein",
+    "k.A.": "k.A."
 }
 
 objekttyp_transpose = {
@@ -107,7 +108,8 @@ objekttyp_transpose = {
     "Raster (ArcGIS-Raster)": "raster",
     "Sachdaten": "sachdaten",
     "ANNO": "anno",
-    "Multipatch": "multipatch"
+    "Multipatch": "multipatch",
+    "k.A.": "k.A."
 }
 lagegenauigkeit_transpose = {
     None: "",
@@ -119,17 +121,20 @@ lagegenauigkeit_transpose = {
     "Auf Basis Baublöcke (30 cm)": "baubloecke",
     "Auf Basis Luftbild (30 cm)": "luftbild",
     "Auf Basis Stadtbezirke (-teil -viertel)(10m)": "stadtbezirk",
-    "Auf Basis Stadtplan (10m)": "stadtplan"
+    "Auf Basis Stadtplan (10m)": "stadtplan",
+    "k.A.": "k.A."
 }
 archivwuerdigkeit_transpose = {
     "Noch offen": "noch_offen",
     "Archivwürdig": "archivwuerdig",
-    "Nicht archivwürdig": "nicht_archivwuerdig"
+    "Nicht archivwürdig": "nicht_archivwuerdig",
+    "k.A.": "k.A."
 }
 lhm_intern_transpose = {
     "Uneingeschränkt": "uneingeschraenkt",
     "Mit Einschränkungen": "eingeschraenkt",
-    "Kein Zugriff": "kein_zugriff"
+    "Kein Zugriff": "kein_zugriff",
+    "k.A.": "k.A."
 }
 
 geoinfoweb_transpose = {
@@ -142,7 +147,8 @@ geoinfoweb_transpose = {
 lhm_extern_transpose = {
     "Mit Nutzungsbedingungen/ -vereinbarungen": "nutzungsbedingungen",
     "Mit Einschränkungen": "einschraenkungen",
-    "Kein Zugriff": "kein_zugriff"
+    "Kein Zugriff": "kein_zugriff",
+    "k.A.": "k.A."
 }
 nutzungsoptionen_transpose = {
     "Nutzung für Backendverarbeitung und Präsentation": "backend_praesentation",
@@ -158,12 +164,14 @@ datenabgabe_extern_transpose = {
 open_data_transpose = {
     "Ja": "ja",
     "Nur bestimmte Attribute & Inhalte": "teilweise",
-    "Nein": "nein"
+    "Nein": "nein",
+    "k.A.": "k.A."
 }
 hvd_transpose ={
     "Ja": "ja",
     "Nur bestimmte Attribute & Inhalte": "teilweise",
-    "Nein": "nein"
+    "Nein": "nein",
+    "k.A.": "k.A."
 }
 hvd_kategorie_transpose = {
     "Georaum": "georaum",
@@ -173,7 +181,8 @@ hvd_kategorie_transpose = {
     "Unternehmen und Eigentümerschaft von Unternehmen": "unternehmen",
     "Mobilität": "mobilitaet",
     #"-": "keine",
-    '"-"': "keine"
+    '"-"': "keine",
+    "k.A.": "k.A."
 }
 
 schema_transpose = {

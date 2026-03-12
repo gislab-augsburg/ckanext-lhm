@@ -112,10 +112,13 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
 
     # ITemplateHelpers
     def get_helpers(self):
-        return dict(helpers.all_helpers)
-        # retunr dict((h, getattr(helpers, h)) for h in [
-        #     'user_info',#: helpers.user_info
-        # ])
+        # Get helpers
+        existing_helpers = dict(helpers.all_helpers)
+        # Add additional helper
+        existing_helpers.update({
+            'pycsw_enabled': lambda: toolkit.config.get('ckan.pycsw_enabled', 'false').lower() == 'true'
+        })
+        return existing_helpers
 
     def before_index(self, data_dict):
 

@@ -222,6 +222,23 @@ datenquelle_transpose = {
     "Mobidam":"mobidam"
 }
 
+resource_format_transpose = {
+    "Oracle-DB": "oracle-db",
+    "XLSX": "XLSX",
+    "PDF": "PDF",
+    "WCS": "WCS",
+    "WFS": "WFS",
+    "WMS": "WMS",
+    "WMTS": "WMTS",
+    "JSON": "JSON",
+    "XML/GML": "XML/GML",
+    "ArcGIS Kartenservice": "ArcGIS Kartenservice",
+    "ArcGIS Feature Service": "arcgis_rest",
+    "ArcGIS Map Service": "arcgis_rest_img",
+    "URL": "URL",
+    "Link":"Link"
+}
+
 
 # Reversing keys and values for reverse transpose arrays
 
@@ -245,3 +262,4 @@ hvd_kategorie_transpose_r = {value: key for key, value in hvd_kategorie_transpos
 schema_transpose_r = {value: key for key, value in schema_transpose.items()}
 sichtbarkeit_transpose_r = {value: key for key, value in sichtbarkeit_transpose.items()}
 datenquelle_transpose_r = {value: key for key, value in datenquelle_transpose.items()}
+resource_format_transpose_r = {value: key for key, value in resource_format_transpose.items()}

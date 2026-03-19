@@ -547,6 +547,10 @@ resource_fields:
     label: XML/GML
   - value: ArcGIS Kartenservice
     label: ArcGIS Kartenservice
+  - value: arcgis_rest
+    label: ArcGIS Feature Service
+  - value: arcgis_rest_img
+    label: ArcGIS Map Service
   - value: URL
     label: URL
   - value: Link

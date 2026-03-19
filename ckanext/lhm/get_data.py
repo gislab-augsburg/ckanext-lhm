@@ -439,7 +439,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                                     # Format
                                     coords = f'C{line__}'
                                     cell = ws_3[coords]
-                                    cell.value = value[j]['format']
+                                    cell.value = tp.resource_format_transpose_r[value[j]['format']]
                                     cell.border = Border_thin
                                     dv = add_validation_dropdown(ws_3, coords, '=Wertelisten!$R$2:$R$11')
                                     ws_3.add_data_validation(dv)

@@ -27,6 +27,12 @@
                     {% set label = "Geodatenpool" %}
                 {% elif item.name == "mobidam" %}
                     {% set label = "Mobidam" %}
+                {% if item.name == "plan-db" %}
+                    {% set label = "PLAN-DB" %}
+                {% elif item.name == "geoportal" %}
+                    {% set label = "Geoportal" %}
+                {% elif item.name == "geodatenmanagement" %}
+                    {% set label = "Geodatenmanagement" %}
                 {% elif item.name == "arcgis_rest" %}
                     {% set label = "ArcGIS Feature Service" %}
                 {% elif item.name == "arcgis_rest_img" %}

@@ -25,7 +25,7 @@ Example:
             {% endblock %}
             
             {% block download_button %}
-              {% if pkg.type == 'geodatenpool' or pkg.type == 'mobidam' %}
+              {% if pkg.type == 'geodatenpool' or pkg.type == 'mobidam' or pkg.type == 'plan-db' %}
                 <div class="btn-group dropdown">
                   <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {{ _('Exportieren') }}

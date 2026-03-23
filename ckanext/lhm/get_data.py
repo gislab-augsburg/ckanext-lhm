@@ -189,7 +189,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
             df = pd.DataFrame([package_dict])
             type_ = df['type'][0]
             # MB_CHANGE FOR DOWNLOAD BUTTON ### add mobidam
-            if type_ == 'geodatenpool' or type_ == 'mobidam':
+            if type_ == 'geodatenpool' or type_ == 'mobidam' or type_ == 'plan-db':
             ###################################
                 p_name = package_dict['name']
                 # MB_CHANGE FOR DOWNLOAD BUTTON ### comment out the following
@@ -340,7 +340,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                                                 cell = ws_1[coords]
                                                 cell.value = Dat
                                                 cell.border = Border_thin
-                                                if type_ == 'geodatenpool':
+                                                if type_ == 'geodatenpool' or type_ == 'plan-db':
                                                     dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$P$2:$P$8')
                                                 elif type_ == 'mobidam':
                                                     dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$U$2:$U$12')
@@ -369,7 +369,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                                                 cell = ws_1[coords]
                                                 cell.value = Ope
                                                 cell.border = Border_thin
-                                                if type_ == 'geodatenpool':
+                                                if type_ == 'geodatenpool' or type_ == 'plan-db':
                                                     dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$Q$2:$Q$4')
                                                 elif type_ == 'mobidam':
                                                     dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$Q$2:$Q$5')
@@ -479,7 +479,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 for pos in range(m + 1, 201):
                     coords = f'B{str(pos)}'
                     cell = ws_1[coords]                    
-                    if type_ == 'geodatenpool':
+                    if type_ == 'geodatenpool' or type_ == 'plan_db':
                         dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$P$2:$P$8')
                     elif type_ == 'mobidam':
                         dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$U$2:$U$12')
@@ -489,7 +489,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 for pos in range(m + 1, 201):
                     coords = f'F{str(pos)}'
                     cell = ws_1[coords]
-                    if type_ == 'geodatenpool':
+                    if type_ == 'geodatenpool' or type_ == 'plan_db':
                         dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$Q$2:$Q$4')
                     elif type_ == 'mobidam':
                         dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$Q$2:$Q$5')
@@ -544,6 +544,8 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     coords = 'B30'
                 elif type_ == 'mobidam':
                     coords = 'B28'
+                elif type_ == 'plan-db':
+                    coords = 'B33'
                 cell = ws[coords]
                 cell.value = package_dict['letzter_import']
                 # Tags
@@ -563,6 +565,8 @@ def packages_to_files(packages, limit, wdir, excel_template):
                             coords = 'B29'
                         elif type_ == 'mobidam':
                             coords = 'B27'
+                        elif type_ == 'plan-db':
+                            coords = 'B32'
                         cell = ws[coords]
                         cell.value = package_dict[key_]
                         dv = add_validation_dropdown(ws, coords, '=Wertelisten!$A$2:$A$7')
@@ -617,6 +621,21 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 cell.value = package_dict['ext_org']
                 dv = add_validation_mandatory(ws, coords)
                 ws.add_data_validation(dv)
+                # Datenherkunft
+                if type_ == 'plan-db':
+                    coords = 'B14'
+                    cell = ws[coords]
+                    cell.value = package_dict['datenherkunft']
+                # Hinweise zur Datenerhebung
+                if type_ == 'plan-db':
+                    coords = 'B15'
+                    cell = ws[coords]
+                    cell.value = package_dict['hinweise_datenerhebung']
+                # Inhaltlicher Stand der Daten
+                if type_ == 'plan-db':
+                    coords = 'B16'
+                    cell = ws[coords]
+                    cell.value = package_dict['inhaltlicher_stand']
                 # Schema
                 coords = 'B3'
                 cell = ws[coords]
@@ -625,43 +644,56 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$C$2:$C$21')
                 elif type_ == 'mobidam':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$S$2:$S$3')
+                elif type_ == 'plan-db':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$W$2:$W$21')
                 ws.add_data_validation(dv)
                 # Objekttyp
                 coords = 'B7'
                 cell = ws[coords]
                 cell.value = tp.objekttyp_transpose_r[package_dict['objekttyp']]
-                if type_ == 'geodatenpool':
+                if type_ == 'geodatenpool' or type_ == 'plan-db':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$D$2:$D$8')
                 elif type_ == 'mobidam':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$D$2:$D$9')
                 ws.add_data_validation(dv)
                 # Update-Zyklus
-                coords = 'B14'
+                if type_ == 'plan-db':
+                    coords = 'B17'
+                else:
+                    coords = 'B14'
                 cell = ws[coords]
                 cell.value = tp.update_zyklus_transpose_r[package_dict['update_zyklus']]
                 if type_ == 'geodatenpool':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$E$2:$E$8')
                 elif type_ == 'mobidam':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$E$2:$E$9')
+                elif type_ == 'plan-db':
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$X$2:$X$11')
                 ws.add_data_validation(dv)
                 # Stadtarchiv - Archivwürdigkeit
-                coords = 'B15'
+                if type_ == 'plan-db':
+                    coords = 'B18'
+                else:
+                    coords = 'B15'
                 cell = ws[coords]
                 cell.value = tp.archivwuerdigkeit_transpose_r[package_dict['stadtarchiv.archivwuerdigkeit']]
-                if type_ == 'geodatenpool':
+                if type_ == 'geodatenpool' or type_ == 'plan-db':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$F$2:$F$4')
                 elif type_ == 'mobidam':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$F$2:$F$5')
                 ws.add_data_validation(dv)
                 # Stadtarchiv - Begründung
-                coords = 'B16'
+                if type_ == 'plan-db':
+                    coords = 'B19'
+                else:
+                    coords = 'B16'
                 cell = ws[coords]
                 cell.value = package_dict['stadtarchiv.begruendung']
                 # Genauigkeit - Lagegenauigkeit
                 coords = 'B8'
                 cell = ws[coords]
                 cell.value = tp.lagegenauigkeit_transpose_r[package_dict['genauigkeit.lagegenauigkeit']]
-                if type_ == 'geodatenpool':
+                if type_ == 'geodatenpool' or type_ == 'plan-db':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$G$2:$G$11')
                 elif type_ == 'mobidam':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$G$2:$G$12')
@@ -671,10 +703,13 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 cell = ws[coords]
                 cell.value = package_dict['genauigkeit.bemerkung']
                 # LHM-intern
-                coords = 'B17'
+                if type_ == 'plan-db':
+                    coords = 'B20'
+                else:
+                    coords = 'B17'
                 cell = ws[coords]
                 cell.value = tp.lhm_intern_transpose_r[package_dict['lhm_intern']]
-                if type_ == 'geodatenpool':
+                if type_ == 'geodatenpool' or type_ == 'plan-db':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$H$2:$H$4')
                 elif type_ == 'mobidam':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$H$2:$H$5')
@@ -688,6 +723,20 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$I$2:$I$6')
                     ws.add_data_validation(dv)
                 ###############################
+                # LHM-intern - GeoServicePlattform
+                if type_ == 'plan-db':
+                    coords = 'B22'
+                    cell = ws[coords]
+                    cell.value = tp.geoserviceplattform_transpose_r[package_dict['geoserviceplattform']]
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$I$2:$I$6')
+                    ws.add_data_validation(dv)
+                # LHM-intern - GeoServicePlattform Gruppen
+                if type_ == 'plan-db':
+                    coords = 'B23'
+                    cell = ws[coords]
+                    cell.value = tp.geoserviceplattform_transpose_r[package_dict['geoserviceplattform_gruppen']]
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$I$2:$I$6')
+                    ws.add_data_validation(dv)
                 # Internet - Veröffentlichungen LHM
                 #coords = 'B21'
                 #cell = ws[coords]
@@ -699,9 +748,11 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     coords = 'B21'
                 elif type_ == 'mobidam':
                     coords = 'B18'
+                elif type_ == 'plan-db':
+                    coords = 'B24'
                 cell = ws[coords]
                 cell.value = tp.lhm_extern_transpose_r[package_dict['lhm_extern']]
-                if type_ == 'geodatenpool':
+                if type_ == 'geodatenpool' or type_ == 'plan-db':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$J$2:$J$4')
                 elif type_ == 'mobidam':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$J$2:$J$5')
@@ -711,6 +762,8 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     line = '22'
                 elif type_ == 'mobidam':
                     line = '19'
+                elif type_ == 'plan-db':
+                    line = '25'
                 ind = 0
                 cols_nu = ["B", "C", "D", "E"]
                 if 'nutzungsoptionen_list' in package_dict.keys():
@@ -737,9 +790,11 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     coords = 'B23'
                 elif type_ == 'mobidam':
                     coords = 'B20'
+                elif type_ == 'plan-db':
+                    coords = 'B26'
                 cell = ws[coords]
                 cell.value = tp.open_data_transpose_r[package_dict['open_data']]
-                if type_ == 'geodatenpool':
+                if type_ == 'geodatenpool' or type_ == 'plan-db':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$L$2:$L$4')
                 elif type_ == 'mobidam':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$L$2:$L$5')
@@ -750,9 +805,11 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     coords = 'B24'
                 elif type_ == 'mobidam':
                     coords = 'B21'
+                elif type_ == 'plan-db':
+                    coords = 'B27'
                 cell = ws[coords]
                 cell.value = tp.hvd_transpose_r[package_dict['hvd']]
-                if type_ == 'geodatenpool':
+                if type_ == 'geodatenpool' or type_ == 'plan-db':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$M$2:$M$4')
                 elif type_ == 'mobidam':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$M$2:$M$5')
@@ -763,9 +820,11 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     coords = 'B25'
                 elif type_ == 'mobidam':
                     coords = 'B22'
+                elif type_ == 'plan-db':
+                    coords = 'B28'
                 cell = ws[coords]
                 cell.value = tp.hvd_kategorie_transpose_r[package_dict['hvd_kategorie']]
-                if type_ == 'geodatenpool':
+                if type_ == 'geodatenpool' or type_ == 'plan-db':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$N$2:$N$8')
                 elif type_ == 'mobidam':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$N$2:$N$9')
@@ -776,6 +835,8 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     coords = 'B26'
                 elif type_ == 'mobidam':
                     coords = 'B23'
+                elif type_ == 'plan-db':
+                    coords = 'B29'
                 cell = ws[coords]
                 cell.value = package_dict['open_data_attribute']
                 
@@ -801,6 +862,8 @@ def packages_to_files(packages, limit, wdir, excel_template):
                             coords = f'{row_}27'
                         elif type_ == 'mobidam':
                             coords = f'{row_}24'
+                        elif type_ == 'plan-db':
+                            coords = f'{row_}30'
                         cell = ws[coords]
                         cell.value = package_dict[key_]
                 # Nutzungshinweise - Hinweise
@@ -812,6 +875,8 @@ def packages_to_files(packages, limit, wdir, excel_template):
                             coords = f'{row_}28'
                         elif type_ == 'mobidam':
                             coords = f'{row_}25'
+                        elif type_ == 'mobidam':
+                            coords = f'{row_}31'
                         cell = ws[coords]
                         cell.value = package_dict[key_]
                 # MB_CHANGE FOR DOWNLOAD BUTTON ###
@@ -834,9 +899,11 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     coords = 'B31'
                 elif type_ == 'mobidam':
                     coords = 'B29'
+                elif type_ == 'plan-db':
+                    coords = 'B34'
                 cell = ws[coords]
                 cell.value = tp.datenquelle_transpose_r[package_dict['type']]
-                dv = add_validation_dropdown(ws, coords, '=Wertelisten!$V$2:$V$3')
+                dv = add_validation_dropdown(ws, coords, '=Wertelisten!$V$2:$V$4')
                 ws.add_data_validation(dv)
 
                 

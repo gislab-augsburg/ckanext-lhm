@@ -97,6 +97,9 @@ update_zyklus_transpose = {
     "Täglich": "taeglich",
     "Wöchentlich": "woechentlich",
     "Monatlich": "monatlich",
+    "Quartalsweise": "quartalsweise",
+    "Jährlich": "jaehrlich",
+    "Zweijährlich": "zweijaehrlich",
     "Keine Aktualisierung": "kein",
     "k.A.": "k.A."
 }
@@ -144,6 +147,15 @@ geoinfoweb_transpose = {
     "Ausgenommen Bezirksausschüsse": "ohne_bezirksausschuesse",
     "Keine": "keine"
 }
+
+geoserviceplattform_transpose = {
+    "Alle Nutzer": "alle_nutzer",
+    "Bestimmte Organisationseinheiten": "organisationseinheiten",
+    "Bestimmte (\u00fcbergreifende) Gruppe(n)": "gruppen",
+    "Ausgenommen Bezirksausschüsse": "ohne_bezirksausschuesse",
+    "Keine": "keine"
+}
+
 lhm_extern_transpose = {
     "Mit Nutzungsbedingungen/ -vereinbarungen": "nutzungsbedingungen",
     "Mit Einschränkungen": "einschraenkungen",
@@ -209,7 +221,28 @@ schema_transpose = {
     "MOBIDAM": "mobidam",
     "MOBIDAM_SST": "mobidam_sst",
     ###################################
-    "VA3D": "va3d"
+    "VA3D": "va3d",
+    # PLAN-DB
+    "BAU": "bau",
+    "BPLAN": "bplan",
+    "DENK": "denk",
+    "ENP": "enp",
+    "EWO": "ewo",
+    "FIS": "fis",
+    "FNP": "fnp",
+    "GEB": "geb",
+    "GEN": "gen",
+    "GRENZ": "grenz",
+    "GRUEN": "gruen",
+    "HAII_PRIO": "haii_prio",
+    "INNENSTADT": "innenstadt",
+    "LBK": "lbk",
+    "REG": "reg",
+    "SIED": "sied",
+    "SOZ": "soz",
+    "STAPL": "stapl",
+    "UNB": "unb",
+    "ZEN": "zen"
 }
 
 sichtbarkeit_transpose = {
@@ -219,7 +252,8 @@ sichtbarkeit_transpose = {
 
 datenquelle_transpose = {
     "Geodatenpool": "geodatenpool",
-    "Mobidam":"mobidam"
+    "Mobidam":"mobidam",
+    "PLAN-DB": "plan-db"
 }
 
 resource_format_transpose = {
@@ -253,6 +287,7 @@ lagegenauigkeit_transpose_r = {value: key for key, value in lagegenauigkeit_tran
 archivwuerdigkeit_transpose_r = {value: key for key, value in archivwuerdigkeit_transpose.items()}
 lhm_intern_transpose_r = {value: key for key, value in lhm_intern_transpose.items()}
 geoinfoweb_transpose_r = {value: key for key, value in geoinfoweb_transpose.items()}
+geoserviceplattform_transpose_r = {value: key for key, value in geoserviceplattform_transpose.items()}
 lhm_extern_transpose_r = {value: key for key, value in lhm_extern_transpose.items()}
 nutzungsoptionen_transpose_r = {value: key for key, value in nutzungsoptionen_transpose.items()}
 datenabgabe_extern_transpose_r = {value: key for key, value in datenabgabe_extern_transpose.items()}

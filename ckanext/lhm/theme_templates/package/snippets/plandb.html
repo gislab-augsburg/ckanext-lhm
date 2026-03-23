@@ -73,6 +73,7 @@
             <p class="metadata">{%- snippet 'package/snippets/label.html', item='datenherkunft', pkg_dict=pkg_dict, schema=schema -%}</p>
           {% else %}
             <p class="metadata">{{ _("Nicht verfügbar") }}</p>
+          {% endif %}
         </td>
         <td>      
           <p class="heading">{{ _("Hinweise zur Datenerhebung") }}

@@ -875,7 +875,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                             coords = f'{row_}28'
                         elif type_ == 'mobidam':
                             coords = f'{row_}25'
-                        elif type_ == 'mobidam':
+                        elif type_ == 'plan-db':
                             coords = f'{row_}31'
                         cell = ws[coords]
                         cell.value = package_dict[key_]

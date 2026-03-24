@@ -735,8 +735,6 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     coords = 'B23'
                     cell = ws[coords]
                     cell.value = package_dict['geoserviceplattform_gruppen']
-                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$I$2:$I$6')
-                    ws.add_data_validation(dv)
                 # Internet - Veröffentlichungen LHM
                 #coords = 'B21'
                 #cell = ws[coords]

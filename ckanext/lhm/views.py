@@ -86,6 +86,8 @@ def generate_pdf(dataset_name):
         excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp.xlsx')
     elif p_type == 'mobidam':
         excel_template = resource_filename('ckanext.lhm', 'schemas/template_mobidam.xlsx')
+    elif p_type == 'plan-db':
+        excel_template = resource_filename('ckanext.lhm', 'schemas/template_plandb.xlsx')
     else:
         excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp.xlsx')
 
@@ -115,6 +117,10 @@ def generate_pdf(dataset_name):
         coords = 'A37'
     elif p_type == 'mobidam':
         coords = 'A35'
+    elif p_type == 'plan-db':
+        coords = 'A40'
+    else:
+        coords = 'A37'
     cell = ws_0[coords]
     cell.value = ''
 
@@ -159,6 +165,8 @@ def generate_xlsx(dataset_name):
         excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp.xlsx')
     elif p_type == 'mobidam':
         excel_template = resource_filename('ckanext.lhm', 'schemas/template_mobidam.xlsx')
+    elif p_type == 'plan-db':
+        excel_template = resource_filename('ckanext.lhm', 'schemas/template_plandb.xlsx')
     else:
         excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp.xlsx')
 

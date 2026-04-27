@@ -37,6 +37,10 @@
                     {% set label = "ArcGIS Feature Service" %}
                 {% elif item.name == "arcgis_rest_img" %}
                     {% set label = "ArcGIS Map Service" %}
+                {% elif item.name == "wmts_kvp" %}
+                    {% set label = "WMTS-KVP" %}
+                {% elif item.name == "open_data" %}
+                    {% set label = "Open Data" %}
                 {% elif item.name == "oracle-db" %}
                     {% set label = "Oracle-DB" %}
                 {% else %}

@@ -441,7 +441,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                                     cell = ws_3[coords]
                                     cell.value = tp.resource_format_transpose_r[value[j]['format']]
                                     cell.border = Border_thin
-                                    dv = add_validation_dropdown(ws_3, coords, '=Wertelisten!$R$2:$R$11')
+                                    dv = add_validation_dropdown(ws_3, coords, '=Wertelisten!$R$2:$R$13')
                                     ws_3.add_data_validation(dv)
                                     # URL
                                     coords = f'D{line__}'
@@ -499,7 +499,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 for pos in range(number_other_res + 1, 201):
                     coords = f'C{str(pos)}'
                     cell = ws_3[coords]
-                    dv = add_validation_dropdown(ws_3, coords, '=Wertelisten!$R$2:$R$11')
+                    dv = add_validation_dropdown(ws_3, coords, '=Wertelisten!$R$2:$R$13')
                     ws_3.add_data_validation(dv)
 
                 # Delete Sheets if no Datenverzeichnis or Katalogwerte

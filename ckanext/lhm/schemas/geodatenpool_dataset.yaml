@@ -523,6 +523,8 @@ resource_fields:
     label: WMS
   - value: WMTS
     label: WMTS
+  - value: wmts_kvp
+    label: WMTS-KVP
   - value: JSON
     label: JSON
   - value: XML/GML

@@ -264,6 +264,7 @@ resource_format_transpose = {
     "WFS": "WFS",
     "WMS": "WMS",
     "WMTS": "WMTS",
+    "WMTS-KVP": "wmts_kvp",
     "JSON": "JSON",
     "XML/GML": "XML/GML",
     "ArcGIS Kartenservice": "ArcGIS Kartenservice",

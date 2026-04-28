@@ -9,7 +9,9 @@
     <section class="module module-narrow module-shallow">
         {% block facet_list_heading %}
         {% if title == "type" %}
-        {% set title = "Datenquellen" %}
+            {% set title = "Datenquellen" %}
+        {% elif title == "open_data" %}
+            {% set title = "Open Data" %}
         {% endif %}
     	<h2 class="module-heading">
     	    <i class="fa fa-filter"></i>
@@ -39,8 +41,6 @@
                     {% set label = "ArcGIS Map Service" %}
                 {% elif item.name == "wmts_kvp" %}
                     {% set label = "WMTS-KVP" %}
-                {% elif item.name == "open_data" %}
-                    {% set label = "Open Data" %}
                 {% elif item.name == "oracle-db" %}
                     {% set label = "Oracle-DB" %}
                 {% else %}

@@ -1,5 +1,5 @@
-{% set intro = g.site_intro_text %}
-{% set intro_paragraph = g.site_description %}
+{% set intro = g.site_description %}
+{% set intro_paragraph = g.site_intro_text %}
 
 <div class="module-content box">
   <header>
@@ -10,7 +10,6 @@
     {% endif %}
   </header>
   <p>
-    {% trans %} {{ intro_paragraph }}
-    {% endtrans %}
+    {{ h.render_markdown(intro_paragraph) }}
   </p>
 </div>

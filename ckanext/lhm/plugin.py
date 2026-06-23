@@ -191,17 +191,38 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
     def after_map(self, map):
         return map
 
-    def before_search(self, search_params):
-        # Call the original method to retain its functionality
-        search_params = HierarchyDisplay.before_dataset_search('', search_params)
-
-        # Add your additional logic here
-        if 'owner_org' in search_params.get('fq', ''):
+    def before_dataset_search(self, search_params):
+        if self._is_organization_dataset_search(search_params):
             query = search_params.get('q', '')
-            query += ' include_children: "True"'
-            search_params['q'] = query.strip()
+            include_children = 'include_children: "True"'
+            if include_children not in query:
+                search_params['q'] = (query + ' ' + include_children).strip()
 
-        return search_params
+        return HierarchyDisplay.before_dataset_search(self, search_params)
+
+    before_search = before_dataset_search
+
+    def _is_organization_dataset_search(self, search_params):
+        if 'owner_org' not in search_params.get('fq', ''):
+            return False
+
+        try:
+            fields = toolkit.g.fields
+        except (AttributeError, RuntimeError):
+            return False
+
+        if not isinstance(fields, list):
+            return False
+
+        try:
+            if toolkit.check_ckan_version("2.10"):
+                controller = toolkit.get_endpoint()[0]
+            else:
+                controller = toolkit.g.controller
+        except (TypeError, AttributeError, RuntimeError):
+            return False
+
+        return controller == 'organization'
 
     def is_fallback(self):
         return False

@@ -3,3 +3,9 @@ lhm_theme_css:
   output: ckanext-lhm/%(version)s-theme.css
   contents:
     - css/theme_lhm.css
+
+lhm_theme_script:
+  filter: rjsmin
+  output: ckanext-lhm/%(version)s-theme.js
+  contents:
+    - js/facet_accordion.js

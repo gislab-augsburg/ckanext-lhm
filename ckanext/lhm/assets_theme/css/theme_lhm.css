@@ -524,3 +524,88 @@ table.package-metadata {
     margin-top: 0px !important;
 }
 
+
+/* Collapsible search facets */
+.lhm-facet-accordion {
+    margin-bottom: 20px;
+}
+
+.lhm-facet-toggle-all,
+.lhm-facet-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 15px;
+    border: 1px solid #dddddd;
+    background: #f6f6f6;
+    color: #333333;
+    text-align: left;
+}
+
+.lhm-facet-toggle-all {
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.lhm-facet-toggle-all:hover,
+.lhm-facet-toggle-all:focus,
+.lhm-facet-summary:hover,
+.lhm-facet-summary:focus {
+    background: #eeeeee;
+    color: #333333;
+    text-decoration: none;
+}
+
+.lhm-facet-module {
+    margin-bottom: 6px;
+}
+
+.lhm-facet-details {
+    display: block;
+}
+
+.lhm-facet-summary {
+    cursor: pointer;
+    list-style: none;
+}
+
+.lhm-facet-summary::-webkit-details-marker {
+    display: none;
+}
+
+.lhm-facet-title {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.lhm-facet-title .fa-filter,
+.lhm-facet-toggle-all .fa-filter {
+    margin-right: 8px;
+}
+
+.lhm-facet-chevron,
+.lhm-facet-toggle-chevron {
+    margin-left: 8px;
+    transition: transform 0.15s ease-in-out;
+}
+
+.lhm-facet-details[open] .lhm-facet-chevron,
+.lhm-facet-toggle-all.is-open .lhm-facet-toggle-chevron {
+    transform: rotate(180deg);
+}
+
+.lhm-facet-content {
+    padding: 10px 15px;
+    border: 1px solid #dddddd;
+    border-top: 0;
+    background: #ffffff;
+}
+
+.lhm-facet-content .module-footer,
+.lhm-facet-content .module-content.empty {
+    margin: 10px 0 0;
+    padding: 0;
+}

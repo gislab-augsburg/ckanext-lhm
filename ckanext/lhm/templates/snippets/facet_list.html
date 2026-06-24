@@ -1,31 +1,36 @@
-
 {% ckan_extends %}
 
 {% block facet_list %}
 {% set hide_empty = hide_empty or false %}
-{% with items = items or h.get_facet_items_dict(name, search_facets) %}
-	{% if items or not hide_empty %}
-	    {% block facet_list_item %}
-    <section class="module module-narrow module-shallow">
+{% set facet_data = search_facets or c.search_facets %}
+{% with items = items or h.get_facet_items_dict(name, facet_data) %}
+    {% if items or not hide_empty %}
+        {% block facet_list_item %}
+    <section class="module module-narrow module-shallow lhm-facet-module">
         {% block facet_list_heading %}
         {% if title == "type" %}
             {% set title = "Datenquellen" %}
         {% elif title == "open_data" %}
             {% set title = "Open Data" %}
+        {% else %}
+            {% set title = title or h.get_facet_title(name) %}
         {% endif %}
-    	<h2 class="module-heading">
-    	    <i class="fa fa-filter"></i>
-    	    {{ title }}
-    	</h2>
+        {% set facet_id = 'facet-' ~ name|replace('_', '-')|replace(' ', '-') %}
+        <details class="lhm-facet-details" id="{{ facet_id }}">
+            <summary class="module-heading lhm-facet-summary">
+                <span class="lhm-facet-title"><i class="fa fa-filter"></i>{{ title }}</span>
+                <i class="fa fa-chevron-down lhm-facet-chevron" aria-hidden="true"></i>
+            </summary>
         {% endblock %}
         {% block facet_list_items %}
-    	{% with items = items or h.get_facet_items_dict(name, search_facets) %}
-    	    {% if items %}
+        <div class="lhm-facet-content">
+        {% with items = items or h.get_facet_items_dict(name, facet_data) %}
+            {% if items %}
         <nav aria-label="{{ title }}">
             <ul class="list-unstyled nav nav-simple nav-facet">
-        	{% for item in items %}
-        	    {% set href = h.remove_url_param(name, item.name, extras=extras, alternative_url=alternative_url) if item.active else h.add_url_param(new_params={name: item.name}, extras=extras, alternative_url=alternative_url) %}
-        	    {% if item.name == "geodatenpool" %}
+            {% for item in items %}
+                {% set href = h.remove_url_param(name, item.name, extras=extras, alternative_url=alternative_url) if item.active else h.add_url_param(new_params={name: item.name}, extras=extras, alternative_url=alternative_url) %}
+                {% if item.name == "geodatenpool" %}
                     {% set label = "Geodatenpool" %}
                 {% elif item.name == "mobidam" %}
                     {% set label = "Mobidam" %}
@@ -46,37 +51,39 @@
                 {% else %}
                     {% set label = label_function(item) if label_function else item.display_name %}
                 {% endif %}
-        	    {% set label_truncated = label|truncate(22) if not label_function else label %}
-        	    {% set count = count_label(item['count']) if count_label else ('%d' % item['count']) %}
-        	    <li class="nav-item {% if item.active %} active{% endif %}">
+                {% set label_truncated = label|truncate(22) if not label_function else label %}
+                {% set count = count_label(item['count']) if count_label else ('%d' % item['count']) %}
+                <li class="nav-item {% if item.active %} active{% endif %}">
             <a href="{{ href }}" title="{{ label if label != label_truncated else '' }}">
                 <span class="item-label">{{ label_truncated }}</span>
                 <span class="hidden separator"> - </span>
                 <span class="item-count badge">{{ count }}</span>
 
-            	{% if item.active %}<span class="facet-close"> <i class="fa fa-solid fa-circle-xmark"></i></span>{% endif %}
+                {% if item.active %}<span class="facet-close"> <i class="fa fa-solid fa-circle-xmark"></i></span>{% endif %}
             </a>
-        	    </li>
-        	{% endfor %}
+                </li>
+            {% endfor %}
             </ul>
         </nav>
 
         <p class="module-footer">
             {% if h.get_param_int('_%s_limit' % name) %}
-        	{% if h.has_more_facets(name, search_facets) %}
-        	    <a href="{{ h.remove_url_param('_%s_limit' % name, replace=0, extras=extras, alternative_url=alternative_url) }}" class="read-more">{{ _('Show More {facet_type}').format(facet_type=title) }}</a>
-        	{% endif %}
+            {% if h.has_more_facets(name, facet_data) %}
+                <a href="{{ h.remove_url_param('_%s_limit' % name, replace=0, extras=extras, alternative_url=alternative_url) }}" class="read-more">{{ _('Show More {facet_type}').format(facet_type=title) }}</a>
+            {% endif %}
             {% else %}
-        	<a href="{{ h.remove_url_param('_%s_limit' % name, extras=extras, alternative_url=alternative_url) }}" class="read-more">{{ _('Show Only Popular {facet_type}').format(facet_type=title) }}</a>
+            <a href="{{ h.remove_url_param('_%s_limit' % name, extras=extras, alternative_url=alternative_url) }}" class="read-more">{{ _('Show Only Popular {facet_type}').format(facet_type=title) }}</a>
             {% endif %}
         </p>
-    	    {% else %}
+            {% else %}
         <p class="module-content empty">{{ _('There are no {facet_type} that match this search').format(facet_type=title) }}</p>
-    	    {% endif %}
-    	{% endwith %}
+            {% endif %}
+        {% endwith %}
+        </div>
+        </details>
         {% endblock %}
     </section>
-	    {% endblock %}
-	{% endif %}
+        {% endblock %}
+    {% endif %}
     {% endwith %}
 {% endblock %}

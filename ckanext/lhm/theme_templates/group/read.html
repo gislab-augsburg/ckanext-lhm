@@ -1,7 +1,7 @@
 {% ckan_extends %}
 
 {% block secondary_content %}
-  {{ super() }}
+  {% snippet "group/snippets/info.html", group=group_dict, show_nums=true %}
   <div class="filters lhm-facet-accordion">
     <button type="button" class="lhm-facet-toggle-all" data-lhm-facet-toggle-all aria-expanded="false">
       <i class="fa fa-filter" aria-hidden="true"></i>
@@ -10,7 +10,7 @@
     </button>
     <div class="lhm-facet-list">
       {% for facet in facet_titles %}
-        {{ h.snippet('snippets/facet_list.html', title=facet_titles[facet], name=facet, extras={'id':group_dict.id}) }}
+        {{ h.snippet('snippets/facet_list.html', title=facet_titles[facet], name=facet, search_facets=search_facets, extras={'id':group_dict.id}) }}
       {% endfor %}
     </div>
     <a class="close no-text hide-filters"><i class="fa fa-times-circle"></i><span class="text">close</span></a>

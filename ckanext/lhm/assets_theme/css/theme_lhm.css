@@ -528,6 +528,7 @@ table.package-metadata {
 /* Collapsible search facets */
 .lhm-facet-accordion {
     margin-bottom: 20px;
+    border-top: 1px solid #dddddd;
 }
 
 .lhm-facet-toggle-all,
@@ -546,6 +547,7 @@ table.package-metadata {
 
 .lhm-facet-toggle-all {
     margin-bottom: 6px;
+    border-top: 0;
     font-weight: bold;
 }
 
@@ -575,10 +577,17 @@ table.package-metadata {
     display: none;
 }
 
-.lhm-facet-title {
+.lhm-facet-title,
+.lhm-facet-toggle-all span {
     display: inline-flex;
     align-items: center;
+    flex: 1 1 auto;
     min-width: 0;
+}
+
+.lhm-facet-toggle-all span {
+    justify-content: flex-start;
+    text-align: left;
 }
 
 .lhm-facet-title .fa-filter,
@@ -588,7 +597,8 @@ table.package-metadata {
 
 .lhm-facet-chevron,
 .lhm-facet-toggle-chevron {
-    margin-left: 8px;
+    flex: 0 0 auto;
+    margin-left: auto;
     transition: transform 0.15s ease-in-out;
 }
 

@@ -573,6 +573,10 @@ table.package-metadata {
     list-style: none;
 }
 
+.lhm-facet-module:first-child .lhm-facet-summary {
+    border-top-width: 1px;
+}
+
 .lhm-facet-summary::-webkit-details-marker {
     display: none;
 }

@@ -15,6 +15,22 @@
     toggle.classList.toggle('is-open', allOpen);
   }
 
+  function filterFacet(input) {
+    var details = input.closest('.lhm-facet-details');
+
+    if (!details) {
+      return;
+    }
+
+    var query = input.value.trim().toLowerCase();
+    var items = details.querySelectorAll('.nav-facet .nav-item');
+
+    Array.prototype.forEach.call(items, function (item) {
+      var label = item.getAttribute('data-lhm-facet-label') || item.textContent || '';
+      item.hidden = query !== '' && label.toLowerCase().indexOf(query) === -1;
+    });
+  }
+
   document.addEventListener('click', function (event) {
     var toggle = event.target.closest('[data-lhm-facet-toggle-all]');
 
@@ -38,6 +54,12 @@
     });
 
     setToggleState(root);
+  });
+
+  document.addEventListener('input', function (event) {
+    if (event.target.matches('.lhm-facet-search')) {
+      filterFacet(event.target);
+    }
   });
 
   document.addEventListener('toggle', function (event) {

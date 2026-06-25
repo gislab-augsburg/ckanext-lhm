@@ -595,6 +595,14 @@ table.package-metadata {
     margin-right: 8px;
 }
 
+.lhm-facet-title .fa-filter {
+    color: #dddddd;
+}
+
+.lhm-facet-toggle-all .fa-filter {
+    color: #333333;
+}
+
 .lhm-facet-chevron,
 .lhm-facet-toggle-chevron {
     flex: 0 0 auto;

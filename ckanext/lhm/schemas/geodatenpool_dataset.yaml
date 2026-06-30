@@ -106,13 +106,24 @@ dataset_fields:
 # Feld alt 
 - field_name: owner_org
   label: 
-    en: Responsible organization
-    de: Organisation
+    en: Data source
+    de: Datenquelle
   preset: dataset_organization
   form_snippet: organization_lhm.html
   is_info: true
-  info_text_orga: Angabe des fachlich zuständigen Referats und der ersten, das Referat untergliedernden Organisationseinheit (z.B. Amt, Hauptabteilung, Geschäftsbereich)
+  info_text_orga: Auswahl der Datenquelle, an der die CKAN-Rechte für diesen Datensatz hängen.
   required: true
+
+- field_name: lhm_org
+  label:
+    en: Organization
+    de: Organisation
+  form_snippet: lhm_org_lhm.html
+  display_snippet: lhm_org.html
+  is_info: true
+  info_text: Angabe des fachlich zuständigen Referats und der ersten, das Referat untergliedernden Organisationseinheit (z.B. Amt, Hauptabteilung, Geschäftsbereich)
+  required: true
+  validators: scheming_required unicode_safe
 
 # Feld alt 
 - field_name: datenverantwortlicher

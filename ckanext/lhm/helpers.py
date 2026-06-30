@@ -57,6 +57,72 @@ def get_info_group(id):
         return None
     return out
 
+
+def _lhm_org_display_name(organization):
+    if not organization:
+        return None
+    return (
+        organization.get('display_name')
+        or organization.get('title')
+        or organization.get('name')
+        or organization.get('id')
+    )
+
+
+@helper
+def lhm_org_options():
+    """Return selectable LHM organizations for the lhm_org metadata field."""
+    try:
+        organizations = toolkit.get_action('organization_list')(
+            {'ignore_auth': True},
+            {'all_fields': True, 'include_extras': True}
+        )
+    except Exception:
+        organizations = []
+
+    options = []
+    for organization in organizations:
+        value = organization.get('id') or organization.get('name')
+        label = _lhm_org_display_name(organization)
+        if value and label:
+            options.append({'value': value, 'label': label})
+
+    return sorted(options, key=lambda option: option['label'].lower())
+
+
+@helper
+def lhm_org_label(value):
+    if not value:
+        return None
+
+    for option in lhm_org_options():
+        if value in (option['value'], option['label']):
+            return option['label']
+
+    try:
+        organization = toolkit.get_action('organization_show')(
+            {'ignore_auth': True},
+            {'id': value, 'include_datasets': False}
+        )
+    except Exception:
+        organization = None
+
+    return _lhm_org_display_name(organization) or value
+
+
+@helper
+def lhm_owner_org_label(pkg_dict):
+    organization = pkg_dict.get('organization') if pkg_dict else None
+    label = _lhm_org_display_name(organization)
+    if label:
+        return label
+
+    owner_org = pkg_dict.get('owner_org') if pkg_dict else None
+    if owner_org:
+        return lhm_org_label(owner_org)
+
+    return None
+
 def get_init_data():
     # ckanext.grouphierarchy.init_data = example.json
     # make sure the .json file is inside grouphierarchy directory,

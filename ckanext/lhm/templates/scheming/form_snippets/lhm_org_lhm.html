@@ -1,0 +1,27 @@
+{% import 'macros/form.html' as form %}
+
+{% set field_name = field.field_name %}
+{% set selected_org = data.get(field_name) %}
+{% set org_required = h.scheming_field_required(field) %}
+
+{% call form.input_block('field-' ~ field_name,
+  label=h.scheming_language_text(field.label),
+  error=errors[field_name],
+  is_required=org_required,
+  classes=field.classes if 'classes' in field else ['form-group', 'control-medium'],
+  is_info=field.is_info,
+  info_text=field.info_text
+  ) %}
+  <div {{ form.attributes(field.form_attrs) if 'form_attrs' in field else '' }}>
+    <select id="field-{{ field_name }}" name="{{ field_name }}" {{ form.attributes(
+      field.get('form_select_attrs', {'data-module': 'autocomplete'})) }}>
+      {% if not org_required or field.get('form_include_blank_choice', false) %}
+        <option value="">{% if not org_required %}{{ _('No organization') }}{% endif %}</option>
+      {% endif %}
+      {% for organization in h.lhm_org_options() %}
+        <option value="{{ organization.value }}"{% if selected_org == organization.value %} selected="selected"{% endif %}>{{ organization.label }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  {%- snippet 'scheming/form_snippets/help_text_lhm.html', field=field %}
+{% endcall %}

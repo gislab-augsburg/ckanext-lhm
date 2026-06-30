@@ -7,8 +7,12 @@
         {% block facet_list_item %}
     <section class="module module-narrow module-shallow lhm-facet-module">
         {% block facet_list_heading %}
-        {% if title == "type" %}
-            {% set title = "Datenquellen" %}
+        {% if name == "organization" %}
+            {% set title = "Datenquelle" %}
+        {% elif name == "lhm_org" %}
+            {% set title = "Organisationen" %}
+        {% elif title == "type" %}
+            {% set title = "Datentyp" %}
         {% elif title == "open_data" %}
             {% set title = "Open Data" %}
         {% else %}
@@ -30,7 +34,9 @@
             <ul class="list-unstyled nav nav-simple nav-facet">
             {% for item in items %}
                 {% set href = h.remove_url_param(name, item.name, extras=extras, alternative_url=alternative_url) if item.active else h.add_url_param(new_params={name: item.name}, extras=extras, alternative_url=alternative_url) %}
-                {% if item.name == "geodatenpool" %}
+                {% if name == "lhm_org" %}
+                    {% set label = h.lhm_org_label(item.name) %}
+                {% elif item.name == "geodatenpool" %}
                     {% set label = "Geodatenpool" %}
                 {% elif item.name == "mobidam" %}
                     {% set label = "Mobidam" %}

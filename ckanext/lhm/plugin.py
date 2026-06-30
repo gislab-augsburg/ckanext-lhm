@@ -1,4 +1,5 @@
 import json
+from collections import OrderedDict
 import ckan.model as model
 from ckan.lib import search
 import ckan.plugins as p
@@ -280,6 +281,28 @@ class LHMThemePlugin(p.SingletonPlugin, DefaultTranslation):
         p.toolkit.add_public_directory(config, 'public')
         p.toolkit.add_resource('assets_theme', 'lhm_theme')
 
+
+
+    def _lhm_facets(self, facets_dict):
+        facets = OrderedDict()
+        facets['organization'] = 'Datenquelle'
+        facets['lhm_org'] = 'Organisationen'
+
+        for name, title in facets_dict.items():
+            if name in ('organization', 'owner_org', 'lhm_org', 'type'):
+                continue
+            facets[name] = title
+
+        return facets
+
+    def dataset_facets(self, facets_dict, package_type):
+        return self._lhm_facets(facets_dict)
+
+    def group_facets(self, facets_dict, group_type, package_type):
+        return self._lhm_facets(facets_dict)
+
+    def organization_facets(self, facets_dict, organization_type, package_type):
+        return self._lhm_facets(facets_dict)
 
     # IActions
     def get_actions(self):

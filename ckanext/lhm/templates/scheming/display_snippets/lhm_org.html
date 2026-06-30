@@ -1,0 +1,4 @@
+{% set value = data.get(field.field_name) %}
+{% if value %}
+  {{ h.lhm_org_label(value) }}
+{% endif %}

@@ -32,13 +32,18 @@
       <tr>
         <td>      
           <p class="heading">{{ _("Datenquelle") }}
-          <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Die Datenquelle bezeichnet das System aus dem die Daten bezogen werden können, bspw. Geodatenpool."></span></p>
-          {% if pkg_dict.type == "geodatenpool" %}
-            <p class="metadata">{{ _("Geodatenpool") }}</p>
-          {% elif  pkg_dict.type == "mobidam" %}
-            <p class="metadata">{{ _("Mobidam") }}</p>
-          {% elif  pkg_dict.type == "geodatenmanagement" %}
-            <p class="metadata">{{ _("Geodatenmanagement") }}</p>
+          <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Die Datenquelle bezeichnet die CKAN-Organisation, an der die Rechte für diesen Datensatz hängen."></span></p>
+          {% set data_source_label = h.lhm_owner_org_label(pkg_dict) %}
+          {% if data_source_label %}
+            <p class="metadata">{{ data_source_label }}</p>
+          {% else %}
+            <p class="metadata">{{ _("Nicht verfügbar") }}</p>
+          {% endif %}
+          <p class="heading">{{ _("Organisation") }}
+          <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Fachlich zuständige LHM-Organisationseinheit."></span></p>
+          {% set lhm_org_label = h.lhm_org_label(pkg_dict.lhm_org) %}
+          {% if lhm_org_label %}
+            <p class="metadata">{{ lhm_org_label }}</p>
           {% else %}
             <p class="metadata">{{ _("Nicht verfügbar") }}</p>
           {% endif %}

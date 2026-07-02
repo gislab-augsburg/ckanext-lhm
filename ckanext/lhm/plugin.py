@@ -230,7 +230,7 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         except (TypeError, AttributeError, RuntimeError):
             return False
 
-        return controller == 'organization'
+        return controller == 'organization' or controller.startswith('organization.')
 
     def _replace_owner_org_fq_with_lhm_org(self, search_params):
         fq = search_params.get('fq', '')

@@ -58,6 +58,11 @@ def get_info_group(id):
     return out
 
 
+LHM_ORG_KIND_EXTRA = 'lhm_org_kind'
+LHM_ORG_KIND = 'lhm_org'
+LHM_DATA_SOURCE_KIND = 'data_source'
+
+
 def _lhm_org_display_name(organization):
     if not organization:
         return None
@@ -69,16 +74,52 @@ def _lhm_org_display_name(organization):
     )
 
 
-@helper
-def lhm_org_options():
-    """Return selectable LHM organizations for the lhm_org metadata field."""
+def _lhm_org_extra(organization, key):
+    if not organization:
+        return None
+
+    if organization.get(key):
+        return organization.get(key)
+
+    extras = organization.get('extras') or {}
+    if isinstance(extras, dict):
+        return extras.get(key)
+
+    for extra in extras:
+        if extra.get('key') == key:
+            return extra.get('value')
+
+    return None
+
+
+def _lhm_org_kind(organization):
+    return _lhm_org_extra(organization, LHM_ORG_KIND_EXTRA)
+
+
+def _lhm_organization_list():
     try:
-        organizations = toolkit.get_action('organization_list')(
+        return toolkit.get_action('organization_list')(
             {'ignore_auth': True},
             {'all_fields': True, 'include_extras': True}
         )
     except Exception:
-        organizations = []
+        return []
+
+
+def _lhm_filter_orgs(organizations, kind):
+    filtered = []
+    for organization in organizations or []:
+        org_kind = _lhm_org_kind(organization)
+        if org_kind == kind or org_kind is None:
+            filtered.append(organization)
+    return filtered
+
+
+@helper
+def lhm_org_options(organizations=None):
+    """Return selectable LHM organizations for the lhm_org metadata field."""
+    organizations = organizations or _lhm_organization_list()
+    organizations = _lhm_filter_orgs(organizations, LHM_ORG_KIND)
 
     options = []
     for organization in organizations:
@@ -91,23 +132,43 @@ def lhm_org_options():
 
 
 @helper
+def lhm_data_source_options(organizations=None):
+    organizations = organizations or _lhm_organization_list()
+    return _lhm_filter_orgs(organizations, LHM_DATA_SOURCE_KIND)
+
+
+@helper
+def lhm_filter_lhm_orgs(organizations):
+    return _lhm_filter_orgs(organizations, LHM_ORG_KIND)
+
+
+@helper
 def lhm_org_label(value):
+    organization = lhm_org(value)
+    if organization:
+        return _lhm_org_display_name(organization)
+    return value if value else None
+
+
+@helper
+def lhm_org(value_or_pkg):
+    if not value_or_pkg:
+        return None
+
+    value = value_or_pkg
+    if isinstance(value_or_pkg, dict):
+        value = value_or_pkg.get('lhm_org')
+
     if not value:
         return None
 
-    for option in lhm_org_options():
-        if value in (option['value'], option['label']):
-            return option['label']
-
     try:
-        organization = toolkit.get_action('organization_show')(
+        return toolkit.get_action('organization_show')(
             {'ignore_auth': True},
             {'id': value, 'include_datasets': False}
         )
     except Exception:
-        organization = None
-
-    return _lhm_org_display_name(organization) or value
+        return None
 
 
 @helper

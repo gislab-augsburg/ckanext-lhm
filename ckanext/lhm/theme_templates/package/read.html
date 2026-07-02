@@ -61,3 +61,11 @@
   {% snippet "/package/snippets/additional_info.html",
     pkg_dict=pkg, dataset_type=dataset_type, schema=schema %}
 {% endblock %}
+
+
+{% block package_organization %}
+  {% set lhm_organization = h.lhm_org(pkg) %}
+  {% if lhm_organization %}
+    {% snippet "snippets/organization.html", organization=lhm_organization, has_context_title=true %}
+  {% endif %}
+{% endblock %}

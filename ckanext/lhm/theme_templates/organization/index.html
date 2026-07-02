@@ -7,9 +7,9 @@
   {% block organizations_list %}
     {% if page.items or request.params %}
       {% if q %}
-        {% snippet "organization/snippets/organization_list.html", organizations=page.items %}
+        {% snippet "organization/snippets/organization_list.html", organizations=h.lhm_filter_lhm_orgs(page.items) %}
       {% else %}
-         {% snippet "organization/snippets/organization_list.html", organizations=organizations, show_capacity=True %}
+         {% snippet "organization/snippets/organization_list.html", organizations=h.lhm_filter_lhm_orgs(organizations), show_capacity=True %}
       {% endif %}
     {% else %}
       <p class="empty">

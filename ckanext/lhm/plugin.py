@@ -1,4 +1,5 @@
 import json
+import re
 from collections import OrderedDict
 import ckan.model as model
 from ckan.lib import search
@@ -194,6 +195,7 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
 
     def before_dataset_search(self, search_params):
         if self._is_organization_dataset_search(search_params):
+            self._replace_owner_org_fq_with_lhm_org(search_params)
             query = search_params.get('q', '')
             include_children = 'include_children: "True"'
             if include_children not in query:
@@ -224,6 +226,17 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
             return False
 
         return controller == 'organization'
+
+    def _replace_owner_org_fq_with_lhm_org(self, search_params):
+        fq = search_params.get('fq', '')
+        if not fq:
+            return
+
+        search_params['fq'] = re.sub(
+            r'(?<![\w-])owner_org(?=\s*:)',
+            'lhm_org',
+            fq
+        )
 
     def is_fallback(self):
         return False

@@ -195,6 +195,11 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
 
     def before_dataset_search(self, search_params):
         is_organization_search = self._is_organization_dataset_search(search_params)
+        is_lhm_org_search = (
+            is_organization_search
+            and self._is_lhm_org_dataset_search(search_params)
+        )
+
         if is_organization_search:
             query = search_params.get('q', '')
             include_children = 'include_children: "True"'
@@ -203,7 +208,7 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
 
         search_params = HierarchyDisplay.before_dataset_search(self, search_params)
 
-        if is_organization_search:
+        if is_lhm_org_search:
             self._replace_owner_org_fq_with_lhm_org(search_params)
 
         return search_params
@@ -215,22 +220,35 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
             return False
 
         try:
-            fields = toolkit.g.fields
-        except (AttributeError, RuntimeError):
-            return False
-
-        if not isinstance(fields, list):
-            return False
-
-        try:
             if toolkit.check_ckan_version("2.10"):
-                controller = toolkit.get_endpoint()[0]
+                endpoint = toolkit.get_endpoint()
+                controller = endpoint[0] if endpoint else ''
             else:
                 controller = toolkit.g.controller
         except (TypeError, AttributeError, RuntimeError):
             return False
 
         return controller == 'organization' or controller.startswith('organization.')
+
+    def _is_lhm_org_dataset_search(self, search_params):
+        organization_id = self._owner_org_fq_value(search_params.get('fq', ''))
+        if not organization_id:
+            return True
+
+        organization = helpers.lhm_org(organization_id)
+        if not organization:
+            return True
+
+        return helpers.lhm_is_lhm_org(organization)
+
+    def _owner_org_fq_value(self, fq):
+        match = re.search(
+            r"(?<![\w-])owner_org\s*:\s*(?P<quote>[\"']?)(?P<value>[^\"'\s\)]+)(?P=quote)",
+            fq or ''
+        )
+        if not match:
+            return None
+        return match.group('value')
 
     def _replace_owner_org_fq_with_lhm_org(self, search_params):
         fq = search_params.get('fq', '')

@@ -1,0 +1,15 @@
+{% ckan_extends %}
+
+{% block primary_content_inner %}
+  {% if h.lhm_is_lhm_org(group_dict) %}
+    <p class="empty">{{ _('Für LHM-Organisationen wird keine Mitglieder- und Rechteverwaltung verwendet.') }}</p>
+  {% else %}
+    {{ super() }}
+  {% endif %}
+{% endblock %}
+
+{% block page_primary_action %}
+  {% if not h.lhm_is_lhm_org(group_dict) %}
+    {{ super() }}
+  {% endif %}
+{% endblock %}

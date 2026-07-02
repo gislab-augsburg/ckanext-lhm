@@ -98,8 +98,8 @@ def _lhm_org_kind(organization):
     if org_kind or not organization:
         return org_kind
 
-    # organization_list items can omit extras. Resolve once so typed
-    # organizations are still filtered correctly in list templates.
+    # organization_list and search result items can omit extras. Resolve the
+    # complete organization so typed organizations are filtered consistently.
     organization_id = organization.get('id') or organization.get('name')
     if not organization_id:
         return None
@@ -107,7 +107,15 @@ def _lhm_org_kind(organization):
     try:
         full_organization = toolkit.get_action('organization_show')(
             {'ignore_auth': True},
-            {'id': organization_id, 'include_datasets': False}
+            {
+                'id': organization_id,
+                'include_datasets': False,
+                'include_extras': True,
+                'include_users': False,
+                'include_groups': False,
+                'include_tags': False,
+                'include_followers': False,
+            }
         )
     except Exception:
         return None
@@ -126,12 +134,31 @@ def _lhm_organization_list():
 
 
 def _lhm_filter_orgs(organizations, kind):
-    filtered = []
-    for organization in organizations or []:
-        org_kind = _lhm_org_kind(organization)
-        if org_kind == kind or org_kind is None:
-            filtered.append(organization)
-    return filtered
+    return [
+        organization for organization in organizations or []
+        if _lhm_org_kind(organization) == kind
+    ]
+
+
+def _lhm_sort_orgs(organizations):
+    return sorted(
+        organizations,
+        key=lambda organization: (_lhm_org_display_name(organization) or '').lower()
+    )
+
+
+def _lhm_matches_query(organization, query):
+    if not query:
+        return True
+
+    query = query.lower()
+    values = [
+        organization.get('name'),
+        organization.get('title'),
+        organization.get('display_name'),
+        organization.get('description'),
+    ]
+    return any(query in value.lower() for value in values if value)
 
 
 @helper
@@ -141,24 +168,51 @@ def lhm_org_options(organizations=None):
     organizations = _lhm_filter_orgs(organizations, LHM_ORG_KIND)
 
     options = []
-    for organization in organizations:
+    for organization in _lhm_sort_orgs(organizations):
         value = organization.get('id') or organization.get('name')
         label = _lhm_org_display_name(organization)
         if value and label:
             options.append({'value': value, 'label': label})
 
-    return sorted(options, key=lambda option: option['label'].lower())
+    return options
 
 
 @helper
 def lhm_data_source_options(organizations=None):
     organizations = organizations or _lhm_organization_list()
-    return _lhm_filter_orgs(organizations, LHM_DATA_SOURCE_KIND)
+    return _lhm_sort_orgs(_lhm_filter_orgs(organizations, LHM_DATA_SOURCE_KIND))
 
 
 @helper
 def lhm_filter_lhm_orgs(organizations):
-    return _lhm_filter_orgs(organizations, LHM_ORG_KIND)
+    return _lhm_sort_orgs(_lhm_filter_orgs(organizations, LHM_ORG_KIND))
+
+
+@helper
+def lhm_lhm_orgs(q=None, organizations=None):
+    organizations = organizations or _lhm_organization_list()
+    organizations = _lhm_filter_orgs(organizations, LHM_ORG_KIND)
+    organizations = [
+        organization for organization in organizations
+        if _lhm_matches_query(organization, q)
+    ]
+    return _lhm_sort_orgs(organizations)
+
+
+@helper
+def lhm_org_kind(organization):
+    return _lhm_org_kind(organization)
+
+
+@helper
+def lhm_members_route(group_type='organization'):
+    for route_name in (group_type + '.manage_members', group_type + '.members'):
+        try:
+            toolkit.url_for(route_name, id='__lhm_route_probe__')
+            return route_name
+        except Exception:
+            continue
+    return group_type + '.members'
 
 
 @helper

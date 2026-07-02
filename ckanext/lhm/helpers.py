@@ -93,31 +93,23 @@ def _lhm_org_extra(organization, key):
     return None
 
 
-def _lhm_org_kind(organization):
+def _lhm_org_kind(organization, resolve_missing=False):
     org_kind = _lhm_org_extra(organization, LHM_ORG_KIND_EXTRA)
     if org_kind or not organization:
         return org_kind
 
-    # organization_list and search result items can omit extras. Resolve the
-    # complete organization so typed organizations are filtered consistently.
+    # Bulk list helpers must not call organization_show for every untyped
+    # organization. With many legacy organizations this turns page rendering
+    # into an expensive N+1 action loop and can hit gateway timeouts.
+    if not resolve_missing:
+        return None
+
     organization_id = organization.get('id') or organization.get('name')
     if not organization_id:
         return None
 
-    try:
-        full_organization = toolkit.get_action('organization_show')(
-            {'ignore_auth': True},
-            {
-                'id': organization_id,
-                'include_datasets': False,
-                'include_extras': True,
-                'include_users': False,
-                'include_groups': False,
-                'include_tags': False,
-                'include_followers': False,
-            }
-        )
-    except Exception:
+    full_organization = _lhm_organization_show(organization_id)
+    if not full_organization:
         return None
 
     return _lhm_org_extra(full_organization, LHM_ORG_KIND_EXTRA)
@@ -136,7 +128,7 @@ def _lhm_organization_list():
 def _lhm_filter_orgs(organizations, kind):
     return [
         organization for organization in organizations or []
-        if _lhm_org_kind(organization) == kind
+        if _lhm_org_kind(organization, resolve_missing=False) == kind
     ]
 
 
@@ -266,12 +258,12 @@ def lhm_members_route(group_type='organization'):
 
 @helper
 def lhm_is_lhm_org(organization):
-    return _lhm_org_kind(organization) == LHM_ORG_KIND
+    return _lhm_org_kind(organization, resolve_missing=True) == LHM_ORG_KIND
 
 
 @helper
 def lhm_is_data_source(organization):
-    return _lhm_org_kind(organization) == LHM_OWNER_ORG_KIND
+    return _lhm_org_kind(organization, resolve_missing=True) == LHM_OWNER_ORG_KIND
 
 
 @helper

@@ -1,10 +1,16 @@
 <div class="module-content box category-box">
 {% block datenquellen %}
-  Metadatensätze: 
-  <a href="/dataset/?type=geodatenpool">Geodatenpool</a> | 
-  <a href="/dataset/?type=mobidam">Mobidam</a> | 
-  <a href="/dataset/?type=plan-db">PLAN-DB</a> 
-  <br><br>
+  {% set owner_orgs = h.lhm_featured_owner_orgs() %}
+  {% if owner_orgs %}
+    <header>
+      <h2>{{ _('Datenquellen') }}</h2>
+    </header>
+    <ul class="media-grid">
+      {% for organization in owner_orgs %}
+        {% snippet "group/snippets/main_group_item.html", group=organization, position=loop.index %}
+      {% endfor %}
+    </ul>
+  {% endif %}
 {% endblock %}
 <header>
   <h2><a href="/group">{{ _('Main Categories') }}</a></h2>

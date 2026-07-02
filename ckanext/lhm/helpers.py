@@ -161,6 +161,55 @@ def _lhm_matches_query(organization, query):
     return any(query in value.lower() for value in values if value)
 
 
+def _lhm_config_list(key):
+    value = config.get(key, '')
+    if isinstance(value, (list, tuple)):
+        return [str(item).strip() for item in value if item]
+
+    if not value:
+        return []
+
+    value = str(value).strip()
+    if value.startswith('['):
+        try:
+            parsed = json.loads(value)
+            if isinstance(parsed, list):
+                return [str(item).strip() for item in parsed if item]
+        except ValueError:
+            pass
+
+    value = value.replace(',', ' ')
+    return [item for item in value.split() if item]
+
+
+def _lhm_organization_show(organization_id):
+    try:
+        return toolkit.get_action('organization_show')(
+            {'ignore_auth': True},
+            {
+                'id': organization_id,
+                'include_datasets': False,
+                'include_extras': True,
+                'include_users': False,
+                'include_groups': False,
+                'include_tags': False,
+                'include_followers': False,
+            }
+        )
+    except Exception:
+        return None
+
+
+@helper
+def lhm_featured_owner_orgs():
+    organizations = []
+    for organization_id in _lhm_config_list('ckan.featured_orgs'):
+        organization = _lhm_organization_show(organization_id)
+        if organization and lhm_is_data_source(organization):
+            organizations.append(organization)
+    return organizations
+
+
 @helper
 def lhm_org_options(organizations=None):
     """Return selectable LHM organizations for the lhm_org metadata field."""

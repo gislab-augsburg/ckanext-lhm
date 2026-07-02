@@ -60,7 +60,7 @@ def get_info_group(id):
 
 LHM_ORG_KIND_EXTRA = 'lhm_org_kind'
 LHM_ORG_KIND = 'lhm_org'
-LHM_DATA_SOURCE_KIND = 'data_source'
+LHM_OWNER_ORG_KIND = 'owner_org'
 
 
 def _lhm_org_display_name(organization):
@@ -180,7 +180,7 @@ def lhm_org_options(organizations=None):
 @helper
 def lhm_data_source_options(organizations=None):
     organizations = organizations or _lhm_organization_list()
-    return _lhm_sort_orgs(_lhm_filter_orgs(organizations, LHM_DATA_SOURCE_KIND))
+    return _lhm_sort_orgs(_lhm_filter_orgs(organizations, LHM_OWNER_ORG_KIND))
 
 
 @helper
@@ -222,7 +222,7 @@ def lhm_is_lhm_org(organization):
 
 @helper
 def lhm_is_data_source(organization):
-    return _lhm_org_kind(organization) == LHM_DATA_SOURCE_KIND
+    return _lhm_org_kind(organization) == LHM_OWNER_ORG_KIND
 
 
 @helper

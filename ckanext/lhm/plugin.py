@@ -194,14 +194,19 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         return map
 
     def before_dataset_search(self, search_params):
-        if self._is_organization_dataset_search(search_params):
-            self._replace_owner_org_fq_with_lhm_org(search_params)
+        is_organization_search = self._is_organization_dataset_search(search_params)
+        if is_organization_search:
             query = search_params.get('q', '')
             include_children = 'include_children: "True"'
             if include_children not in query:
                 search_params['q'] = (query + ' ' + include_children).strip()
 
-        return HierarchyDisplay.before_dataset_search(self, search_params)
+        search_params = HierarchyDisplay.before_dataset_search(self, search_params)
+
+        if is_organization_search:
+            self._replace_owner_org_fq_with_lhm_org(search_params)
+
+        return search_params
 
     before_search = before_dataset_search
 

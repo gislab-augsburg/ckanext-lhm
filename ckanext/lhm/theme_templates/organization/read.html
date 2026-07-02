@@ -1,5 +1,11 @@
 {% ckan_extends %}
 
+{% block page_primary_action %}
+  {% if not h.lhm_is_lhm_org(group_dict) and h.check_access('package_create', {'owner_org': group_dict.id}) %}
+    {% snippet 'snippets/add_dataset.html', group=group_dict.id %}
+  {% endif %}
+{% endblock %}
+
 {% block organization_facets %}
   <div class="filters lhm-facet-accordion">
     <button type="button" class="lhm-facet-toggle-all" data-lhm-facet-toggle-all aria-expanded="false">

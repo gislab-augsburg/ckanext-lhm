@@ -81,19 +81,38 @@ def _lhm_org_extra(organization, key):
     if organization.get(key):
         return organization.get(key)
 
-    extras = organization.get('extras') or {}
+    extras = organization.get('extras')
     if isinstance(extras, dict):
         return extras.get(key)
 
-    for extra in extras:
-        if extra.get('key') == key:
-            return extra.get('value')
+    if isinstance(extras, list):
+        for extra in extras:
+            if extra.get('key') == key:
+                return extra.get('value')
 
     return None
 
 
 def _lhm_org_kind(organization):
-    return _lhm_org_extra(organization, LHM_ORG_KIND_EXTRA)
+    org_kind = _lhm_org_extra(organization, LHM_ORG_KIND_EXTRA)
+    if org_kind or not organization:
+        return org_kind
+
+    # organization_list items can omit extras. Resolve once so typed
+    # organizations are still filtered correctly in list templates.
+    organization_id = organization.get('id') or organization.get('name')
+    if not organization_id:
+        return None
+
+    try:
+        full_organization = toolkit.get_action('organization_show')(
+            {'ignore_auth': True},
+            {'id': organization_id, 'include_datasets': False}
+        )
+    except Exception:
+        return None
+
+    return _lhm_org_extra(full_organization, LHM_ORG_KIND_EXTRA)
 
 
 def _lhm_organization_list():
@@ -140,6 +159,16 @@ def lhm_data_source_options(organizations=None):
 @helper
 def lhm_filter_lhm_orgs(organizations):
     return _lhm_filter_orgs(organizations, LHM_ORG_KIND)
+
+
+@helper
+def lhm_is_lhm_org(organization):
+    return _lhm_org_kind(organization) == LHM_ORG_KIND
+
+
+@helper
+def lhm_is_data_source(organization):
+    return _lhm_org_kind(organization) == LHM_DATA_SOURCE_KIND
 
 
 @helper

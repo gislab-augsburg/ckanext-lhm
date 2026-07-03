@@ -116,21 +116,48 @@ def _lhm_org_kind(organization, resolve_missing=False):
     return _lhm_org_extra(full_organization, LHM_ORG_KIND_EXTRA)
 
 
-def _lhm_organization_list():
+def _lhm_organization_dict(group, kind):
+    title = group.title or group.name
+    return {
+        'id': group.id,
+        'name': group.name,
+        'title': title,
+        'display_name': title,
+        'description': group.description or '',
+        'image_url': group.image_url,
+        'image_display_url': group.image_url,
+        'package_count': 0,
+        'state': group.state,
+        'type': group.type or 'organization',
+        'extras': [{'key': LHM_ORG_KIND_EXTRA, 'value': kind}],
+    }
+
+
+def _lhm_organizations_by_kind(kind):
     try:
-        organization_names = toolkit.get_action('organization_list')(
-            {'ignore_auth': True},
-            {'all_fields': False, 'limit': 1000}
+        groups = (
+            model.Session.query(model.Group)
+            .join(model.GroupExtra, model.GroupExtra.group_id == model.Group.id)
+            .filter(model.Group.state == 'active')
+            .filter(model.Group.is_organization == True)
+            .filter(model.Group.type == 'organization')
+            .filter(model.GroupExtra.state == 'active')
+            .filter(model.GroupExtra.key == LHM_ORG_KIND_EXTRA)
+            .filter(model.GroupExtra.value == kind)
+            .order_by(model.Group.title.asc(), model.Group.name.asc())
+            .all()
         )
     except Exception:
         return []
 
-    organizations = []
-    for organization_name in organization_names:
-        organization = _lhm_organization_show(organization_name)
-        if organization:
-            organizations.append(organization)
-    return organizations
+    return [_lhm_organization_dict(group, kind) for group in groups]
+
+
+def _lhm_organization_list():
+    return (
+        _lhm_organizations_by_kind(LHM_ORG_KIND)
+        + _lhm_organizations_by_kind(LHM_OWNER_ORG_KIND)
+    )
 
 
 def _lhm_filter_orgs(organizations, kind):
@@ -228,8 +255,7 @@ def lhm_featured_owner_orgs():
 @helper
 def lhm_org_options(organizations=None):
     """Return selectable LHM organizations for the lhm_org metadata field."""
-    organizations = organizations or _lhm_organization_list()
-    organizations = _lhm_filter_orgs(organizations, LHM_ORG_KIND)
+    organizations = organizations or _lhm_organizations_by_kind(LHM_ORG_KIND)
 
     options = []
     for organization in _lhm_sort_orgs(organizations):
@@ -243,7 +269,7 @@ def lhm_org_options(organizations=None):
 
 @helper
 def lhm_data_source_options(organizations=None):
-    organizations = organizations or _lhm_organization_list()
+    organizations = organizations or _lhm_organizations_by_kind(LHM_OWNER_ORG_KIND)
     return _lhm_sort_orgs(_lhm_filter_orgs(organizations, LHM_OWNER_ORG_KIND))
 
 
@@ -254,8 +280,7 @@ def lhm_filter_lhm_orgs(organizations):
 
 @helper
 def lhm_lhm_orgs(q=None, organizations=None):
-    organizations = organizations or _lhm_organization_list()
-    organizations = _lhm_filter_orgs(organizations, LHM_ORG_KIND)
+    organizations = organizations or _lhm_organizations_by_kind(LHM_ORG_KIND)
     organizations = [
         organization for organization in organizations
         if _lhm_matches_query(organization, q)

@@ -5,6 +5,7 @@ import ckan.model as model
 from ckan.lib import search
 import ckan.plugins as p
 import ckan.plugins.toolkit as toolkit
+from ckan.common import request
 from ckan.plugins.interfaces import IConfigurer, IDatasetForm
 from ckan.lib.plugins import DefaultTranslation
 import ckanext.lhm.cli as cli
@@ -221,16 +222,19 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
 
         try:
             endpoint = toolkit.get_endpoint()
-            controller = endpoint[0] if endpoint else ''
         except (TypeError, AttributeError, RuntimeError):
-            controller = ''
+            endpoint = ''
 
-        if controller == 'organization' or controller.startswith('organization.'):
+        if isinstance(endpoint, (list, tuple)):
+            endpoint = endpoint[0] if endpoint else ''
+
+        endpoint = endpoint or ''
+        if endpoint == 'organization' or endpoint.startswith('organization.'):
             return True
 
         try:
-            path = toolkit.request.path
-        except (AttributeError, RuntimeError):
+            path = request.path
+        except RuntimeError:
             path = ''
 
         return path.startswith('/organization/')

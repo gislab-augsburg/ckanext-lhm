@@ -118,12 +118,19 @@ def _lhm_org_kind(organization, resolve_missing=False):
 
 def _lhm_organization_list():
     try:
-        return toolkit.get_action('organization_list')(
+        organization_names = toolkit.get_action('organization_list')(
             {'ignore_auth': True},
-            {'all_fields': True, 'include_extras': True}
+            {'all_fields': False, 'limit': 1000}
         )
     except Exception:
         return []
+
+    organizations = []
+    for organization_name in organization_names:
+        organization = _lhm_organization_show(organization_name)
+        if organization:
+            organizations.append(organization)
+    return organizations
 
 
 def _lhm_filter_orgs(organizations, kind):
@@ -189,6 +196,7 @@ def _lhm_organization_show(organization_id):
             {
                 'id': organization_id,
                 'include_datasets': False,
+                'include_dataset_count': False,
                 'include_extras': True,
                 'include_users': False,
                 'include_groups': False,

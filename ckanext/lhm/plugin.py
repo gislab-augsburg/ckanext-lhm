@@ -220,15 +220,20 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
             return False
 
         try:
-            if toolkit.check_ckan_version("2.10"):
-                endpoint = toolkit.get_endpoint()
-                controller = endpoint[0] if endpoint else ''
-            else:
-                controller = toolkit.g.controller
+            endpoint = toolkit.get_endpoint()
+            controller = endpoint[0] if endpoint else ''
         except (TypeError, AttributeError, RuntimeError):
-            return False
+            controller = ''
 
-        return controller == 'organization' or controller.startswith('organization.')
+        if controller == 'organization' or controller.startswith('organization.'):
+            return True
+
+        try:
+            path = toolkit.request.path
+        except (AttributeError, RuntimeError):
+            path = ''
+
+        return path.startswith('/organization/')
 
     def _is_lhm_org_dataset_search(self, search_params):
         organization_id = self._owner_org_fq_value(search_params.get('fq', ''))

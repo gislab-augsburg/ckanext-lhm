@@ -61,6 +61,7 @@ def get_info_group(id):
 LHM_ORG_KIND_EXTRA = 'lhm_org_kind'
 LHM_ORG_KIND = 'lhm_org'
 LHM_OWNER_ORG_KIND = 'owner_org'
+_lhm_organization_cache = {}
 
 
 def _lhm_org_display_name(organization):
@@ -175,8 +176,15 @@ def _lhm_config_list(key):
 
 
 def _lhm_organization_show(organization_id):
+    if not organization_id:
+        return None
+
+    cache_key = str(organization_id)
+    if cache_key in _lhm_organization_cache:
+        return _lhm_organization_cache[cache_key]
+
     try:
-        return toolkit.get_action('organization_show')(
+        organization = toolkit.get_action('organization_show')(
             {'ignore_auth': True},
             {
                 'id': organization_id,
@@ -189,7 +197,14 @@ def _lhm_organization_show(organization_id):
             }
         )
     except Exception:
-        return None
+        organization = None
+
+    _lhm_organization_cache[cache_key] = organization
+    if organization:
+        for key in (organization.get('id'), organization.get('name')):
+            if key:
+                _lhm_organization_cache[str(key)] = organization
+    return organization
 
 
 @helper
@@ -287,10 +302,7 @@ def lhm_org(value_or_pkg):
         return None
 
     try:
-        return toolkit.get_action('organization_show')(
-            {'ignore_auth': True},
-            {'id': value, 'include_datasets': False}
-        )
+        return _lhm_organization_show(value)
     except Exception:
         return None
 

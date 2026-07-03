@@ -256,10 +256,55 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
             return
 
         search_params['fq'] = re.sub(
-            r'(?<![\w-])owner_org(?=\s*:)',
-            'lhm_org',
+            r'(?<![\w-])owner_org\s*:\s*(?P<value>\([^\)]*\)|\"[^\"]+\"|\'[^\']+\'|[^\s\)]+)',
+            self._lhm_org_fq_replacement,
             fq
         )
+
+    def _lhm_org_fq_replacement(self, match):
+        values = self._owner_org_fq_values(match.group('value'))
+        terms = []
+        for value in values:
+            terms.extend(self._lhm_org_search_terms(value))
+
+        if not terms:
+            return 'lhm_org:' + match.group('value')
+
+        unique_terms = []
+        for term in terms:
+            if term not in unique_terms:
+                unique_terms.append(term)
+
+        return '(' + ' OR '.join(
+            'lhm_org:"{}"'.format(self._solr_escape(term))
+            for term in unique_terms
+        ) + ')'
+
+    def _owner_org_fq_values(self, value):
+        value = (value or '').strip()
+        if value.startswith('(') and value.endswith(')'):
+            value = value[1:-1]
+
+        quoted = re.findall(r'"([^"]+)"|\'([^\']+)\'', value)
+        if quoted:
+            return [first or second for first, second in quoted]
+
+        return [
+            token for token in re.split(r'\s+', value)
+            if token and token.upper() not in ('OR', 'AND')
+        ]
+
+    def _lhm_org_search_terms(self, value):
+        terms = [value]
+        organization = helpers.lhm_org(value)
+        if organization:
+            for key in (organization.get('id'), organization.get('name')):
+                if key:
+                    terms.append(key)
+        return terms
+
+    def _solr_escape(self, value):
+        return str(value).replace('\\', '\\\\').replace('"', '\\"')
 
     def is_fallback(self):
         return False

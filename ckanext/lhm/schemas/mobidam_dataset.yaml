@@ -354,7 +354,7 @@ dataset_fields:
     label: Mit Nutzungsbedingungen/ -vereinbarungen
   - value: einschraenkungen
     label: Mit Einschränkungen
-  - value: kein_Zugriff
+  - value: kein_zugriff
     label: Kein Zugriff
   - value: k.A.
     label: k.A.

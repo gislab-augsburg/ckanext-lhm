@@ -382,6 +382,16 @@ def lhm_is_lhm_org(organization):
 
 
 @helper
+def lhm_current_group_is_lhm_org():
+    try:
+        group_dict = toolkit.g.group_dict
+    except (AttributeError, RuntimeError):
+        group_dict = None
+
+    return lhm_is_lhm_org(group_dict)
+
+
+@helper
 def lhm_is_data_source(organization):
     return _lhm_org_kind(organization, resolve_missing=True) == LHM_OWNER_ORG_KIND
 

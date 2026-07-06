@@ -1,0 +1,43 @@
+{% ckan_extends %}
+
+{% block subtitle %}
+  {% if h.lhm_is_lhm_org(group_dict) %}
+    {{ group_dict.display_name }} {{ g.template_title_delimiter }} {{ _('Abteilungen') }}
+  {% else %}
+    {{ super() }}
+  {% endif %}
+{% endblock %}
+
+{% block breadcrumb_content %}
+  {% if h.lhm_is_lhm_org(group_dict) %}
+    <li>{% link_for _('Abteilungen'), named_route='lhm_organization.index' %}</li>
+    {% block breadcrumb_content_inner %}
+      <li>{% link_for organization.display_name|truncate(35), named_route='lhm_organization.read', id=organization.name %}</li>
+      <li class="active">{% link_for _('Manage'), named_route=group_type+'.edit', id=organization.name %}</li>
+    {% endblock %}
+  {% else %}
+    {{ super() }}
+  {% endif %}
+{% endblock %}
+
+{% block content_action %}
+  {% if h.lhm_is_lhm_org(group_dict) %}
+    {% if organization and h.check_access('organization_update', {'id': organization.id}) %}
+      {% link_for _('View'), named_route='lhm_organization.read', id=organization.name, class_='btn btn-default', icon='eye'%}
+    {% endif %}
+  {% else %}
+    {{ super() }}
+  {% endif %}
+{% endblock %}
+
+{% block content_primary_nav %}
+  {% if h.lhm_is_lhm_org(group_dict) %}
+    {% set active = 'members' %}
+    {% if request.endpoint == 'organization.edit' %}
+      {% set active = 'edit' %}
+    {% endif %}
+    {% snippet 'lhm_organization/snippets/read_tabs.html', organization=group_dict, active=active %}
+  {% else %}
+    {{ super() }}
+  {% endif %}
+{% endblock %}

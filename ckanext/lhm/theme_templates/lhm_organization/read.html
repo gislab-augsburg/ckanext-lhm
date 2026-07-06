@@ -7,7 +7,9 @@
   <li class="active">{% link_for organization.display_name|truncate(35), named_route='lhm_organization.read', id=organization.name %}</li>
 {% endblock %}
 
-{% block page_header %}{% endblock %}
+{% block content_primary_nav %}
+  {% snippet 'lhm_organization/snippets/read_tabs.html', organization=organization, active='datasets' %}
+{% endblock %}
 
 {% block primary_content_inner %}
   <h1>{{ organization.display_name }}</h1>

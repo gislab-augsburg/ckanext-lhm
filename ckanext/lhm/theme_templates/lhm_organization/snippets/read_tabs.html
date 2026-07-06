@@ -1,0 +1,17 @@
+{% set organization_name = organization.name if organization else group_dict.name %}
+{% set active = active or 'datasets' %}
+
+<ul class="nav nav-tabs">
+  <li{% if active == 'datasets' %} class="active"{% endif %}>
+    <a href="{{ h.url_for('lhm_organization.read', id=organization_name) }}"><i class="fa fa-sitemap"></i> {{ _('Datasets') }}</a>
+  </li>
+  <li{% if active == 'members' %} class="active"{% endif %}>
+    <a href="{{ h.url_for('organization.members', id=organization_name) }}"><i class="fa fa-users"></i> {{ _('Members') }}</a>
+  </li>
+  <li{% if active == 'about' %} class="active"{% endif %}>
+    <a href="{{ h.url_for('organization.about', id=organization_name) }}"><i class="fa fa-info-circle"></i> {{ _('About') }}</a>
+  </li>
+  <li{% if active == 'activity' %} class="active"{% endif %}>
+    <a href="{{ h.url_for('organization.activity', id=organization_name, offset=0) }}"><i class="fa fa-clock-o"></i> {{ _('Activity Stream') }}</a>
+  </li>
+</ul>

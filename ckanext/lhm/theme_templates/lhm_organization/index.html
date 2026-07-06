@@ -20,7 +20,7 @@
     no_bottom_border=true if organizations %}
 
   {% if organizations %}
-    {% snippet "lhm_organization/snippets/organization_list.html", organizations=organizations %}
+    {% snippet "lhm_organization/snippets/organization_tree_list.html", organizations=organizations %}
   {% elif request.params %}
     <p class="empty">{{ _('No organizations found for this search.') }}</p>
   {% else %}

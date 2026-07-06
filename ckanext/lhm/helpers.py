@@ -64,14 +64,22 @@ LHM_OWNER_ORG_KIND = 'owner_org'
 _lhm_organization_cache = {}
 
 
+def _lhm_org_value(organization, key, default=None):
+    if not organization:
+        return default
+    if isinstance(organization, dict):
+        return organization.get(key, default)
+    return getattr(organization, key, default)
+
+
 def _lhm_org_display_name(organization):
     if not organization:
         return None
     return (
-        organization.get('display_name')
-        or organization.get('title')
-        or organization.get('name')
-        or organization.get('id')
+        _lhm_org_value(organization, 'display_name')
+        or _lhm_org_value(organization, 'title')
+        or _lhm_org_value(organization, 'name')
+        or _lhm_org_value(organization, 'id')
     )
 
 
@@ -79,10 +87,11 @@ def _lhm_org_extra(organization, key):
     if not organization:
         return None
 
-    if organization.get(key):
-        return organization.get(key)
+    value = _lhm_org_value(organization, key)
+    if value:
+        return value
 
-    extras = organization.get('extras')
+    extras = _lhm_org_value(organization, 'extras')
     if isinstance(extras, dict):
         return extras.get(key)
 
@@ -105,7 +114,7 @@ def _lhm_org_kind(organization, resolve_missing=False):
     if not resolve_missing:
         return None
 
-    organization_id = organization.get('id') or organization.get('name')
+    organization_id = _lhm_org_value(organization, 'id') or _lhm_org_value(organization, 'name')
     if not organization_id:
         return None
 
@@ -254,7 +263,7 @@ def _lhm_organization_show(organization_id):
 
     _lhm_organization_cache[cache_key] = organization
     if organization:
-        for key in (organization.get('id'), organization.get('name')):
+        for key in (_lhm_org_value(organization, 'id'), _lhm_org_value(organization, 'name')):
             if key:
                 _lhm_organization_cache[str(key)] = organization
     return organization
@@ -323,6 +332,21 @@ def lhm_lhm_orgs(q=None, organizations=None):
 @helper
 def lhm_org_kind(organization):
     return _lhm_org_kind(organization)
+
+
+@helper
+def lhm_organization_url(organization):
+    organization_name = _lhm_org_value(organization, 'name') or _lhm_org_value(organization, 'id')
+    if not organization_name:
+        return '#'
+
+    if _lhm_org_kind(organization, resolve_missing=True) == LHM_ORG_KIND:
+        return toolkit.url_for('lhm_organization.read', id=organization_name)
+
+    organization_type = _lhm_org_value(organization, 'type') or 'organization'
+    if organization_type == 'lhm_organization':
+        organization_type = 'organization'
+    return toolkit.url_for(organization_type + '.read', id=organization_name)
 
 
 @helper

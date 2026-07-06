@@ -13,6 +13,7 @@ from ckan import model
 from ckan.common import g, request
 import ckan.plugins.toolkit as toolkit
 from ckan.lib import search
+import ckan.lib.helpers as h
 import ckanext.lhm.helpers as lhm_helpers
 from ckanext.lhm.gp_to_iso1939 import convert_metadata_dict
 import shutil
@@ -294,7 +295,7 @@ def read(id):
         params.append(('page', page))
         return toolkit.h.url_for('lhm_organization.read', id=id) + '?' + urlencode(params)
 
-    page_obj = toolkit.h.Page(
+    page_obj = h.Page(
         collection=query['results'],
         page=page,
         url=pager_url,

@@ -1,6 +1,20 @@
 {% ckan_extends %}
 
-{% set lhm_organizations = h.lhm_lhm_orgs(q=q) %}
+{% block subtitle %}{{ _('Datenquellen') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li class="active">{% link_for _('Datenquellen'), named_route=group_type+'.index' %}</li>
+{% endblock %}
+
+{% block page_primary_action %}
+  {% if h.check_access('organization_create') %}
+    {% link_for _('Datenquelle hinzufügen'), named_route=group_type+'.new', class_='btn btn-primary', icon='plus-square' %}
+  {% endif %}
+{% endblock %}
+
+{% block page_heading %}{{ _('Datenquellen') }}{% endblock %}
+
+{% set owner_organizations = h.lhm_owner_orgs(q=q) %}
 
 {% block organizations_search_form %}
   {% snippet 'snippets/search_form.html',
@@ -8,25 +22,20 @@
     type='organization',
     query=q,
     sorting_selected=sort_by_selected,
-    count=lhm_organizations|length,
-    placeholder=_('Search organizations...'),
+    count=owner_organizations|length,
+    placeholder=_('Datenquellen suchen...'),
     show_empty=request.params,
-    no_bottom_border=true if lhm_organizations,
+    no_bottom_border=true if owner_organizations,
     sorting=[(_('Name Ascending'), 'title asc'), (_('Name Descending'), 'title desc')] %}
 {% endblock %}
 
 {% block organizations_list %}
-  {% if lhm_organizations %}
-    {% snippet "organization/snippets/organization_list.html", organizations=lhm_organizations, show_capacity=True %}
+  {% if owner_organizations %}
+    {% snippet "organization/snippets/organization_list.html", organizations=owner_organizations, show_capacity=True %}
   {% elif request.params %}
     <p class="empty">{{ _('No organizations found for this search.') }}</p>
   {% else %}
-    <p class="empty">
-      {{ _('There are currently no organizations for this site') }}.
-      {% if h.check_access('organization_create') %}
-        {% link_for _('How about creating one?'), named_route=group_type+'.new' %}</a>.
-      {% endif %}
-    </p>
+    <p class="empty">{{ _('There are currently no organizations for this site') }}.</p>
   {% endif %}
 {% endblock %}
 

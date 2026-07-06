@@ -195,24 +195,13 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         return map
 
     def before_dataset_search(self, search_params):
-        has_owner_org_filter = self._has_owner_org_filter(search_params)
-        is_lhm_org_search = (
-            has_owner_org_filter
-            and self._is_lhm_org_dataset_search(search_params)
-        )
-
-        if is_lhm_org_search or self._is_organization_route():
+        if self._has_owner_org_filter(search_params) and self._is_organization_route():
             query = search_params.get('q', '')
             include_children = 'include_children: "True"'
             if include_children not in query:
                 search_params['q'] = (query + ' ' + include_children).strip()
 
-        search_params = HierarchyDisplay.before_dataset_search(self, search_params)
-
-        if is_lhm_org_search:
-            self._replace_owner_org_fq_with_lhm_org(search_params)
-
-        return search_params
+        return HierarchyDisplay.before_dataset_search(self, search_params)
 
     def before_search(self, search_params):
         return self.before_dataset_search(search_params)
@@ -239,93 +228,6 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
             path = ''
 
         return path.startswith('/organization/')
-
-    def _is_lhm_org_dataset_search(self, search_params):
-        try:
-            group_dict = toolkit.g.group_dict
-        except (AttributeError, RuntimeError):
-            group_dict = None
-
-        if group_dict:
-            if helpers.lhm_is_lhm_org(group_dict):
-                return True
-            if helpers.lhm_is_data_source(group_dict):
-                return False
-
-        organization_id = self._owner_org_fq_value(search_params.get('fq', ''))
-        if not organization_id:
-            return True
-
-        organization = helpers.lhm_org(organization_id)
-        if not organization:
-            return True
-
-        return helpers.lhm_is_lhm_org(organization)
-
-    def _owner_org_fq_value(self, fq):
-        match = re.search(
-            r"(?<![\w-])owner_org\s*:\s*(?P<quote>[\"']?)(?P<value>[^\"'\s\)]+)(?P=quote)",
-            fq or ''
-        )
-        if not match:
-            return None
-        return match.group('value')
-
-    def _replace_owner_org_fq_with_lhm_org(self, search_params):
-        fq = search_params.get('fq', '')
-        if not fq:
-            return
-
-        search_params['fq'] = re.sub(
-            r'(?<![\w-])owner_org\s*:\s*(?P<value>\([^\)]*\)|\"[^\"]+\"|\'[^\']+\'|[^\s\)]+)',
-            self._lhm_org_fq_replacement,
-            fq
-        )
-
-    def _lhm_org_fq_replacement(self, match):
-        values = self._owner_org_fq_values(match.group('value'))
-        terms = []
-        for value in values:
-            terms.extend(self._lhm_org_search_terms(value))
-
-        if not terms:
-            return 'lhm_org:' + match.group('value')
-
-        unique_terms = []
-        for term in terms:
-            if term not in unique_terms:
-                unique_terms.append(term)
-
-        return '(' + ' OR '.join(
-            'lhm_org:"{}"'.format(self._solr_escape(term))
-            for term in unique_terms
-        ) + ')'
-
-    def _owner_org_fq_values(self, value):
-        value = (value or '').strip()
-        if value.startswith('(') and value.endswith(')'):
-            value = value[1:-1]
-
-        quoted = re.findall(r'"([^"]+)"|\'([^\']+)\'', value)
-        if quoted:
-            return [first or second for first, second in quoted]
-
-        return [
-            token for token in re.split(r'\s+', value)
-            if token and token.upper() not in ('OR', 'AND')
-        ]
-
-    def _lhm_org_search_terms(self, value):
-        terms = [value]
-        organization = helpers.lhm_org(value)
-        if organization:
-            for key in (organization.get('id'), organization.get('name')):
-                if key:
-                    terms.append(key)
-        return terms
-
-    def _solr_escape(self, value):
-        return str(value).replace('\\', '\\\\').replace('"', '\\"')
 
     def is_fallback(self):
         return False
@@ -388,7 +290,7 @@ class LHMThemePlugin(p.SingletonPlugin, DefaultTranslation):
     def _lhm_facets(self, facets_dict):
         facets = OrderedDict()
         facets['organization'] = 'Datenquelle'
-        facets['lhm_org'] = 'Organisationen'
+        facets['lhm_org'] = 'Abteilungen'
 
         for name, title in facets_dict.items():
             if name in ('organization', 'owner_org', 'lhm_org', 'type'):

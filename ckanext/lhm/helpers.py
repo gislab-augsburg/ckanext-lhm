@@ -116,6 +116,21 @@ def _lhm_org_kind(organization, resolve_missing=False):
     return _lhm_org_extra(full_organization, LHM_ORG_KIND_EXTRA)
 
 
+def _lhm_owner_org_package_count(organization_id):
+    if not organization_id:
+        return 0
+
+    try:
+        return (
+            model.Session.query(model.Package)
+            .filter(model.Package.owner_org == organization_id)
+            .filter(model.Package.state == 'active')
+            .count()
+        )
+    except Exception:
+        return 0
+
+
 def _lhm_organization_dict(group, kind):
     title = group.title or group.name
     return {
@@ -126,7 +141,10 @@ def _lhm_organization_dict(group, kind):
         'description': group.description or '',
         'image_url': group.image_url,
         'image_display_url': group.image_url,
-        'package_count': 0,
+        'package_count': (
+            _lhm_owner_org_package_count(group.id)
+            if kind == LHM_OWNER_ORG_KIND else 0
+        ),
         'state': group.state,
         'type': group.type or 'organization',
         'extras': [{'key': LHM_ORG_KIND_EXTRA, 'value': kind}],
@@ -248,6 +266,10 @@ def lhm_featured_owner_orgs():
     for organization_id in _lhm_config_list('ckan.featured_orgs'):
         organization = _lhm_organization_show(organization_id)
         if organization and lhm_is_data_source(organization):
+            organization = dict(organization)
+            organization['package_count'] = _lhm_owner_org_package_count(
+                organization.get('id')
+            )
             organizations.append(organization)
     return organizations
 
@@ -271,6 +293,16 @@ def lhm_org_options(organizations=None):
 def lhm_data_source_options(organizations=None):
     organizations = organizations or _lhm_organizations_by_kind(LHM_OWNER_ORG_KIND)
     return _lhm_sort_orgs(_lhm_filter_orgs(organizations, LHM_OWNER_ORG_KIND))
+
+
+@helper
+def lhm_owner_orgs(q=None, organizations=None):
+    organizations = organizations or _lhm_organizations_by_kind(LHM_OWNER_ORG_KIND)
+    organizations = [
+        organization for organization in organizations
+        if _lhm_matches_query(organization, q)
+    ]
+    return _lhm_sort_orgs(organizations)
 
 
 @helper
@@ -335,9 +367,15 @@ def lhm_org(value_or_pkg):
         return None
 
     try:
-        return _lhm_organization_show(value)
+        organization = _lhm_organization_show(value)
     except Exception:
         return None
+
+    if organization and _lhm_org_kind(organization) == LHM_ORG_KIND:
+        organization = dict(organization)
+        organization['type'] = 'lhm_organization'
+
+    return organization
 
 
 @helper

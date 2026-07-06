@@ -3,7 +3,7 @@
   {% set owner_orgs = h.lhm_featured_owner_orgs() %}
   {% if owner_orgs %}
     <header>
-      <h2>{{ _('Datenquellen') }}</h2>
+      <h2><a href="/organization">{{ _('Datenquellen') }}</a></h2>
     </header>
     <ul class="media-grid">
       {% for organization in owner_orgs %}

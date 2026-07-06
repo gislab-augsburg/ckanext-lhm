@@ -55,8 +55,8 @@
                 {% set group_type = h.default_group_type('group') %}
                 {{ h.build_nav_main(
                   (('dataset.search', _('Datasets'))),
-                  ((org_type ~ '.index',
-                    h.humanize_entity_type('organization', org_type, 'main nav') or _('Organizations'), ['organization'])),
+                  (('lhm_organization.index', _('Abteilungen'), ['lhm_organization'])),
+                  ((org_type ~ '.index', _('Datenquellen'), ['organization'])),
                   ((group_type ~ '.index',
                     h.humanize_entity_type('group', group_type, 'main nav') or _('Groups'), ['group']))
                 ) }}

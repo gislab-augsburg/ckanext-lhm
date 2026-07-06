@@ -1,0 +1,33 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _('Abteilungen') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li class="active">{% link_for _('Abteilungen'), named_route='lhm_organization.index' %}</li>
+{% endblock %}
+
+{% block page_header %}{% endblock %}
+
+{% block primary_content_inner %}
+  <h1 class="hide-heading">{{ _('Abteilungen') }}</h1>
+  {% snippet 'snippets/search_form.html',
+    form_id='lhm-organization-search-form',
+    type='organization',
+    query=q,
+    count=count,
+    placeholder=_('Abteilungen suchen...'),
+    show_empty=request.params,
+    no_bottom_border=true if organizations %}
+
+  {% if organizations %}
+    {% snippet "lhm_organization/snippets/organization_list.html", organizations=organizations %}
+  {% elif request.params %}
+    <p class="empty">{{ _('No organizations found for this search.') }}</p>
+  {% else %}
+    <p class="empty">{{ _('There are currently no organizations for this site') }}.</p>
+  {% endif %}
+{% endblock %}
+
+{% block secondary_content %}
+  {% snippet "organization/snippets/helper.html" %}
+{% endblock %}

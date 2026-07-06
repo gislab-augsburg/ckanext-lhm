@@ -1,0 +1,60 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ organization.display_name }} {{ g.template_title_delimiter }} {{ _('Abteilungen') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li>{% link_for _('Abteilungen'), named_route='lhm_organization.index' %}</li>
+  <li class="active">{% link_for organization.display_name|truncate(35), named_route='lhm_organization.read', id=organization.name %}</li>
+{% endblock %}
+
+{% block page_header %}{% endblock %}
+
+{% block primary_content_inner %}
+  <h1>{{ organization.display_name }}</h1>
+  {% if organization.description %}
+    <div class="notes embedded-content">
+      {{ h.render_markdown(organization.description) }}
+    </div>
+  {% endif %}
+
+  {% if query_error %}
+    <p class="error">{{ _('There was an error while searching. Please try again.') }}</p>
+  {% endif %}
+
+  {% snippet 'snippets/search_form.html',
+    form_id='lhm-organization-dataset-search-form',
+    type='dataset',
+    query=q,
+    count=page.item_count,
+    placeholder=_('Search datasets...'),
+    show_empty=request.params,
+    no_bottom_border=true if page.items %}
+
+  {% block package_search_results_list %}
+    {% snippet 'snippets/package_list.html', packages=page.items %}
+  {% endblock %}
+
+  {% block page_pagination %}
+    {{ page.pager(q=q or '') }}
+  {% endblock %}
+{% endblock %}
+
+{% block secondary_content %}
+  {% snippet "snippets/organization.html", organization=sidebar_organization, has_context_title=true %}
+  <div class="filters lhm-facet-accordion">
+    <button type="button" class="lhm-facet-toggle-all" data-lhm-facet-toggle-all aria-expanded="false">
+      <i class="fa fa-filter" aria-hidden="true"></i>
+      <span>{{ _('Datensätze filtern:') }}</span>
+      <i class="fa fa-chevron-down lhm-facet-toggle-chevron" aria-hidden="true"></i>
+    </button>
+    <div class="lhm-facet-list">
+      {% for facet in facet_titles %}
+        {% snippet 'snippets/facet_list.html',
+          title=facet_titles[facet],
+          name=facet,
+          search_facets=search_facets,
+          alternative_url=h.url_for('lhm_organization.read', id=organization.name) %}
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

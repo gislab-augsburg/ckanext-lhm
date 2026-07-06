@@ -15,7 +15,8 @@ Example:
 #}
 
 {% set truncate = truncate or 0 %}
-{% set url = h.url_for(organization.type + '.read', id=organization.name, ) %}
+{% set is_lhm_organization_route = organization.type == 'lhm_organization' %}
+{% set url = h.url_for('lhm_organization.read', id=organization.name) if is_lhm_organization_route else h.url_for(organization.type + '.read', id=organization.name, ) %}
 
   {% block info %}
   <div class="module module-narrow module-shallow context-info">
@@ -44,16 +45,21 @@ Example:
           {{ h.markdown_extract(organization.description, 180) }}
         </p>
         <p class="read-more">
-          {% link_for _('read more'), controller='organization', action='about', id=organization.name %}
+          {% if is_lhm_organization_route %}
+            {% link_for _('read more'), named_route='lhm_organization.read', id=organization.name %}
+          {% else %}
+            {% link_for _('read more'), controller='organization', action='about', id=organization.name %}
+          {% endif %}
         </p>
       {% endif %}
 
       {% block organization_tree %}
       {% set tree_group = group_dict if group_dict is defined else organization %}
       {% if tree_group and tree_group.id %}
+        {% set tree_type = 'organization' if tree_group.type == 'lhm_organization' else tree_group.type %}
         <hr>
         <div id="organization-tree">
-          {% snippet 'organization/snippets/organization_tree.html', top_nodes=[h.group_tree_section(id_=tree_group.id, type_=tree_group.type, include_siblings=False)], use_longnames=False %}
+          {% snippet 'organization/snippets/organization_tree.html', top_nodes=[h.group_tree_section(id_=tree_group.id, type_=tree_type, include_siblings=False)], use_longnames=False %}
         </div>
       {% endif %}
       {% endblock %}

@@ -1,4 +1,6 @@
-from flask import Blueprint, send_file
+from flask import Blueprint, send_file, abort
+from collections import OrderedDict
+from urllib.parse import urlencode
 import json
 import subprocess
 import os
@@ -8,14 +10,17 @@ from ckanext.lhm.get_data import packages_to_files
 from pkg_resources import resource_filename
 from ckan.logic import get_action
 from ckan import model
-from ckan.common import g
+from ckan.common import g, request
 import ckan.plugins.toolkit as toolkit
+from ckan.lib import search
+import ckanext.lhm.helpers as lhm_helpers
 from ckanext.lhm.gp_to_iso1939 import convert_metadata_dict
 import shutil
 import requests
 
 # Create routes
 lhm_view = Blueprint('lhm_view', __name__)
+lhm_organization = Blueprint('lhm_organization', __name__, url_prefix='/lhm-organization')
 
 # Get package type
 def get_package_type(dataset_id):
@@ -183,9 +188,141 @@ def generate_xlsx(dataset_name):
         download_name = package + '.xlsx'
     )
 
+def _lhm_organization_facets():
+    facets = OrderedDict()
+    for facet in toolkit.h.facets():
+        if facet == 'organization':
+            facets[facet] = 'Datenquelle'
+        elif facet == 'lhm_org':
+            facets[facet] = 'Abteilungen'
+        elif facet == 'groups':
+            facets[facet] = 'Gruppen'
+        elif facet == 'tags':
+            facets[facet] = 'Schlagwort'
+        elif facet == 'res_format':
+            facets[facet] = 'Formate'
+        else:
+            facets[facet] = facet
+    return facets
+
+
+def _solr_quote(value):
+    return '"{}"'.format(str(value).replace('\\', '\\\\').replace('"', '\\"'))
+
+
+def _lhm_org_fq(organization):
+    values = []
+    for value in (organization.get('id'), organization.get('name')):
+        if value and value not in values:
+            values.append(value)
+
+    return '(' + ' OR '.join(
+        'lhm_org:{}'.format(_solr_quote(value))
+        for value in values
+    ) + ')'
+
+
+def _request_facet_fq(facets):
+    filters = []
+    for facet in facets:
+        for value in request.params.getlist(facet):
+            if value:
+                filters.append('{}:{}'.format(facet, _solr_quote(value)))
+    return filters
+
+
+@lhm_organization.route('/')
+@lhm_organization.route('')
+def index():
+    q = request.params.get('q', '')
+    organizations = lhm_helpers.lhm_lhm_orgs(q=q)
+    extra_vars = {
+        'q': q,
+        'organizations': organizations,
+        'count': len(organizations),
+    }
+    return toolkit.render('lhm_organization/index.html', extra_vars)
+
+
+@lhm_organization.route('/<id>')
+def read(id):
+    organization = lhm_helpers.lhm_org(id)
+    if not organization or not lhm_helpers.lhm_is_lhm_org(organization):
+        abort(404)
+
+    q = request.params.get('q', '')
+    page = toolkit.h.get_page_number(request.params)
+    limit = 20
+    facets = _lhm_organization_facets()
+    sort_by = request.params.get('sort', None)
+
+    fq_parts = [_lhm_org_fq(organization)]
+    fq_parts.extend(_request_facet_fq(facets))
+
+    data_dict = {
+        'q': q,
+        'fq': ' '.join(fq_parts),
+        'include_private': True,
+        'facet.field': list(facets.keys()),
+        'rows': limit,
+        'sort': sort_by,
+        'start': (page - 1) * limit,
+    }
+
+    context = {
+        'model': model,
+        'session': model.Session,
+        'user': g.user,
+        'for_view': True,
+    }
+
+    query_error = False
+    try:
+        query = toolkit.get_action('package_search')(context, data_dict)
+    except search.SearchError:
+        query_error = True
+        query = {'count': 0, 'results': [], 'search_facets': {}}
+
+    params_nopage = [
+        (key, value)
+        for key, value in request.params.items(multi=True)
+        if key != 'page'
+    ]
+
+    def pager_url(q=None, page=None):
+        params = list(params_nopage)
+        params.append(('page', page))
+        return toolkit.h.url_for('lhm_organization.read', id=id) + '?' + urlencode(params)
+
+    page_obj = toolkit.h.Page(
+        collection=query['results'],
+        page=page,
+        url=pager_url,
+        item_count=query['count'],
+        items_per_page=limit
+    )
+    page_obj.items = query['results']
+
+    sidebar_organization = dict(organization)
+    sidebar_organization['type'] = 'lhm_organization'
+
+    extra_vars = {
+        'group_dict': organization,
+        'organization': organization,
+        'sidebar_organization': sidebar_organization,
+        'q': q,
+        'page': page_obj,
+        'query_error': query_error,
+        'search_facets': query.get('search_facets', {}),
+        'facet_titles': facets,
+        'sort_by_selected': sort_by,
+    }
+    return toolkit.render('lhm_organization/read.html', extra_vars)
+
+
 # Register blueprint with ckan
 def get_blueprints():
-    return [lhm_view]
+    return [lhm_view, lhm_organization]
 
 
 # Test push_csw route

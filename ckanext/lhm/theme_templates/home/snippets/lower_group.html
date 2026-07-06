@@ -5,7 +5,7 @@
     <header>
       <h2><a href="/organization">{{ _('Datenquellen') }}</a></h2>
     </header>
-    <ul class="media-grid">
+    <ul class="media-grid" style="border-bottom-width: 0px;">
       {% for organization in owner_orgs %}
         {% snippet "group/snippets/main_group_item.html", group=organization, position=loop.index %}
       {% endfor %}

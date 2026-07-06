@@ -106,8 +106,8 @@ dataset_fields:
 
 - field_name: lhm_org
   label:
-    en: Organization
-    de: Organisation
+    en: Department
+    de: Abteilung
   form_snippet: lhm_org_lhm.html
   display_snippet: lhm_org.html
   is_info: true

@@ -17,21 +17,11 @@
 {% set owner_organizations = h.lhm_owner_orgs(q=q) %}
 
 {% block organizations_search_form %}
-  {% snippet 'snippets/search_form.html',
-    form_id='organization-search-form',
-    type='organization',
-    query=q,
-    sorting_selected=sort_by_selected,
-    count=owner_organizations|length,
-    placeholder=_('Datenquellen suchen...'),
-    show_empty=request.params,
-    no_bottom_border=true if owner_organizations,
-    sorting=[(_('Name Ascending'), 'title asc'), (_('Name Descending'), 'title desc')] %}
 {% endblock %}
 
 {% block organizations_list %}
   {% if owner_organizations %}
-    {% snippet "organization/snippets/organization_list.html", organizations=owner_organizations, show_capacity=True %}
+    {% snippet "organization/snippets/data_source_list.html", organizations=owner_organizations %}
   {% elif request.params %}
     <p class="empty">{{ _('No organizations found for this search.') }}</p>
   {% else %}

@@ -1,0 +1,10 @@
+{% block data_source_list %}
+  <div class="group-box">
+    <h2>{{ _('Datenquellen') }}</h2>
+    <ul class="media-grid">
+      {% for organization in organizations %}
+        {% snippet "group/snippets/main_group_item.html", group=organization, position=loop.index %}
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

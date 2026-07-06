@@ -1,11 +1,11 @@
 {% block organization_tree %}
   {% if top_nodes %}
-    <ul class="list-unstyled nav nav-simple organization-tree">
+    <ul class="organization-tree">
       {% for node in top_nodes recursive %}
         <li>
           <a href="{{ h.lhm_organization_url(node) }}">{{ node.title or node.display_name or node.name }}</a>
           {% if node.children %}
-            <ul class="list-unstyled nav nav-simple">
+            <ul>
               {{ loop(node.children) }}
             </ul>
           {% endif %}

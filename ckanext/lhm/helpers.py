@@ -187,10 +187,10 @@ def _lhm_organization_list():
     )
 
 
-def _lhm_filter_orgs(organizations, kind):
+def _lhm_filter_orgs(organizations, kind, resolve_missing=False):
     return [
         organization for organization in organizations or []
-        if _lhm_org_kind(organization, resolve_missing=False) == kind
+        if _lhm_org_kind(organization, resolve_missing=resolve_missing) == kind
     ]
 
 
@@ -290,18 +290,34 @@ def lhm_org_options(organizations=None):
 
     options = []
     for organization in _lhm_sort_orgs(organizations):
-        value = organization.get('id') or organization.get('name')
+        organization_name = _lhm_org_value(organization, 'name')
+        organization_id = _lhm_org_value(organization, 'id')
+        value = organization_name or organization_id
         label = _lhm_org_display_name(organization)
         if value and label:
-            options.append({'value': value, 'label': label})
+            options.append({
+                'value': value,
+                'id': organization_id,
+                'name': organization_name,
+                'label': label,
+            })
 
     return options
 
 
 @helper
 def lhm_data_source_options(organizations=None):
-    organizations = organizations or _lhm_organizations_by_kind(LHM_OWNER_ORG_KIND)
-    return _lhm_sort_orgs(_lhm_filter_orgs(organizations, LHM_OWNER_ORG_KIND))
+    if organizations is None:
+        organizations = _lhm_organizations_by_kind(LHM_OWNER_ORG_KIND)
+        return _lhm_sort_orgs(organizations)
+
+    return _lhm_sort_orgs(
+        _lhm_filter_orgs(
+            organizations,
+            LHM_OWNER_ORG_KIND,
+            resolve_missing=True
+        )
+    )
 
 
 @helper

@@ -19,7 +19,8 @@
         <option value="">{% if not org_required %}{{ _('No organization') }}{% endif %}</option>
       {% endif %}
       {% for organization in h.lhm_org_options() %}
-        <option value="{{ organization.value }}"{% if selected_org == organization.value %} selected="selected"{% endif %}>{{ organization.label }}</option>
+        {% set is_selected = selected_org in [organization.value, organization.id, organization.name] %}
+        <option value="{{ organization.value }}"{% if is_selected %} selected="selected"{% endif %}>{{ organization.label }}</option>
       {% endfor %}
     </select>
   </div>

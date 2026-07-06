@@ -195,13 +195,13 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         return map
 
     def before_dataset_search(self, search_params):
-        is_organization_search = self._is_organization_dataset_search(search_params)
+        has_owner_org_filter = self._has_owner_org_filter(search_params)
         is_lhm_org_search = (
-            is_organization_search
+            has_owner_org_filter
             and self._is_lhm_org_dataset_search(search_params)
         )
 
-        if is_organization_search:
+        if is_lhm_org_search or self._is_organization_route():
             query = search_params.get('q', '')
             include_children = 'include_children: "True"'
             if include_children not in query:
@@ -214,12 +214,13 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
 
         return search_params
 
-    before_search = before_dataset_search
+    def before_search(self, search_params):
+        return self.before_dataset_search(search_params)
 
-    def _is_organization_dataset_search(self, search_params):
-        if 'owner_org' not in search_params.get('fq', ''):
-            return False
+    def _has_owner_org_filter(self, search_params):
+        return 'owner_org' in search_params.get('fq', '')
 
+    def _is_organization_route(self):
         try:
             endpoint = toolkit.get_endpoint()
         except (TypeError, AttributeError, RuntimeError):

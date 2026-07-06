@@ -240,6 +240,17 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         return path.startswith('/organization/')
 
     def _is_lhm_org_dataset_search(self, search_params):
+        try:
+            group_dict = toolkit.g.group_dict
+        except (AttributeError, RuntimeError):
+            group_dict = None
+
+        if group_dict:
+            if helpers.lhm_is_lhm_org(group_dict):
+                return True
+            if helpers.lhm_is_data_source(group_dict):
+                return False
+
         organization_id = self._owner_org_fq_value(search_params.get('fq', ''))
         if not organization_id:
             return True

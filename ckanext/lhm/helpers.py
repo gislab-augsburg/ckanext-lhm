@@ -125,6 +125,19 @@ def _lhm_org_kind(organization, resolve_missing=False):
     return _lhm_org_extra(full_organization, LHM_ORG_KIND_EXTRA)
 
 
+def _lhm_group_image_display_url(image_url):
+    if not image_url:
+        return image_url
+
+    if str(image_url).startswith('http'):
+        return image_url
+
+    return toolkit.h.url_for_static(
+        'uploads/group/%s' % image_url,
+        qualified=True
+    )
+
+
 def _lhm_owner_org_package_count(organization_id):
     if not organization_id:
         return 0
@@ -149,7 +162,7 @@ def _lhm_organization_dict(group, kind):
         'display_name': title,
         'description': group.description or '',
         'image_url': group.image_url,
-        'image_display_url': group.image_url,
+        'image_display_url': _lhm_group_image_display_url(group.image_url),
         'package_count': (
             _lhm_owner_org_package_count(group.id)
             if kind == LHM_OWNER_ORG_KIND else 0

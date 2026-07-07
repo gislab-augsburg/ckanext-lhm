@@ -15,13 +15,13 @@
 
 {% import 'macros/form.html' as form %}
 
-{% set main_categories = h.group_tree_section(id_='main-categories', type_='group', include_siblings=True) %}
+{% set main_categories = h.lhm_group_tree_section('main-categories') %}
 {% set mc_grp_children = main_categories.children if main_categories else [] %}
 
-{% set departments = h.group_tree_section(id_='department', type_='group', include_siblings=True) %}
+{% set departments = h.lhm_group_tree_section('department') %}
 {% set d_grp_children = departments.children if departments else [] %}
 
-{% set topics = h.group_tree_section(id_='topics', type_='group', include_siblings=True) %}
+{% set topics = h.lhm_group_tree_section('topics') %}
 {% set t_grp_children = topics.children if topics else [] %}
 
 {% set info_MainCat = 'Einträge im Katalog können auf verschiedene Weisen gruppiert werden. Jeder Eintrag muss einer Hauptkategorie zugeordnet werden, die die Art der Informationsressource angibt und damit die benötigten Metadaten bestimmt.' %}

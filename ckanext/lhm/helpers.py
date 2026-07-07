@@ -69,6 +69,11 @@ def _group_tree_section(id_):
         return None
 
 
+@helper
+def lhm_group_tree_section(id_):
+    return _group_tree_section(id_)
+
+
 def _collect_group_ids(node):
     ids = set()
     if not node:

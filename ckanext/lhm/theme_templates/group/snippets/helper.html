@@ -16,14 +16,16 @@
       </p>
       {% set top_nodes = h.group_tree(organizations=organizations, type_='group') %}
       {% for node in top_nodes recursive %}
-      <b>{{ _(node.title) }}</b>
-      {% if node.children %}
-        {% for children in node.children%}
-      <ul>
-        <li>{{children.title}}</li>
-      </ul>
-      {% endfor %}
-      {% endif %}
+        {% if node.name != h.lhm_department_root_name() %}
+          <b>{{ _(node.title) }}</b>
+          {% if node.children %}
+            {% for children in node.children%}
+          <ul>
+            <li>{{children.title}}</li>
+          </ul>
+            {% endfor %}
+          {% endif %}
+        {% endif %}
       {% endfor %}
     </div>
   </div>

@@ -1,4 +1,4 @@
-from flask import Blueprint, send_file
+from flask import Blueprint, send_file, request
 import json
 import subprocess
 import os
@@ -8,14 +8,16 @@ from ckanext.lhm.get_data import packages_to_files
 from pkg_resources import resource_filename
 from ckan.logic import get_action
 from ckan import model
-from ckan.common import g
+from ckan.common import g, _
 import ckan.plugins.toolkit as toolkit
 from ckanext.lhm.gp_to_iso1939 import convert_metadata_dict
 import shutil
 import requests
+from ckanext.lhm import helpers
 
 # Create routes
 lhm_view = Blueprint('lhm_view', __name__)
+department = Blueprint('department', __name__, url_prefix='/department')
 
 # Get package type
 def get_package_type(dataset_id):
@@ -184,8 +186,59 @@ def generate_xlsx(dataset_name):
     )
 
 # Register blueprint with ckan
+
+@department.route("/", endpoint="index")
+def department_index():
+    return toolkit.render('department/index.html', {
+        'departments': helpers.all_helpers['lhm_department_tree']()
+    })
+
+
+@department.route("/<id>", endpoint="read")
+def department_read(id):
+    context = {
+        'model': model,
+        'session': model.Session,
+        'user': g.user,
+        'for_view': True,
+    }
+    try:
+        group_dict = get_action('group_show')(
+            context, {'id': id, 'include_datasets': False})
+    except (toolkit.ObjectNotFound, toolkit.NotAuthorized):
+        toolkit.abort(404, _('Department not found'))
+
+    department_ids = helpers.all_helpers['lhm_group_ids_for_root'](
+        helpers.LHM_DEPARTMENT_ROOT)
+    if group_dict.get('id') not in department_ids and group_dict.get('name') not in department_ids:
+        toolkit.abort(404, _('Department not found'))
+
+    query = get_action('package_search')(context, {
+        'q': request.params.get('q', ''),
+        'fq': 'groups:"{0}"'.format(group_dict['name']),
+        'include_private': True,
+        'rows': 20,
+        'sort': request.params.get('sort') or 'score desc, metadata_modified desc',
+    })
+    return toolkit.render('department/read.html', {
+        'group_dict': group_dict,
+        'packages': query.get('results', []),
+        'count': query.get('count', 0),
+    })
+
+
+@department.route("/activity/<id>", endpoint="activity")
+def department_activity(id):
+    return toolkit.redirect_to('group.activity', id=id, offset=0)
+
+
+@department.route("/about/<id>", endpoint="about")
+def department_about(id):
+    return toolkit.redirect_to('group.about', id=id)
+
+
 def get_blueprints():
-    return [lhm_view]
+    return [lhm_view, department]
 
 
 # Test push_csw route

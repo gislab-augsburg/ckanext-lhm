@@ -53,13 +53,12 @@
               {% block header_site_navigation_tabs %}
                 {% set org_type = h.default_group_type('organization') %}
                 {% set group_type = h.default_group_type('group') %}
-                {{ h.build_nav_main(
-                  (('dataset.search', _('Datasets'))),
-                  ((org_type ~ '.index',
-                    h.humanize_entity_type('organization', org_type, 'main nav') or _('Organizations'), ['organization'])),
-                  ((group_type ~ '.index',
-                    h.humanize_entity_type('group', group_type, 'main nav') or _('Groups'), ['group']))
-                ) }}
+                {{ h.build_nav_main(('dataset.search', _('Datasets'))) }}
+                {{ h.build_nav_main((org_type ~ '.index', _('Datenquellen'), ['organization'])) }}
+                <li class="nav-item{% if request.path.startswith('/department') %} active{% endif %}">
+                  <a class="nav-link" href="{{ h.url_for('department.index') }}">{{ _('Abteilungen') }}</a>
+                </li>
+                {{ h.build_nav_main((group_type ~ '.index', _('Groups'), ['group'])) }}
               {% endblock header_site_navigation_tabs %}
             {% endblock header_site_navigation %}
            </ul>

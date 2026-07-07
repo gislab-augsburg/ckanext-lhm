@@ -7,6 +7,8 @@
     {"title": "Portale", "name": "portal", "image_url": "/base/images/group_icons/online_application.jpg", "groups": [{"capacity": "public", "name": "main-categories"}]},
     {"title": "Gerät / Ding", "name": "device", "image_url": "/base/images/group_icons/device.jpg", "groups": [{"capacity": "public", "name": "main-categories"}]},
 
+    {"title": "Abteilungen", "name": "department"},
+
     {"title": "Themen", "name": "topics"},
     {"title": "Verwaltung", "name": "administration", "image_url": "/base/images/group_icons/administration.svg", "groups": [{"capacity": "public", "name": "topics"}]},
     {"title": "Stadtplanung", "name": "urban-planning", "image_url": "/base/images/group_icons/urban_planning.svg", "groups": [{"capacity": "public", "name": "topics"}]},

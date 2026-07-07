@@ -1,0 +1,37 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _('Abteilungen') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li class="active">{% link_for _('Abteilungen'), named_route='department.index' %}</li>
+{% endblock %}
+
+{% block page_header %}{% endblock %}
+
+{% block page_primary_action %}
+  {% if h.check_access('group_create') %}
+    {% link_for _('Abteilung hinzufügen'), named_route='group.new', class_='btn btn-primary', icon='plus-square' %}
+  {% endif %}
+{% endblock %}
+
+{% block primary_content_inner %}
+  {% if departments %}
+    {% snippet 'department/snippets/tree.html', nodes=departments %}
+  {% else %}
+    <p class="empty">{{ _('Es gibt derzeit keine Abteilungen.') }}</p>
+  {% endif %}
+{% endblock %}
+
+{% block secondary_content %}
+  <div class="module module-narrow module-shallow">
+    <h2 class="module-heading">
+      <i class="fa fa-info-circle"></i>
+      {{ _('Was sind Abteilungen?') }}
+    </h2>
+    <div class="module-content group-help">
+      <p>
+        Abteilungen beschreiben die fachlich zuständige Organisationseinheit eines Datensatzes. Sie werden als Gruppen unterhalb der Wurzel <code>department</code> gepflegt und steuern keine Bearbeitungsrechte.
+      </p>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% macro render_nodes(nodes) %}
+  <ul class="organization-tree">
+    {% for node in nodes %}
+      <li>
+        <a href="{{ h.lhm_department_url(node) }}">{{ node.title }}</a>
+        {% if node.children %}
+          {{ render_nodes(node.children) }}
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endmacro %}
+{{ render_nodes(nodes) }}

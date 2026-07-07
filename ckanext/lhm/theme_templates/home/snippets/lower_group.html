@@ -7,6 +7,17 @@
   <br><br>
 {% endblock %}
 <header>
+  <h2><a href="/organization">{{ _('Datenquellen') }}</a></h2>
+</header>
+{% set organizations = h.get_featured_organizations(count=10) %}
+{% if organizations %}
+  <ul class="media-grid" style="border-bottom-width: 0px;">
+    {% for organization in organizations %}
+      {% snippet "group/snippets/main_group_item.html", group=organization, position=loop.index %}
+    {% endfor %}
+  </ul>
+{% endif %}
+<header>
   <h2><a href="/group">{{ _('Main Categories') }}</a></h2>
 </header>
 {% block kategorien %}

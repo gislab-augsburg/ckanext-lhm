@@ -13,6 +13,10 @@ HERE = os.path.dirname(__file__)
 
 all_helpers = {}
 
+LHM_MAIN_CATEGORIES_ROOT = 'main-categories'
+LHM_TOPICS_ROOT = 'topics'
+LHM_DEPARTMENT_ROOT = 'department'
+
 def helper(fn):
     """
     collect helper functions into ckanext.lhm.all_helpers dict
@@ -56,6 +60,86 @@ def get_info_group(id):
     except logic.NotFound:
         return None
     return out
+
+def _group_tree_section(id_):
+    try:
+        return toolkit.h.group_tree_section(
+            id_=id_, type_='group', include_siblings=True)
+    except Exception:
+        return None
+
+
+def _collect_group_ids(node):
+    ids = set()
+    if not node:
+        return ids
+
+    for child in getattr(node, 'children', []) or []:
+        child_id = getattr(child, 'id', None)
+        child_name = getattr(child, 'name', None)
+        if child_id:
+            ids.add(child_id)
+        if child_name:
+            ids.add(child_name)
+        ids.update(_collect_group_ids(child))
+    return ids
+
+
+@helper
+def lhm_department_root_name():
+    return LHM_DEPARTMENT_ROOT
+
+
+@helper
+def lhm_department_tree():
+    root = _group_tree_section(LHM_DEPARTMENT_ROOT)
+    return getattr(root, 'children', []) if root else []
+
+
+@helper
+def lhm_group_ids_for_root(root_name):
+    return _collect_group_ids(_group_tree_section(root_name))
+
+
+@helper
+def lhm_groups_for_root(groups, root_name):
+    ids = lhm_group_ids_for_root(root_name)
+    selected = []
+    for group in groups or []:
+        group_id = group.get('id') if isinstance(group, dict) else getattr(group, 'id', None)
+        group_name = group.get('name') if isinstance(group, dict) else getattr(group, 'name', None)
+        if group_id in ids or group_name in ids:
+            selected.append(group)
+    return selected
+
+
+@helper
+def lhm_package_department(pkg_dict):
+    departments = lhm_groups_for_root(
+        pkg_dict.get('groups', []) if isinstance(pkg_dict, dict) else [],
+        LHM_DEPARTMENT_ROOT)
+    return departments[0] if departments else None
+
+
+@helper
+def lhm_package_main_category(pkg_dict):
+    main_categories = lhm_groups_for_root(
+        pkg_dict.get('groups', []) if isinstance(pkg_dict, dict) else [],
+        LHM_MAIN_CATEGORIES_ROOT)
+    return main_categories[0] if main_categories else None
+
+
+@helper
+def lhm_package_topics(pkg_dict):
+    return lhm_groups_for_root(
+        pkg_dict.get('groups', []) if isinstance(pkg_dict, dict) else [],
+        LHM_TOPICS_ROOT)
+
+
+@helper
+def lhm_department_url(group):
+    name = group.get('name') if isinstance(group, dict) else getattr(group, 'name', group)
+    return toolkit.url_for('group.read', id=name)
 
 def get_init_data():
     # ckanext.grouphierarchy.init_data = example.json

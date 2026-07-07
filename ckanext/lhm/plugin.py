@@ -1,4 +1,5 @@
 import json
+from collections import OrderedDict
 import ckan.model as model
 from ckan.lib import search
 import ckan.plugins as p
@@ -120,6 +121,38 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         })
         return existing_helpers
 
+
+    def _group_has_parent(self, group, root_name, seen=None):
+        seen = seen or set()
+        if not group or group.id in seen:
+            return False
+        seen.add(group.id)
+
+        if group.name == root_name:
+            return True
+
+        parents = model.Session.query(model.Group).join(
+            model.Member, model.Member.group_id == model.Group.id
+        ).filter(
+            model.Member.table_name == 'group',
+            model.Member.table_id == group.id,
+            model.Member.state == 'active',
+        ).all()
+
+        return any(self._group_has_parent(parent, root_name, seen) for parent in parents)
+
+    def _package_group_names_for_root(self, package_id, root_name):
+        package = model.Package.get(package_id)
+        if not package:
+            return []
+
+        names = []
+        for group in package.get_groups(group_type='group'):
+            if group.name != root_name and self._group_has_parent(group, root_name):
+                names.append(group.name)
+        return names
+
+
     def before_index(self, data_dict):
 
         data_dict_scheming = data_dict['validated_data_dict']
@@ -135,6 +168,13 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         data_dict['text'] = attribut #'\n'.join(attribut)
         data_dict['text'] += wert #'\n'.join(wert)
         data_dict['text'] += bedeutung #'\n'.join(bedeutung)
+
+        data_dict['department'] = self._package_group_names_for_root(
+            data_dict['id'], helpers.LHM_DEPARTMENT_ROOT)
+        data_dict['main_category'] = self._package_group_names_for_root(
+            data_dict['id'], helpers.LHM_MAIN_CATEGORIES_ROOT)
+        data_dict['topic'] = self._package_group_names_for_root(
+            data_dict['id'], helpers.LHM_TOPICS_ROOT)
 
         # get list of dicts from repeating subfield fields to prevent Solr errors
         usage_keywords = []
@@ -280,6 +320,28 @@ class LHMThemePlugin(p.SingletonPlugin, DefaultTranslation):
         p.toolkit.add_public_directory(config, 'public')
         p.toolkit.add_resource('assets_theme', 'lhm_theme')
 
+
+
+    def _lhm_facets(self, facets_dict):
+        facets = OrderedDict()
+        facets['organization'] = 'Datenquelle'
+        facets['department'] = 'Abteilungen'
+
+        for name, title in facets_dict.items():
+            if name in ('organization', 'owner_org', 'department', 'type'):
+                continue
+            facets[name] = title
+
+        return facets
+
+    def dataset_facets(self, facets_dict, package_type):
+        return self._lhm_facets(facets_dict)
+
+    def group_facets(self, facets_dict, group_type, package_type):
+        return self._lhm_facets(facets_dict)
+
+    def organization_facets(self, facets_dict, organization_type, package_type):
+        return self._lhm_facets(facets_dict)
 
     # IActions
     def get_actions(self):

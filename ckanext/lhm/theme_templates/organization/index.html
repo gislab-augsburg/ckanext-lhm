@@ -7,9 +7,15 @@
   {% block organizations_list %}
     {% if page.items or request.params %}
       {% if q %}
-        {% snippet "organization/snippets/organization_list.html", organizations=page.items %}
+        <div class="group-box">
+          <h2>{{ _('Datenquellen') }}</h2>
+          {% snippet "organization/snippets/organization_list.html", organizations=page.items %}
+        </div>
       {% else %}
-         {% snippet "organization/snippets/organization_list.html", organizations=organizations, show_capacity=True %}
+         <div class="group-box">
+           <h2>{{ _('Datenquellen') }}</h2>
+           {% snippet "organization/snippets/organization_list.html", organizations=organizations, show_capacity=True %}
+         </div>
       {% endif %}
     {% else %}
       <p class="empty">

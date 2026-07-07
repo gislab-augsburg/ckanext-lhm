@@ -260,6 +260,12 @@ def packages_to_files(packages, limit, wdir, excel_template):
                                 if value[j]['title'] in tp.topic_group_transpose:
                                     k = k + 1
                                     package_dict[f'groups.topic.{k}.title'] = value[j]['title']
+                    # Groups - Department
+                    if key == "groups":
+                        if len(value) > 0:
+                            for j in range(len(value)):
+                                if value[j]['title'] in tp.org_transpose:
+                                    package_dict['groups.department.title'] = value[j]['title']
                     # LHM-extern - Nutzungsoptionen bei Einschränkungen
                     if key == "nutzungsoptionen_bei_einschraenkungen":
                         nutzungsoptionen_list = []
@@ -588,10 +594,10 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     cell = ws[coords]
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$A$8:$A$23')
                     ws.add_data_validation(dv)
-                # Organisation
+                # Organisation / Abteilung
                 coords = 'B10'
                 cell = ws[coords]
-                cell.value = package_dict['organization.title']
+                cell.value = package_dict.get('groups.department.title', package_dict.get('organization.title', ''))
                 dv = add_validation_dropdown(ws, coords, '=Wertelisten!$B$2:$B$36')
                 ws.add_data_validation(dv)
                 # Privat

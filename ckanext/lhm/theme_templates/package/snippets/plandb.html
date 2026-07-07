@@ -34,12 +34,8 @@
         <td>      
           <p class="heading">{{ _("Datenquelle") }}
           <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Die Datenquelle bezeichnet das System aus dem die Daten bezogen werden können, bspw. Geodatenpool."></span></p>
-          {% if pkg_dict.type == "geodatenpool" %}
-            <p class="metadata">{{ _("Geodatenpool") }}</p>
-          {% elif  pkg_dict.type == "mobidam" %}
-            <p class="metadata">{{ _("Mobidam") }}</p>
-          {% elif  pkg_dict.type == "plan-db" %}
-            <p class="metadata">{{ _("PLAN-DB") }}</p>
+          {% if pkg_dict.organization and pkg_dict.organization.title %}
+            <p class="metadata">{{ pkg_dict.organization.title }}</p>
           {% else %}
             <p class="metadata">{{ _("Nicht verfügbar") }}</p>
           {% endif %}

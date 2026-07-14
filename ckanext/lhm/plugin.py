@@ -169,12 +169,19 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         data_dict['text'] += wert #'\n'.join(wert)
         data_dict['text'] += bedeutung #'\n'.join(bedeutung)
 
-        data_dict['department'] = self._package_group_names_for_root(
+        departments = self._package_group_names_for_root(
             data_dict['id'], helpers.LHM_DEPARTMENT_ROOT)
-        data_dict['main_category'] = self._package_group_names_for_root(
+        main_categories = self._package_group_names_for_root(
             data_dict['id'], helpers.LHM_MAIN_CATEGORIES_ROOT)
-        data_dict['topic'] = self._package_group_names_for_root(
+        topics = self._package_group_names_for_root(
             data_dict['id'], helpers.LHM_TOPICS_ROOT)
+
+        data_dict['department'] = departments
+        data_dict['main_category'] = main_categories
+        data_dict['topic'] = topics
+        data_dict['vocab_department'] = departments
+        data_dict['vocab_main_category'] = main_categories
+        data_dict['vocab_topic'] = topics
 
         # get list of dicts from repeating subfield fields to prevent Solr errors
         usage_keywords = []
@@ -325,14 +332,17 @@ class LHMThemePlugin(p.SingletonPlugin, DefaultTranslation):
     def _lhm_facets(self, facets_dict):
         labels = OrderedDict([
             ('organization', 'Datenquellen'),
-            ('department', 'Abteilungen'),
-            ('main_category', 'Hauptkategorien'),
-            ('topic', 'Themen'),
+            ('vocab_department', 'Abteilungen'),
+            ('vocab_main_category', 'Hauptkategorien'),
+            ('vocab_topic', 'Themen'),
             ('tags', 'Schlagworte'),
             ('res_format', 'Formate'),
             ('open_data', 'Open Data'),
         ])
-        skipped = ('groups', 'type', 'owner_org')
+        skipped = (
+            'groups', 'type', 'owner_org',
+            'department', 'main_category', 'topic',
+        )
         facets = OrderedDict()
 
         for name, label in labels.items():

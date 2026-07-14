@@ -323,12 +323,24 @@ class LHMThemePlugin(p.SingletonPlugin, DefaultTranslation):
 
 
     def _lhm_facets(self, facets_dict):
+        labels = OrderedDict([
+            ('organization', 'Datenquellen'),
+            ('department', 'Abteilungen'),
+            ('main_category', 'Hauptkategorien'),
+            ('topic', 'Themen'),
+            ('tags', 'Schlagworte'),
+            ('res_format', 'Formate'),
+            ('open_data', 'Open Data'),
+        ])
+        skipped = ('groups', 'type', 'owner_org')
         facets = OrderedDict()
-        facets['organization'] = 'Datenquelle'
-        facets['department'] = 'Abteilungen'
+
+        for name, label in labels.items():
+            if name in facets_dict:
+                facets[name] = label
 
         for name, title in facets_dict.items():
-            if name in ('organization', 'owner_org', 'department', 'type'):
+            if name in facets or name in skipped:
                 continue
             facets[name] = title
 

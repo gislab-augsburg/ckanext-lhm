@@ -52,6 +52,14 @@
 <hr>
 {% endblock %}
 
+
+{% block package_organization %}
+  {% set department = h.lhm_package_department(pkg_dict if pkg_dict is defined else pkg) %}
+  {% if department %}
+    {% snippet "snippets/department.html", department=department, has_context_title=true %}
+  {% endif %}
+{% endblock %}
+
 {% block package_tags %}
 <h3>Schlagworte</h3>
     {% snippet "package/snippets/tags.html", tags=pkg.tags %}

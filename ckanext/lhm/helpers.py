@@ -137,7 +137,7 @@ def lhm_package_department(pkg_dict):
                 package = toolkit.get_action('package_show')(
                     {'ignore_auth': True}, {'id': package_id})
                 groups = package.get('groups', [])
-            except logic.NotFound:
+            except (logic.NotFound, logic.NotAuthorized):
                 groups = []
 
     departments = lhm_groups_for_root(groups, LHM_DEPARTMENT_ROOT)

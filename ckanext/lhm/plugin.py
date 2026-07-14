@@ -194,52 +194,34 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         data_dict['vocab_main_category'] = main_categories
         data_dict['vocab_topic'] = topics
 
-        # get list of dicts from repeating subfield fields to prevent Solr errors
-        usage_keywords = []
-        usage_remarks = []
-        for sub in data_dict.get('nutzungshinweise', []):
-            usage_keywords.append(sub['stichwort'])
-            usage_remarks.append(sub['hinweise'])
+        def flatten_repeating_subfield(field_name, subfield_names):
+            value = data_dict.get(field_name)
+            if not isinstance(value, (list, tuple)):
+                return None
 
-        refsystem_code = []
-        refsystem_codespace = []
-        refsystem_version = []
-        for sub in data_dict.get('refsystem', []):
-            if 'refsystem_code' in sub.keys():
-                refsystem_code.append(sub['refsystem_code'])
-            else:
-                refsystem_code.append('')
-            if 'refsystem_codespace' in sub.keys():
-                refsystem_codespace.append(sub['refsystem_codespace'])
-            else:
-                refsystem_codespace.append('')
-            if 'refsystem_version' in sub.keys():
-                refsystem_version.append(sub['refsystem_version'])
-            else:
-                refsystem_version.append('')
+            values = []
+            for sub in value:
+                if isinstance(sub, dict):
+                    values.extend(str(sub.get(name, '')) for name in subfield_names)
+                elif sub is not None:
+                    values.append(str(sub))
+            return '\n'.join(values)
 
-        distrib_format_name = []
-        distrib_format_version = []
-        for sub in data_dict.get('distrib_format', []):
-            if 'distrib_format_name' in sub.keys():
-                distrib_format_name.append(sub['distrib_format_name'])
-            else:
-                distrib_format_name.append('')
-            if 'distrib_format_version' in sub.keys():
-                distrib_format_version.append(sub['distrib_format_version'])
-            else:
-                distrib_format_version.append('')
+        # Replace list-of-dicts values with plain text to prevent Solr errors.
+        # CKAN 2.11 may already pass flattened strings here, so keep those as-is.
+        usage_text = flatten_repeating_subfield(
+            'nutzungshinweise', ['stichwort', 'hinweise'])
+        refsystem_text = flatten_repeating_subfield(
+            'refsystem', ['refsystem_code', 'refsystem_codespace', 'refsystem_version'])
+        distrib_format_text = flatten_repeating_subfield(
+            'distrib_format', ['distrib_format_name', 'distrib_format_version'])
 
-        # replace list of dicts with plain texts to prevent Solr errors
-        data_dict['nutzungshinweise'] = '\n'.join(usage_keywords)
-        data_dict['nutzungshinweise'] += '\n'.join(usage_remarks)
-
-        data_dict['refsystem'] = '\n'.join(refsystem_code)
-        data_dict['refsystem'] += '\n'.join(refsystem_codespace)
-        data_dict['refsystem'] += '\n'.join(refsystem_version)
-
-        data_dict['distrib_format'] = '\n'.join(distrib_format_name)
-        data_dict['distrib_format'] += '\n'.join(distrib_format_version)
+        if usage_text is not None:
+            data_dict['nutzungshinweise'] = usage_text
+        if refsystem_text is not None:
+            data_dict['refsystem'] = refsystem_text
+        if distrib_format_text is not None:
+            data_dict['distrib_format'] = distrib_format_text
 
         return data_dict
 

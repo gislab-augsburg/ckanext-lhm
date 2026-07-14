@@ -161,6 +161,9 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
 
 
     def before_index(self, data_dict):
+        return self.before_dataset_index(data_dict)
+
+    def before_dataset_index(self, data_dict):
 
         data_dict_scheming = data_dict['validated_data_dict']
         validated_data_dict = json.loads(data_dict_scheming)

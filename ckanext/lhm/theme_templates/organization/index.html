@@ -9,12 +9,20 @@
       {% if q %}
         <div class="group-box">
           <h2>{{ _('Datenquellen') }}</h2>
-          {% snippet "organization/snippets/organization_list.html", organizations=page.items %}
+          <ul class="media-grid">
+            {% for organization in page.items %}
+              {% snippet "group/snippets/main_group_item.html", group=organization, position=loop.index %}
+            {% endfor %}
+          </ul>
         </div>
       {% else %}
          <div class="group-box">
            <h2>{{ _('Datenquellen') }}</h2>
-           {% snippet "organization/snippets/organization_list.html", organizations=organizations, show_capacity=True %}
+           <ul class="media-grid">
+             {% for organization in organizations %}
+               {% snippet "group/snippets/main_group_item.html", group=organization, position=loop.index %}
+             {% endfor %}
+           </ul>
          </div>
       {% endif %}
     {% else %}

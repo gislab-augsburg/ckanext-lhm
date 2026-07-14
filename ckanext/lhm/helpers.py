@@ -121,7 +121,9 @@ def lhm_groups_for_root(groups, root_name):
 @helper
 def lhm_package_department(pkg_dict):
     departments = lhm_groups_for_root(
-        pkg_dict.get('groups', []) if isinstance(pkg_dict, dict) else [],
+        pkg_dict.get('groups', [])
+        if isinstance(pkg_dict, dict)
+        else getattr(pkg_dict, 'groups', []),
         LHM_DEPARTMENT_ROOT)
     return departments[0] if departments else None
 

@@ -1,0 +1,55 @@
+{#
+Embeds a department group within the sidebar of a dataset page.
+
+department - A group dict below the technical "department" root.
+has_context_title - Boolean for whether to display a module heading.
+#}
+
+{% set department = h.get_info_group(department.name) or department %}
+{% set url = h.url_for('group.read', id=department.name) %}
+
+{% block info %}
+  <div class="module module-narrow module-shallow context-info">
+    {% if has_context_title %}
+      <h2 class="module-heading"><i class="fa fa-home"></i> {{ _('Abteilung') }}</h2>
+    {% endif %}
+    <section class="module-content">
+      {% block inner %}
+        {% block image %}
+          <div class="image">
+            <a href="{{ url }}">
+              <img src="{{ department.image_display_url or h.url_for_static('/base/images/placeholder-group.png') }}" width="200" alt="{{ department.name }}" />
+            </a>
+          </div>
+        {% endblock %}
+
+        {% block heading %}
+          <h1 class="heading">
+            <a href="{{ url }}">{{ department.title or department.display_name or department.name }}</a>
+            {% if department.state == 'deleted' %}
+              [{{ _('Deleted') }}]
+            {% endif %}
+          </h1>
+        {% endblock %}
+
+        {% block description %}
+          {% if department.description %}
+            <p class="description">
+              {{ h.markdown_extract(department.description, 180) }}
+            </p>
+          {% endif %}
+        {% endblock %}
+
+        {% block department_tree %}
+          {% set tree = h.lhm_group_tree_section(department.id) %}
+          {% if tree %}
+            <hr>
+            <div id="organization-tree">
+              {% snippet 'organization/snippets/organization_tree.html', top_nodes=[tree], use_longnames=False %}
+            </div>
+          {% endif %}
+        {% endblock %}
+      {% endblock %}
+    </section>
+  </div>
+{% endblock %}

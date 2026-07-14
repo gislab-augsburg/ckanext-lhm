@@ -120,11 +120,27 @@ def lhm_groups_for_root(groups, root_name):
 
 @helper
 def lhm_package_department(pkg_dict):
-    departments = lhm_groups_for_root(
+    groups = (
         pkg_dict.get('groups', [])
         if isinstance(pkg_dict, dict)
-        else getattr(pkg_dict, 'groups', []),
-        LHM_DEPARTMENT_ROOT)
+        else getattr(pkg_dict, 'groups', [])
+    )
+
+    if not groups:
+        package_id = (
+            pkg_dict.get('id') or pkg_dict.get('name')
+            if isinstance(pkg_dict, dict)
+            else getattr(pkg_dict, 'id', None) or getattr(pkg_dict, 'name', None)
+        )
+        if package_id:
+            try:
+                package = toolkit.get_action('package_show')(
+                    {'ignore_auth': True}, {'id': package_id})
+                groups = package.get('groups', [])
+            except logic.NotFound:
+                groups = []
+
+    departments = lhm_groups_for_root(groups, LHM_DEPARTMENT_ROOT)
     return departments[0] if departments else None
 
 

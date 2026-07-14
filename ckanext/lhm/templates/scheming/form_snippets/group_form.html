@@ -44,9 +44,10 @@
     {% endif %}
 {% endfor %}
 
+{% set department_group_ids = h.lhm_group_ids_for_root('department') %}
 {% set selected_department = namespace(id=none) %}
-{% for group in d_grp_children %}
-    {% if group.id in data_groups_ids %}
+{% for group in data.groups or [] %}
+    {% if group.id in department_group_ids %}
         {% set selected_department.id = group.id %}
     {% endif %}
 {% endfor %}
@@ -75,11 +76,14 @@
             {% if not selected_department.id %}
                 <option value="" selected="selected">{{_('Abteilung auswählen')}}</option>
             {% endif %}
-            {% for group in d_grp_children  %}
+            {% for group in d_grp_children recursive %}
                 {% if group.id == selected_department.id %}
                     <option value="{{ group.id }}" selected="selected">{{ group.title }}</option>
                 {% else %}
                     <option value="{{ group.id }}">{{ group.title }}</option>
+                {% endif %}
+                {% if group.children %}
+                    {{ loop(group.children) }}
                 {% endif %}
             {% endfor %}
         </select>

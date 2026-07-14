@@ -74,14 +74,24 @@ def lhm_group_tree_section(id_):
     return _group_tree_section(id_)
 
 
+def _group_value(group, key):
+    return group.get(key) if isinstance(group, dict) else getattr(group, key, None)
+
+
+def _group_children(group):
+    if isinstance(group, dict):
+        return group.get('children', []) or []
+    return getattr(group, 'children', []) or []
+
+
 def _collect_group_ids(node):
     ids = set()
     if not node:
         return ids
 
-    for child in getattr(node, 'children', []) or []:
-        child_id = getattr(child, 'id', None)
-        child_name = getattr(child, 'name', None)
+    for child in _group_children(node):
+        child_id = _group_value(child, 'id')
+        child_name = _group_value(child, 'name')
         if child_id:
             ids.add(child_id)
         if child_name:
@@ -98,7 +108,7 @@ def lhm_department_root_name():
 @helper
 def lhm_department_tree():
     root = _group_tree_section(LHM_DEPARTMENT_ROOT)
-    return getattr(root, 'children', []) if root else []
+    return _group_children(root) if root else []
 
 
 @helper
@@ -111,8 +121,8 @@ def lhm_groups_for_root(groups, root_name):
     ids = lhm_group_ids_for_root(root_name)
     selected = []
     for group in groups or []:
-        group_id = group.get('id') if isinstance(group, dict) else getattr(group, 'id', None)
-        group_name = group.get('name') if isinstance(group, dict) else getattr(group, 'name', None)
+        group_id = _group_value(group, 'id')
+        group_name = _group_value(group, 'name')
         if group_id in ids or group_name in ids:
             selected.append(group)
     return selected
@@ -161,7 +171,7 @@ def lhm_package_topics(pkg_dict):
 
 @helper
 def lhm_department_url(group):
-    name = group.get('name') if isinstance(group, dict) else getattr(group, 'name', group)
+    name = _group_value(group, 'name') or group
     return toolkit.url_for('group.read', id=name)
 
 def get_init_data():

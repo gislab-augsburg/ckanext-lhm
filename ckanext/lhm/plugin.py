@@ -141,7 +141,14 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
 
         return any(self._group_has_parent(parent, root_name, seen) for parent in parents)
 
-    def _package_group_names_for_root(self, package_id, root_name):
+    def _package_group_names_for_root(self, package_id, root_name, groups=None):
+        if groups:
+            return [
+                group.get('name') if isinstance(group, dict) else getattr(group, 'name', None)
+                for group in helpers.lhm_groups_for_root(groups, root_name)
+                if (group.get('name') if isinstance(group, dict) else getattr(group, 'name', None))
+            ]
+
         package = model.Package.get(package_id)
         if not package:
             return []
@@ -169,12 +176,13 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         data_dict['text'] += wert #'\n'.join(wert)
         data_dict['text'] += bedeutung #'\n'.join(bedeutung)
 
+        groups = data_dict.get('groups') or []
         departments = self._package_group_names_for_root(
-            data_dict['id'], helpers.LHM_DEPARTMENT_ROOT)
+            data_dict['id'], helpers.LHM_DEPARTMENT_ROOT, groups)
         main_categories = self._package_group_names_for_root(
-            data_dict['id'], helpers.LHM_MAIN_CATEGORIES_ROOT)
+            data_dict['id'], helpers.LHM_MAIN_CATEGORIES_ROOT, groups)
         topics = self._package_group_names_for_root(
-            data_dict['id'], helpers.LHM_TOPICS_ROOT)
+            data_dict['id'], helpers.LHM_TOPICS_ROOT, groups)
 
         data_dict['department'] = departments
         data_dict['main_category'] = main_categories

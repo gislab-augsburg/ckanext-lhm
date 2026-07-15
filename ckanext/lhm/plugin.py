@@ -163,26 +163,34 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
             return group
         return getattr(group, 'name', None)
 
-    def _package_group_names_for_root(self, package_id, root_name, groups=None):
+    def _package_groups_for_root(self, package_id, root_name, groups=None):
+        matched = []
+
         if groups:
-            names = []
             for group in groups:
                 group_name = self._group_name(group)
                 group_obj = model.Group.get(group_name) if group_name else None
                 if (group_obj and group_obj.name != root_name
                         and self._group_has_parent(group_obj, root_name)):
-                    names.append(group_obj.name)
-            return names
+                    matched.append(group_obj)
+            return matched
 
         package = model.Package.get(package_id)
         if not package:
             return []
 
-        names = []
         for group in package.get_groups(group_type='group'):
             if group.name != root_name and self._group_has_parent(group, root_name):
-                names.append(group.name)
-        return names
+                matched.append(group)
+        return matched
+
+    def _package_group_names_for_root(self, package_id, root_name, groups=None):
+        return [group.name for group in self._package_groups_for_root(
+            package_id, root_name, groups)]
+
+    def _package_group_titles_for_root(self, package_id, root_name, groups=None):
+        return [group.title or group.name for group in self._package_groups_for_root(
+            package_id, root_name, groups)]
 
 
     def before_index(self, data_dict):
@@ -205,16 +213,16 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         data_dict['text'] += bedeutung #'\n'.join(bedeutung)
 
         groups = data_dict.get('groups') or []
-        departments = self._package_group_names_for_root(
+        departments = self._package_group_titles_for_root(
             data_dict['id'], helpers.LHM_DEPARTMENT_ROOT, groups)
-        main_categories = self._package_group_names_for_root(
+        main_categories = self._package_group_titles_for_root(
             data_dict['id'], helpers.LHM_MAIN_CATEGORIES_ROOT, groups)
-        topics = self._package_group_names_for_root(
+        topics = self._package_group_titles_for_root(
             data_dict['id'], helpers.LHM_TOPICS_ROOT, groups)
 
-        data_dict['department'] = departments
-        data_dict['main_category'] = main_categories
-        data_dict['topic'] = topics
+        data_dict.pop('department', None)
+        data_dict.pop('main_category', None)
+        data_dict.pop('topic', None)
         data_dict['vocab_department'] = departments
         data_dict['vocab_main_category'] = main_categories
         data_dict['vocab_topic'] = topics

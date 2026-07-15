@@ -21,13 +21,13 @@
   {{ super() }}
   {% if show_include_subgroups %}
     {% set include_children_value = request.params.get('include_children', 'true') %}
-    {% set include_children_checked = include_children_value not in ['false', 'False', '0', 'off'] %}
+    {% set include_children_checked = include_children_value not in ['', 'false', 'False', '0', 'off'] %}
     <div class="checkbox lhm-include-subgroups">
-      <input type="hidden" name="include_children" value="false">
       <label for="field-include-children">
         <input id="field-include-children" type="checkbox" name="include_children" value="true"{% if include_children_checked %} checked{% endif %}>
         {{ _('Mit Untergruppen') }}
       </label>
+      <input type="hidden" name="include_children" value="">
     </div>
   {% endif %}
 {% endblock %}

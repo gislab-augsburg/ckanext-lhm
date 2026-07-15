@@ -322,7 +322,7 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         except RuntimeError:
             include_children = None
 
-        return include_children not in ('false', 'False', '0', 'off')
+        return include_children not in ('', 'false', 'False', '0', 'off')
 
     def is_fallback(self):
         return False

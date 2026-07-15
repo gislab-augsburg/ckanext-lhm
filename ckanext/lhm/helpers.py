@@ -75,7 +75,11 @@ def lhm_group_tree_section(id_):
 
 
 def _group_value(group, key):
-    return group.get(key) if isinstance(group, dict) else getattr(group, key, None)
+    if isinstance(group, dict):
+        return group.get(key)
+    if isinstance(group, str) and key in ('id', 'name'):
+        return group
+    return getattr(group, key, None)
 
 
 def _group_children(group):

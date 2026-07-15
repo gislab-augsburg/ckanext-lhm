@@ -141,13 +141,23 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
 
         return any(self._group_has_parent(parent, root_name, seen) for parent in parents)
 
+    def _group_name(self, group):
+        if isinstance(group, dict):
+            return group.get('name')
+        if isinstance(group, str):
+            return group
+        return getattr(group, 'name', None)
+
     def _package_group_names_for_root(self, package_id, root_name, groups=None):
         if groups:
-            return [
-                group.get('name') if isinstance(group, dict) else getattr(group, 'name', None)
-                for group in helpers.lhm_groups_for_root(groups, root_name)
-                if (group.get('name') if isinstance(group, dict) else getattr(group, 'name', None))
-            ]
+            names = []
+            for group in groups:
+                group_name = self._group_name(group)
+                group_obj = model.Group.get(group_name) if group_name else None
+                if (group_obj and group_obj.name != root_name
+                        and self._group_has_parent(group_obj, root_name)):
+                    names.append(group_obj.name)
+            return names
 
         package = model.Package.get(package_id)
         if not package:

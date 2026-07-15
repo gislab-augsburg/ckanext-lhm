@@ -4,6 +4,7 @@ import ckan.model as model
 from ckan.lib import search
 import ckan.plugins as p
 import ckan.plugins.toolkit as toolkit
+from ckan.common import request
 from ckan.plugins.interfaces import IConfigurer, IDatasetForm
 from ckan.lib.plugins import DefaultTranslation
 import ckanext.lhm.cli as cli
@@ -265,7 +266,8 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         return map
 
     def before_dataset_search(self, search_params):
-        if self._is_organization_dataset_search(search_params):
+        if (self._is_organization_dataset_search(search_params)
+                or self._should_include_group_children(search_params)):
             query = search_params.get('q', '')
             include_children = 'include_children: "True"'
             if include_children not in query:
@@ -296,6 +298,31 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
             return False
 
         return controller == 'organization'
+
+    def _is_group_dataset_search(self, search_params):
+        if 'groups:' not in search_params.get('fq', ''):
+            return False
+
+        try:
+            if toolkit.check_ckan_version("2.10"):
+                controller = toolkit.get_endpoint()[0]
+            else:
+                controller = toolkit.g.controller
+        except (TypeError, AttributeError, RuntimeError):
+            return False
+
+        return controller == 'group'
+
+    def _should_include_group_children(self, search_params):
+        if not self._is_group_dataset_search(search_params):
+            return False
+
+        try:
+            include_children = request.params.get('include_children')
+        except RuntimeError:
+            include_children = None
+
+        return include_children not in ('false', 'False', '0', 'off')
 
     def is_fallback(self):
         return False

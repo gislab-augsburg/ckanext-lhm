@@ -20,7 +20,7 @@
 {% block search_search_fields %}
   {{ super() }}
   {% if show_include_subgroups %}
-    {% set include_children_value = request.params.get('include_children', 'true') %}
+    {% set include_children_value = request.args.get('include_children', 'true') %}
     {% set include_children_checked = include_children_value not in ['', 'false', 'False', '0', 'off'] %}
     <div class="checkbox lhm-include-subgroups">
       <label for="field-include-children">

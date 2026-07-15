@@ -318,7 +318,7 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
             return False
 
         try:
-            include_children = request.params.get('include_children')
+            include_children = request.args.get('include_children')
         except RuntimeError:
             include_children = None
 

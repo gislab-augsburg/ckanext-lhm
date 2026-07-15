@@ -5,7 +5,7 @@
 {% block organizations_search_form %}
 {% endblock %}
   {% block organizations_list %}
-    {% if page.items or request.params %}
+    {% if page.items or request.args %}
       {% if q %}
         <div class="group-box">
           <h2>{{ _('Datenquellen') }}</h2>

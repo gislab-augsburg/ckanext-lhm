@@ -131,13 +131,28 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         if group.name == root_name:
             return True
 
-        parents = model.Session.query(model.Group).join(
+        # CKAN stores group hierarchy as member rows, but ckanext-hierarchy
+        # deployments differ in which side of the member relation is treated
+        # as parent. Check both directions and then recurse towards root_name.
+        parent_candidates = []
+
+        parent_candidates.extend(model.Session.query(model.Group).join(
             model.Member, model.Member.group_id == model.Group.id
         ).filter(
             model.Member.table_name == 'group',
             model.Member.table_id == group.id,
             model.Member.state == 'active',
-        ).all()
+        ).all())
+
+        parent_candidates.extend(model.Session.query(model.Group).join(
+            model.Member, model.Member.table_id == model.Group.id
+        ).filter(
+            model.Member.table_name == 'group',
+            model.Member.group_id == group.id,
+            model.Member.state == 'active',
+        ).all())
+
+        parents = {parent.id: parent for parent in parent_candidates}.values()
 
         return any(self._group_has_parent(parent, root_name, seen) for parent in parents)
 

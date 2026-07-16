@@ -1,4 +1,5 @@
 import json
+import logging
 from collections import OrderedDict
 import ckan.model as model
 from ckan.lib import search
@@ -21,6 +22,8 @@ from ckanext.lhm.logic import action, schema
 
 #from ckanext.datastore.backend.postgres import _cache_types
 from sqlalchemy import create_engine
+
+log = logging.getLogger(__name__)
 
 # This function extends the data types in postgresql.
 # This is required for Data Dictionary and is an extension to the function _cache_types in Datastor.backend.postgres.py
@@ -266,14 +269,53 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         return map
 
     def before_dataset_search(self, search_params):
-        if (self._is_organization_dataset_search(search_params)
-                or self._should_include_group_children(search_params)):
+        try:
+            endpoint = toolkit.get_endpoint()[0] if toolkit.check_ckan_version("2.10") else toolkit.g.controller
+        except (TypeError, AttributeError, RuntimeError):
+            endpoint = None
+
+        try:
+            request_args = request.args.to_dict(flat=False)
+        except RuntimeError:
+            request_args = None
+
+        is_organization_search = self._is_organization_dataset_search(search_params)
+        should_include_group_children = self._should_include_group_children(search_params)
+
+        log.warning(
+            "LHM hierarchy before marker endpoint=%s organization_search=%s "
+            "include_group_children=%s request_args=%s q=%r fq=%r",
+            endpoint,
+            is_organization_search,
+            should_include_group_children,
+            request_args,
+            search_params.get('q'),
+            search_params.get('fq'),
+        )
+
+        if is_organization_search or should_include_group_children:
             query = search_params.get('q', '')
             include_children = 'include_children: "True"'
             if include_children not in query:
                 search_params['q'] = (query + ' ' + include_children).strip()
 
-        return HierarchyDisplay.before_dataset_search(self, search_params)
+        log.warning(
+            "LHM hierarchy before plugin endpoint=%s q=%r fq=%r",
+            endpoint,
+            search_params.get('q'),
+            search_params.get('fq'),
+        )
+
+        result = HierarchyDisplay.before_dataset_search(self, search_params)
+
+        log.warning(
+            "LHM hierarchy after plugin endpoint=%s q=%r fq=%r",
+            endpoint,
+            result.get('q'),
+            result.get('fq'),
+        )
+
+        return result
 
     before_search = before_dataset_search
 

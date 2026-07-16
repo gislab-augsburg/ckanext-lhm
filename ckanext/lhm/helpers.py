@@ -188,7 +188,7 @@ def lhm_group_package_count(group):
     try:
         result = toolkit.get_action('package_search')(
             {'ignore_auth': True},
-            {'fq': 'groups:"{}"'.format(name), 'rows': 0})
+            {'fq': 'groups:{}'.format(name), 'rows': 0})
     except (logic.NotFound, logic.NotAuthorized, logic.ValidationError):
         return 0
 

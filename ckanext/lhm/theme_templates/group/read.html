@@ -1,12 +1,6 @@
 {% ckan_extends %}
 
 
-{% block content_action %}
-  {% snippet 'snippets/add_dataset.html', group=group_dict.name %}
-  {{ super() }}
-{% endblock %}
-
-
 {% block groups_search_form %}
   {% set facets = {
     'fields': fields_grouped,

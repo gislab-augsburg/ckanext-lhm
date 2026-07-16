@@ -649,3 +649,8 @@ table.package-metadata {
 .lhm-facet-values .nav-item[hidden] {
     display: none;
 }
+
+.lhm-include-subgroups {
+    margin-top: 8px;
+    margin-bottom: 18px;
+}

@@ -14,6 +14,7 @@
     #}
     {% set type = group.type or 'group' %}
     {% set url = h.url_for(type ~ '.read', id=group.name) %}
+    {% set package_count = group.package_count if type == 'organization' else h.lhm_group_package_count(group) %}
 
     {% block item %}
     <li class="media-item media-item-lhm" style="display:flex; flex-direction:column; height:auto">
@@ -30,9 +31,9 @@
         {% endif %}
       {% endblock description %}
       {% block datasets %}
-        {% if group.package_count %}
-          <strong class="count">{{ ungettext('{num} Dataset', '{num} Datasets', group.package_count).format(num=group.package_count) }}</strong>
-        {% elif group.package_count == 0 %}
+        {% if package_count %}
+          <strong class="count">{{ ungettext('{num} Dataset', '{num} Datasets', package_count).format(num=package_count) }}</strong>
+        {% elif package_count == 0 %}
           <span class="count">{{ _('0 Datasets') }}</span>
         {% endif %}
       {% endblock datasets %}

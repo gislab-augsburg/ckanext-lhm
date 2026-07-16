@@ -178,6 +178,22 @@ def lhm_department_url(group):
     name = _group_value(group, 'name') or group
     return toolkit.url_for('group.read', id=name)
 
+
+@helper
+def lhm_group_package_count(group):
+    name = _group_value(group, 'name') or group
+    if not name:
+        return 0
+
+    try:
+        result = toolkit.get_action('package_search')(
+            {'ignore_auth': True},
+            {'fq': 'groups:"{}"'.format(name), 'rows': 0})
+    except (logic.NotFound, logic.NotAuthorized, logic.ValidationError):
+        return 0
+
+    return result.get('count', 0)
+
 def get_init_data():
     # ckanext.grouphierarchy.init_data = example.json
     # make sure the .json file is inside grouphierarchy directory,

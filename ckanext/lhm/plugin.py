@@ -266,8 +266,10 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         return map
 
     def before_dataset_search(self, search_params):
-        if (self._is_organization_dataset_search(search_params)
-                or self._should_include_group_children(search_params)):
+        if self._should_include_group_children(search_params):
+            return self._include_group_children_in_search(search_params)
+
+        if self._is_organization_dataset_search(search_params):
             query = search_params.get('q', '')
             include_children = 'include_children: "True"'
             if include_children not in query:
@@ -276,6 +278,81 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         return HierarchyDisplay.before_dataset_search(self, search_params)
 
     before_search = before_dataset_search
+
+    def _include_group_children_in_search(self, search_params):
+        group_name = self._group_name_from_search_params(search_params)
+        group_names = self._group_and_child_names(group_name)
+        if not group_names:
+            return search_params
+
+        search_params['fq'] = self._replace_group_filter(
+            search_params.get('fq', ''), group_name, group_names)
+        return search_params
+
+    def _group_name_from_search_params(self, search_params):
+        fq = search_params.get('fq', '')
+        for part in fq.split():
+            if part.startswith('groups:'):
+                return part.split(':', 1)[1].strip('"')
+        return None
+
+    def _group_and_child_names(self, group_name):
+        group = model.Group.get(group_name) if group_name else None
+        if not group:
+            return []
+
+        names = []
+        seen = set()
+
+        def collect(current):
+            if not current or current.id in seen:
+                return
+            seen.add(current.id)
+            names.append(current.name)
+            for child in self._direct_child_groups(current):
+                collect(child)
+
+        collect(group)
+        return names
+
+    def _direct_child_groups(self, group):
+        children = model.Session.query(model.Group).join(
+            model.Member, model.Member.table_id == model.Group.id
+        ).filter(
+            model.Member.table_name == 'group',
+            model.Member.group_id == group.id,
+            model.Member.state == 'active',
+        ).all()
+
+        if children:
+            return children
+
+        return model.Session.query(model.Group).join(
+            model.Member, model.Member.group_id == model.Group.id
+        ).filter(
+            model.Member.table_name == 'group',
+            model.Member.table_id == group.id,
+            model.Member.state == 'active',
+        ).all()
+
+    def _replace_group_filter(self, fq, group_name, group_names):
+        group_filter = 'groups:({})'.format(' OR '.join(group_names))
+        if not fq:
+            return group_filter
+
+        parts = []
+        replaced = False
+        for part in fq.split():
+            if part == 'groups:{}'.format(group_name) or part == 'groups:"{}"'.format(group_name):
+                parts.append(group_filter)
+                replaced = True
+            else:
+                parts.append(part)
+
+        if not replaced:
+            parts.append(group_filter)
+
+        return ' '.join(parts)
 
     def _is_organization_dataset_search(self, search_params):
         if 'owner_org' not in search_params.get('fq', ''):

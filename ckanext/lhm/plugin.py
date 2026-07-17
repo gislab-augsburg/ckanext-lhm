@@ -1,8 +1,10 @@
 import json
+from collections import OrderedDict
 import ckan.model as model
 from ckan.lib import search
 import ckan.plugins as p
 import ckan.plugins.toolkit as toolkit
+from ckan.common import request
 from ckan.plugins.interfaces import IConfigurer, IDatasetForm
 from ckan.lib.plugins import DefaultTranslation
 import ckanext.lhm.cli as cli
@@ -19,6 +21,7 @@ from ckanext.lhm.logic import action, schema
 
 #from ckanext.datastore.backend.postgres import _cache_types
 from sqlalchemy import create_engine
+
 
 # This function extends the data types in postgresql.
 # This is required for Data Dictionary and is an extension to the function _cache_types in Datastor.backend.postgres.py
@@ -120,7 +123,82 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         })
         return existing_helpers
 
+
+    def _group_has_parent(self, group, root_name, seen=None):
+        seen = seen or set()
+        if not group or group.id in seen:
+            return False
+        seen.add(group.id)
+
+        if group.name == root_name:
+            return True
+
+        # CKAN stores group hierarchy as member rows, but ckanext-hierarchy
+        # deployments differ in which side of the member relation is treated
+        # as parent. Check both directions and then recurse towards root_name.
+        parent_candidates = []
+
+        parent_candidates.extend(model.Session.query(model.Group).join(
+            model.Member, model.Member.group_id == model.Group.id
+        ).filter(
+            model.Member.table_name == 'group',
+            model.Member.table_id == group.id,
+            model.Member.state == 'active',
+        ).all())
+
+        parent_candidates.extend(model.Session.query(model.Group).join(
+            model.Member, model.Member.table_id == model.Group.id
+        ).filter(
+            model.Member.table_name == 'group',
+            model.Member.group_id == group.id,
+            model.Member.state == 'active',
+        ).all())
+
+        parents = {parent.id: parent for parent in parent_candidates}.values()
+
+        return any(self._group_has_parent(parent, root_name, seen) for parent in parents)
+
+    def _group_name(self, group):
+        if isinstance(group, dict):
+            return group.get('name')
+        if isinstance(group, str):
+            return group
+        return getattr(group, 'name', None)
+
+    def _package_groups_for_root(self, package_id, root_name, groups=None):
+        matched = []
+
+        if groups:
+            for group in groups:
+                group_name = self._group_name(group)
+                group_obj = model.Group.get(group_name) if group_name else None
+                if (group_obj and group_obj.name != root_name
+                        and self._group_has_parent(group_obj, root_name)):
+                    matched.append(group_obj)
+            return matched
+
+        package = model.Package.get(package_id)
+        if not package:
+            return []
+
+        for group in package.get_groups(group_type='group'):
+            if group.name != root_name and self._group_has_parent(group, root_name):
+                matched.append(group)
+        return matched
+
+    def _package_group_names_for_root(self, package_id, root_name, groups=None):
+        return [group.name for group in self._package_groups_for_root(
+            package_id, root_name, groups)]
+
+    def _package_group_titles_for_root(self, package_id, root_name, groups=None):
+        return [group.title or group.name for group in self._package_groups_for_root(
+            package_id, root_name, groups)]
+
+
     def before_index(self, data_dict):
+        return self.before_dataset_index(data_dict)
+
+    def before_dataset_index(self, data_dict):
 
         data_dict_scheming = data_dict['validated_data_dict']
         validated_data_dict = json.loads(data_dict_scheming)
@@ -136,52 +214,49 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         data_dict['text'] += wert #'\n'.join(wert)
         data_dict['text'] += bedeutung #'\n'.join(bedeutung)
 
-        # get list of dicts from repeating subfield fields to prevent Solr errors
-        usage_keywords = []
-        usage_remarks = []
-        for sub in data_dict.get('nutzungshinweise', []):
-            usage_keywords.append(sub['stichwort'])
-            usage_remarks.append(sub['hinweise'])
+        groups = data_dict.get('groups') or []
+        departments = self._package_group_titles_for_root(
+            data_dict['id'], helpers.LHM_DEPARTMENT_ROOT, groups)
+        main_categories = self._package_group_titles_for_root(
+            data_dict['id'], helpers.LHM_MAIN_CATEGORIES_ROOT, groups)
+        topics = self._package_group_titles_for_root(
+            data_dict['id'], helpers.LHM_TOPICS_ROOT, groups)
 
-        refsystem_code = []
-        refsystem_codespace = []
-        refsystem_version = []
-        for sub in data_dict.get('refsystem', []):
-            if 'refsystem_code' in sub.keys():
-                refsystem_code.append(sub['refsystem_code'])
-            else:
-                refsystem_code.append('')
-            if 'refsystem_codespace' in sub.keys():
-                refsystem_codespace.append(sub['refsystem_codespace'])
-            else:
-                refsystem_codespace.append('')
-            if 'refsystem_version' in sub.keys():
-                refsystem_version.append(sub['refsystem_version'])
-            else:
-                refsystem_version.append('')
+        data_dict.pop('department', None)
+        data_dict.pop('main_category', None)
+        data_dict.pop('topic', None)
+        data_dict['vocab_department'] = departments
+        data_dict['vocab_main_category'] = main_categories
+        data_dict['vocab_topic'] = topics
 
-        distrib_format_name = []
-        distrib_format_version = []
-        for sub in data_dict.get('distrib_format', []):
-            if 'distrib_format_name' in sub.keys():
-                distrib_format_name.append(sub['distrib_format_name'])
-            else:
-                distrib_format_name.append('')
-            if 'distrib_format_version' in sub.keys():
-                distrib_format_version.append(sub['distrib_format_version'])
-            else:
-                distrib_format_version.append('')
+        def flatten_repeating_subfield(field_name, subfield_names):
+            value = data_dict.get(field_name)
+            if not isinstance(value, (list, tuple)):
+                return None
 
-        # replace list of dicts with plain texts to prevent Solr errors
-        data_dict['nutzungshinweise'] = '\n'.join(usage_keywords)
-        data_dict['nutzungshinweise'] += '\n'.join(usage_remarks)
+            values = []
+            for sub in value:
+                if isinstance(sub, dict):
+                    values.extend(str(sub.get(name, '')) for name in subfield_names)
+                elif sub is not None:
+                    values.append(str(sub))
+            return '\n'.join(values)
 
-        data_dict['refsystem'] = '\n'.join(refsystem_code)
-        data_dict['refsystem'] += '\n'.join(refsystem_codespace)
-        data_dict['refsystem'] += '\n'.join(refsystem_version)
+        # Replace list-of-dicts values with plain text to prevent Solr errors.
+        # CKAN 2.11 may already pass flattened strings here, so keep those as-is.
+        usage_text = flatten_repeating_subfield(
+            'nutzungshinweise', ['stichwort', 'hinweise'])
+        refsystem_text = flatten_repeating_subfield(
+            'refsystem', ['refsystem_code', 'refsystem_codespace', 'refsystem_version'])
+        distrib_format_text = flatten_repeating_subfield(
+            'distrib_format', ['distrib_format_name', 'distrib_format_version'])
 
-        data_dict['distrib_format'] = '\n'.join(distrib_format_name)
-        data_dict['distrib_format'] += '\n'.join(distrib_format_version)
+        if usage_text is not None:
+            data_dict['nutzungshinweise'] = usage_text
+        if refsystem_text is not None:
+            data_dict['refsystem'] = refsystem_text
+        if distrib_format_text is not None:
+            data_dict['distrib_format'] = distrib_format_text
 
         return data_dict
 
@@ -192,7 +267,8 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         return map
 
     def before_dataset_search(self, search_params):
-        if self._is_organization_dataset_search(search_params):
+        if (self._is_organization_dataset_search(search_params)
+                or self._should_include_group_children(search_params)):
             query = search_params.get('q', '')
             include_children = 'include_children: "True"'
             if include_children not in query:
@@ -223,6 +299,41 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
             return False
 
         return controller == 'organization'
+
+    def _is_group_dataset_search(self, search_params):
+        if 'groups:' not in search_params.get('fq', ''):
+            return False
+
+        try:
+            if toolkit.check_ckan_version("2.10"):
+                controller = toolkit.get_endpoint()[0]
+            else:
+                controller = toolkit.g.controller
+        except (TypeError, AttributeError, RuntimeError):
+            return False
+
+        return controller == 'group'
+
+    def _should_include_group_children(self, search_params):
+        if not self._is_group_dataset_search(search_params):
+            return False
+
+        if self._is_group_package_count_search(search_params):
+            return False
+
+        try:
+            include_children = request.args.get('include_children')
+        except RuntimeError:
+            include_children = None
+
+        return include_children not in ('', 'false', 'False', '0', 'off')
+
+    def _is_group_package_count_search(self, search_params):
+        return (
+            str(search_params.get('rows')) == '0'
+            and search_params.get('facet') == 'false'
+            and '+groups:' in search_params.get('fq', '')
+        )
 
     def is_fallback(self):
         return False
@@ -280,6 +391,43 @@ class LHMThemePlugin(p.SingletonPlugin, DefaultTranslation):
         p.toolkit.add_public_directory(config, 'public')
         p.toolkit.add_resource('assets_theme', 'lhm_theme')
 
+
+
+    def _lhm_facets(self, facets_dict):
+        labels = OrderedDict([
+            ('organization', 'Datenquellen'),
+            ('vocab_department', 'Abteilungen'),
+            ('vocab_main_category', 'Hauptkategorien'),
+            ('vocab_topic', 'Themen'),
+            ('tags', 'Schlagworte'),
+            ('res_format', 'Formate'),
+            ('open_data', 'Open Data'),
+        ])
+        skipped = (
+            'groups', 'type', 'owner_org',
+            'department', 'main_category', 'topic',
+        )
+        facets = OrderedDict()
+
+        for name, label in labels.items():
+            if name in facets_dict:
+                facets[name] = label
+
+        for name, title in facets_dict.items():
+            if name in facets or name in skipped:
+                continue
+            facets[name] = title
+
+        return facets
+
+    def dataset_facets(self, facets_dict, package_type):
+        return self._lhm_facets(facets_dict)
+
+    def group_facets(self, facets_dict, group_type, package_type):
+        return self._lhm_facets(facets_dict)
+
+    def organization_facets(self, facets_dict, organization_type, package_type):
+        return self._lhm_facets(facets_dict)
 
     # IActions
     def get_actions(self):

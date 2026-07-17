@@ -16,3 +16,32 @@
   {% endblock %}
 </div>
 {% endblock %}
+
+{% block search_search_fields %}
+  {% import 'macros/form.html' as form %}
+  {{ form.hidden_from_list(fields=fields, except_names=['include_children']) }}
+  {% if show_include_subgroups %}
+    {% set include_children_value = request.args.get('include_children') %}
+    {% set include_children_checked = include_children_value not in ['', 'false', 'False', '0', 'off'] %}
+    <div class="checkbox lhm-include-subgroups">
+      <input type="hidden" name="include_children" value=""{% if include_children_checked %} disabled{% endif %} data-lhm-include-subgroups-value>
+      <label for="field-include-children">
+        <input id="field-include-children" type="checkbox" value="true"{% if include_children_checked %} checked{% endif %} data-lhm-include-subgroups-toggle>
+        {{ _('Mit Untergruppen') }}
+      </label>
+    </div>
+    <script>
+      document.addEventListener('change', function (event) {
+        var checkbox = event.target.closest('[data-lhm-include-subgroups-toggle]');
+        if (!checkbox) {
+          return;
+        }
+        var form = checkbox.form;
+        var valueInput = form.querySelector('[data-lhm-include-subgroups-value]');
+        valueInput.disabled = checkbox.checked;
+        valueInput.value = '';
+        form.submit();
+      });
+    </script>
+  {% endif %}
+{% endblock %}

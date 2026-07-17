@@ -1,5 +1,24 @@
 {% ckan_extends %}
 
+
+{% block groups_search_form %}
+  {% set facets = {
+    'fields': fields_grouped,
+    'search': search_facets,
+    'titles': facet_titles,
+    'translated_fields': translated_fields,
+    'remove_field': remove_field }
+  %}
+  {% set sorting = [
+    (_('Relevance'), 'score desc, metadata_modified desc'),
+    (_('Name Ascending'), 'title_string asc'),
+    (_('Name Descending'), 'title_string desc'),
+    (_('Last Modified'), 'metadata_modified desc'),
+    (_('Popular'), 'views_recent desc') if g.tracking_enabled else (false, false) ]
+  %}
+  {% snippet 'snippets/search_form.html', form_id='group-datasets-search-form', type='dataset', query=q, sorting=sorting, sorting_selected=sort_by_selected, count=page.item_count, facets=facets, placeholder=_('Search datasets...'), show_empty=request.args, fields=fields, show_include_subgroups=true %}
+{% endblock %}
+
 {% block secondary_content %}
   {% snippet "group/snippets/info.html", group=group_dict, show_nums=true %}
   <div class="filters lhm-facet-accordion">
@@ -9,8 +28,13 @@
       <i class="fa fa-chevron-down lhm-facet-toggle-chevron" aria-hidden="true"></i>
     </button>
     <div class="lhm-facet-list">
+      {% set include_children_value = request.args.get('include_children') %}
+      {% set facet_extras = {'id': group_dict.id} %}
+      {% if include_children_value in ['', 'false', 'False', '0', 'off'] %}
+        {% set facet_extras = {'id': group_dict.id, 'include_children': include_children_value} %}
+      {% endif %}
       {% for facet in facet_titles %}
-        {% snippet 'snippets/facet_list.html', title=facet_titles[facet], name=facet, search_facets=search_facets, extras={'id':group_dict.id} %}
+        {% snippet 'snippets/facet_list.html', title=facet_titles[facet], name=facet, search_facets=search_facets, extras=facet_extras %}
       {% endfor %}
     </div>
     <a class="close no-text hide-filters"><i class="fa fa-times-circle"></i><span class="text">close</span></a>

@@ -107,11 +107,11 @@ dataset_fields:
 - field_name: owner_org
   label: 
     en: Responsible organization
-    de: Organisation
+    de: Datenquelle
   preset: dataset_organization
   form_snippet: organization_lhm.html
   is_info: true
-  info_text_orga: Angabe des fachlich zuständigen Referats und der ersten, das Referat untergliedernden Organisationseinheit (z.B. Amt, Hauptabteilung, Geschäftsbereich)
+  info_text_orga: Die Datenquelle bezeichnet das System, aus dem die Daten bezogen werden können, z.B. Geodatenpool. An ihr hängen als CKAN owner_org außerdem die Bearbeitungsrechte des Metadatensatzes.
   required: true
 
 # Feld alt 

@@ -597,7 +597,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 # Organisation / Abteilung
                 coords = 'B10'
                 cell = ws[coords]
-                cell.value = package_dict.get('groups.department.title', package_dict.get('organization.title', ''))
+                cell.value = package_dict.get('groups.department.title', '')
                 dv = add_validation_dropdown(ws, coords, '=Wertelisten!$B$2:$B$36')
                 ws.add_data_validation(dv)
                 # Privat
@@ -906,7 +906,19 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 elif type_ == 'plan-db':
                     coords = 'B34'
                 cell = ws[coords]
-                cell.value = tp.datenquelle_transpose_r[package_dict['type']]
+                cell.value = package_dict.get('organization.title', '')
+                dv = add_validation_dropdown(ws, coords, '=Wertelisten!$V$2:$V$4')
+                ws.add_data_validation(dv)
+
+                # Metadatenschema
+                if type_ == 'geodatenpool':
+                    coords = 'B32'
+                elif type_ == 'mobidam':
+                    coords = 'B30'
+                elif type_ == 'plan-db':
+                    coords = 'B35'
+                cell = ws[coords]
+                cell.value = tp.metadatenschema_transpose_r[package_dict['type']]
                 dv = add_validation_dropdown(ws, coords, '=Wertelisten!$V$2:$V$4')
                 ws.add_data_validation(dv)
 

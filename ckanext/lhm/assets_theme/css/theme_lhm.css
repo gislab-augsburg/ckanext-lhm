@@ -265,10 +265,12 @@ border: 1px solid #ccc;
 }
 
 .group-box {
-    background-color: #00AB9F;
+    background-color: transparent;
 }
 
 .group-box h2 {
+    background-color: #00AB9F;
+    margin-bottom: 20px;
     color: #fff;
     padding: 10px;
     border: 10px;
@@ -646,4 +648,9 @@ table.package-metadata {
 
 .lhm-facet-values .nav-item[hidden] {
     display: none;
+}
+
+.lhm-include-subgroups {
+    margin-top: 8px;
+    margin-bottom: 18px;
 }

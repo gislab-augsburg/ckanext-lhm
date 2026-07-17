@@ -1,0 +1,9 @@
+{% block organization_list %}
+<ul class="media-grid" data-module="media-grid">
+  {% block organization_list_inner %}
+    {% for organization in organizations %}
+      {% snippet "organization/snippets/lhm_organization_item.html", organization=organization, position=loop.index, show_capacity=show_capacity %}
+    {% endfor %}
+  {% endblock %}
+</ul>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% macro render_nodes(nodes) %}
+  <ul class="organization-tree">
+    {% for node in nodes %}
+      <li>
+        <a href="{{ h.url_for('group.read', id=node.name) }}">{{ node.title }}</a>
+        {% if node.children %}
+          {{ render_nodes(node.children) }}
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endmacro %}
+{{ render_nodes(nodes) }}

@@ -6,24 +6,7 @@
     </h2>
     <div class="module-content group-help">
       <p>
-        {% trans %}
-        All entries in this catalogue can be grouped in various ways.
-        Each catalogue entry must be assigned to exactly one main category and optionally to any number of subject fields.
-        The main category provides information about the type of information resource and thus determines which metadata is required.
-        The subject affiliation indicates the fields of application for which a catalogue entry is relevant.
-        The breakdown of the individual groups is as follows:
-        {% endtrans %}
+        Alle Einträge in diesem Katalog können auf verschiedene Weise gruppiert werden. Dabei muss jeder Katalogeintrag genau einer Abteilung, genau einer Hauptkategorie und optional beliebig vielen Themenfeldern zugeordnet werden. Die Abteilung gibt die zuständige Organisationseinheit an (z.B. Referat oder Hauptabteilung). Die Hauptkategorie gibt Auskunft über die Art der Informationsressource und bestimmt damit, welche Metadaten benötigt werden. Die Themenzugehörigkeit gibt an, für welche Anwendungsfelder ein Katalogeintrag relevant ist.
       </p>
-      {% set top_nodes = h.group_tree(organizations=organizations, type_='group') %}
-      {% for node in top_nodes recursive %}
-      <b>{{ _(node.title) }}</b>
-      {% if node.children %}
-        {% for children in node.children%}
-      <ul>
-        <li>{{children.title}}</li>
-      </ul>
-      {% endfor %}
-      {% endif %}
-      {% endfor %}
     </div>
   </div>

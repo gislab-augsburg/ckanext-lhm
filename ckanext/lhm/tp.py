@@ -251,8 +251,14 @@ sichtbarkeit_transpose = {
 }
 
 metadatenschema_transpose = {
-    "Geodatenpool": "geodatenpool",
-    "Mobidam":"mobidam",
+    "GeoDatenPool": "geodatenpool",
+    "MobidaM":"mobidam",
+    "PLAN-DB": "plan-db"
+}
+
+datenquelle_transpose = {
+    "GeoDatenPool": "geodatenpool",
+    "MobidaM":"mobidam",
     "PLAN-DB": "plan-db"
 }
 
@@ -298,4 +304,5 @@ hvd_kategorie_transpose_r = {value: key for key, value in hvd_kategorie_transpos
 schema_transpose_r = {value: key for key, value in schema_transpose.items()}
 sichtbarkeit_transpose_r = {value: key for key, value in sichtbarkeit_transpose.items()}
 metadatenschema_transpose_r = {value: key for key, value in metadatenschema_transpose.items()}
+datenquelle_transpose_r = {value: key for key, value in datenquelle_transpose.items()}
 resource_format_transpose_r = {value: key for key, value in resource_format_transpose.items()}

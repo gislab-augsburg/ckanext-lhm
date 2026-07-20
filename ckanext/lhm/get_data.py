@@ -919,7 +919,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                     coords = 'B35'
                 cell = ws[coords]
                 cell.value = tp.metadatenschema_transpose_r[package_dict['type']]
-                dv = add_validation_dropdown(ws, coords, '=Wertelisten!$V$2:$V$4')
+                dv = add_validation_dropdown(ws, coords, '=Wertelisten!$Y$2:$Y$4')
                 ws.add_data_validation(dv)
 
                 

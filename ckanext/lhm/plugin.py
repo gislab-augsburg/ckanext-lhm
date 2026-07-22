@@ -119,7 +119,10 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         existing_helpers = dict(helpers.all_helpers)
         # Add additional helper
         existing_helpers.update({
-            'pycsw_enabled': lambda: toolkit.config.get('ckan.pycsw_enabled', 'false').lower() == 'true'
+            'pycsw_enabled': lambda: toolkit.config.get('ckan.pycsw_enabled', 'false').lower() == 'true',
+            'lhm_relation_enabled': lambda: (
+                'relation' in toolkit.config.get('ckan.plugins', '').split()
+            ),
         })
         return existing_helpers
 

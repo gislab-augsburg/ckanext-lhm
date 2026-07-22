@@ -43,15 +43,6 @@
         #}
       {% endif %}
 
-      {% block organization_tree %}
-      {% set tree_group = group_dict if group_dict is defined else organization %}
-      {% if tree_group and tree_group.id %}
-        <hr>
-        <div id="organization-tree">
-          {% snippet 'organization/snippets/organization_tree.html', top_nodes=[h.group_tree_section(id_=tree_group.id, type_=tree_group.type, include_siblings=False)], use_longnames=False %}
-        </div>
-      {% endif %}
-      {% endblock %}
       {% endblock %}
       {% if show_nums %}
         {#

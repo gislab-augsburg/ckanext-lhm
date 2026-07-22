@@ -277,6 +277,40 @@ border: 1px solid #ccc;
     text-align: center;
 }
 
+#group-info .organization-tree {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+#group-info .organization-tree > li {
+    list-style: none;
+}
+
+#group-info .organization-tree > li > ul {
+    margin-left: 16px;
+    padding-left: 16px;
+}
+
+#group-info .organization-tree > li > ul ul {
+    margin-left: 0;
+    padding-left: 14px;
+    border-left: 1px solid #999;
+    list-style: none;
+}
+
+#group-info .organization-tree > li > ul ul li {
+    position: relative;
+}
+
+#group-info .organization-tree > li > ul ul li:before {
+    content: "";
+    position: absolute;
+    top: 0.75em;
+    left: -14px;
+    width: 10px;
+    border-top: 1px solid #999;
+}
+
 .group-help ul{
     margin-bottom: 3px;
 }

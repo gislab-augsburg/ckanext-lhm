@@ -1,13 +1,14 @@
 {#% set pkg = g.pkg_dict %#}
+{% set marker_package = package if package is defined else pkg %}
 {% set main_categories = h.group_tree_section(id_='main-categories', type_='group', include_siblings=True) %}
 {% set count = main_categories.children %}
 {% set number = count | length %}
-{% set class_group_icon = group_icon %}
+{% set class_group_icon = group_icon if group_icon is defined else 'group-icon-overview' %}
 
 
-    {% for grp in pkg.groups %}
+    {% for grp in marker_package.groups %}
     {% set no = number - 1 %}
-        {% for no in range(number - 1) %}
+        {% for no in range(number) %}
             {% if no != -1 and grp.name == count[no].name %}
                 <a href="{{ g.site_url }}/group/{{ grp.name }}" title="{{ grp.title }}">
                 <img src="{{ grp.image_display_url }}" alt="{{ grp.title }}" title="{{ grp.title }}" class="{{ class_group_icon }}" >
@@ -15,3 +16,21 @@
             {% endif %}
         {% endfor %}
     {% endfor %}
+
+{# Compatibility API imported by ckanext-relation-sddi. #}
+{% macro col() -%}
+  {%- set marker_colors = [
+    '.marker.zero', '.marker.one', '.marker.two',
+    '.marker.three', '.marker.four', '.marker.five',
+    '.marker.six', '.marker.seven', '.marker.eight'
+  ] -%}
+  {%- set selected = namespace(color='.marker.free') -%}
+  {%- for grp in marker_package.groups -%}
+    {%- for category in count -%}
+      {%- if grp.name == category.name and loop.index0 < marker_colors|length -%}
+        {%- set selected.color = marker_colors[loop.index0] -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endfor -%}
+  {{- selected.color -}}
+{%- endmacro %}

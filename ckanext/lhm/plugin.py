@@ -77,6 +77,13 @@ def _data_dict_type():
 _data_dict_type()
 
 
+def _plugin_enabled(name):
+    plugins = toolkit.config.get('ckan.plugins', [])
+    if isinstance(plugins, str):
+        plugins = plugins.split()
+    return name in plugins
+
+
 class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
     p.implements(p.IConfigurer, inherit=True)
     # p.implements(p.IDatasetForm, inherit=True)
@@ -120,9 +127,7 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         # Add additional helper
         existing_helpers.update({
             'pycsw_enabled': lambda: toolkit.config.get('ckan.pycsw_enabled', 'false').lower() == 'true',
-            'lhm_relation_enabled': lambda: (
-                'relation' in toolkit.config.get('ckan.plugins', '').split()
-            ),
+            'lhm_relation_enabled': lambda: _plugin_enabled('relation'),
         })
         return existing_helpers
 

@@ -19,9 +19,14 @@
 {% endblock %}
 
 {% block content_primary_nav %}
+  {% set relation_enabled = h.lhm_relation_enabled() %}
+  {% set relation_style = h.lhm_relation_diagram_style() %}
   {{ h.build_nav_icon(dataset_type ~ '.read', _('Dataset'),  id=pkg.name, icon='sitemap') }}
+  {% if relation_enabled and relation_style == 'lhm' %}
+    {{ h.build_nav_icon('relation.relations', 'Kontext', id=pkg.name, icon='link', highlight_controllers=['relation']) }}
+  {% endif %}
   {{ h.build_nav_icon(dataset_type ~ '.groups', h.humanize_entity_type('group', default_group_type, 'content tab') or _('Groups'), id=pkg.name, icon='users') }}
-  {% if h.lhm_relation_enabled() %}
+  {% if relation_enabled and relation_style != 'lhm' %}
     {{ h.build_nav_icon('relation.relations', _('Relationships'), id=pkg.name, icon='link') }}
   {% endif %}
 {% endblock %}

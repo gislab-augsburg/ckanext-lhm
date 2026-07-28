@@ -84,6 +84,16 @@ def _plugin_enabled(name):
     return name in plugins
 
 
+def _relation_diagram_style():
+    value = toolkit.config.get(
+        'ckanext.relation_sddi_diagram_style', 'tum'
+    )
+    if not isinstance(value, str):
+        return 'tum'
+    value = value.strip().lower()
+    return value if value in ('tum', 'lhm') else 'tum'
+
+
 class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
     p.implements(p.IConfigurer, inherit=True)
     # p.implements(p.IDatasetForm, inherit=True)
@@ -128,6 +138,7 @@ class LHMCatalogPlugin(p.SingletonPlugin, DefaultTranslation):
         existing_helpers.update({
             'pycsw_enabled': lambda: toolkit.config.get('ckan.pycsw_enabled', 'false').lower() == 'true',
             'lhm_relation_enabled': lambda: _plugin_enabled('relation'),
+            'lhm_relation_diagram_style': _relation_diagram_style,
         })
         return existing_helpers
 

@@ -17,6 +17,21 @@ import requests
 # Create routes
 lhm_view = Blueprint('lhm_view', __name__)
 
+def get_pycsw_host_url():
+    host = toolkit.config.get('ckanext.lhm.pycsw_host')
+    
+    if not host or not host.strip():
+        host = os.environ.get('CKANEXT__LHM__PYCSW_HOST')
+        
+    if not host or not host.strip():
+        host = 'http://pycsw:8000'
+        
+    return host.strip()
+
+def get_pycsw_url(path=""):
+    host = get_pycsw_host_url()
+    return f"{host}{path}"
+
 # Get package type
 def get_package_type(dataset_id):
     context = {
@@ -216,13 +231,13 @@ def test_csw_push():
     
     # Pagination: Get number matched
     feat_ids = []
-    url_m = 'http://pycsw:8000/collections/metadata:main/items?f=json'
+    url_m = get_pycsw_url("/collections/metadata:main/items?f=json")
     response_m = requests.post(url_m)
     dict_m = json.loads(response_m.text)
     number_matched = dict_m['numberMatched']
     for offset in range(0, number_matched, 20):
 
-        all_url = f'http://pycsw:8000/collections/metadata:main/items?f=json&limit=20&offset={offset}'
+        all_url = get_pycsw_url(f"/collections/metadata:main/items?f=json&limit=20&offset={offset}")
         response_all = requests.post(all_url)
         dict_all = json.loads(response_all.text)
         for feat in dict_all['features']:
@@ -233,14 +248,14 @@ def test_csw_push():
         print('-----')
         print(f"Deleting {feat_id}")
         try:   
-            del_url = f'http://pycsw:8000/collections/metadata:main/items/{feat_id}'
+            del_url = get_pycsw_url(f"/collections/metadata:main/items/{feat_id}")
             del_response = requests.delete(del_url)
             print(f"Status Code delete: {del_response.status_code}")
             print("Response Body delete:")
             print(del_response.text)
             if del_response.status_code != 200:
                 for i in range(10):
-                    del_url = f'http://pycsw:8000/collections/metadata:main/items/{feat_id}'
+                    del_url = get_pycsw_url(f"/collections/metadata:main/items/{feat_id}")
                     del_response = requests.delete(del_url)
                     print(f"Status Code delete: {del_response.status_code}")
                     print("Response Body delete:")
@@ -272,7 +287,7 @@ def test_csw_push():
                 #json.dump(dataset, f, indent=4, ensure_ascii=False)
 
             # Push the Iso XML to Pycsw
-            pycsw_url = 'http://pycsw:8000/collections/metadata:main/items'
+            pycsw_url = get_pycsw_url("/collections/metadata:main/items")
             file_path = outpath
             with open(file_path, 'rb') as f:
                 xml_data = f.read()
@@ -332,13 +347,13 @@ def gn_csw_push():
     
     # Pagination: Get number matched
     feat_ids = []
-    url_m = 'http://pycsw:8000/collections/metadata:main/items?f=json'
+    url_m = get_pycsw_url("/collections/metadata:main/items?f=json")
     response_m = requests.post(url_m)
     dict_m = json.loads(response_m.text)
     number_matched = dict_m['numberMatched']
     for offset in range(0, number_matched, 20):
 
-        all_url = f'http://pycsw:8000/collections/metadata:main/items?f=json&limit=20&offset={offset}'
+        all_url = get_pycsw_url(f"/collections/metadata:main/items?f=json&limit=20&offset={offset}")
         response_all = requests.post(all_url)
         dict_all = json.loads(response_all.text)
         for feat in dict_all['features']:
@@ -349,14 +364,14 @@ def gn_csw_push():
         print('-----')
         print(f"Deleting {feat_id}")
         try:   
-            del_url = f'http://pycsw:8000/collections/metadata:main/items/{feat_id}'
+            del_url = get_pycsw_url(f"/collections/metadata:main/items/{feat_id}")
             del_response = requests.delete(del_url)
             print(f"Status Code delete: {del_response.status_code}")
             print("Response Body delete:")
             print(del_response.text)
             if del_response.status_code != 200:
                 for i in range(10):
-                    del_url = f'http://pycsw:8000/collections/metadata:main/items/{feat_id}'
+                    del_url = get_pycsw_url(f"/collections/metadata:main/items/{feat_id}")
                     del_response = requests.delete(del_url)
                     print(f"Status Code delete: {del_response.status_code}")
                     print("Response Body delete:")
@@ -377,9 +392,9 @@ def gn_csw_push():
             name = dataset.get("name")
             print('-----')
             print(f"Handling {name}, {identifier}")
-#            tree = convert_metadata_dict(meta_dict = dataset, template_xml = iso_template)
+#           tree = convert_metadata_dict(meta_dict = dataset, template_xml = iso_template)
             outpath = output_dir + '/' + identifier + '-iso_tree.xml'
-#            tree.write(outpath, xml_declaration=True, encoding="utf-8", pretty_print=True)
+#           tree.write(outpath, xml_declaration=True, encoding="utf-8", pretty_print=True)
 
             # Save dataset dict as JSON
             #dataset_name = dataset.get('name')
@@ -388,7 +403,7 @@ def gn_csw_push():
                 #json.dump(dataset, f, indent=4, ensure_ascii=False)
 
             # Push the Iso XML to Pycsw
-            pycsw_url = 'http://pycsw:8000/collections/metadata:main/items'
+            pycsw_url = get_pycsw_url("/collections/metadata:main/items")
             file_path = outpath
             with open(file_path, 'rb') as f:
                 xml_data = f.read()

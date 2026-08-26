@@ -18,10 +18,10 @@ import requests
 lhm_view = Blueprint('lhm_view', __name__)
 
 def get_pycsw_host_url():
-    host = toolkit.config.get('ckanext.lhm.pycsw_host')
+    host = toolkit.config.get('lhm.pycsw_url')
     
     if not host or not host.strip():
-        host = os.environ.get('CKANEXT__LHM__PYCSW_HOST')
+        host = os.environ.get('CKANEXT__LHM__PYCSW_URL')
         
     if not host or not host.strip():
         host = 'http://pycsw:8000'

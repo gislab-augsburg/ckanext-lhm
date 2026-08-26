@@ -277,25 +277,3 @@ def username_info():
     '''
     value = config.get('lhm.username_info', None)
     return value
-
-@helper
-def password_info():
-    '''Return the value of the CKAN password info text config setting.
-
-    To enable showing the password info text, add this line to the
-    [app:main] section of your CKAN config file::
-      lhm.password_info = password_info
-    '''
-    value = config.get('lhm.password_info', None)
-    return value
-
-@helper
-def pycsw_url():
-    '''Return the value of the CKAN pycsw_host text config setting.
-
-    To enable showing the pycsw_url, add this line to the
-    [app:main] section of your CKAN config file::
-      lhm.pycsw_host = pycsw_host
-    '''
-    value = config.get('lhm.pycsw_url', None)
-    return value

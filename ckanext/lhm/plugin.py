@@ -11,7 +11,6 @@ import ckanext.lhm.cli as cli
 import ckanext.lhm.views as views
 
 from ckanext.hierarchy.plugin import HierarchyDisplay
-from ckan.config.declaration import Declaration, Key
 
 # import ckanext.lhm.cli as cli
 import ckanext.lhm.helpers as helpers

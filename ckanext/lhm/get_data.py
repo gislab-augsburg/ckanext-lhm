@@ -349,7 +349,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                                                 if type_ == 'geodatenpool' or type_ == 'plan-db':
                                                     dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$P$2:$P$8')
                                                 elif type_ == 'mobidam':
-                                                    dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$U$2:$U$12')
+                                                    dv = add_validation_dropdown(ws_1, coords, '=Wertelisten!$U$2:$U$13')
                                                 ws_1.add_data_validation(dv)
                                                 # Bedingung
                                                 Bed = field['info']['condition']

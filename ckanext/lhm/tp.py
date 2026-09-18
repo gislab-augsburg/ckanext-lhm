@@ -86,7 +86,8 @@ dv_datentyp_transpose = {
     'TEXT/NVARCHAR2': 'nvarchar2',
     'TEXT/VARCHAR2': 'varchar2',
     'TIMESTAMP(6)': 'timestamp',
-    'TIMESTAMP(9)': 'timestamp9'
+    'TIMESTAMP(9)': 'timestamp9',
+    'NCLOB': 'nclob',
 }
 
 # Restliche

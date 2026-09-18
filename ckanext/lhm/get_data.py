@@ -651,7 +651,7 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 elif type_ == 'mobidam':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$S$2:$S$3')
                 elif type_ == 'plan-db':
-                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$W$2:$W$21')
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$W$2:$W$23')
                 ws.add_data_validation(dv)
                 # Objekttyp
                 coords = 'B7'

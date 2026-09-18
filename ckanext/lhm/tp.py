@@ -235,13 +235,15 @@ schema_transpose = {
     "GRENZ": "grenz",
     "GRUEN": "gruen",
     "HAII_PRIO": "haii_prio",
-    "INNENSTADT": "innenstadt",
+    "HANDLUNGSRAEUME": "handlungsraeume",
     "LBK": "lbk",
     "REG": "reg",
     "SIED": "sied",
     "SOZ": "soz",
     "STAPL": "stapl",
+    "STEP": "step",
     "UNB": "unb",
+    "WIRT": "wirt",
     "ZEN": "zen"
 }
 

@@ -80,8 +80,8 @@ dataset_fields:
     label: GRUEN
   - value: haii_prio
     label: HAII_PRIO
-  - value: innenstadt
-    label: INNENSTADT
+  - value: handlungsraeume
+    label: HANDLUNGSRAEUME
   - value: lbk
     label: LBK
   - value: reg
@@ -92,8 +92,12 @@ dataset_fields:
     label: SOZ
   - value: stapl
     label: STAPL
+  - value: step
+    label: STEP
   - value: unb
     label: UNB
+  - value: wirt
+    label: WIRT
   - value: zen
     label: ZEN
 

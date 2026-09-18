@@ -1,6 +1,6 @@
 scheming_version: 2
-dataset_type: geodatenpool
-about: The Munich(LHM) GeoDatenPool catalog dataset schema
+dataset_type: geodatenmanagement
+about: The default Munich(LHM) Geodatenmanagement catalog dataset schema
 about_url: http://github.com/ckan/ckanext-scheming
 
 dataset_fields:
@@ -50,59 +50,68 @@ dataset_fields:
   label: Schema
   preset: select_lhm
   is_info: true
-  info_text: Name des Datenbankschemas (z.B. BAU, PLAN, RKU im Geodatenpool)
+  info_text: Name des Datenbankschemas (beim Geodatenpool z.B. BAUT, PLAN, RKU)
   required: true
   choices:
   - value: ""
     label: 
       en: Please choose the Schema
       de: Schema auswählen
-  - value: baug
-    label: BAUG
-  - value: bauj
-    label: BAUJ
-  - value: baut
-    label: BAUT
-  - value: bewa
-    label: BEWA
-  - value: dirstat
-    label: DIRSTAT
-  - value: gsr
-    label: GSR
-  - value: kvr
-    label: KVR
-  - value: kvrbrand
-    label: KVRBRAND
-  - value: mor
-    label: MOR
-  - value: plan
-    label: PLAN
-  - value: rgu
-    label: RGU
-  - value: rku
-    label: RKU
-  - value: scu
-    label: SCU
-  - value: soz
-    label: SOZ
-  - value: vablock
-    label: VABLOCK
-  - value: vaggd
-    label: VAGGD
-  - value: vagrund
-    label: VAGRUND
-  - value: vaortho
-    label: VAORTHO
-  - value: varegio
-    label: VAREGIO
-  - value: va3d
-    label: VA3D
+  #- value: baug
+  #  label: BAUG
+  #- value: bauj
+  #  label: BAUJ
+  #- value: baut
+  #  label: BAUT
+  #- value: bewa
+  #  label: BEWA
+  #- value: dirstat
+  #  label: DIRSTAT
+  #- value: gsr
+  #  label: GSR
+  #- value: kvr
+  #  label: KVR
+  #- value: kvrbrand
+  #  label: KVRBRAND
+  #- value: mor
+  #  label: MOR
+  #- value: plan
+  #  label: PLAN
+  #- value: rgu
+  #  label: RGU
+  #- value: rku
+  #  label: RKU
+  #- value: scu
+  #  label: SCU
+  #- value: soz
+  #  label: SOZ
+  #- value: vablock
+  #  label: VABLOCK
+  #- value: vaggd
+  #  label: VAGGD
+  #- value: vagrund
+  #  label: VAGRUND
+  #- value: vaortho
+  #  label: VAORTHO
+  #- value: varegio
+  #  label: VAREGIO
+  #- value: va3d
+  #  label: VA3D
   # Mobidam:
   #- value: mobidam
   #  label: MOBIDAM
   #- value: mobidam_sst
   #  label: MOBIDAM_SST
-
+  # Geodatenmanagement:
+  - value: frost
+    label: FROST
+  - value: datawarehouse
+    label: Datawarehouse
+  - value: geoserviceplattform
+    label: GeoServicePlattform
+  - value: plexmap
+    label: PlexMap
+  
 # Feld alt 
 - field_name: owner_org
   label: 
@@ -134,7 +143,7 @@ dataset_fields:
   form_placeholder: erika.mustermann@muenchen.de / gdi@muenchen.de
   form_snippet: author_email.html
   display_snippet: email.html
-  validators: unicode_safe strip_value email_validator
+  validators: unicode_safe strip_value
   is_info: true
   info_text: Angabe der Team-E-Mailadresse des Datenverantwortlichen
 
@@ -167,12 +176,22 @@ dataset_fields:
       de: Auf Anforderung
   - value: 15-minuetig
     label: 15-minütig
+  - value: 30-minuetig
+    label: 30-minütig
+  - value: mehrmals_stuendlich
+    label: Mehrmals stündlich
   - value: stuendlich
     label: Stündlich
+  - value: mehrmals_taeglich
+    label: Mehrmals täglich
   - value: taeglich
     label: Täglich
+  - value: mehrmals_woechentlich
+    label: Mehrmals wöchentlich
   - value: woechentlich
     label: Wöchentlich
+  - value: mehrmals_monatlich
+    label: Mehrmals monatlich
   - value: monatlich
     label: 
       en: Monthly
@@ -300,27 +319,6 @@ dataset_fields:
   - value: kein_zugriff
     label: Kein Zugriff
 
-#Nur GDP:
-#Feld alt, values mit Änderungen
-- field_name: geoinfoweb
-  label: GeoInfoWeb
-  preset: select_lhm
-  is_info: true
-  info_text: Der GeoInfoWeb-Zugriff, und damit die Sichtbarkeit der Daten, kann auf Nutzergruppen beschränkt werden. Standard ist stadtweiter Zugriff. 'Ausgenommen Bezirksausschüsse' bedeutet, dass alle außer den Bezirksausschüssen Zugriff haben. 
-  required: true
-  form_include_blank_choice: false
-  choices:
-  - value: alle_nutzer
-    label: Alle Nutzer
-  - value: organisationseinheiten
-    label: Bestimmte Organisationseinheiten
-  - value: gruppen
-    label: Bestimmte (übergreifende) Gruppe(n)
-  - value: ohne_bezirksausschuesse
-    label: Ausgenommen Bezirksausschüsse
-  - value: keine
-    label: Keine
-
 # Feld Neu
 - field_name: lhm_extern
   label: LHM-extern
@@ -427,8 +425,8 @@ dataset_fields:
   label: Weitere Hinweise zur Nutzung
   is_info: true
   info_text: Zusätzliche Hinweise zur Nutzung können unter 'Hinweise' mit Stichwort und Erklärung eingefügt werden. Diese müssen auch für Laien verständlich sein. Hinweis können sein zu bspw. vertraglichen Bedingungen oder Besonderheiten im Datensatz.
+
   form_snippet: repeating_subfields_lhm.html
-  display_snippet: repeating_subfields_lhm.html
   repeating_label: Hinweis
   repeating_subfields:
   - field_name: stichwort
@@ -460,7 +458,7 @@ dataset_fields:
   is_info: true
   info_text: Letzte Aktualisierung bzw. Bearbeitung der Datentabelle in der Datenquelle
 
-# Feld neu, nur für Mobidam (war mit organization verknüpft, Attribut private ist CKAN-Standard)
+# Feld neu, nur für Mobidam, ggf. für GDM (war mit organization verknüpft, Attribut private ist CKAN-Standard)
 #- field_name: private
 #  label: Sichtbarkeit
 #  preset: select_lhm

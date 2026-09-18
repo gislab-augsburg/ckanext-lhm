@@ -14,11 +14,20 @@
         <td>
             <p class="heading">{{ _("Contact person EMail") }}</p>
             {% if pkg_dict.datenverantwortlicher_email %}
-              <p class="metadata">{{ h.mail_to(email_address=h.lhm_validate_email(pkg_dict.datenverantwortlicher_email), name=pkg_dict.datenverantwortlicher_email) }}</p>
+              <p class="metadata">
+                {% set emails = pkg_dict.datenverantwortlicher_email.split(',') %}
+                {% for email in emails %}
+                  {% set cleaned_email = email.strip() %}
+                  {% if cleaned_email %}
+                    <a href="mailto:{{ cleaned_email }}">{{ cleaned_email }}</a>{% if not loop.last %}, {% endif %}
+                  {% endif %}
+                {% endfor %}
+              </p>
             {% else %}
               <p class="metadata">{{ _("Not available") }}</p>
             {% endif %}
         </td>
+
         <td> 
           <p class="heading">{{ _("External Ownership") }}
           <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Um externe Datenurheber handelt es sich, wenn die Daten nicht von der Landeshauptstadt München stammen (z.B. LDBV, DWD, Here)"></span></p>

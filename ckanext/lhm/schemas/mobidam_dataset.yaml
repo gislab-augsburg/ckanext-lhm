@@ -165,6 +165,8 @@ dataset_fields:
     label: 
       en: On demand
       de: Auf Anforderung
+  - value: kontinuierlich
+    label: Kontinuierlich
   - value: 15-minuetig
     label: 15-minütig
   - value: stuendlich
@@ -476,7 +478,7 @@ dataset_fields:
   form_placeholder: DD-MM-YYYY oder keine Angabe
   form_snippet: text_lhm.html
   is_info: true
-  info_text: Letzte Aktualisierung der Datentabelle in der Datenquelle.
+  info_text: Letzte Aktualisierung bzw. Bearbeitung der Datentabelle in der Datenquelle
 
 # Feld neu, nur für Mobidam (war mit organization verknüpft, Attribut private ist CKAN-Standard)
 - field_name: private

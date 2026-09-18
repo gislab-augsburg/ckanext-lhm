@@ -92,6 +92,7 @@ dv_datentyp_transpose = {
 # Restliche
 update_zyklus_transpose = {
     "Auf Anforderung": "auf_anforderung",
+    "Kontinuierlich": "kontinuierlich",
     "15-minütig": "15-minuetig",
     "Stündlich": "stuendlich",
     "Täglich": "taeglich",

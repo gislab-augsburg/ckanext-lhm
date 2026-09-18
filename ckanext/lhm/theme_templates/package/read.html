@@ -34,10 +34,17 @@
     {% endblock %}
   </div>
   <div class="column_date">
-    {% if pkg.letzter_import%}
+    {% if pkg.letzter_import %}
+      {% set schema = h.scheming_get_dataset_schema(pkg.type) %}
+      {% set field = schema.dataset_fields | selectattr('field_name', 'equalto', 'letzter_import') | first %}
+      
       <div class="last-data-import">
-            <span class="update-title">Letzter Import: </span>
-            <span class="update-date">{{ pkg.letzter_import }}</span>
+            <span class="update-title">{{ field.label or 'Letzter Import' }}: </span>
+            <span class="update-date">{{ pkg.letzter_import }}
+              {% if field.is_info %}
+              <span class="fa fa-info-circle" data-toggle="tooltip" style="font-size: 11pt; padding-left: 2px" title="{{ field.info_text }}"></span>
+              {% endif %}
+            </span>
       </div>
     {% endif %}
   </div>

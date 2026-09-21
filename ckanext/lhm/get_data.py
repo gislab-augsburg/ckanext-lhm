@@ -672,9 +672,9 @@ def packages_to_files(packages, limit, wdir, excel_template):
                 if type_ == 'geodatenpool':
                     dv = add_validation_dropdown(ws, coords, '=Wertelisten!$E$2:$E$8')
                 elif type_ == 'mobidam':
-                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$E$2:$E$9')
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$Z$2:$Z$10')
                 elif type_ == 'plan-db':
-                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$X$2:$X$12')
+                    dv = add_validation_dropdown(ws, coords, '=Wertelisten!$X$2:$X$11')
                 ws.add_data_validation(dv)
                 # Stadtarchiv - Archivwürdigkeit
                 if type_ == 'plan-db':

@@ -310,6 +310,8 @@ def apply_resources_from_json(meta: dict, root: etree._Element):
       - resources[i]["url"]     -> gmd:linkage/gmd:URL
       - resources[i]["name"]    -> gmd:name/gco:CharacterString
       - resources[i]["format"]  -> gmd:applicationProfile/gco:CharacterString
+      - resources[i]["resource_locator_protocol"] -> gmd:protocol/gco:CharacterString
+      - resources[i]["resource_locator_function"] -> gmd:function/gmd:CI_OnLineFunctionCode
     """
     resources = meta.get("resources") or []
     if not resources:
@@ -333,6 +335,8 @@ def apply_resources_from_json(meta: dict, root: etree._Element):
         url = res.get("url")
         name = res.get("name")
         fmt = res.get("format")
+        protocol = res.get("resource_locator_protocol")
+        function = res.get("resource_locator_function")
         if not url:
             continue
         new_ol = deepcopy(base_online)
@@ -350,6 +354,18 @@ def apply_resources_from_json(meta: dict, root: etree._Element):
             )
             for a in app_nodes:
                 a.text = fmt
+        if protocol:
+            for node in new_ol.xpath(
+                "./gmd:CI_OnlineResource/gmd:protocol/gco:CharacterString",
+                namespaces=NSMAP,
+            ):
+                node.text = str(protocol)
+        if function:
+            for node in new_ol.xpath(
+                "./gmd:CI_OnlineResource/gmd:function/gmd:CI_OnLineFunctionCode",
+                namespaces=NSMAP,
+            ):
+                set_node_value(node, function)
         md_dto.append(new_ol)
 # -------------------------------
 # Referenzsysteme -> gmd:referenceSystemInfo

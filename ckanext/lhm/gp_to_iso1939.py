@@ -309,6 +309,7 @@ def apply_resources_from_json(meta: dict, root: etree._Element):
     Verwendet:
       - resources[i]["url"]     -> gmd:linkage/gmd:URL
       - resources[i]["name"]    -> gmd:name/gco:CharacterString
+      - resources[i]["description"] -> gmd:description/gco:CharacterString
       - resources[i]["format"]  -> gmd:applicationProfile/gco:CharacterString
       - resources[i]["resource_locator_protocol"] -> gmd:protocol/gco:CharacterString
       - resources[i]["resource_locator_function"] -> gmd:function/gmd:CI_OnLineFunctionCode
@@ -334,6 +335,7 @@ def apply_resources_from_json(meta: dict, root: etree._Element):
     for res in resources:
         url = res.get("url")
         name = res.get("name")
+        description = res.get("description")
         fmt = res.get("format")
         protocol = res.get("resource_locator_protocol")
         function = res.get("resource_locator_function")
@@ -347,6 +349,18 @@ def apply_resources_from_json(meta: dict, root: etree._Element):
             name_nodes = new_ol.xpath(".//gmd:name/gco:CharacterString", namespaces=NSMAP)
             for n in name_nodes:
                 n.text = name
+        if description:
+            online = new_ol.find(qn("gmd:CI_OnlineResource"))
+            if online is not None:
+                description_node = etree.Element(qn("gmd:description"))
+                etree.SubElement(
+                    description_node, qn("gco:CharacterString")
+                ).text = str(description)
+                function_node = online.find(qn("gmd:function"))
+                if function_node is not None:
+                    online.insert(online.index(function_node), description_node)
+                else:
+                    online.append(description_node)
         if fmt:
             app_nodes = new_ol.xpath(
                 ".//gmd:applicationProfile/gco:CharacterString",

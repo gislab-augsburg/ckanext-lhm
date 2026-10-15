@@ -1,6 +1,5 @@
 import ckan.plugins.toolkit as tk
 import ckan.logic as logic
-import ckanext.lhm.logic.schema as schema
 
 """ ****Automatice generated Example*****
 @tk.side_effect_free
@@ -25,34 +24,36 @@ def get_actions():
     }
 """
 
-def user_create(context, data_dict):
-    group_list = tk.get_action("group_list")({}, {})
-    site_user = tk.get_action("get_site_user")({"ignore_auth": True}, {})
-    user = logic.action.create.user_create(context, data_dict)
+@tk.chained_action
+def organization_member_create(original_action, context, data_dict):
+    """Give organization editors/admins membership of the LHM root groups."""
+    membership = original_action(context, data_dict)
+    if membership["capacity"] not in ("editor", "admin"):
+        return membership
 
-    role = tk.config.get("ckan.lhm.group_role", "member")
-    context["user"] = site_user.get("name")
-
-    for group in group_list:
+    # The organization action has already authorized the role change. Only the
+    # automatic root-group memberships bypass group administration permissions.
+    group_context = {"user": context["user"], "ignore_auth": True}
+    user_id = membership["table_id"]
+    for group in ("department", "main-categories", "topics"):
         try:
-            tk.get_action("group_show")(
-                context,
-                {
-                    "id": group,
-                },
+            members = tk.get_action("member_list")(
+                dict(group_context), {"id": group, "object_type": "user"}
             )
         except logic.NotFound:
-            return user
+            continue
 
-        tk.get_action("group_member_create")(
-            context,
-            {
-                "id": group,
-                "username": user["name"],
-                "role": role,
-            },
-        )
+        # Preserve all existing active roles, including editor and admin.
+        if any(member[0] == user_id for member in members):
+            continue
 
-    return user
+        try:
+            tk.get_action("group_member_create")(
+                dict(group_context),
+                {"id": group, "username": user_id, "role": "member"},
+            )
+        except logic.NotFound:
+            # The group may have been removed since member_list was called.
+            continue
 
-
+    return membership

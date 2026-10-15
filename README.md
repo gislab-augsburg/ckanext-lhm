@@ -21,10 +21,7 @@ Table of Contents:
 
 
 ## Features
-- Action `user_create`: this function automatically adds each newly added user to all groups as a member. It is possible to change the role to other group roles. In this case in `ckan.ini` the following attribute should be set:
-    ```ini
-    ckan.lhm.group_role = member
-    ```
+- Action `organization_member_create` (provided by `lhm_theme`): assigning a user the organization role `editor` or `admin` automatically adds them as a `member` of the hierarchy root groups `department`, `main-categories`, and `topics`. Existing active group roles are preserved; missing root groups are silently skipped. New user registration no longer adds any group memberships. The former `ckan.lhm.group_role` setting is no longer used.
 - Helpers offers various helpers functions. Some for being used in templates such as lhm.usage_info() to get the configurables and some as functions to be used in templates such as `user_info()`.
 - cli offers one command line for creating the pre-defined groups.
   ```sh

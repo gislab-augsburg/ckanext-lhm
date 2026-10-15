@@ -451,5 +451,5 @@ class LHMThemePlugin(p.SingletonPlugin, DefaultTranslation):
     # IActions
     def get_actions(self):
         return {
-            'user_create': action.user_create,
+            'organization_member_create': action.organization_member_create,
         }

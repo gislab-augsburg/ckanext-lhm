@@ -452,4 +452,5 @@ class LHMThemePlugin(p.SingletonPlugin, DefaultTranslation):
     def get_actions(self):
         return {
             'organization_member_create': action.organization_member_create,
+            'organization_member_delete': action.organization_member_delete,
         }

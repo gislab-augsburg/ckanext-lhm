@@ -22,6 +22,7 @@ Table of Contents:
 
 ## Features
 - Action `organization_member_create` (provided by `lhm_theme`): assigning a user the organization role `editor` or `admin` automatically adds them as a `member` of the hierarchy root groups `department`, `main-categories`, and `topics`. Existing active group roles are preserved; missing root groups are silently skipped. New user registration no longer adds any group memberships. The former `ckan.lhm.group_role` setting is no longer used.
+- Action `organization_member_delete` and demotions to organization `member` (provided by `lhm_theme`): after the change succeeds, the user loses their memberships in `department`, `main-categories`, and `topics` if they have no active `editor` or `admin` membership in any active organization. This checks actual organization memberships, including for sysadmins. Existing root roles (including group admin/editor) are removed in this case; other groups are unchanged. Missing root groups are silently skipped.
 - Helpers offers various helpers functions. Some for being used in templates such as lhm.usage_info() to get the configurables and some as functions to be used in templates such as `user_info()`.
 - cli offers one command line for creating the pre-defined groups.
   ```sh

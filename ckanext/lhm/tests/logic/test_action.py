@@ -17,9 +17,18 @@ class OrganizationMembershipTest(unittest.TestCase):
         self.original = Mock(return_value=self.membership)
         self.member_list = Mock(return_value=[])
         self.group_member_create = Mock()
+        self.member_delete = Mock()
+        self.group_show = Mock(side_effect=lambda context, data: {"id": data["id"]})
+        self.has_role_patch = patch.object(
+            action, "_has_editor_or_admin_organization", return_value=False
+        )
+        self.has_role = self.has_role_patch.start()
+        self.addCleanup(self.has_role_patch.stop)
         self.actions = {
             "member_list": self.member_list,
             "group_member_create": self.group_member_create,
+            "member_delete": self.member_delete,
+            "group_show": self.group_show,
         }
         self.get_action_patch = patch.object(
             action.tk, "get_action", side_effect=self.actions.__getitem__
@@ -51,7 +60,7 @@ class OrganizationMembershipTest(unittest.TestCase):
         self.membership["capacity"] = "member"
         self.data["role"] = "member"
         self.assertIs(self.invoke(), self.membership)
-        self.get_action.assert_not_called()
+        self.group_member_create.assert_not_called()
 
     def test_existing_roles_are_preserved(self):
         self.member_list.side_effect = [
@@ -118,3 +127,115 @@ class OrganizationMembershipTest(unittest.TestCase):
         self.invoke()
         self.invoke()
         self.assertEqual(self.group_member_create.call_count, 3)
+
+
+    def demote(self):
+        self.membership["capacity"] = "member"
+        self.data["role"] = "member"
+        return self.invoke()
+
+    def delete_membership(self, data=None):
+        self.original.return_value = None
+        with patch.object(action.model.User, "get", return_value=Mock(id="user-id")) as get_user:
+            result = action.organization_member_delete(
+                self.original, self.context, self.data if data is None else data
+            )
+        return result, get_user
+
+    def assert_roots_removed(self):
+        self.assertEqual(self.member_delete.call_args_list, [
+            call(
+                {"user": "organization-admin", "ignore_auth": True},
+                {"id": root, "object": "user-id", "object_type": "user"},
+            ) for root in ROOTS
+        ])
+
+    def test_demotion_removes_all_root_memberships_without_other_high_role(self):
+        self.assertIs(self.demote(), self.membership)
+        self.has_role.assert_called_once_with("user-id")
+        self.assert_roots_removed()
+
+    def test_demotion_preserves_roots_with_editor_or_admin_role_elsewhere(self):
+        self.has_role.return_value = True
+        self.demote()
+        self.group_show.assert_not_called()
+        self.member_delete.assert_not_called()
+
+    def test_membership_removal_removes_roots_without_other_high_role(self):
+        result, get_user = self.delete_membership()
+        self.assertIsNone(result)
+        get_user.assert_called_once_with("new-editor")
+        self.assert_roots_removed()
+
+    def test_membership_removal_preserves_roots_with_high_role_elsewhere(self):
+        self.has_role.return_value = True
+        self.delete_membership()
+        self.member_delete.assert_not_called()
+
+    def test_removal_supports_user_id_parameter(self):
+        result, get_user = self.delete_membership({"id": "organization", "user_id": "user-id"})
+        get_user.assert_called_once_with("user-id")
+        self.assert_roots_removed()
+
+    def test_failed_removal_never_runs_cleanup(self):
+        self.original.side_effect = action.logic.NotAuthorized()
+        with patch.object(action.model.User, "get") as get_user:
+            with self.assertRaises(action.logic.NotAuthorized):
+                action.organization_member_delete(self.original, self.context, self.data)
+        get_user.assert_not_called()
+        self.has_role.assert_not_called()
+        self.get_action.assert_not_called()
+
+    def test_demotion_checks_roles_after_successful_change(self):
+        changed = []
+        def change(context, data):
+            changed.append(True)
+            return self.membership
+        def check(user_id):
+            self.assertEqual(changed, [True])
+            return False
+        self.original.side_effect = change
+        self.has_role.side_effect = check
+        self.demote()
+        self.assert_roots_removed()
+
+    def test_missing_roots_do_not_interrupt_demotion_cleanup(self):
+        self.group_show.side_effect = [action.logic.NotFound(), {"id": "main-categories"}, {"id": "topics"}]
+        self.demote()
+        self.assertEqual([args[0][1]["id"] for args in self.member_delete.call_args_list], ["main-categories", "topics"])
+
+    def test_all_missing_roots_are_harmless_during_removal(self):
+        self.group_show.side_effect = action.logic.NotFound()
+        self.delete_membership()
+        self.member_delete.assert_not_called()
+
+    def test_root_removed_during_cleanup_does_not_interrupt_other_roots(self):
+        self.member_delete.side_effect = [action.logic.NotFound(), None, None]
+        self.demote()
+        self.assert_roots_removed()
+
+    def test_cleanup_preserves_caller_context(self):
+        before = dict(self.context)
+        self.delete_membership()
+        self.assertEqual(self.context, before)
+
+    def test_failed_demotion_never_runs_cleanup(self):
+        self.original.side_effect = action.logic.NotAuthorized()
+        with self.assertRaises(action.logic.NotAuthorized):
+            self.demote()
+        self.has_role.assert_not_called()
+        self.get_action.assert_not_called()
+
+
+class OrganizationRoleQueryTest(unittest.TestCase):
+    def test_actual_membership_query_handles_presence_and_absence(self):
+        for membership in (None, object()):
+            with self.subTest(has_membership=membership is not None):
+                with patch.object(action.model.Session, "query") as query:
+                    query.return_value.join.return_value.filter.return_value.first.return_value = membership
+                    self.assertEqual(
+                        action._has_editor_or_admin_organization("user-id"),
+                        membership is not None,
+                    )
+                    query.assert_called_once_with(action.model.Member)
+                    self.assertEqual(len(query.return_value.join.return_value.filter.call_args[0]), 6)

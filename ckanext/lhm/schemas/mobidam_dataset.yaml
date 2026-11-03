@@ -112,7 +112,6 @@ dataset_fields:
   form_snippet: organization_lhm.html
   is_info: true
   info_text_orga: Die Datenquelle bezeichnet das System, aus dem die Daten bezogen werden können, z.B. Geodatenpool. An ihr hängen als CKAN owner_org außerdem die Bearbeitungsrechte des Metadatensatzes.
-  required: true
 
 # Feld alt 
 - field_name: datenverantwortlicher
@@ -493,6 +492,19 @@ dataset_fields:
   output_validators: boolean_validator
   is_info: true
   info_text: 'Einstellung zur Sichtbarkeit des eingetragenen Metadatensatzes. Öffentlich = Sichtbarkeit für alle Personen in der LHM [Standard]. Privat = Sichtbarkeit nur für Mitglieder der zuständigen Organisation.'
+
+# Feld neu, vorerst nur für Mobidam, für Synchronisierung letzter_import (täglich) sowie Datenverzeichnis und Katalogwerte (nach Bedarf)
+- field_name: sync_layer
+  label: Synchronisierungslayer Feature Service
+  form_snippet: text_lhm.html
+  is_info: true
+  info_text: Das Feld wird nur für Editoren angezeigt. Hier kann ein Link zum Layer eines Feature Services angegeben werden, das für die nächtliche Synchronisierung des Feldes 'Letzter Import' verwendet wird. Für eine erfolgreiche Synchronisierung muss das Layer das abfragbare Feld 'BEARBEITUNG_DATUM' beinhalten. Nach Bedarf kann das Synchronisierungslayer auch für Updates von Datenverzeichnis und Katalogwerten verwendet werden.
+
+- field_name: follow_up_gdp_dataset
+  label: Nachfolger Geodatenpool
+  form_snippet: text_lhm.html
+  is_info: true
+  info_text: Das Feld wird nur für Editoren angezeigt. Hier kann der Name eines Geodatenpool-Metadatensatzes angegeben werden, der die Metadaten des Datensatzes enthält, der aus dem hier beschriebenen Datensatz erzeugt wurde. Kann zur Synchronisierung von ausgewählten Metadatenfeldern sowie des Datenverzeichnisses verwendet werden.
 
 
 resource_fields:

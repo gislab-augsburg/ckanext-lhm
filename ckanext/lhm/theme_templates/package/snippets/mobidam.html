@@ -219,8 +219,50 @@
       </table></div>
     </section>
     {% endif %}
-  
-  
+
+  {# CHECK: Is the user a member/editor of this organization? #}
+  {% if h.check_access('package_update', {'id': pkg_dict.id}) %}
+    <section class="additional-info module-content table3">
+      <div class="collapsible-header">
+        <h3 style="border-bottom: 0px solid;">{{_("Management-Felder (nur für Editoren)")}}</h3>
+        <i class="plus-sign fa fa-minus"></i>
+      </div>
+      <div class="collapsible-content">
+        <table class="table package-metadata">
+          <tr>
+            <td colspan="1" style="padding-bottom: 0px;">
+              <p class="heading">{{ _("Synchronisierungslayer Feature Service")}}
+                <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Das Feld wird nur für Editoren angezeigt. Hier kann ein Link zum Layer eines Feature Services angegeben werden, das für die nächtliche Synchronisierung des Feldes 'Letzter Import' verwendet wird. Für eine erfolgreiche Synchronisierung muss das Layer das abfragbare Feld 'BEARBEITUNG_DATUM' beinhalten. Nach Bedarf kann das Synchronisierungslayer auch für Updates von Datenverzeichnis und Katalogwerten verwendet werden."></span>
+              </p>
+              {% set link_content_synclayer %}
+                {%- snippet 'package/snippets/label.html', item='sync_layer', pkg_dict=pkg_dict, schema=schema -%}
+              {% endset %}
+              <p class="metadata">
+                {{ h.link_to(link_content_synclayer, link_content_synclayer, target='_blank') }}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="1" style="padding-bottom: 0px;">
+              <p class="heading">{{ _("Nachfolger Geodatenpool")}}
+                <span class="fa fa-info-circle" style="font-size: 11pt;" data-toggle="tooltip" title="Das Feld wird nur für Editoren angezeigt. Hier kann der Name eines Geodatenpool-Metadatensatzes angegeben werden, der die Metadaten des Datensatzes enthält, der aus dem hier beschriebenen Datensatz erzeugt wurde. Kann zur Synchronisierung von ausgewählten Metadatenfeldern sowie des Datenverzeichnisses verwendet werden."></span>
+              </p>
+              {% set link_content_followupgdp %}
+                {%- snippet 'package/snippets/label.html', item='follow_up_gdp_dataset', pkg_dict=pkg_dict, schema=schema -%}
+              {% endset %}
+              {% set package_name = link_content_followupgdp|trim %}
+              {% if package_name %}
+                <p class="metadata">
+                  {{ h.link_to(package_name, "/dataset/" ~ package_name, target='_blank') }}
+                </p>
+              {% endif %}
+            </td>
+          </tr>
+        </table>
+      </div>
+    </section>
+  {% endif %}
+   
   <!--
   {% set chg_his = pkg_dict.change_history %}
   {% if chg_his %}

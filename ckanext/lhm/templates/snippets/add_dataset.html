@@ -1,31 +1,45 @@
 {# Adds 'Datensatz erstellen' buttons #}
 
 {% set dataset_type = dataset_type if dataset_type else 'dataset' %}
+{% set is_sysadmin = h.check_access('sysadmin') %}
+{% set writable_orgs = h.organizations_available('create_dataset') | map(attribute='name') | list %}
 
+{% if is_sysadmin or 'geodatenpool' in writable_orgs %}
 <div style="display: inline-block; margin-bottom: 3px;">
     {% link_for _('Datensatz Geodatenpool erstellen'), named_route='geodatenpool.new', group=group, class_='btn btn-primary', icon='plus-square' %}
 </div>
+{% endif %}
 
+{% if is_sysadmin or 'mobidam' in writable_orgs %}
 <div style="display: inline-block; margin-bottom: 3px;">
     {% link_for _('Datensatz Mobidam erstellen'), named_route='mobidam.new', group=group, class_='btn btn-primary', icon='plus-square' %}
 </div>
+{% endif %}
 
+{% if is_sysadmin or 'plan-db' in writable_orgs %}
 <div style="display: inline-block; margin-bottom: 3px;">
     {% link_for _('Datensatz PLAN-DB erstellen'), named_route='plan-db.new', group=group, class_='btn btn-primary', icon='plus-square' %}
 </div>
+{% endif %}
 
+{% if is_sysadmin or 'geoportal' in writable_orgs %}
 <div style="display: inline-block; margin-bottom: 3px;">
     {% link_for _('Datensatz Geoportal erstellen'), named_route='geoportal.new', group=group, class_='btn btn-primary', icon='plus-square' %}
 </div>
+{% endif %}
 
+{% if is_sysadmin or 'geodatenmanagement' in writable_orgs %}
 <div style="display: inline-block; margin-bottom: 3px;">
-    {% if h.check_access('sysadmin') and h.pycsw_enabled()  %}
-        {% link_for _('Datensätze Geoportal auf Pycsw Server laden'), named_route='lhm_view.test_csw_push', class_='btn btn-primary' %}
-    {% endif %}
+    {% link_for _('Datensatz Geodatenmanagement erstellen'), named_route='geodatenmanagement.new', group=group, class_='btn btn-primary', icon='plus-square' %}
+</div>
+{% endif %}
+
+{% if (is_sysadmin or 'geoportal' in writable_orgs) and h.pycsw_enabled() %}
+<div style="display: inline-block; margin-bottom: 3px;">
+    {% link_for _('Datensätze Geoportal auf Pycsw Server laden'), named_route='lhm_view.test_csw_push', class_='btn btn-primary' %}
 </div>
 
 <div style="display: inline-block; margin-bottom: 3px;">
-    {% if h.check_access('sysadmin') and h.pycsw_enabled()  %}
-        {% link_for _('Original XMLs Geonetwork auf Pycsw Server laden'), named_route='lhm_view.gn_csw_push', class_='btn btn-primary' %}
-    {% endif %}
+    {% link_for _('Original XMLs Geonetwork auf Pycsw Server laden'), named_route='lhm_view.gn_csw_push', class_='btn btn-primary' %}
 </div>
+{% endif %}

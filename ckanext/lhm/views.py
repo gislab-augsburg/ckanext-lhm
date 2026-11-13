@@ -1,10 +1,16 @@
-from flask import Blueprint, send_file
+from flask import Blueprint, abort, send_file
+from io import BytesIO
+from pathlib import Path
+from tempfile import TemporaryDirectory
 import json
 import subprocess
 import os
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment
-from ckanext.lhm.get_data import packages_to_files
+from ckanext.lhm.export.get_data_export import packages_to_files
+from ckanext.lhm.export.get_data import MASTER, EXCEL_TEMPLATES
+from ckanext.lhm.export.field_mapping import MasterConfig
+from ckanext.lhm.export.templates_from_master import save_excel_compatible
 from pkg_resources import resource_filename
 from ckan.logic import get_action
 from ckan import model
@@ -51,149 +57,108 @@ def get_export_vars():
         os.mkdir(wdir)
     return wdir
 
-# Excel to PDF Conversion
+# Export a dataset with the form belonging to its CKAN schema.
+def _export_dataset_xlsx(dataset_name, workdir):
+    dataset_type = get_package_type(dataset_name)
+    master = MasterConfig(MASTER)
+    try:
+        schema = master.schema_for_type(dataset_type)
+    finally:
+        master.workbook.close()
+    if schema is None:
+        abort(404, description=f"No Excel export for dataset type {dataset_type!r}")
+
+    form = EXCEL_TEMPLATES / f"form_{schema}.xlsx"
+    if not form.is_file():
+        raise FileNotFoundError(f"Excel form is missing: {form}")
+    exported = packages_to_files(dataset_name, 1, workdir, str(form))
+    if dataset_name not in exported:
+        raise RuntimeError(f"Dataset {dataset_name!r} was not exported")
+    workbook = Path(workdir) / "excel" / f"{dataset_name}.xlsx"
+    if not workbook.is_file():
+        raise FileNotFoundError(f"Exported workbook is missing: {workbook}")
+    return workbook
+
+
+def _prepare_pdf_workbook(source, destination):
+    workbook = load_workbook(source)
+    try:
+        headings = {
+            "Metadaten": "Metadaten",
+            "Datenverzeichnis": "Datenverzeichnis",
+            "Katalogwerte": "Katalogwerte",
+            "Dienste und Dokumente": "Dienste und Dokumente",
+        }
+        for sheet_name, heading in headings.items():
+            sheet = workbook[sheet_name]
+            sheet.oddHeader.center.text = heading
+            for row in sheet:
+                for cell in row:
+                    cell.alignment = Alignment(wrapText=True, vertical="top")
+
+        # Keep the previous PDF layout, but locate the long note by text so
+        # adding a metadata field cannot move the wrong heading into its place.
+        metadata = workbook["Metadaten"]
+        for row in metadata.iter_rows(min_col=1, max_col=1):
+            cell = row[0]
+            if (isinstance(cell.value, str) and
+                    cell.value.startswith('Hinweistext Langversion zu "LHM-extern')):
+                cell.value = ""
+                break
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        save_excel_compatible(workbook, destination)
+    finally:
+        workbook.close()
+
+
 def convert_xlsx_to_pdf(input_path, output_dir, package):
-    cmd = [
-        "libreoffice",
-        "--headless",
-        "--convert-to", "ods",
-        input_path,
-        "--outdir", output_dir
-    ]
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, check=True, env={"HOME": "/var/lib/ckan/export"})
-        print("LibreOffice output:", result.stdout)
-        print("LibreOffice errors:", result.stderr)
-    except subprocess.CalledProcessError as e:
-        print("Fehler bei der Konvertierung:", e.stderr)
-
-    output_ods =output_dir + '/' + package + '.ods'
-
-    cmd = [
-        "libreoffice",
-        "--headless",
-        "--convert-to", "pdf",
-        output_ods,
-        "--outdir", output_dir
-    ]
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, check=True, env={"HOME": "/var/lib/ckan/export"})
-        print("LibreOffice output:", result.stdout)
-        print("LibreOffice errors:", result.stderr)
-        return True
-    except subprocess.CalledProcessError as e:
-        print("Fehler bei der Konvertierung:", e.stderr)
-        return False
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    profile = output_dir / "libreoffice_profile"
+    profile.mkdir(exist_ok=True)
+    env = os.environ.copy()
+    env["HOME"] = str(output_dir)
+    source = Path(input_path)
+    for target_format in ("ods", "pdf"):
+        expected = output_dir / f"{package}.{target_format}"
+        command = [
+            "libreoffice", f"-env:UserInstallation={profile.as_uri()}",
+            "--headless", "--convert-to", target_format,
+            str(source), "--outdir", str(output_dir),
+        ]
+        result = subprocess.run(command, capture_output=True, text=True,
+                                env=env, timeout=180)
+        if result.returncode != 0 or not expected.is_file():
+            detail = result.stderr.strip() or result.stdout.strip()
+            raise RuntimeError(
+                f"LibreOffice conversion to {target_format} failed: {detail}")
+        source = expected
+    return source
 
 
-# Generate package pdf for download
 @lhm_view.route("/lhm_view/pdf/<dataset_name>")
 def generate_pdf(dataset_name):
+    with TemporaryDirectory(prefix="lhm-export-", dir=get_export_vars()) as workdir:
+        workbook = _export_dataset_xlsx(dataset_name, workdir)
+        pdf_source = Path(workdir) / "pdf_input" / f"{dataset_name}.xlsx"
+        _prepare_pdf_workbook(workbook, pdf_source)
+        pdf = convert_xlsx_to_pdf(pdf_source, Path(workdir) / "pdf", dataset_name)
+        content = pdf.read_bytes()
+    return send_file(BytesIO(content), mimetype="application/pdf",
+                     as_attachment=True, download_name=dataset_name + ".pdf")
 
-    # Get vars
-    vars = get_export_vars()
-    wdir = vars
-    p_type = get_package_type(dataset_name)
-    if p_type == 'geodatenpool':
-        excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp.xlsx')
-    elif p_type == 'mobidam':
-        excel_template = resource_filename('ckanext.lhm', 'schemas/template_mobidam.xlsx')
-    elif p_type == 'plan-db':
-        excel_template = resource_filename('ckanext.lhm', 'schemas/template_plandb.xlsx')
-    else:
-        excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp.xlsx')
 
-    # Create pdf directory
-    if os.path.exists(f'{wdir}/pdf') == False:
-        os.mkdir(f'{wdir}/pdf')
-
-    package = dataset_name
-    packages_to_files(package, 1, wdir, excel_template)
-
-    # Define path to excel
-    file_path = wdir + '/excel/' + package + '.xlsx'
-
-    # Add headers
-    wb = load_workbook(file_path)
-    ws_0 = wb["Metadaten"]
-    ws_1 = wb["Datenverzeichnis"]
-    ws_2 = wb["Katalogwerte"]
-    ws_3 = wb["Dienste und Dokumente"]
-    ws_0.oddHeader.center.text = "Metadaten"
-    ws_1.oddHeader.center.text = "Datenverzeichnis"
-    ws_2.oddHeader.center.text = "Katalogwerte"
-    ws_3.oddHeader.center.text = "Dienste und Dokumente"
-
-    # Remove infotext long version 'LHM-Extern Nutzungsoptionen' for pdf
-    if p_type == 'geodatenpool':
-        coords = 'A37'
-    elif p_type == 'mobidam':
-        coords = 'A35'
-    elif p_type == 'plan-db':
-        coords = 'A40'
-    else:
-        coords = 'A37'
-    cell = ws_0[coords]
-    cell.value = ''
-
-    # Add text wrap and save excel file
-    for row in ws_0:
-        for cell in row:
-            cell.alignment = Alignment(wrapText=True,vertical='top')
-    for row in ws_1:
-        for cell in row:
-            cell.alignment = Alignment(wrapText=True,vertical='top')
-    for row in ws_2:
-        for cell in row:
-            cell.alignment = Alignment(wrapText=True,vertical='top')
-    for row in ws_3:
-        for cell in row:
-            cell.alignment = Alignment(wrapText=True,vertical='top')
-    wb.save(file_path)
-
-    # Convert to pdf
-    input_file = file_path
-    output_dir = wdir + '/pdf'
-    convert_xlsx_to_pdf(input_file, output_dir, package)
-    output_pdf = wdir + '/pdf/' + package + '.pdf'
-
-    # Download pdf
-    return send_file(
-        output_pdf,
-        mimetype='application/pdf',
-        as_attachment=True,
-        download_name=package + '.pdf'
-    )
-
-# Generate package excel for download
 @lhm_view.route("/lhm_view/excel/<dataset_name>")
 def generate_xlsx(dataset_name):
-
-    # Get vars
-    vars = get_export_vars()
-    wdir = vars
-    p_type = get_package_type(dataset_name)
-    if p_type == 'geodatenpool':
-        excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp.xlsx')
-    elif p_type == 'mobidam':
-        excel_template = resource_filename('ckanext.lhm', 'schemas/template_mobidam.xlsx')
-    elif p_type == 'plan-db':
-        excel_template = resource_filename('ckanext.lhm', 'schemas/template_plandb.xlsx')
-    else:
-        excel_template = resource_filename('ckanext.lhm', 'schemas/template_gdp.xlsx')
-
-    package = dataset_name
-    packages_to_files(package, 1, wdir, excel_template)
-
-    # Download Excel
-    file_path = wdir + '/excel/' + package + '.xlsx'
-
+    with TemporaryDirectory(prefix="lhm-export-", dir=get_export_vars()) as workdir:
+        workbook = _export_dataset_xlsx(dataset_name, workdir)
+        content = workbook.read_bytes()
     return send_file(
-        file_path,
-        mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        as_attachment = True,
-        download_name = package + '.xlsx'
+        BytesIO(content),
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        as_attachment=True, download_name=dataset_name + ".xlsx",
     )
+
 
 # Register blueprint with ckan
 def get_blueprints():

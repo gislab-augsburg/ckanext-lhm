@@ -14,9 +14,9 @@ from zipfile import ZipFile
 from bisect import bisect_left, bisect_right
 from openpyxl.worksheet.cell_range import CellRange
 from pathlib import Path
+import argparse
 import json
 import os
-import sys
 
 try:
     from .field_mapping import (MasterConfig, TABLES, bind_field_name,
@@ -448,9 +448,19 @@ def protect_and_mark_table(ws, master, schema, last_row, password):
     # The master contains borders in the header only.  Give the data cells
     # their own borders so the input grid remains visible in all three sheets.
     for column in columns:
-        header_border = copy(ws.cell(1, column).border)
+        header = ws.cell(1, column)
+        header_border = copy(header.border)
+        font_size = header.font.sz
         for row in range(2, last_row + 1):
-            ws.cell(row, column).border = header_border
+            cell = ws.cell(row, column)
+            # The master may set 10 pt on a whole column while its empty
+            # cells still use the workbook's 11 pt default font. Once a
+            # border/protection is assigned, those cells need a direct font.
+            if font_size is not None and (cell._style is None or cell._style.fontId == 0):
+                font = copy(cell.font)
+                font.sz = font_size
+                cell.font = font
+            cell.border = header_border
         # A normal Excel paste can replace the cell's direct border.  The
         # unconditional border rule restores its visible grid afterward.
         letter = get_column_letter(column)
@@ -742,8 +752,20 @@ def create_templates(excel_template=template_master):
         save_excel_compatible(wb, EXCEL_TEMPLATES / f'template_{type_}.xlsx')
 
 
-if __name__ == "__main__":
-    if len(sys.argv) > 2:
-        raise SystemExit('Usage: python templates_from_master.py [config.json]')
-    password = read_sheet_password(sys.argv[1] if len(sys.argv) == 2 else None)
+def main(argv=None):
+    parser = argparse.ArgumentParser(description='Create protected Excel forms from the master config')
+    parser.add_argument('config_file', nargs='?', help='Harvester JSON with sheet_protection')
+    parser.add_argument('--password', '--sheet-protection', dest='password',
+                        help='Sheet protection password (alternative to config_file)')
+    args = parser.parse_args(argv)
+    if args.config_file and args.password is not None:
+        parser.error('Specify either config_file or --password, not both')
+    password = (args.password if args.password is not None
+                else read_sheet_password(args.config_file))
+    if not password:
+        parser.error('The sheet protection password must not be empty')
     create_empty_forms(sheet_password=password)
+
+
+if __name__ == "__main__":
+    main()

@@ -7,6 +7,7 @@ import subprocess
 import os
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment
+from openpyxl.utils import get_column_letter
 from ckanext.lhm.export.get_data_export import packages_to_files
 from ckanext.lhm.export.get_data import MASTER, EXCEL_TEMPLATES
 from ckanext.lhm.export.field_mapping import MasterConfig
@@ -92,19 +93,43 @@ def _prepare_pdf_workbook(source, destination):
         for sheet_name, heading in headings.items():
             sheet = workbook[sheet_name]
             sheet.oddHeader.center.text = heading
+            sheet.page_setup.orientation = sheet.ORIENTATION_LANDSCAPE
+            sheet.page_setup.paperSize = sheet.PAPERSIZE_A4
+            sheet.sheet_properties.pageSetUpPr.fitToPage = True
+            sheet.page_setup.fitToWidth = 1
+            sheet.page_setup.fitToHeight = 0
+            sheet.page_setup.scale = None
+
+            # The forms have formatted cells down to row 1501. Print only
+            # populated rows, otherwise Calc can create many empty pages.
+            last_value_row = 1
+            note_row = None
             for row in sheet:
                 for cell in row:
                     cell.alignment = Alignment(wrapText=True, vertical="top")
+                    if cell.value is not None and cell.value != "":
+                        last_value_row = cell.row
+                        if (sheet_name == "Metadaten" and cell.column == 1
+                                and isinstance(cell.value, str)
+                                and cell.value.startswith(
+                                    'Hinweistext Langversion zu "LHM-extern')):
+                            note_row = cell.row
 
-        # Keep the previous PDF layout, but locate the long note by text so
-        # adding a metadata field cannot move the wrong heading into its place.
-        metadata = workbook["Metadaten"]
-        for row in metadata.iter_rows(min_col=1, max_col=1):
-            cell = row[0]
-            if (isinstance(cell.value, str) and
-                    cell.value.startswith('Hinweistext Langversion zu "LHM-extern')):
-                cell.value = ""
-                break
+            # The long explanatory note is part of the Excel form but was
+            # never intended to appear in the PDF. Its body may occupy the
+            # following row, so excluding only the heading is insufficient.
+            if note_row is not None:
+                last_value_row = min(last_value_row, note_row - 1)
+
+            last_header_column = max(
+                (cell.column for cell in sheet[1]
+                 if cell.value is not None and cell.value != ""),
+                default=1,
+            )
+            sheet.print_area = (
+                f"A1:{get_column_letter(last_header_column)}{last_value_row}")
+            if sheet_name != "Metadaten":
+                sheet.print_title_rows = "1:1"
         destination.parent.mkdir(parents=True, exist_ok=True)
         save_excel_compatible(workbook, destination)
     finally:

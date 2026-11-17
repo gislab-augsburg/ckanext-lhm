@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 import re
 import unicodedata
+import warnings
 from openpyxl import load_workbook
 from openpyxl.utils.cell import coordinate_from_string
 from openpyxl.workbook.defined_name import DefinedName
@@ -12,6 +13,18 @@ from openpyxl.workbook.defined_name import DefinedName
 METADATA = "Metadaten"
 TABLES = ("Datenverzeichnis", "Katalogwerte", "Dienste und Dokumente")
 FIELD_NAME_PREFIX = "_metadata_field_"
+
+
+def load_form_for_reading(filename):
+    """Read form values without logging unsupported Excel validation extensions."""
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "ignore",
+            message=r"^Data Validation extension is not supported and will be removed$",
+            category=UserWarning,
+            module=r"openpyxl\.worksheet\._reader",
+        )
+        return load_workbook(filename, data_only=True)
 
 def bind_field_name(book, name, coordinate):
     """Store a stable field identity without a visible Name column."""
@@ -170,7 +183,7 @@ def table_value(value):
     return value
 
 def read_form(filename, master, schema=None):
-    book = load_workbook(filename, data_only=True)
+    book = load_form_for_reading(filename)
     sheet = book[METADATA]
     h = headers(sheet)
     stable_rows = embedded_field_rows(book)

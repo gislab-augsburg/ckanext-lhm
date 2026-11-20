@@ -106,13 +106,16 @@ def _datastore(resource_id):
     return data
 
 
-def _ready_datastore(resource):
-    """Never export an unavailable resource as an apparently empty table."""
+def _ready_datastore(resource, allow_empty=False):
+    """Wait for a datastore; an inactive data directory may be empty."""
     settings = config()
     attempts = max(1, int(settings.get("datastore_wait_attempts", 30)))
     delay = max(0, float(settings.get("datastore_wait_delay_seconds", 2)))
+    was_active = False
+    resource_present = True
     for attempt in range(1, attempts + 1):
         if resource.get("datastore_active"):
+            was_active = True
             try:
                 return _datastore(resource["id"])
             except requests.HTTPError as exc:
@@ -122,6 +125,11 @@ def _ready_datastore(resource):
                 if "not found" not in str(exc).lower():
                     raise
         if attempt == attempts:
+            if allow_empty and resource_present and not was_active:
+                print(f"CKAN: no datastore for data directory resource "
+                      f"{resource.get('name')!r} ({resource['id']}); "
+                      "leaving data directory empty", flush=True)
+                return {"fields": [], "records": []}
             raise ValueError(
                 f"Datastore for resource {resource.get('name')!r} ({resource['id']}) "
                 f"is not ready after {attempts} checks")
@@ -132,12 +140,60 @@ def _ready_datastore(resource):
         try:
             resource = ckan_request(
                 f"/api/3/action/resource_show?id={quote(str(resource['id']), safe='')}")
+            resource_present = True
         except requests.HTTPError as exc:
             if exc.response is None or exc.response.status_code != 404:
                 raise
+            resource_present = False
         except ValueError as exc:
             if "not found" not in str(exc).lower():
                 raise
+            resource_present = False
+
+
+def _catalog_records(data, resource):
+    """Read current and legacy catalog columns by case-insensitive name."""
+    records = data.get("records") or []
+    if not records:
+        return []
+    columns = [field.get("id") for field in data.get("fields") or []
+               if field.get("id") and not str(field["id"]).startswith("_")]
+    if not columns:
+        columns = [key for key in records[0] if not str(key).startswith("_")]
+    expected = ("Attribut", "Wert", "Bedeutung")
+    def normalize(value):
+        return "".join(char for char in str(value).casefold()
+                       if char.isalnum())
+
+    by_name = {}
+    for column in columns:
+        key = normalize(column)
+        if key in by_name:
+            raise ValueError(
+                f"Catalog values resource {resource.get('name')!r} ({resource['id']}) "
+                f"has ambiguous columns: {columns!r}")
+        by_name[key] = column
+    source = {name: by_name[normalize(name)] for name in expected
+              if normalize(name) in by_name}
+    if len(source) != len(expected):
+        missing = [name for name in expected if name not in source]
+        raise ValueError(
+            f"Catalog values resource {resource.get('name')!r} ({resource['id']}) "
+            f"is missing datastore columns {missing!r}; available: {columns!r}")
+    result = []
+    for record in records:
+        missing = [key for key in source.values() if key not in record]
+        if missing:
+            raise ValueError(
+                f"Catalog values resource {resource.get('name')!r} ({resource['id']}) "
+                f"has a record missing columns: {missing!r}")
+        result.append({
+            "kat_id": record.get("_id"),
+            "kat_attribut": record[source["Attribut"]],
+            "kat_wert": record[source["Wert"]],
+            "kat_bedeutung": record[source["Bedeutung"]],
+        })
+    return result
 
 
 def _resource_tables(package, choices, resource_folder):
@@ -148,7 +204,7 @@ def _resource_tables(package, choices, resource_folder):
     for resource in package.get("resources") or []:
         name = resource.get("name")
         if resource.get("format", "").lower() == "oracle-db" and resource.get("position") == 0:
-            for field in _ready_datastore(resource).get("fields", []):
+            for field in _ready_datastore(resource, allow_empty=True).get("fields", []):
                 if field.get("id") == "_id":
                     continue
                 info = field.get("info") or {}
@@ -165,13 +221,8 @@ def _resource_tables(package, choices, resource_folder):
                     "dic_override": info.get("opendata"),
                 })
         elif name == "Katalogwerte":
-            for record in _ready_datastore(resource).get("records", []):
-                tables["Katalogwerte"].append({
-                    "kat_id": record.get("_id"),
-                    "kat_attribut": record.get("Attribut"),
-                    "kat_wert": record.get("Wert"),
-                    "kat_bedeutung": record.get("Bedeutung"),
-                })
+            tables["Katalogwerte"].extend(
+                _catalog_records(_ready_datastore(resource), resource))
         else:
             fmt = resource.get("format")
             try:

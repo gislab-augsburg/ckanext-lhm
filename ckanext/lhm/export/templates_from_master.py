@@ -409,9 +409,8 @@ def protect_and_mark_invalid_values(ws, editable_fields, deleted_rows,
         is_multi = len(columns) > 1
         if is_multi and source_row in required_fields:
             first = ws.cell(target_row, columns.start).coordinate
-            last = ws.cell(target_row, columns.stop - 1).coordinate
             ws.conditional_formatting.add(
-                f'{first}:{last}',
+                first,
                 FormulaRule(formula=[f'COUNTIF(${get_column_letter(columns.start)}'
                                      f'{target_row}:${get_column_letter(columns.stop - 1)}'
                                      f'{target_row},"<>")=0'],

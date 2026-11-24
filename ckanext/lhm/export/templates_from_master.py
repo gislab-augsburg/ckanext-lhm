@@ -20,11 +20,13 @@ import os
 
 try:
     from .field_mapping import (MasterConfig, TABLES, bind_field_name,
-                                embedded_field_rows, table_columns)
+                                embedded_field_rows, table_columns,
+                                schema_status)
     from .choice_mapping import ChoiceMap
 except ImportError:
     from field_mapping import (MasterConfig, TABLES, bind_field_name,
-                               embedded_field_rows, table_columns)
+                               embedded_field_rows, table_columns,
+                               schema_status)
     from choice_mapping import ChoiceMap
 
 
@@ -530,6 +532,31 @@ def add_table_validations(ws, master, schema, last_row):
             dv.add(f'{letter}2:{letter}{last_row}')
             ws.add_data_validation(dv)
 
+
+def label_with_required_mark(label, required):
+    """Show the schema's required flag without relying on master labels."""
+    clean = re.sub(r'\s*\*+\s*$', '', str(label or '')).rstrip()
+    return f'{clean} *' if required and clean else clean
+
+
+def mark_schema_labels(ws, master, schema):
+    column = master.headers[schema]
+    for row_number in range(first_line_md, first_line_dv):
+        status = schema_status(ws[row_number], column, schema)
+        if status != '-':
+            cell = ws.cell(row_number, 1)
+            cell.value = label_with_required_mark(cell.value, status == 'x')
+
+
+def mark_table_headers(ws, master, schema):
+    names = table_columns(ws, master)
+    specs = master.table_specs(ws.title, schema)
+    for column, name in names.items():
+        if name:
+            cell = ws.cell(1, column)
+            cell.value = label_with_required_mark(
+                cell.value, name in specs and specs[name].required)
+
   
 # Create templates and empty forms from master config excel
 
@@ -578,12 +605,6 @@ def create_empty_forms(excel_template=template_master, sheet_password=None):
                     #print(col_dropdown)
                     break
 
-        for cell in ws[1]:
-            if cell.value == 'Pflichtfeld':
-                col_mandatory = split_coords(cell.coordinate)[0]
-            elif cell.value == 'Name':
-                col_name = split_coords(cell.coordinate)[0]
-
         for cells in ws.iter_rows(min_row=1, max_row=1, values_only=False):
             for cell in cells:
                 col_end_nr = cell.column
@@ -606,7 +627,7 @@ def create_empty_forms(excel_template=template_master, sheet_password=None):
                 validation_string = f'=Wertelisten!${one}${two}:${three}${four}'
                 validation = add_validation_dropdown(
                     ws, value_cell_coords, validation_string,
-                    allow_blank=(is_multi or ws[f'{col_mandatory}{row}'].value != 'x'))
+                    allow_blank=(is_multi or ws[f'{col_field_exists}{row}'].value != 'x'))
                 ws.add_data_validation(validation)
 
                 # The same list applies to every value column of multi-select
@@ -619,23 +640,22 @@ def create_empty_forms(excel_template=template_master, sheet_password=None):
                             allow_blank=True)
                         ws.add_data_validation(validation)
 
-        # Apply mandatory rules to the Wert column of fields kept in this
-        # schema. The master form also retains rows 40-53.
-        last_metadata_row = last_line_dd if type_ == 'master' else first_line_dv - 1
-        for row in range(first_line_md, last_metadata_row + 1):
-            if ws[f'{col_mandatory}{row}'].value != 'x':
-                continue
-            if row < first_line_dv and ws[f'{col_field_exists}{row}'].value != 'x':
+        # The schema's x/o/- flag defines both presence and requiredness.
+        for row in range(first_line_md, first_line_dv):
+            if ws[f'{col_field_exists}{row}'].value != 'x':
                 continue
             if not str(ws[f'{col_format}{row}'].value or '').startswith('multi-'):
                 add_validation_mandatory(ws, f'B{row}')
+
+        mark_schema_labels(ws, master, type_)
 
         # Delete rows not part of schema
         del_rows = []
         del_cols = []
         for row in range(first_line_md, first_line_dv):
             exists = f'{col_field_exists}{str(row)}'
-            if ws[exists].value != 'x' or str(ws.cell(row, 1).value or '').strip() == 'Version':
+            if (ws[exists].value == '-'
+                    or label_with_required_mark(ws.cell(row, 1).value, False) == 'Version'):
                 del_rows.append(row)
 
         editable_fields = {
@@ -645,7 +665,7 @@ def create_empty_forms(excel_template=template_master, sheet_password=None):
         }
         required_fields = {
             row for row in editable_fields
-            if ws[f'{col_mandatory}{row}'].value == 'x'
+            if ws[f'{col_field_exists}{row}'].value == 'x'
         }
      
         # Delete config rows and cols, not for master
@@ -671,9 +691,9 @@ def create_empty_forms(excel_template=template_master, sheet_password=None):
         # Protect Sheet and Save Excel
         protect_and_mark_invalid_values(ws, editable_fields, del_rows,
                                         required_fields, sheet_password)
-        add_table_validations(ws_1, master, type_, 201)
-        add_table_validations(ws_2, master, type_, 1501)
-        add_table_validations(ws_3, master, type_, 201)
+        for table_sheet, last_row in ((ws_1, 201), (ws_2, 1501), (ws_3, 201)):
+            mark_table_headers(table_sheet, master, type_)
+            add_table_validations(table_sheet, master, type_, last_row)
         protect_and_mark_table(ws_1, master, type_, 201, sheet_password)
         protect_and_mark_table(ws_2, master, type_, 1501, sheet_password)
         protect_and_mark_table(ws_3, master, type_, 201, sheet_password)
@@ -687,6 +707,7 @@ def create_empty_forms(excel_template=template_master, sheet_password=None):
 def create_templates(excel_template=template_master):
 
     configure_section_rows(excel_template)
+    master = MasterConfig(excel_template)
     EXCEL_TEMPLATES.mkdir(parents=True, exist_ok=True)
 
     print('Creating templates for:')
@@ -724,8 +745,13 @@ def create_templates(excel_template=template_master):
         del_cols = []
         for row in range(first_line_md, first_line_dv):
             exists = f'{col_field_exists}{str(row)}'
-            if ws[exists].value != 'x' or str(ws.cell(row, 1).value or '').strip() == 'Version':
+            if (ws[exists].value == '-'
+                    or label_with_required_mark(ws.cell(row, 1).value, False) == 'Version'):
                 del_rows.append(row)
+
+        mark_schema_labels(ws, master, type_)
+        for sheet_name in TABLES:
+            mark_table_headers(wb[sheet_name], master, type_)
      
         # Delete config rows and cols
         for row in range(first_line_dv, last_line_dd + 1):
@@ -750,6 +776,8 @@ def create_templates(excel_template=template_master):
         
         # Save Excel
         save_excel_compatible(wb, EXCEL_TEMPLATES / f'template_{type_}.xlsx')
+
+    master.workbook.close()
 
 
 def main(argv=None):

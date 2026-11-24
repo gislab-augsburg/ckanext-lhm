@@ -66,6 +66,17 @@ def normalized_label(value):
 def headers(sheet):
     return {str(c.value).strip(): c.column for c in sheet[1] if c.value is not None}
 
+
+def schema_status(row, column, schema):
+    """Read the schema-specific x/o/- flag for a metadata or table field."""
+    status = str(row[column - 1].value or "").strip().lower()
+    if status not in ("x", "o", "-"):
+        raise ValueError(
+            f"Metadaten row {row[0].row}: invalid flag {status!r} for {schema}; "
+            "expected x, o or -"
+        )
+    return status
+
 @dataclass(frozen=True)
 class FieldSpec:
     name: str
@@ -100,7 +111,8 @@ class MasterConfig:
                 label = row[h["Feld"]-1].value
                 if str(label or "").startswith("Datenverzeichnis -"):
                     break
-                if row[h[schema]-1].value != "x":
+                status = schema_status(row, h[schema], schema)
+                if status == "-":
                     continue
                 name = row[h["Name"]-1].value
                 if not name or normalized_label(label) == "version":
@@ -108,7 +120,7 @@ class MasterConfig:
                 name = str(name)
                 if name in result:
                     raise ValueError(f"Duplicate field name in {schema}: {name}")
-                result[name] = FieldSpec(name, str(label), str(row[h["Format"]-1].value or ""), row[h["Pflichtfeld"]-1].value == "x", row[0].row, row[h[schema+"_w"]-1].value if schema+"_w" in h else None)
+                result[name] = FieldSpec(name, str(label), str(row[h["Format"]-1].value or ""), status == "x", row[0].row, row[h[schema+"_w"]-1].value if schema+"_w" in h else None)
             self._fields[schema] = result
         return self._fields[schema]
     def table_fields(self, sheet_name):
@@ -118,14 +130,22 @@ class MasterConfig:
     def table_specs(self, sheet_name, schema=None):
         prefix = sheet_name + " -"
         h = self.headers
-        return {str(row[h["Name"]-1].value): FieldSpec(
-            str(row[h["Name"]-1].value), str(row[h["Feld"]-1].value),
-            str(row[h["Format"]-1].value or ""),
-            row[h["Pflichtfeld"]-1].value == "x", row[0].row,
-            row[h[schema + "_w"]-1].value if schema and schema + "_w" in h else None)
-            for row in self.ws.iter_rows(min_row=2)
-            if str(row[0].value or "").startswith(prefix) and row[h["Name"]-1].value
-            and (schema is None or row[h[schema]-1].value == "x")}
+        result = {}
+        for row in self.ws.iter_rows(min_row=2):
+            if not str(row[0].value or "").startswith(prefix):
+                continue
+            status = schema_status(row, h[schema], schema) if schema else "o"
+            if status == "-" or not row[h["Name"]-1].value:
+                continue
+            name = str(row[h["Name"]-1].value)
+            result[name] = FieldSpec(
+                name, str(row[h["Feld"]-1].value),
+                str(row[h["Format"]-1].value or ""), status == "x",
+                row[0].row,
+                row[h[schema + "_w"]-1].value
+                if schema and schema + "_w" in h else None,
+            )
+        return result
     def schema_for_type(self, ckan_type):
         return next((key for key, value in self.schemas.items() if value == ckan_type), None)
 

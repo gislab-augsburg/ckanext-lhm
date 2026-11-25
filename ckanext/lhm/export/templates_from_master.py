@@ -23,11 +23,13 @@ try:
                                 embedded_field_rows, table_columns,
                                 schema_status)
     from .choice_mapping import ChoiceMap
+    from .schema_extras import SchemaExtras, apply_to_form
 except ImportError:
     from field_mapping import (MasterConfig, TABLES, bind_field_name,
                                embedded_field_rows, table_columns,
                                schema_status)
     from choice_mapping import ChoiceMap
+    from schema_extras import SchemaExtras, apply_to_form
 
 
 # Define values #################################################
@@ -69,6 +71,7 @@ def configure_section_rows(excel_template):
 def validate_master_for_forms(master):
     """Check structure once before generating forms; report unmapped choices."""
     headers = master.headers
+    SchemaExtras(master)
     schema_rows = [row for row in master.workbook['Schemata'].iter_rows(
         min_row=2, values_only=True) if row[0]]
     keys = [str(row[0]) for row in schema_rows]
@@ -381,7 +384,8 @@ def finalize_form_workbook(book, password):
         metadata.delete_cols(name_column)
     elif not embedded_field_rows(book):
         raise ValueError('Form has neither a Name column nor field references')
-    for sheet_name in ('CKAN_Werte', 'Legacy_136_137', 'Schemata'):
+    for sheet_name in ('CKAN_Werte', 'Legacy_136_137', 'Schemata',
+                       'Schema_Extras'):
         if sheet_name in book:
             del book[sheet_name]
     if 'Wertelisten' not in book:
@@ -535,16 +539,23 @@ def add_table_validations(ws, master, schema, last_row):
 def label_with_required_mark(label, required):
     """Show the schema's required flag without relying on master labels."""
     clean = re.sub(r'\s*\*+\s*$', '', str(label or '')).rstrip()
-    return f'{clean} *' if required and clean else clean
+    mark = ('**' if required == 'b' else '*' if required else '')
+    return f'{clean} {mark}' if mark and clean else clean
 
 
 def mark_schema_labels(ws, master, schema):
     column = master.headers[schema]
+    name_column = master.headers['Name']
+    extras = SchemaExtras(master).rules
     for row_number in range(first_line_md, first_line_dv):
         status = schema_status(ws[row_number], column, schema)
         if status != '-':
             cell = ws.cell(row_number, 1)
-            cell.value = label_with_required_mark(cell.value, status == 'x')
+            name = ws.cell(row_number, name_column).value
+            rule = extras.get((schema, 'Metadaten', name))
+            conditional = bool(rule and rule.required_if)
+            cell.value = label_with_required_mark(
+                cell.value, 'b' if conditional else status == 'x')
 
 
 def mark_table_headers(ws, master, schema):
@@ -696,6 +707,12 @@ def create_empty_forms(excel_template=template_master, sheet_password=None):
         protect_and_mark_table(ws_1, master, type_, 201, sheet_password)
         protect_and_mark_table(ws_2, master, type_, 1501, sheet_password)
         protect_and_mark_table(ws_3, master, type_, 201, sheet_password)
+        target_rows = {
+            name: spec.source_row - bisect_left(sorted(del_rows), spec.source_row)
+            for name, spec in master.fields(type_).items()
+        }
+        apply_to_form(wb, master, type_, target_rows,
+                      isolate_validation_cell, set_locked)
         finalize_form_workbook(wb, sheet_password)
         save_excel_compatible(wb, EXCEL_TEMPLATES / f'form_{type_}.xlsx')
     master.workbook.close()

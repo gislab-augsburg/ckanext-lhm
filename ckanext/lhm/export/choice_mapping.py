@@ -27,7 +27,7 @@ class ChoiceMap:
                 if selected_schema not in headers or selected_schema + "_w" not in headers:
                     raise ValueError(f"Dropdown columns for {selected_schema} are missing")
                 for row in metadata.iter_rows(min_row=2):
-                    if row[headers[selected_schema]].value not in ("x", "o"):
+                    if row[headers[selected_schema]].value not in ("x", "o", "b"):
                         continue
                     name = row[headers["Name"]].value
                     address = row[headers[selected_schema + "_w"]].value

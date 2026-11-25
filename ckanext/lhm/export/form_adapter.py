@@ -7,9 +7,11 @@ from openpyxl import load_workbook
 try:
     from .field_mapping import TABLES, field_rows, table_columns
     from .templates_from_master import finalize_form_workbook, save_excel_compatible
+    from .schema_extras import SchemaExtras
 except ImportError:
     from field_mapping import TABLES, field_rows, table_columns
     from templates_from_master import finalize_form_workbook, save_excel_compatible
+    from schema_extras import SchemaExtras
 
 
 def write_form(form_file, output_file, master, schema, values, tables,
@@ -17,6 +19,9 @@ def write_form(form_file, output_file, master, schema, values, tables,
     workbook = load_workbook(form_file)
     metadata = workbook["Metadaten"]
     rows = field_rows(metadata, master, schema)
+    extra_rules = SchemaExtras(master).for_schema(schema)
+    fixed = {extra.name for extra in extra_rules if extra.fixed}
+    derived = {extra.name for extra in extra_rules if extra.derivation}
     value_col = next((cell.column for cell in metadata[1]
                       if str(cell.value or "").strip() == "Wert"), None)
     if value_col is None:
@@ -25,6 +30,10 @@ def write_form(form_file, output_file, master, schema, values, tables,
     for name, spec in master.fields(schema).items():
         if name not in rows:
             raise ValueError(f"Field {name!r} is missing from form {form_file}")
+        if name in fixed:
+            # The form always shows the configured fixed value, even if an
+            # older CKAN package still contains a different value.
+            continue
         # Some openpyxl versions reset allowBlank while loading a workbook.
         # Restore it from the authoritative Pflichtfeld setting before export.
         blank_allowed = not spec.required or spec.format.startswith("multi-")
@@ -35,6 +44,10 @@ def write_form(form_file, output_file, master, schema, values, tables,
                     validation.allow_blank = blank_allowed
         value = values.get(name)
         if value is None:
+            if name in derived:
+                # A filled export shows the actual CKAN value (also when
+                # absent); the precompiled comparison rule marks divergence.
+                metadata.cell(rows[name], value_col).value = None
             continue
         parts = value if isinstance(value, (list, tuple)) else [value]
         if len(parts) > spec.width and any(part not in (None, "")

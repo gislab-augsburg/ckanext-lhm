@@ -14,7 +14,7 @@ USAGE_KEY = "nutzungshinweise.{j}.stichwort"
 USAGE_TEXT = "nutzungshinweise.{j}.hinweise"
 OPTIONS = "nutzungsoptionen_bei_einschraenkungen"
 SPECIAL = {TAGS, TOPICS, MAIN, DEPARTMENT, OWNER, TYPE, USAGE_KEY,
-           USAGE_TEXT, OPTIONS}
+           USAGE_TEXT, OPTIONS, "name"}
 
 
 def _nonempty(value):
@@ -80,10 +80,25 @@ def _choice_to_display(choices, name, value, is_select):
         return value
 
 
+def dataset_name_from_values(values, schema, master, filename_stem):
+    """Use a form's `name` field when present; retain legacy filename identity."""
+    if "name" not in master.fields(schema) or "name" not in values:
+        return filename_stem
+    value = values["name"]
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError("Metadaten field 'name' must contain a CKAN dataset name")
+    if value != value.strip():
+        raise ValueError("Metadaten field 'name' has leading or trailing whitespace")
+    if value in (".", "..") or any(char in value for char in ("/", "\\", "\x00")):
+        raise ValueError("Metadaten field 'name' is not a valid dataset identifier")
+    return value
+
+
 def form_to_dataset(values, schema, version, master, choices, package_name):
     """Build CKAN metadata without referring to workbook positions."""
     fields = master.fields(schema)
-    result = {"name": package_name}
+    result = {"name": dataset_name_from_values(values, schema, master,
+                                                package_name)}
     nested = {}
     for name, spec in fields.items():
         if name not in values:

@@ -68,12 +68,12 @@ def headers(sheet):
 
 
 def schema_status(row, column, schema):
-    """Read the schema-specific x/o/- flag for a metadata or table field."""
+    """Read the schema-specific x/o/b/- flag for a metadata or table field."""
     status = str(row[column - 1].value or "").strip().lower()
-    if status not in ("x", "o", "-"):
+    if status not in ("x", "o", "b", "-"):
         raise ValueError(
             f"Metadaten row {row[0].row}: invalid flag {status!r} for {schema}; "
-            "expected x, o or -"
+            "expected x, o, b or -"
         )
     return status
 
@@ -137,6 +137,11 @@ class MasterConfig:
             status = schema_status(row, h[schema], schema) if schema else "o"
             if status == "-" or not row[h["Name"]-1].value:
                 continue
+            if status == "b":
+                raise ValueError(
+                    f"{sheet_name}: conditional mandatory table field "
+                    f"{row[h['Name']-1].value!r} is not supported"
+                )
             name = str(row[h["Name"]-1].value)
             result[name] = FieldSpec(
                 name, str(row[h["Feld"]-1].value),

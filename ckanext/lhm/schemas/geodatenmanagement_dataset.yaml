@@ -17,7 +17,7 @@ dataset_fields:
   form_snippet: large_text_lhm.html
   form_placeholder: Thema | NAME_DER_TABELLE
   is_info: true
-  info_text: 'Thema | NAME_DER_TABELLE. Der Titel beteht aus dem Thema (für Geodatenpool: ehemals Datenbestand) und dem Namen der Tabelle in der Datenbank.'
+  info_text: 'NAME_AGGREGATION_AUFLÖSUNG. Eindeutiger Name des Datensatzes, damit er von ähnlichen Datensätzen unterschieden werden kann. Erlaubt: Großbuchstaben, Zahlen, Leerzeichen, - und _. Max. 100 Zeichen (ä, ö, ü, ß zählen als 2).'
   required: true
 
 # Feld alt
@@ -142,7 +142,7 @@ dataset_fields:
   required: true
   form_placeholder: erika.mustermann@muenchen.de / gdi@muenchen.de
   form_snippet: author_email.html
-  display_snippet: email.html
+  display_snippet: email_lhm.html
   validators: unicode_safe strip_value
   is_info: true
   info_text: Angabe der Team-E-Mailadresse des Datenverantwortlichen
@@ -176,26 +176,20 @@ dataset_fields:
       de: Auf Anforderung
   - value: 15-minuetig
     label: 15-minütig
-  - value: 30-minuetig
-    label: 30-minütig
-  - value: mehrmals_stuendlich
-    label: Mehrmals stündlich
   - value: stuendlich
     label: Stündlich
-  - value: mehrmals_taeglich
-    label: Mehrmals täglich
   - value: taeglich
     label: Täglich
-  - value: mehrmals_woechentlich
-    label: Mehrmals wöchentlich
   - value: woechentlich
     label: Wöchentlich
-  - value: mehrmals_monatlich
-    label: Mehrmals monatlich
   - value: monatlich
     label: 
       en: Monthly
       de: Monatlich
+  - value: quartalsweise
+    label: Quartalsweise
+  - value: jaehrlich
+    label: Jährlich
   - value: kein
     label: 
       en: No update

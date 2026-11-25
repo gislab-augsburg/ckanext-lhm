@@ -165,12 +165,6 @@ dataset_fields:
     label: 
       en: On demand
       de: Auf Anforderung
-  - value: 15-minuetig
-    label: 15-minütig
-  - value: stuendlich
-    label: Stündlich
-  - value: taeglich
-    label: Täglich
   - value: woechentlich
     label: Wöchentlich
   - value: monatlich
